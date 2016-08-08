@@ -4,7 +4,7 @@ The game known as Connect-4, Score-4, 4-in-a-line or 4-in-a-row. It includes a g
 
 To insert a checker the user can press on the buttons or press the keys 1-7.
 
-HOT TO RUN:
+HOT TO RUN IN ECLIPSE:
 
 1) Create a new Eclipse Java project.
 
