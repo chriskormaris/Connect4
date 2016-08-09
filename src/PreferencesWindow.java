@@ -23,7 +23,7 @@ public class PreferencesWindow extends JFrame {
 	
 	
 	public PreferencesWindow(GameParameters gp) {
-		super("PREFERENCES");
+		super("Preferences");
 		
 		// copy passed argument object to class object
 		this.game_params = gp; 
