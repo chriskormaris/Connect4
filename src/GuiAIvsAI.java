@@ -3,7 +3,7 @@ import java.awt.event.*;
 
 import javax.swing.*;
 
-public class GuiAIvsAI {
+public class GuiAiVSAi {
 	
 	static Board board = new Board();
 	static JFrame frameMainWindow;
@@ -13,14 +13,15 @@ public class GuiAIvsAI {
 	static JLayeredPane layeredGameBoard;
 	
 	// arxikopoioume me maxDepth = 4, mporei na parei allh timh gia rythmish duskolias 
-	private static GamePlayer ai1 = new GamePlayer(4, Board.X);
-	private static GamePlayer ai2 = new GamePlayer(4, Board.O);
+	private static MinimaxAiPlayer ai1 = new MinimaxAiPlayer(4, Board.X);
+	private static MinimaxAiPlayer ai2 = new MinimaxAiPlayer(4, Board.O);
 	
-	public GuiAIvsAI () {
+	public GuiAiVSAi() {
 		try {
 			UIManager.setLookAndFeel( UIManager.getSystemLookAndFeelClassName() );
-		} catch (Exception e) { }
-
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		createNewGame();
 	}
 	
@@ -49,10 +50,18 @@ public class GuiAIvsAI {
 		Component compMainWindowContents = createContentComponents();
 		frameMainWindow.getContentPane().add(compMainWindowContents, BorderLayout.CENTER);
 
+		frameMainWindow.addWindowListener(new WindowAdapter() {
+			public void windowClosing(WindowEvent e) {
+			System.exit(0);
+			}
+		});
+
 		// show window
 		frameMainWindow.pack();
 		frameMainWindow.setVisible(true);
 
+		
+		// AI VS AI implementation HERE
 		while (!board.isTerminal()) {
 			
 			if (board.getLastLetterPlayed() == Board.O) {
@@ -86,25 +95,14 @@ public class GuiAIvsAI {
 	    frame.setLocation(x, y);
 	}
 	
-	// topothetei kokkino checker ston pinaka
-	public static void paintItRed(int row, int col) {
+	// topothetei checker ston pinaka
+	public static void placeChecker(String color, int row, int col) {
 		int xOffset = 75 * col;
 		int yOffset = 75 * row;
-		ImageIcon redIcon = new ImageIcon(ResourceLoader.load("images/Human.gif"));
+		ImageIcon redIcon = new ImageIcon(ResourceLoader.load("images/" + color + ".gif"));
 		JLabel redIconLabel = new JLabel(redIcon);
 		redIconLabel.setBounds(27 + xOffset, 27 + yOffset, redIcon.getIconWidth(),redIcon.getIconHeight());
 		layeredGameBoard.add(redIconLabel, new Integer(0), 0);
-		frameMainWindow.paint(frameMainWindow.getGraphics());
-	}
-	
-	// topothetei kitrino checker ston pinaka
-	public static void paintItYellow(int row, int col) {
-		int xOffset = 75 * col;
-		int yOffset = 75 * row;
-		ImageIcon yellowIcon = new ImageIcon(ResourceLoader.load("images/Computer_AI.gif"));
-		JLabel yellowIconLabel = new JLabel(yellowIcon);
-		yellowIconLabel.setBounds(27 + xOffset, 27 + yOffset, yellowIcon.getIconWidth(),yellowIcon.getIconHeight());
-		layeredGameBoard.add(yellowIconLabel, new Integer(0), 0);
 		frameMainWindow.paint(frameMainWindow.getGraphics());
 	}
 	
@@ -117,10 +115,10 @@ public class GuiAIvsAI {
 		int lastPlayerLetter = board.getLastLetterPlayed();
 		if (lastPlayerLetter == Board.X) {
 			// topothetei kokkino checker sto [row][col] tou GUI
-			paintItRed(row, col);
+			placeChecker("RED", row, col);
 		} else if (lastPlayerLetter == Board.O) {
 			// topothetei kitrino checker sto [row][col] tou GUI
-			paintItYellow(row, col);
+			placeChecker("YELLOW", row, col);
 		}
 		if (board.isTerminal()) {
 			gameOver();
@@ -128,7 +126,7 @@ public class GuiAIvsAI {
 
 	}
 	
-	public static void aiMove(GamePlayer player, int checker){
+	public static void aiMove(MinimaxAiPlayer player, int checker){
 		Move aiMove = player.MiniMax(board);
 		board.makeMove(aiMove.getCol(), checker);
 		game();
@@ -140,12 +138,7 @@ public class GuiAIvsAI {
 	 * Kalei ton actionListener otan ginetai click me to pontiki panw se button.
 	 */
 	public static Component createContentComponents() {
-		// dhmiourgia panel gia na organwsoume ta buttons tou pinaka
-		panelBoardNumbers = new JPanel();
-		panelBoardNumbers.setLayout(new GridLayout(1, 7, 6, 4));
-		panelBoardNumbers.setBorder(BorderFactory.createEmptyBorder(2, 24, 2, 24));
-
-		// dhmiourgia tou kuriou pinaka tou Connect-4, mazi me ta buttons 
+		// dhmiourgia tou kuriou pinaka tou Connect-4
 		layeredGameBoard = createLayeredBoard();
 
 		// dhmiourgia panel gia na krathsoume ola ta stoixeia tou pinaka
@@ -154,7 +147,6 @@ public class GuiAIvsAI {
 		panelMain.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
 
 		// pros8hkh antikeimenwn sto panelMain 
-		panelMain.add(panelBoardNumbers, BorderLayout.NORTH);
 		panelMain.add(layeredGameBoard, BorderLayout.CENTER);
 
 		frameMainWindow.setResizable(false);
@@ -217,7 +209,7 @@ public class GuiAIvsAI {
 	
 	@SuppressWarnings("unused")
 	public static void main(String[] args){
-		GuiAIvsAI Connect4 = new GuiAIvsAI();
+		GuiAiVSAi Connect4 = new GuiAiVSAi();
 	}
 		
 }

@@ -25,15 +25,17 @@ public class Gui {
 
 //	private static GamePlayer ai = new GamePlayer();
 	static GameParameters game_params = new GameParameters();
-	private static GamePlayer ai = new GamePlayer(game_params.getMaxDepth(), Board.X);
+	private static MinimaxAiPlayer ai = new MinimaxAiPlayer(game_params.getMaxDepth(), Board.X);
 	
-//	private static int humanPlayerLetter = Board.X; // (X=1)
-//	private static int aiPlayerLetter = Board.O; // (O=-1)
+	//	Player 1 letter -> X. He plays First
+	//	Player 2 letter -> O.
 	
-	public Gui () {
+	public Gui() {
 		try {
 			UIManager.setLookAndFeel( UIManager.getSystemLookAndFeelClassName() );
-		} catch (Exception e) { }
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		createNewGame();
 		AddMenus();
 	}
@@ -125,7 +127,7 @@ public class Gui {
              
 		if (frameMainWindow != null) frameMainWindow.dispose();
 		frameMainWindow = new JFrame("Minimax Connect-4");
-		centerWindow(frameMainWindow, 570, 490); // to kurio parathuro tha emfanizetai sto kentro
+		centerWindow(frameMainWindow, 570, 520); // to kurio parathuro tha emfanizetai sto kentro
 		Component compMainWindowContents = createContentComponents();
 		frameMainWindow.getContentPane().add(compMainWindowContents, BorderLayout.CENTER);
 
@@ -135,21 +137,91 @@ public class Gui {
 			}
 		});
 		
-		KeyListener keylistener = new MyKeyListener(board);
-		frameMainWindow.addKeyListener(keylistener);
-		frameMainWindow.setFocusable(true);
+		frameMainWindow.addKeyListener(new KeyListener() {
+			@Override
+			public void keyTyped(KeyEvent e) {
+			}
 
+			@Override
+			public void keyPressed(KeyEvent e) {
+				//System.out.println("keyPressed="+KeyEvent.getKeyText(e.getKeyCode()));
+				String button = KeyEvent.getKeyText(e.getKeyCode());
+				
+				if (button.equals("1")) {
+					if (board.getLastLetterPlayed() == Board.O) {
+						board.makeMove(0, Board.X);
+					} else {
+						board.makeMove(0, Board.O);
+					}
+				} else if (button.equals("2")) {
+					if (board.getLastLetterPlayed() == Board.O) {
+						board.makeMove(1, Board.X);
+					} else {
+						board.makeMove(1, Board.O);
+					}
+				} else if (button.equals("3")) {
+					if (board.getLastLetterPlayed() == Board.O) {
+						board.makeMove(2, Board.X);
+					} else {
+						board.makeMove(2, Board.O);
+					}
+				} else if (button.equals("4")) {
+					if (board.getLastLetterPlayed() == Board.O) {
+						board.makeMove(3, Board.X);
+					} else {
+						board.makeMove(3, Board.O);
+					}
+				} else if (button.equals("5")) {
+					if (board.getLastLetterPlayed() == Board.O) {
+						board.makeMove(4, Board.X);
+					} else {
+						board.makeMove(4, Board.O);
+					}
+				} else if (button.equals("6")) {
+					if (board.getLastLetterPlayed() == Board.O) {
+						board.makeMove(5, Board.X);
+					} else {
+						board.makeMove(5, Board.O);
+					}
+				} else if (button.equals("7")) {
+					if (board.getLastLetterPlayed() == Board.O) {
+						board.makeMove(6, Board.X);
+					} else {
+						board.makeMove(6, Board.O);
+					}
+				}
+				
+				if (button.equals("1") || button.equals("2") || button.equals("3") || button.equals("4")
+						|| button.equals("5") || button.equals("6") || button.equals("7")) {
+					game();
+					if (game_params.getGameMode() == GameParameters.HumanVSAi) aiMove();
+				}
+				
+			}
+
+			@Override
+			public void keyReleased(KeyEvent e) {
+				//System.out.println("keyReleased="+KeyEvent.getKeyText(e.getKeyCode()));
+			}
+		});
+		
+
+		frameMainWindow.setFocusable(true);
+		
 		// show window
 		frameMainWindow.pack();
 		//frameMainWindow.setVisible(true);
 
-		if (board.getLastLetterPlayed() == Board.X) {
-			Move aiMove = ai.MiniMax(board);
-			board.makeMove(aiMove.getCol(), Board.O);
-			game();
+		if (game_params.getGameMode() == GameParameters.HumanVSAi)  {
+			if (board.getLastLetterPlayed() == Board.X) {
+				Move aiMove = ai.MiniMax(board);
+				board.makeMove(aiMove.getCol(), Board.O);
+				game();
+			}
 		}
 
 	}
+	
 	
 	// kentrarei to parathuro sthn othonh
 	public static void centerWindow(Window frame, int width, int height) {
@@ -159,25 +231,14 @@ public class Gui {
 	    frame.setLocation(x, y);
 	}
 	
-	// topothetei kokkino checker ston pinaka
-	public static void paintItRed(int row, int col) {
+	// topothetei checker ston pinaka
+	public static void placeChecker(String color, int row, int col) {
 		int xOffset = 75 * col;
 		int yOffset = 75 * row;
-		ImageIcon redIcon = new ImageIcon(ResourceLoader.load("images/Human.gif"));
+		ImageIcon redIcon = new ImageIcon(ResourceLoader.load("images/" + color + ".gif"));
 		JLabel redIconLabel = new JLabel(redIcon);
 		redIconLabel.setBounds(27 + xOffset, 27 + yOffset, redIcon.getIconWidth(),redIcon.getIconHeight());
 		layeredGameBoard.add(redIconLabel, new Integer(0), 0);
-		frameMainWindow.paint(frameMainWindow.getGraphics());
-	}
-	
-	// topothetei kitrino checker ston pinaka
-	public static void paintItYellow(int row, int col) {
-		int xOffset = 75 * col;
-		int yOffset = 75 * row;
-		ImageIcon yellowIcon = new ImageIcon(ResourceLoader.load("images/Computer_AI.gif"));
-		JLabel yellowIconLabel = new JLabel(yellowIcon);
-		yellowIconLabel.setBounds(27 + xOffset, 27 + yOffset, yellowIcon.getIconWidth(),yellowIcon.getIconHeight());
-		layeredGameBoard.add(yellowIconLabel, new Integer(0), 0);
 		frameMainWindow.paint(frameMainWindow.getGraphics());
 	}
 	
@@ -187,26 +248,26 @@ public class Gui {
 		int row = board.getLastMove().getRow();
 		int col = board.getLastMove().getCol();
 
-		int lastPlayerLetter = board.getLastLetterPlayed();
+		int currentPlayer = board.getLastLetterPlayed();
 		
 		if (game_params.getPlayerColor() == "RED") {
-			if (lastPlayerLetter == Board.X) {
+			if (currentPlayer == Board.X) {
 				// topothetei kokkino checker sto [row][col] tou GUI
-				paintItRed(row, col);
-			} else if (lastPlayerLetter == Board.O) {
+				placeChecker("RED", row, col);
+			} else if (currentPlayer == Board.O) {
 				// topothetei kitrino checker sto [row][col] tou GUI
-				paintItYellow(row, col);
+				placeChecker("YELLOW", row, col);
 			}
 			if (board.isTerminal()) {
 				gameOver();
 			}
 		} else if (game_params.getPlayerColor() == "YELLOW") {
-			if (lastPlayerLetter == Board.X) {
+			if (currentPlayer == Board.X) {
 				// topothetei kitrino checker sto [row][col] tou GUI
-				paintItYellow(row, col);
-			} else if (lastPlayerLetter == Board.O) {
+				placeChecker("YELLOW", row, col);
+			} else if (currentPlayer == Board.O) {
 				// topothetei kokkino checker sto [row][col] tou GUI
-				paintItRed(row, col);
+				placeChecker("RED", row, col);
 			}
 			if (board.isTerminal()) {
 				gameOver();
@@ -220,6 +281,7 @@ public class Gui {
 	public static void aiMove(){
 
 		if (!board.isTerminal()) {
+			// check if human player played last
 			if (board.getLastLetterPlayed() == Board.X) {
 				Move aiMove = ai.MiniMax(board);
 				board.makeMove(aiMove.getCol(), Board.O);
@@ -238,18 +300,18 @@ public class Gui {
 		// dhmiourgia panel gia na organwsoume ta buttons tou pinaka
 		panelBoardNumbers = new JPanel();
 		panelBoardNumbers.setLayout(new GridLayout(1, 7, 6, 4));
-		panelBoardNumbers.setBorder(BorderFactory.createEmptyBorder(2, 24, 2, 24));
+		panelBoardNumbers.setBorder(BorderFactory.createEmptyBorder(2, 22, 2, 22));
 		
 		JButton col1_button = new JButton("1");
 		col1_button.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-//				if (board.getLastLetterPlayed() == Board.O) {
+				if (board.getLastLetterPlayed() == Board.O) {
 					board.makeMove(0, Board.X);
-//				} else {
-//					board.makeMove(0, Board.O);
-//				}
+				} else {
+					board.makeMove(0, Board.O);
+				}
 				game();
-				aiMove();
+				if (game_params.getGameMode() == GameParameters.HumanVSAi) aiMove();
 				frameMainWindow.requestFocusInWindow();
 //				board.print();
 			}
@@ -260,12 +322,11 @@ public class Gui {
 			public void actionPerformed(ActionEvent e) {
 				if (board.getLastLetterPlayed() == Board.O) {
 					board.makeMove(1, Board.X);
+				} else {
+					board.makeMove(1, Board.O);
 				}
-//				else {
-//					board.makeMove(1, Board.O);
-//				}
 				game();
-				aiMove();
+				if (game_params.getGameMode() == GameParameters.HumanVSAi) aiMove();
 				frameMainWindow.requestFocusInWindow();
 //				board.print();
 			}
@@ -276,12 +337,11 @@ public class Gui {
 			public void actionPerformed(ActionEvent e) {
 				if (board.getLastLetterPlayed() == Board.O) {
 					board.makeMove(2, Board.X);
+				} else {
+					board.makeMove(2, Board.O);
 				}
-//				else {
-//					board.makeMove(2, Board.O);
-//				}
 				game();
-				aiMove();
+				if (game_params.getGameMode() == GameParameters.HumanVSAi) aiMove();
 				frameMainWindow.requestFocusInWindow();
 //				board.print();
 			}
@@ -292,12 +352,11 @@ public class Gui {
 			public void actionPerformed(ActionEvent e) {
 				if (board.getLastLetterPlayed() == Board.O) {
 					board.makeMove(3, Board.X);
-			}
-//			else {
-//					board.makeMove(3, Board.O);
-//				}
+				} else {
+					board.makeMove(3, Board.O);
+				}
 				game();
-				aiMove();
+				if (game_params.getGameMode() == GameParameters.HumanVSAi) aiMove();
 				frameMainWindow.requestFocusInWindow();
 //				board.print();
 			}
@@ -308,12 +367,11 @@ public class Gui {
 			public void actionPerformed(ActionEvent e) {
 				if (board.getLastLetterPlayed() == Board.O) {
 					board.makeMove(4, Board.X);
-			}
-//			else {
-//					board.makeMove(4, Board.O);
-//				}
+				} else {
+					board.makeMove(4, Board.O);
+				}
 				game();
-				aiMove();
+				if (game_params.getGameMode() == GameParameters.HumanVSAi) aiMove();
 				frameMainWindow.requestFocusInWindow();
 //				board.print();
 			}
@@ -324,12 +382,11 @@ public class Gui {
 			public void actionPerformed(ActionEvent e) {
 				if (board.getLastLetterPlayed() == Board.O) {
 					board.makeMove(5, Board.X);
+				} else {
+					board.makeMove(5, Board.O);
 				}
-//				else {
-//					board.makeMove(5, Board.O);
-//				}
 				game();
-				aiMove();
+				if (game_params.getGameMode() == GameParameters.HumanVSAi) aiMove();
 				frameMainWindow.requestFocusInWindow();
 //				board.print();
 			}
@@ -340,12 +397,11 @@ public class Gui {
 			public void actionPerformed(ActionEvent e) {
 				if (board.getLastLetterPlayed() == Board.O) {
 					board.makeMove(6, Board.X);
-			}
-//			else {
-//					board.makeMove(6, Board.O);
-//				}
+				} else {
+					board.makeMove(6, Board.O);
+				}
 				game();
-				aiMove();
+				if (game_params.getGameMode() == GameParameters.HumanVSAi) aiMove();
 				frameMainWindow.requestFocusInWindow();
 //				board.print();
 			}
@@ -389,10 +445,16 @@ public class Gui {
 		JLabel winLabel;
 		board.checkWinState();
 		if (board.getWinner() == Board.X) {
-			winLabel = new JLabel("You win! Start a new game?");
+			if (game_params.getGameMode() == GameParameters.HumanVSAi)
+				winLabel = new JLabel("You win! Start a new game?");
+			else
+				winLabel = new JLabel("Player 1 wins! Start a new game?");
 			winPanel.add(winLabel);
 		} else if (board.getWinner() == Board.O) {
-			winLabel = new JLabel("Computer AI wins! Start a new game?");
+			if (game_params.getGameMode() == GameParameters.HumanVSAi)
+				winLabel = new JLabel("Computer AI wins! Start a new game?");
+			else
+				winLabel = new JLabel("Player 2 wins! Start a new game?");
 			winPanel.add(winLabel);
 		} else {
 			winLabel = new JLabel("It's a draw! Start a new game?");

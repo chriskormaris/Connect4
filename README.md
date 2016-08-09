@@ -14,7 +14,7 @@ HOT TO RUN IN ECLIPSE:
 
 4) Right click the project folder on "Project Explorer". Go to Properties->Java Build Path->Source. Click "Add Folder...". Tick the "res" folder.
 
-5) Run "Gui.java" for human player vs AI mode OR "GuiAIvsAI.java" for AI vs AI mode.
+5) Run "Gui.java". Other mains exist in these classes: "Main", "GuiHumanVSHuman", "GuiHumanVSAi", "GuiAiVSAi".
 
 ** A ".jar" executable is included as well.
 Have fun!!
