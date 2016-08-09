@@ -2,14 +2,16 @@ public class GameParameters {
 	
 	private int maxDepth;
 	private String playerColor;
+	private int gameMode;
+	
+	public static final int HumanVSAi = 1;
+	public static final int HumanVSHuman = 2;
 	
 	public GameParameters() {
-		
-		// arxikopoioume me maxDepth = 4, mporei na parei allh timh gia rythmish duskolias
+		// Default values
 		this.maxDepth = 4;
-		
 		this.playerColor = "RED";
-		
+		this.gameMode = HumanVSAi;
 	}
 
 	public int getMaxDepth() {
@@ -26,6 +28,14 @@ public class GameParameters {
 
 	public void setPlayerColor(String color) {
 		this.playerColor = color;
+	}
+
+	public int getGameMode() {
+		return gameMode;
+	}
+
+	public void setGameMode(int gameMode) {
+		this.gameMode = gameMode;
 	}
 
 }
