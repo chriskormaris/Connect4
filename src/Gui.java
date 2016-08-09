@@ -14,11 +14,15 @@ public class Gui {
 	static JLayeredPane layeredGameBoard;
 	
 	//Menu bars and items.
-	static MenuBar menuBar;
-	static Menu menu1;
-	static MenuItem item1;
-	static MenuItem item2;
-	
+	static JMenuBar menuBar;
+	static JMenu menu1;
+	static JMenuItem item11;
+	static JMenuItem item12;
+	static JMenuItem item13;
+	static JMenu menu2;
+	static JMenuItem item21;
+	static JMenuItem item22;
+
 //	private static GamePlayer ai = new GamePlayer();
 	static GameParameters game_params = new GameParameters();
 	private static GamePlayer ai = new GamePlayer(game_params.getMaxDepth(), Board.X);
@@ -37,29 +41,60 @@ public class Gui {
 	//Adds the menu bars and items to the window
 	private static void AddMenus() {
 		//adding the menu bar.
-		menuBar = new MenuBar();
-		menu1 = new Menu("File");
-		item1 = new MenuItem("New Game");
-		item2 = new MenuItem("Preferences");
-		menu1.add(item1);
-		menu1.add(item2);
+		menuBar = new JMenuBar();
 		
-		item1.addActionListener(new ActionListener() {
+		menu1 = new JMenu("File");
+		item11 = new JMenuItem("New Game");
+		item12 = new JMenuItem("Preferences");
+		item13 = new JMenuItem("Exit");
+		menu1.add(item11);
+		menu1.add(item12);
+		menu1.add(item13);
+		
+		menu2 = new JMenu("Help");
+		item21 = new JMenuItem("How to Play");
+		item22 = new JMenuItem("About");
+		menu2.add(item21);
+		menu2.add(item22);
+
+		
+		item11.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				createNewGame();
 				AddMenus();
 			}
 		});
 		
-		item2.addActionListener(new ActionListener() {
+		item12.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				PreferencesWindow prefs = new PreferencesWindow(game_params);
 				prefs.setVisible(true);
 			}
 		});
 		
+		item13.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				System.exit(0);
+			}
+		});
+		
+		item21.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				JOptionPane.showMessageDialog(null , "Click on the buttons or press 1-7 on your keyboard to insert a new checker.\nTo win you must place 4 checkers in an row, horizontally, vertically or diagonally." , "How to Play" , JOptionPane.INFORMATION_MESSAGE);
+			}
+		});
+		
+		item22.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				JOptionPane.showMessageDialog(null , "© Created by: Chris Kormaris" , "About" , JOptionPane.INFORMATION_MESSAGE);
+			}
+		});
+		
 		menuBar.add(menu1);
-		frameMainWindow.setMenuBar(menuBar);
+		menuBar.add(menu2);
+		frameMainWindow.setJMenuBar(menuBar);
+		frameMainWindow.setVisible(true);
+		
 	}
 		
 	// o kurios pinakas tou Connect-4
@@ -106,7 +141,7 @@ public class Gui {
 
 		// show window
 		frameMainWindow.pack();
-		frameMainWindow.setVisible(true);
+		//frameMainWindow.setVisible(true);
 
 		if (board.getLastLetterPlayed() == Board.X) {
 			Move aiMove = ai.MiniMax(board);
