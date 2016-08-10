@@ -171,7 +171,7 @@ public class Board {
 	public int evaluate() {
 		// +100 'X' wins, -100 'O' wins,
 		// +10 three 'X' in a row, -10 three 'O' in a row,
-		// +1 two 'X' in a row, -1 two 'O' in a row, 0 draws
+		// +1 two 'X' in a row, -1 two 'O' in a row
 		int Xlines = 0;
 		int Olines = 0;
 
@@ -186,6 +186,7 @@ public class Board {
         Xlines  = Xlines + check3InARow(X)*10 + check2InARow(X);
         Olines  = Olines + check3InARow(O)*10 + check2InARow(O);
 		
+		// if the result is 0, then it'a a draw 
 		return Xlines - Olines;
 	}
 	
