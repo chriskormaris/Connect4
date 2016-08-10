@@ -1,8 +1,8 @@
 # Connect-4
 
-The game known as Connect-4, Score-4, 4-in-a-line or 4-in-a-row. It includes a graphical interface. The AI uses the minimax algorithm.
+Programming Languange: Java
 
-The user can click on the buttons or press the keys 1-7 to place a checker.
+The game known as Connect-4, Score-4, 4-in-a-line or 4-in-a-row. The AI uses the minimax algorithm. A graphical interface is included. The user can click on the buttons or press the keys 1-7 to place a checker.
 
 HOT TO RUN IN ECLIPSE:
 
@@ -16,5 +16,4 @@ HOT TO RUN IN ECLIPSE:
 
 5) Run "Gui.java". Other mains exist in these classes: "Main", "GuiHumanVSHuman", "GuiHumanVSAi", "GuiAiVSAi".
 
-** A ".jar" executable is included as well.
-Have fun!!
+** A ".jar" executable is included as well. Have fun!!
