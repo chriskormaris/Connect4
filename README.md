@@ -16,4 +16,4 @@ HOT TO RUN IN ECLIPSE:
 
 5) Run "Gui.java". Other mains exist in these classes: "Main", "GuiHumanVSHuman", "GuiHumanVSAi", "GuiAiVSAi".
 
-** A ".jar" executable is included as well. Have fun!!
+** A ".jar" executable, compiled with Java 8, is included as well. Have fun!!
