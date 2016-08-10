@@ -2,7 +2,7 @@
 
 The game known as Connect-4, Score-4, 4-in-a-line or 4-in-a-row. It includes a graphical interface. The user can only play against the AI, which uses the minimax algorithm. An AI vs AI class is included as well.
 
-To insert a checker the user can press on the buttons or press the keys 1-7.
+The user can click on the buttons or press the keys 1-7 to place a checker.
 
 HOT TO RUN IN ECLIPSE:
 
