@@ -1,6 +1,6 @@
 # Connect-4
 
-The game known as Connect-4, Score-4, 4-in-a-line or 4-in-a-row. It includes a graphical interface. The user can only play against the AI, which uses the minimax algorithm. An AI vs AI class is included as well.
+The game known as Connect-4, Score-4, 4-in-a-line or 4-in-a-row. It includes a graphical interface. The AI uses the minimax algorithm.
 
 The user can click on the buttons or press the keys 1-7 to place a checker.
 
