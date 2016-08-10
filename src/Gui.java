@@ -148,47 +148,19 @@ public class Gui {
 				String button = KeyEvent.getKeyText(e.getKeyCode());
 				
 				if (button.equals("1")) {
-					if (board.getLastLetterPlayed() == Board.O) {
-						board.makeMove(0, Board.X);
-					} else {
-						board.makeMove(0, Board.O);
-					}
+					makeMove(0);
 				} else if (button.equals("2")) {
-					if (board.getLastLetterPlayed() == Board.O) {
-						board.makeMove(1, Board.X);
-					} else {
-						board.makeMove(1, Board.O);
-					}
+					makeMove(1);
 				} else if (button.equals("3")) {
-					if (board.getLastLetterPlayed() == Board.O) {
-						board.makeMove(2, Board.X);
-					} else {
-						board.makeMove(2, Board.O);
-					}
+					makeMove(2);
 				} else if (button.equals("4")) {
-					if (board.getLastLetterPlayed() == Board.O) {
-						board.makeMove(3, Board.X);
-					} else {
-						board.makeMove(3, Board.O);
-					}
+					makeMove(3);
 				} else if (button.equals("5")) {
-					if (board.getLastLetterPlayed() == Board.O) {
-						board.makeMove(4, Board.X);
-					} else {
-						board.makeMove(4, Board.O);
-					}
+					makeMove(4);
 				} else if (button.equals("6")) {
-					if (board.getLastLetterPlayed() == Board.O) {
-						board.makeMove(5, Board.X);
-					} else {
-						board.makeMove(5, Board.O);
-					}
+					makeMove(5);
 				} else if (button.equals("7")) {
-					if (board.getLastLetterPlayed() == Board.O) {
-						board.makeMove(6, Board.X);
-					} else {
-						board.makeMove(6, Board.O);
-					}
+					makeMove(6);
 				}
 				
 				if (button.equals("1") || button.equals("2") || button.equals("3") || button.equals("4")
@@ -231,6 +203,15 @@ public class Gui {
 	    frame.setLocation(x, y);
 	}
 	
+	// briskei poios paiktis exei seira kai kanei eisagwgi sto Board
+	public static void makeMove(int col) {
+		if (board.getLastLetterPlayed() == Board.O) {
+			board.makeMove(col, Board.X);
+		} else {
+			board.makeMove(col, Board.O);
+		}
+	}
+	
 	// topothetei checker ston pinaka
 	public static void placeChecker(String color, int row, int col) {
 		int xOffset = 75 * col;
@@ -258,9 +239,6 @@ public class Gui {
 				// topothetei kitrino checker sto [row][col] tou GUI
 				placeChecker("YELLOW", row, col);
 			}
-			if (board.isTerminal()) {
-				gameOver();
-			}
 		} else if (game_params.getPlayerColor() == "YELLOW") {
 			if (currentPlayer == Board.X) {
 				// topothetei kitrino checker sto [row][col] tou GUI
@@ -269,9 +247,9 @@ public class Gui {
 				// topothetei kokkino checker sto [row][col] tou GUI
 				placeChecker("RED", row, col);
 			}
-			if (board.isTerminal()) {
-				gameOver();
-			}
+		}
+		if (board.isTerminal()) {
+			gameOver();
 		}
 		
 
@@ -305,11 +283,7 @@ public class Gui {
 		JButton col1_button = new JButton("1");
 		col1_button.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if (board.getLastLetterPlayed() == Board.O) {
-					board.makeMove(0, Board.X);
-				} else {
-					board.makeMove(0, Board.O);
-				}
+				makeMove(0);
 				game();
 				if (game_params.getGameMode() == GameParameters.HumanVSAi) aiMove();
 				frameMainWindow.requestFocusInWindow();
@@ -320,11 +294,7 @@ public class Gui {
 		JButton col2_button = new JButton("2");
 		col2_button.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if (board.getLastLetterPlayed() == Board.O) {
-					board.makeMove(1, Board.X);
-				} else {
-					board.makeMove(1, Board.O);
-				}
+				makeMove(1);
 				game();
 				if (game_params.getGameMode() == GameParameters.HumanVSAi) aiMove();
 				frameMainWindow.requestFocusInWindow();
@@ -335,11 +305,7 @@ public class Gui {
 		JButton col3_button = new JButton("3");
 		col3_button.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if (board.getLastLetterPlayed() == Board.O) {
-					board.makeMove(2, Board.X);
-				} else {
-					board.makeMove(2, Board.O);
-				}
+				makeMove(2);
 				game();
 				if (game_params.getGameMode() == GameParameters.HumanVSAi) aiMove();
 				frameMainWindow.requestFocusInWindow();
@@ -350,11 +316,7 @@ public class Gui {
 		JButton col4_button = new JButton("4");
 		col4_button.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if (board.getLastLetterPlayed() == Board.O) {
-					board.makeMove(3, Board.X);
-				} else {
-					board.makeMove(3, Board.O);
-				}
+				makeMove(3);
 				game();
 				if (game_params.getGameMode() == GameParameters.HumanVSAi) aiMove();
 				frameMainWindow.requestFocusInWindow();
@@ -365,11 +327,7 @@ public class Gui {
 		JButton col5_button = new JButton("5");
 		col5_button.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if (board.getLastLetterPlayed() == Board.O) {
-					board.makeMove(4, Board.X);
-				} else {
-					board.makeMove(4, Board.O);
-				}
+				makeMove(4);
 				game();
 				if (game_params.getGameMode() == GameParameters.HumanVSAi) aiMove();
 				frameMainWindow.requestFocusInWindow();
@@ -380,11 +338,7 @@ public class Gui {
 		JButton col6_button = new JButton("6");
 		col6_button.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if (board.getLastLetterPlayed() == Board.O) {
-					board.makeMove(5, Board.X);
-				} else {
-					board.makeMove(5, Board.O);
-				}
+				makeMove(5);
 				game();
 				if (game_params.getGameMode() == GameParameters.HumanVSAi) aiMove();
 				frameMainWindow.requestFocusInWindow();
@@ -395,11 +349,7 @@ public class Gui {
 		JButton col7_button = new JButton("7");
 		col7_button.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if (board.getLastLetterPlayed() == Board.O) {
-					board.makeMove(6, Board.X);
-				} else {
-					board.makeMove(6, Board.O);
-				}
+				makeMove(6);
 				game();
 				if (game_params.getGameMode() == GameParameters.HumanVSAi) aiMove();
 				frameMainWindow.requestFocusInWindow();

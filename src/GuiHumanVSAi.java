@@ -167,9 +167,6 @@ public class GuiHumanVSAi {
 				// topothetei kitrino checker sto [row][col] tou GUI
 				placeChecker("YELLOW", row, col);
 			}
-			if (board.isTerminal()) {
-				gameOver();
-			}
 		} else if (game_params.getPlayerColor() == "YELLOW") {
 			if (currentPlayer == Board.X) {
 				// topothetei kitrino checker sto [row][col] tou GUI
@@ -178,9 +175,9 @@ public class GuiHumanVSAi {
 				// topothetei kokkino checker sto [row][col] tou GUI
 				placeChecker("RED", row, col);
 			}
-			if (board.isTerminal()) {
-				gameOver();
-			}
+		}
+		if (board.isTerminal()) {
+			gameOver();
 		}
 		
 
