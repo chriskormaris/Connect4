@@ -82,9 +82,9 @@ public class PreferencesWindow extends JFrame {
 		add(drop_down_1);
 		add(drop_down_2);
 		add(drop_down_3);
-		drop_down_1.setBounds(230,50,150,20);
-		drop_down_2.setBounds(230,100,150,20);
-		drop_down_3.setBounds(230,150,150,20);
+		drop_down_1.setBounds(220,50,160,20);
+		drop_down_2.setBounds(220,100,160,20);
+		drop_down_3.setBounds(220,150,160,20);
 		
 		apply = new JButton("Apply");
 		cancel = new JButton("Cancel");
