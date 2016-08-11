@@ -9,12 +9,14 @@ public class PreferencesWindow extends JFrame {
 	private static final long serialVersionUID = 1L;
 	
 	private JComboBox<String> drop_down_1;
-	private JComboBox<String> drop_down_2;
-	private JComboBox<Integer> drop_down_3;
+	private JComboBox<Integer> drop_down_2;
+	private JComboBox<String> drop_down_3;
+	private JComboBox<String> drop_down_4;
 	
 	private JLabel label1;
 	private JLabel label2;
 	private JLabel label3;
+	private JLabel label4;
 	
 	private JButton apply;
 	private JButton cancel;
@@ -32,21 +34,24 @@ public class PreferencesWindow extends JFrame {
 		
 		this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		this.setLayout(null);
-		this.setSize(400, 300);
+		this.setSize(400, 325);
 		this.setLocationRelativeTo(null);
 		this.setResizable(false);
 		
 		handler = new EventHandler();
 		
 		label1 = new JLabel("Game mode: ");
-		label2 = new JLabel("Player 1 checker color: ");
-		label3 = new JLabel("Minimax AI search depth: ");
+		label2 = new JLabel("Minimax AI search depth: ");
+		label3 = new JLabel("Player 1 checker color: ");
+		label4 = new JLabel("Player 2 checker color: ");
 		add(label1);
 		add(label2);
 		add(label3);
-		label1.setBounds(10, 50, 200, 20);
-		label2.setBounds(10, 100, 200, 20);
-		label3.setBounds(10, 150, 200, 20);
+		add(label4);
+		label1.setBounds(10, 25, 200, 20);
+		label2.setBounds(10, 75, 200, 20);
+		label3.setBounds(10, 125, 200, 20);
+		label4.setBounds(10, 175, 200, 20);
 		
 		drop_down_1 = new JComboBox<String>();
 		drop_down_1.addItem("Human VS AI");
@@ -55,44 +60,57 @@ public class PreferencesWindow extends JFrame {
 		int selectedMode = game_params.getGameMode();
 		if (selectedMode == GameParameters.HumanVSAi)
 			drop_down_1.setSelectedIndex(0);
-		else
+		else if (selectedMode == GameParameters.HumanVSHuman)
 			drop_down_1.setSelectedIndex(1);
 		
-		drop_down_2 = new JComboBox<String>();
-		drop_down_2.addItem("RED");
-		drop_down_2.addItem("YELLOW");
-		
-		String selectedColor = game_params.getPlayerColor();
-		if (selectedColor.equals("RED"))
-			drop_down_2.setSelectedIndex(0);
-		else
-			drop_down_2.setSelectedIndex(1);
-		
-		drop_down_3 = new JComboBox<Integer>();
-		drop_down_3.addItem(1);
-		drop_down_3.addItem(2);
-		drop_down_3.addItem(3);
-		drop_down_3.addItem(4);
-		drop_down_3.addItem(5);
-		drop_down_3.addItem(6);
+		drop_down_2 = new JComboBox<Integer>();
+		drop_down_2.addItem(1);
+		drop_down_2.addItem(2);
+		drop_down_2.addItem(3);
+		drop_down_2.addItem(4);
+		drop_down_2.addItem(5);
+		drop_down_2.addItem(6);
 		
 		int index = game_params.getMaxDepth() - 1;
-		drop_down_3.setSelectedIndex(index);
+		drop_down_2.setSelectedIndex(index);
+		
+		drop_down_3 = new JComboBox<String>();
+		drop_down_3.addItem("RED");
+		drop_down_3.addItem("YELLOW");
+		
+		String selectedPlayer1Color = game_params.getPlayer1Color();
+		if (selectedPlayer1Color.equals("RED"))
+			drop_down_3.setSelectedIndex(0);
+		else if (selectedPlayer1Color.equals("YELLOW"))
+			drop_down_3.setSelectedIndex(1);
+		
+		drop_down_4 = new JComboBox<String>();
+		drop_down_4.addItem("RED");
+		drop_down_4.addItem("YELLOW");
+		
+		String selectedPlayer2Color = game_params.getPlayer2Color();
+		if (selectedPlayer2Color.equals("RED"))
+			drop_down_4.setSelectedIndex(0);
+		else if (selectedPlayer2Color.equals("YELLOW"))
+			drop_down_4.setSelectedIndex(1);
+		
 		
 		add(drop_down_1);
 		add(drop_down_2);
 		add(drop_down_3);
-		drop_down_1.setBounds(220,50,160,20);
-		drop_down_2.setBounds(220,100,160,20);
-		drop_down_3.setBounds(220,150,160,20);
+		add(drop_down_4);
+		drop_down_1.setBounds(220,25,160,20);
+		drop_down_2.setBounds(220,75,160,20);
+		drop_down_3.setBounds(220,125,160,20);
+		drop_down_4.setBounds(220,175,160,20);
 		
 		apply = new JButton("Apply");
 		cancel = new JButton("Cancel");
 		add(apply);
 		add(cancel);
-		apply.setBounds(50 , 220 , 100 , 30);
+		apply.setBounds(50, 225, 100, 30);
 		apply.addActionListener(handler);
-		cancel.setBounds(230 , 220 , 100 , 30);
+		cancel.setBounds(230, 225, 100, 30);
 		cancel.addActionListener(handler);
 	}
 	
@@ -111,15 +129,22 @@ public class PreferencesWindow extends JFrame {
 				try {
 					
 					String game_mode_string = (String)drop_down_1.getSelectedItem();
-					String player_color = (String)drop_down_2.getSelectedItem();
-					int depth = (int) drop_down_3.getSelectedItem();
+					int depth = (int) drop_down_2.getSelectedItem();
+					String player1_color = (String)drop_down_3.getSelectedItem();
+					String player2_color = (String)drop_down_4.getSelectedItem();
 					
-					int game_mode = (game_mode_string.equals("Human VS AI")) ? GameParameters.HumanVSAi : GameParameters.HumanVSHuman; 
+					int game_mode = (game_mode_string.equals("Human VS AI")) ? GameParameters.HumanVSAi : GameParameters.HumanVSHuman;
+					
+					if(player1_color == player2_color) {
+						JOptionPane.showMessageDialog(null , "Player 1 and Player 2 cannot have the same color for their checkers!!" , "ERROR" , JOptionPane.ERROR_MESSAGE);
+						return;
+					}
 					
 					// change game parameters bases on settings
 					game_params.setGameMode(game_mode);
 					game_params.setMaxDepth(depth);
-					game_params.setPlayerColor(player_color);
+					game_params.setPlayer1Color(player1_color);
+					game_params.setPlayer2Color(player2_color);
 					
 					JOptionPane.showMessageDialog(null , "Game settings have been changed.\nThe changes will be applied in the next game." , "" , JOptionPane.INFORMATION_MESSAGE);
 					dispose();

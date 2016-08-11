@@ -23,9 +23,14 @@ public class Gui {
 	static JMenuItem item21;
 	static JMenuItem item22;
 
-//	private static GamePlayer ai = new GamePlayer();
 	static GameParameters game_params = new GameParameters();
-	private static MinimaxAiPlayer ai = new MinimaxAiPlayer(game_params.getMaxDepth(), Board.X);
+	static int gameMode = game_params.getGameMode();
+	static int maxDepth = game_params.getMaxDepth();
+	static String player1Color = game_params.getPlayer1Color();
+	static String player2Color = game_params.getPlayer2Color();
+	
+//	private static GamePlayer ai = new GamePlayer();
+	private static MinimaxAiPlayer ai = new MinimaxAiPlayer(maxDepth, Board.X);
 	
 	//	Player 1 letter -> X. He plays First
 	//	Player 2 letter -> O.
@@ -118,8 +123,14 @@ public class Gui {
 	public static void createNewGame() {
 		board = new Board();
 		
-		// set the new difficulty setting
-		ai.setMaxDepth(game_params.getMaxDepth());
+		// get the new parameters based on previously changed settings
+		gameMode = game_params.getGameMode();
+		maxDepth = game_params.getMaxDepth();
+		player1Color = game_params.getPlayer1Color();
+		player2Color = game_params.getPlayer2Color();
+		
+		// set the new max depth setting
+		ai.setMaxDepth(maxDepth);
 		
 		// debugging
 //		System.out.println("difficulty:" + gp.getDifficulty());
@@ -166,7 +177,7 @@ public class Gui {
 				if (button.equals("1") || button.equals("2") || button.equals("3") || button.equals("4")
 						|| button.equals("5") || button.equals("6") || button.equals("7")) {
 					game();
-					if (game_params.getGameMode() == GameParameters.HumanVSAi) aiMove();
+					if (gameMode == GameParameters.HumanVSAi) aiMove();
 				}
 				
 			}
@@ -184,7 +195,7 @@ public class Gui {
 		frameMainWindow.pack();
 		//frameMainWindow.setVisible(true);
 
-		if (game_params.getGameMode() == GameParameters.HumanVSAi)  {
+		if (gameMode == GameParameters.HumanVSAi)  {
 			if (board.getLastLetterPlayed() == Board.X) {
 				Move aiMove = ai.MiniMax(board);
 				board.makeMove(aiMove.getCol(), Board.O);
@@ -231,23 +242,27 @@ public class Gui {
 
 		int currentPlayer = board.getLastLetterPlayed();
 		
-		if (game_params.getPlayerColor() == "RED") {
-			if (currentPlayer == Board.X) {
+		
+		if (currentPlayer == Board.X) {
+			if (player1Color == "RED") {
 				// topothetei kokkino checker sto [row][col] tou GUI
 				placeChecker("RED", row, col);
-			} else if (currentPlayer == Board.O) {
+			} else if (player1Color == "YELLOW") {
 				// topothetei kitrino checker sto [row][col] tou GUI
 				placeChecker("YELLOW", row, col);
-			}
-		} else if (game_params.getPlayerColor() == "YELLOW") {
-			if (currentPlayer == Board.X) {
-				// topothetei kitrino checker sto [row][col] tou GUI
-				placeChecker("YELLOW", row, col);
-			} else if (currentPlayer == Board.O) {
-				// topothetei kokkino checker sto [row][col] tou GUI
-				placeChecker("RED", row, col);
 			}
 		}
+			
+		if (currentPlayer == Board.O) {
+			if (player2Color == "RED") {
+				// topothetei kokkino checker sto [row][col] tou GUI
+				placeChecker("RED", row, col);
+			} else if (player2Color == "YELLOW") {
+				// topothetei kitrino checker sto [row][col] tou GUI
+				placeChecker("YELLOW", row, col);
+			}
+		}
+			
 		if (board.isTerminal()) {
 			gameOver();
 		}
@@ -285,7 +300,7 @@ public class Gui {
 			public void actionPerformed(ActionEvent e) {
 				makeMove(0);
 				game();
-				if (game_params.getGameMode() == GameParameters.HumanVSAi) aiMove();
+				if (gameMode == GameParameters.HumanVSAi) aiMove();
 				frameMainWindow.requestFocusInWindow();
 //				board.print();
 			}
@@ -296,7 +311,7 @@ public class Gui {
 			public void actionPerformed(ActionEvent e) {
 				makeMove(1);
 				game();
-				if (game_params.getGameMode() == GameParameters.HumanVSAi) aiMove();
+				if (gameMode == GameParameters.HumanVSAi) aiMove();
 				frameMainWindow.requestFocusInWindow();
 //				board.print();
 			}
@@ -307,7 +322,7 @@ public class Gui {
 			public void actionPerformed(ActionEvent e) {
 				makeMove(2);
 				game();
-				if (game_params.getGameMode() == GameParameters.HumanVSAi) aiMove();
+				if (gameMode == GameParameters.HumanVSAi) aiMove();
 				frameMainWindow.requestFocusInWindow();
 //				board.print();
 			}
@@ -318,7 +333,7 @@ public class Gui {
 			public void actionPerformed(ActionEvent e) {
 				makeMove(3);
 				game();
-				if (game_params.getGameMode() == GameParameters.HumanVSAi) aiMove();
+				if (gameMode == GameParameters.HumanVSAi) aiMove();
 				frameMainWindow.requestFocusInWindow();
 //				board.print();
 			}
@@ -329,7 +344,7 @@ public class Gui {
 			public void actionPerformed(ActionEvent e) {
 				makeMove(4);
 				game();
-				if (game_params.getGameMode() == GameParameters.HumanVSAi) aiMove();
+				if (gameMode == GameParameters.HumanVSAi) aiMove();
 				frameMainWindow.requestFocusInWindow();
 //				board.print();
 			}
@@ -340,7 +355,7 @@ public class Gui {
 			public void actionPerformed(ActionEvent e) {
 				makeMove(5);
 				game();
-				if (game_params.getGameMode() == GameParameters.HumanVSAi) aiMove();
+				if (gameMode == GameParameters.HumanVSAi) aiMove();
 				frameMainWindow.requestFocusInWindow();
 //				board.print();
 			}
@@ -351,7 +366,7 @@ public class Gui {
 			public void actionPerformed(ActionEvent e) {
 				makeMove(6);
 				game();
-				if (game_params.getGameMode() == GameParameters.HumanVSAi) aiMove();
+				if (gameMode == GameParameters.HumanVSAi) aiMove();
 				frameMainWindow.requestFocusInWindow();
 //				board.print();
 			}
@@ -392,18 +407,18 @@ public class Gui {
 		
 //		ImageIcon winIcon = new ImageIcon(ResourceLoader.load("images/win.gif"));
 //		JLabel winLabel = new JLabel(winIcon);
-		JLabel winLabel;
+		JLabel winLabel = null;
 		board.checkWinState();
 		if (board.getWinner() == Board.X) {
-			if (game_params.getGameMode() == GameParameters.HumanVSAi)
+			if (gameMode == GameParameters.HumanVSAi)
 				winLabel = new JLabel("You win! Start a new game?");
-			else
+			else if (gameMode == GameParameters.HumanVSHuman)
 				winLabel = new JLabel("Player 1 wins! Start a new game?");
 			winPanel.add(winLabel);
 		} else if (board.getWinner() == Board.O) {
-			if (game_params.getGameMode() == GameParameters.HumanVSAi)
+			if (gameMode == GameParameters.HumanVSAi)
 				winLabel = new JLabel("Computer AI wins! Start a new game?");
-			else
+			else if (gameMode == GameParameters.HumanVSHuman)
 				winLabel = new JLabel("Player 2 wins! Start a new game?");
 			winPanel.add(winLabel);
 		} else {
