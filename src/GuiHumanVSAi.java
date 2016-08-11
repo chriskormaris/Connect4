@@ -23,9 +23,13 @@ public class GuiHumanVSAi {
 	static JMenuItem item21;
 	static JMenuItem item22;
 
-//	private static GamePlayer ai = new GamePlayer();
 	static GameParameters game_params = new GameParameters();
-	private static MinimaxAiPlayer ai = new MinimaxAiPlayer(game_params.getMaxDepth(), Board.X);
+	static int maxDepth = game_params.getMaxDepth();
+	static String player1Color = game_params.getPlayer1Color();
+	static String player2Color = game_params.getPlayer2Color();
+	
+//	private static GamePlayer ai = new GamePlayer();
+	private static MinimaxAiPlayer ai = new MinimaxAiPlayer(maxDepth, Board.X);
 	
 	//	Human player letter -> X. He plays First
 	//	Minimax AI letter -> O.
@@ -59,7 +63,7 @@ public class GuiHumanVSAi {
 		board = new Board();
 		
 		// set the new difficulty setting
-		ai.setMaxDepth(game_params.getMaxDepth());
+		ai.setMaxDepth(maxDepth);
 		
 		// debugging
 //		System.out.println("difficulty:" + gp.getDifficulty());
@@ -159,23 +163,26 @@ public class GuiHumanVSAi {
 
 		int currentPlayer = board.getLastLetterPlayed();
 		
-		if (game_params.getPlayerColor() == "RED") {
-			if (currentPlayer == Board.X) {
+		if (currentPlayer == Board.X) {
+			if (player1Color == "RED") {
 				// topothetei kokkino checker sto [row][col] tou GUI
 				placeChecker("RED", row, col);
-			} else if (currentPlayer == Board.O) {
+			} else if (player1Color == "YELLOW") {
 				// topothetei kitrino checker sto [row][col] tou GUI
 				placeChecker("YELLOW", row, col);
-			}
-		} else if (game_params.getPlayerColor() == "YELLOW") {
-			if (currentPlayer == Board.X) {
-				// topothetei kitrino checker sto [row][col] tou GUI
-				placeChecker("YELLOW", row, col);
-			} else if (currentPlayer == Board.O) {
-				// topothetei kokkino checker sto [row][col] tou GUI
-				placeChecker("RED", row, col);
 			}
 		}
+			
+		if (currentPlayer == Board.O) {
+			if (player2Color == "RED") {
+				// topothetei kokkino checker sto [row][col] tou GUI
+				placeChecker("RED", row, col);
+			} else if (player2Color == "YELLOW") {
+				// topothetei kitrino checker sto [row][col] tou GUI
+				placeChecker("YELLOW", row, col);
+			}
+		}
+		
 		if (board.isTerminal()) {
 			gameOver();
 		}
