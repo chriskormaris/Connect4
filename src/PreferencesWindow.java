@@ -34,7 +34,7 @@ public class PreferencesWindow extends JFrame {
 		
 		this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		this.setLayout(null);
-		this.setSize(400, 325);
+		this.setSize(400, 300);
 		this.setLocationRelativeTo(null);
 		this.setResizable(false);
 		
