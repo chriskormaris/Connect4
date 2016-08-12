@@ -77,22 +77,46 @@ public class PreferencesWindow extends JFrame {
 		drop_down_3 = new JComboBox<String>();
 		drop_down_3.addItem("RED");
 		drop_down_3.addItem("YELLOW");
+		drop_down_3.addItem("BLACK");
+		drop_down_3.addItem("GREEN");
+		drop_down_3.addItem("ORANGE");
+		drop_down_3.addItem("PURPLE");
 		
 		String selectedPlayer1Color = game_params.getPlayer1Color();
 		if (selectedPlayer1Color.equals("RED"))
 			drop_down_3.setSelectedIndex(0);
 		else if (selectedPlayer1Color.equals("YELLOW"))
 			drop_down_3.setSelectedIndex(1);
+		else if (selectedPlayer1Color.equals("BLACK"))
+			drop_down_3.setSelectedIndex(2);
+		else if (selectedPlayer1Color.equals("GREEN"))
+			drop_down_3.setSelectedIndex(3);
+		else if (selectedPlayer1Color.equals("ORANGE"))
+			drop_down_3.setSelectedIndex(4);
+		else if (selectedPlayer1Color.equals("PURPLE"))
+			drop_down_3.setSelectedIndex(5);
 		
 		drop_down_4 = new JComboBox<String>();
 		drop_down_4.addItem("RED");
 		drop_down_4.addItem("YELLOW");
+		drop_down_4.addItem("BLACK");
+		drop_down_4.addItem("GREEN");
+		drop_down_4.addItem("ORANGE");
+		drop_down_4.addItem("PURPLE");
 		
 		String selectedPlayer2Color = game_params.getPlayer2Color();
 		if (selectedPlayer2Color.equals("RED"))
 			drop_down_4.setSelectedIndex(0);
 		else if (selectedPlayer2Color.equals("YELLOW"))
 			drop_down_4.setSelectedIndex(1);
+		else if (selectedPlayer2Color.equals("BLACK"))
+			drop_down_4.setSelectedIndex(2);
+		else if (selectedPlayer2Color.equals("GREEN"))
+			drop_down_4.setSelectedIndex(3);
+		else if (selectedPlayer2Color.equals("ORANGE"))
+			drop_down_4.setSelectedIndex(4);
+		else if (selectedPlayer2Color.equals("PURPLE"))
+			drop_down_4.setSelectedIndex(5);
 		
 		
 		add(drop_down_1);

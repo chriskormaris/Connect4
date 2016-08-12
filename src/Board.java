@@ -186,7 +186,7 @@ public class Board {
         Xlines  = Xlines + check3InARow(X)*10 + check2InARow(X);
         Olines  = Olines + check3InARow(O)*10 + check2InARow(O);
 		
-		// if the result is 0, then it'a a draw 
+        // if the result is 0, then it'a a draw 
 		return Xlines - Olines;
 	}
 	
