@@ -242,25 +242,14 @@ public class Gui {
 
 		int currentPlayer = board.getLastLetterPlayed();
 		
-		
 		if (currentPlayer == Board.X) {
-			if (player1Color == "RED") {
-				// topothetei kokkino checker sto [row][col] tou GUI
-				placeChecker("RED", row, col);
-			} else if (player1Color == "YELLOW") {
-				// topothetei kitrino checker sto [row][col] tou GUI
-				placeChecker("YELLOW", row, col);
-			}
+			// topothetei checker sto [row][col] tou GUI
+			placeChecker(player1Color, row, col);
 		}
 			
 		if (currentPlayer == Board.O) {
-			if (player2Color == "RED") {
-				// topothetei kokkino checker sto [row][col] tou GUI
-				placeChecker("RED", row, col);
-			} else if (player2Color == "YELLOW") {
-				// topothetei kitrino checker sto [row][col] tou GUI
-				placeChecker("YELLOW", row, col);
-			}
+			// topothetei checker sto [row][col] tou GUI
+			placeChecker(player2Color, row, col);
 		}
 			
 		if (board.isTerminal()) {
@@ -397,64 +386,32 @@ public class Gui {
 	}
 	
 	public static void gameOver() {
-		        		        
-//		panelBoardNumbers.setVisible(false);
-		frameGameOver = new JFrame("Game over!");
-		frameGameOver.setBounds(620, 400, 350, 128);
-		centerWindow(frameGameOver, 0, 0);
-		JPanel winPanel = new JPanel(new BorderLayout());
-		winPanel.setBorder(BorderFactory.createEmptyBorder(15, 30, 15, 30));
-		
-//		ImageIcon winIcon = new ImageIcon(ResourceLoader.load("images/win.gif"));
-//		JLabel winLabel = new JLabel(winIcon);
-		JLabel winLabel = null;
+        
+		int choice = 0;
 		board.checkWinState();
+		
 		if (board.getWinner() == Board.X) {
 			if (gameMode == GameParameters.HumanVSAi)
-				winLabel = new JLabel("You win! Start a new game?");
+				choice = JOptionPane.showConfirmDialog(null, "You win! Start a new game?" ,"GAME OVER", JOptionPane.YES_NO_OPTION);
 			else if (gameMode == GameParameters.HumanVSHuman)
-				winLabel = new JLabel("Player 1 wins! Start a new game?");
-			winPanel.add(winLabel);
+				choice = JOptionPane.showConfirmDialog(null, "Player 1 wins! Start a new game?" ,"GAME OVER", JOptionPane.YES_NO_OPTION);
 		} else if (board.getWinner() == Board.O) {
 			if (gameMode == GameParameters.HumanVSAi)
-				winLabel = new JLabel("Computer AI wins! Start a new game?");
+				choice = JOptionPane.showConfirmDialog(null, "Computer AI wins! Start a new game?" ,"GAME OVER", JOptionPane.YES_NO_OPTION);
 			else if (gameMode == GameParameters.HumanVSHuman)
-				winLabel = new JLabel("Player 2 wins! Start a new game?");
-			winPanel.add(winLabel);
+				choice = JOptionPane.showConfirmDialog(null, "Player 2 wins! Start a new game?" ,"GAME OVER", JOptionPane.YES_NO_OPTION);
 		} else {
-			winLabel = new JLabel("It's a draw! Start a new game?");
-			winPanel.add(winLabel);
+			choice = JOptionPane.showConfirmDialog(null, "It's a draw! Start a new game?" ,"GAME OVER", JOptionPane.YES_NO_OPTION);
 		}
-		winLabel.setBorder(BorderFactory.createEmptyBorder(0, 0, 10, 0));
-		winPanel.add(winLabel, BorderLayout.NORTH);
 		
-		JButton yesButton = new JButton("Yes");
-		yesButton.setBorder(BorderFactory.createEmptyBorder(5, 30, 5, 30));
-		yesButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				frameGameOver.setVisible(false);
-				createNewGame();
-				AddMenus();
-			}
-		});
-		
-		JButton quitButton = new JButton("Quit");
-		quitButton.setBorder(BorderFactory.createEmptyBorder(5, 30, 5, 30));
-		quitButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				frameGameOver.setVisible(false);
-				System.exit(0);
-			}
-		});
-		
-		JPanel subPanel = new JPanel();
-		subPanel.add(yesButton);
-		subPanel.add(quitButton);
-		
-		winPanel.add(subPanel, BorderLayout.CENTER);
-		frameGameOver.getContentPane().add(winPanel, BorderLayout.CENTER);
-		frameGameOver.setResizable(false);
-		frameGameOver.setVisible(true);
+		if(choice == JOptionPane.YES_OPTION) {
+			createNewGame();
+			AddMenus();
+		}
+//		else {
+//			System.exit(0);
+//		}
+
 	}
 	
 	@SuppressWarnings("unused")

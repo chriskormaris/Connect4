@@ -164,23 +164,13 @@ public class GuiHumanVSAi {
 		int currentPlayer = board.getLastLetterPlayed();
 		
 		if (currentPlayer == Board.X) {
-			if (player1Color == "RED") {
-				// topothetei kokkino checker sto [row][col] tou GUI
-				placeChecker("RED", row, col);
-			} else if (player1Color == "YELLOW") {
-				// topothetei kitrino checker sto [row][col] tou GUI
-				placeChecker("YELLOW", row, col);
-			}
+			// topothetei checker sto [row][col] tou GUI
+			placeChecker(game_params.getPlayer1Color(), row, col);
 		}
 			
 		if (currentPlayer == Board.O) {
-			if (player2Color == "RED") {
-				// topothetei kokkino checker sto [row][col] tou GUI
-				placeChecker("RED", row, col);
-			} else if (player2Color == "YELLOW") {
-				// topothetei kitrino checker sto [row][col] tou GUI
-				placeChecker("YELLOW", row, col);
-			}
+			// topothetei checker sto [row][col] tou GUI
+			placeChecker(game_params.getPlayer2Color(), row, col);
 		}
 		
 		if (board.isTerminal()) {
