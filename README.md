@@ -1,4 +1,5 @@
 # Connect-4
+A Project made for educational purposes during studies in Athens University of Economics & Business.
 
 Programming Languange: Java
 
