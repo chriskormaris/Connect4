@@ -227,10 +227,10 @@ public class Gui {
 	public static void placeChecker(String color, int row, int col) {
 		int xOffset = 75 * col;
 		int yOffset = 75 * row;
-		ImageIcon redIcon = new ImageIcon(ResourceLoader.load("images/" + color + ".gif"));
-		JLabel redIconLabel = new JLabel(redIcon);
-		redIconLabel.setBounds(27 + xOffset, 27 + yOffset, redIcon.getIconWidth(),redIcon.getIconHeight());
-		layeredGameBoard.add(redIconLabel, new Integer(0), 0);
+		ImageIcon checkerIcon = new ImageIcon(ResourceLoader.load("images/" + color + ".gif"));
+		JLabel checkerLabel = new JLabel(checkerIcon);
+		checkerLabel.setBounds(27 + xOffset, 27 + yOffset, checkerIcon.getIconWidth(),checkerIcon.getIconHeight());
+		layeredGameBoard.add(checkerLabel, new Integer(0), 0);
 		frameMainWindow.paint(frameMainWindow.getGraphics());
 	}
 	
