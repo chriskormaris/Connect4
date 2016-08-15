@@ -1,7 +1,7 @@
 import java.util.ArrayList;
 import java.util.Random;
 
-public class MinimaxAiPlayer {
+public class MinimaxAi {
 	
 		//Variable that holds the maximum depth the MiniMax algorithm will reach for this player
 		private int maxDepth;
@@ -24,12 +24,12 @@ public class MinimaxAiPlayer {
 			this.playerLetter = playerLetter;
 		}
 
-		public MinimaxAiPlayer() {
+		public MinimaxAi() {
 			maxDepth = 4;
 			playerLetter = Board.X;
 		}
 		
-		public MinimaxAiPlayer(int maxDepth, int playerLetter) {
+		public MinimaxAi(int maxDepth, int playerLetter) {
 			this.maxDepth = maxDepth;
 			this.playerLetter = playerLetter;
 		}

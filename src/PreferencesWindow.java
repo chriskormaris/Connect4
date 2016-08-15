@@ -32,11 +32,11 @@ public class PreferencesWindow extends JFrame {
 		// copy passed argument object to class object
 		this.game_params = gp; 
 		
-		this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		this.setLayout(null);
-		this.setSize(400, 300);
-		this.setLocationRelativeTo(null);
-		this.setResizable(false);
+		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		setLayout(null);
+		setSize(400, 300);
+		setLocationRelativeTo(null);
+		setResizable(false);
 		
 		handler = new EventHandler();
 		
@@ -132,9 +132,9 @@ public class PreferencesWindow extends JFrame {
 		cancel = new JButton("Cancel");
 		add(apply);
 		add(cancel);
-		apply.setBounds(50, 225, 100, 30);
+		apply.setBounds(80, 225, 100, 30);
 		apply.addActionListener(handler);
-		cancel.setBounds(230, 225, 100, 30);
+		cancel.setBounds(220, 225, 100, 30);
 		cancel.addActionListener(handler);
 	}
 	
@@ -174,9 +174,8 @@ public class PreferencesWindow extends JFrame {
 					dispose();
 				}
 				
-				catch(Exception e)
-				{
-					System.err.println("ERROR : "+e.getMessage());
+				catch(Exception e) {
+					System.err.println("ERROR : " + e.getMessage());
 				}
 				
 			}//else if.
