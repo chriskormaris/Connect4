@@ -8,15 +8,15 @@ public class PreferencesWindow extends JFrame {
 	
 	private static final long serialVersionUID = 1L;
 	
-	private JComboBox<String> drop_down_1;
-	private JComboBox<Integer> drop_down_2;
-	private JComboBox<String> drop_down_3;
-	private JComboBox<String> drop_down_4;
-	
 	private JLabel label1;
 	private JLabel label2;
 	private JLabel label3;
 	private JLabel label4;
+	
+	private JComboBox<String> drop_down_1;
+	private JComboBox<Integer> drop_down_2;
+	private JComboBox<String> drop_down_3;
+	private JComboBox<String> drop_down_4;
 	
 	private JButton apply;
 	private JButton cancel;
