@@ -21,6 +21,8 @@ public class Board {
 	// used for exception handling
 	private boolean overflowedColumn;
 	
+	private boolean isGameOver;
+	
 	// constructor
 	public Board() {
 		lastMove = new Move();
@@ -68,6 +70,10 @@ public class Board {
 		return overflowedColumn;
 	}
 	
+	public boolean isGameOver() {
+		return isGameOver;
+	}
+	
 	public void setLastMove(Move lastMove) {
 		this.lastMove.setRow(lastMove.getRow());
 		this.lastMove.setCol(lastMove.getCol());
@@ -92,6 +98,10 @@ public class Board {
 	
 	public void setOverflowedColumn(boolean overflowedColumn) {
 		this.overflowedColumn = overflowedColumn;
+	}
+	
+	public void setGameOver(boolean isGameOver) {
+		this.isGameOver = isGameOver;
 	}
 	
 	// kanei mia kinhsh, basei seiras kai sthlhs

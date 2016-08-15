@@ -262,6 +262,7 @@ public class Gui {
 		
 		
 		if (board.isTerminal()) {
+			board.setGameOver(true);
 			gameOver();
 		}
 		
@@ -271,7 +272,7 @@ public class Gui {
 	// kaleitai meta thn kinhsh tou human player, wste na paixei o computer AI
 	public static void aiMove(){
 
-		if (!board.isTerminal()) {
+		if (!board.isGameOver()) {
 			// check if human player played last
 			if (board.getLastLetterPlayed() == Board.X) {
 				Move aiMove = ai.MiniMax(board);
