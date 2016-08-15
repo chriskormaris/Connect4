@@ -48,10 +48,10 @@ public class PreferencesWindow extends JFrame {
 		add(label2);
 		add(label3);
 		add(label4);
-		label1.setBounds(10, 25, 200, 20);
-		label2.setBounds(10, 75, 200, 20);
-		label3.setBounds(10, 125, 200, 20);
-		label4.setBounds(10, 175, 200, 20);
+		label1.setBounds(20, 25, 150, 20);
+		label2.setBounds(20, 75, 150, 20);
+		label3.setBounds(20, 125, 150, 20);
+		label4.setBounds(20, 175, 150, 20);
 		
 		drop_down_1 = new JComboBox<String>();
 		drop_down_1.addItem("Human VS AI");
