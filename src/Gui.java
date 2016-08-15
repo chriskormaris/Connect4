@@ -30,7 +30,7 @@ public class Gui {
 	static String player2Color = game_params.getPlayer2Color();
 	
 //	private static GamePlayer ai = new GamePlayer();
-	private static MinimaxAiPlayer ai = new MinimaxAiPlayer(maxDepth, Board.X);
+	private static MinimaxAi ai = new MinimaxAi(maxDepth, Board.X);
 	
 	//	Player 1 letter -> X. He plays First
 	//	Player 2 letter -> O.

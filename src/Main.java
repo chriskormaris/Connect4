@@ -11,7 +11,7 @@ public class Main {
 		// oso megalutero to maxDepth, toso megaluterh h duskolia tou paixnidiou
 		int XColumnPosition;
 		int maxDepth = 4;
-		MinimaxAiPlayer OPlayer = new MinimaxAiPlayer(maxDepth, Board.O);
+		MinimaxAi OPlayer = new MinimaxAi(maxDepth, Board.O);
 		Board connect4 = new Board();
 
         // Uncomment this, for 'O' to play first

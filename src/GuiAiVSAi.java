@@ -13,8 +13,8 @@ public class GuiAiVSAi {
 	static JLayeredPane layeredGameBoard;
 	
 	// arxikopoioume me maxDepth = 4, mporei na parei allh timh gia rythmish duskolias 
-	private static MinimaxAiPlayer ai1 = new MinimaxAiPlayer(4, Board.X);
-	private static MinimaxAiPlayer ai2 = new MinimaxAiPlayer(4, Board.O);
+	private static MinimaxAi ai1 = new MinimaxAi(4, Board.X);
+	private static MinimaxAi ai2 = new MinimaxAi(4, Board.O);
 	
 	public GuiAiVSAi() {
 		try {
@@ -126,7 +126,7 @@ public class GuiAiVSAi {
 
 	}
 	
-	public static void aiMove(MinimaxAiPlayer player, int checker){
+	public static void aiMove(MinimaxAi player, int checker){
 		Move aiMove = player.MiniMax(board);
 		board.makeMove(aiMove.getCol(), checker);
 		game();
