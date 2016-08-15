@@ -4,8 +4,8 @@ import java.util.ArrayList;
 public class Board {
 	
 	// board values
-	public static final int X = 1;
-	public static final int O = -1;
+	public static final int X = 1; // player 1
+	public static final int O = -1; // player 2
 	public static final int EMPTY = 0;
 	
 	 // h kinhsh pou odigise sti dimiourgia autou tou pinaka
@@ -17,6 +17,9 @@ public class Board {
     
     private int winner;
 	private int [][] gameBoard;
+	
+	// used for exception handling
+	private boolean overflowedColumn;
 	
 	// constructor
 	public Board() {
@@ -61,6 +64,10 @@ public class Board {
 		return winner;
 	}
 	
+	public boolean isOverflowedColumn() {
+		return overflowedColumn;
+	}
+	
 	public void setLastMove(Move lastMove) {
 		this.lastMove.setRow(lastMove.getRow());
 		this.lastMove.setCol(lastMove.getCol());
@@ -81,6 +88,10 @@ public class Board {
 	
 	public void setWinner(int winner) {
 		this.winner = winner;
+	}
+	
+	public void setOverflowedColumn(boolean overflowedColumn) {
+		this.overflowedColumn = overflowedColumn;
 	}
 	
 	// kanei mia kinhsh, basei seiras kai sthlhs
@@ -133,11 +144,8 @@ public class Board {
 	}
 		
 	public boolean checkFullColumn(int col) {
-		for (int row=0; row<6; row++) {
-			if (gameBoard[row][col] == EMPTY) {
-				return false;
-			}
-		}
+		if (gameBoard[0][col] == EMPTY)
+			return false;
 		return true;
 	}
 	
@@ -406,5 +414,5 @@ public class Board {
   		}
   		
   	}
-  	
+
 }
