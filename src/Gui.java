@@ -132,10 +132,6 @@ public class Gui {
 		// set the new max depth setting
 		ai.setMaxDepth(maxDepth);
 		
-		// debugging
-//		System.out.println("difficulty:" + gp.getDifficulty());
-//		System.out.println("color:" + gp.getColor());
-             
 		if (frameMainWindow != null) frameMainWindow.dispose();
 		frameMainWindow = new JFrame("Minimax Connect-4");
 		centerWindow(frameMainWindow, 570, 520); // to kurio parathuro tha emfanizetai sto kentro
@@ -216,10 +212,16 @@ public class Gui {
 	
 	// briskei poios paiktis exei seira kai kanei eisagwgi sto Board
 	public static void makeMove(int col) {
-		if (board.getLastLetterPlayed() == Board.O) {
-			board.makeMove(col, Board.X);
-		} else {
-			board.makeMove(col, Board.O);
+		try {
+			if (board.getLastLetterPlayed() == Board.O) {
+				board.makeMove(col, Board.X);
+			} else {
+				board.makeMove(col, Board.O);
+			}
+		}
+		catch (ArrayIndexOutOfBoundsException e) {
+			System.err.println("Column " + (col+1) + " is full!");
+			board.setOverflowedColumn(true);
 		}
 	}
 	
@@ -234,7 +236,7 @@ public class Gui {
 		frameMainWindow.paint(frameMainWindow.getGraphics());
 	}
 	
-	// kaleitai kathe fora pou eisagetai mia kinhsh ston pinaka
+	// gets called after makeMove(int col) is called
 	public static void game() {
 	
 		int row = board.getLastMove().getRow();
@@ -242,16 +244,23 @@ public class Gui {
 
 		int currentPlayer = board.getLastLetterPlayed();
 		
-		if (currentPlayer == Board.X) {
-			// topothetei checker sto [row][col] tou GUI
-			placeChecker(player1Color, row, col);
+		if (!board.isOverflowedColumn()) {
+		
+			if (currentPlayer == Board.X) {
+				// topothetei checker sto [row][col] tou GUI
+				placeChecker(player1Color, row, col);
+			}
+				
+			if (currentPlayer == Board.O) {
+				// topothetei checker sto [row][col] tou GUI
+				placeChecker(player2Color, row, col);
+			}
+		
+		} else {
+			board.setOverflowedColumn(false);
 		}
-			
-		if (currentPlayer == Board.O) {
-			// topothetei checker sto [row][col] tou GUI
-			placeChecker(player2Color, row, col);
-		}
-			
+		
+		
 		if (board.isTerminal()) {
 			gameOver();
 		}
@@ -408,9 +417,6 @@ public class Gui {
 			createNewGame();
 			AddMenus();
 		}
-//		else {
-//			System.exit(0);
-//		}
 
 	}
 	
