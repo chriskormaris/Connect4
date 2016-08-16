@@ -11,7 +11,7 @@ public class Main {
 		// oso megalutero to maxDepth, toso megaluterh h duskolia tou paixnidiou
 		int XColumnPosition;
 		int maxDepth = 4;
-		MinimaxAi OPlayer = new MinimaxAi(maxDepth, Board.O);
+		MinimaxAI OPlayer = new MinimaxAI(maxDepth, Board.O);
 		Board connect4 = new Board();
 
         // Uncomment this, for 'O' to play first
@@ -20,7 +20,7 @@ public class Main {
 		System.out.println("Connect-4!\n");
 		connect4.print();
         // While the game has not finished
-		while(!connect4.isTerminal()) {
+		while(!connect4.checkGameOver()) {
 			System.out.println();
 			switch (connect4.getLastLetterPlayed()) {
 			

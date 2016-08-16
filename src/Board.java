@@ -265,6 +265,25 @@ public class Board {
 
 	}
 	
+    public boolean checkGameOver() {
+    	// elegxos an uparxei nikitis
+    	if (checkWinState()) {
+    		return true;
+    	}
+    	
+    	// elegxos an einai uparxei adeio keli,
+    	// diladi an uparxei isopalia
+    	for(int row=0; row<6; row++) {
+			for(int col=0; col<7; col++) {
+				if(gameBoard[row][col] == EMPTY) {
+                    return false;
+                }
+            }
+        }
+    	
+    	return true;
+    }
+	
 	// epistrefei poses fores uparxoun 3 checkers sti seira,
 	// tou sigkekrimenou paikti
 	public int check3InARow(int player) {
@@ -376,25 +395,6 @@ public class Board {
 		return times;
 				
 	}
-	
-    public boolean isTerminal() {
-    	// elegxos an uparxei nikitis
-    	if (checkWinState()) {
-    		return true;
-    	}
-    	
-    	// elegxos an einai uparxei adeio keli,
-    	// diladi an uparxei isopalia
-    	for(int row=0; row<6; row++) {
-			for(int col=0; col<7; col++) {
-				if(gameBoard[row][col] == EMPTY) {
-                    return false;
-                }
-            }
-        }
-    	
-    	return true;
-    }
 
     //tipwnei ton pinaka
   	public void print() {

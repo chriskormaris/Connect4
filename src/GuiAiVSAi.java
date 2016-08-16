@@ -13,8 +13,8 @@ public class GuiAiVSAi {
 	static JLayeredPane layeredGameBoard;
 	
 	// arxikopoioume me maxDepth = 4, mporei na parei allh timh gia rythmish duskolias 
-	private static MinimaxAi ai1 = new MinimaxAi(4, Board.X);
-	private static MinimaxAi ai2 = new MinimaxAi(4, Board.O);
+	static MinimaxAI ai1 = new MinimaxAI(4, Board.X);
+	static MinimaxAI ai2 = new MinimaxAI(4, Board.O);
 	
 	public GuiAiVSAi() {
 		try {
@@ -62,7 +62,7 @@ public class GuiAiVSAi {
 
 		
 		// AI VS AI implementation HERE
-		while (!board.isTerminal()) {
+		while (!board.isGameOver()) {
 			
 			if (board.getLastLetterPlayed() == Board.O) {
 				aiMove(ai1, Board.X);
@@ -72,7 +72,7 @@ public class GuiAiVSAi {
 			}
 			
 			
-			if (!board.isTerminal()) {
+			if (!board.isGameOver()) {
 				
 				if (board.getLastLetterPlayed() == Board.X) {
 					aiMove(ai2, Board.O);
@@ -120,13 +120,14 @@ public class GuiAiVSAi {
 			// topothetei kitrino checker sto [row][col] tou GUI
 			placeChecker("YELLOW", row, col);
 		}
-		if (board.isTerminal()) {
+		if (board.checkGameOver()) {
+			board.setGameOver(true);
 			gameOver();
 		}
 
 	}
 	
-	public static void aiMove(MinimaxAi player, int checker){
+	public static void aiMove(MinimaxAI player, int checker){
 		Move aiMove = player.MiniMax(board);
 		board.makeMove(aiMove.getCol(), checker);
 		game();
