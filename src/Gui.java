@@ -136,7 +136,7 @@ public class Gui {
 		
 		if (frameMainWindow != null) frameMainWindow.dispose();
 		frameMainWindow = new JFrame("Minimax Connect-4");
-		centerWindow(frameMainWindow, 570, 520); // to kurio parathuro tha emfanizetai sto kentro
+		centerWindow(frameMainWindow, 570, 515); // to kurio parathuro tha emfanizetai sto kentro
 		Component compMainWindowContents = createContentComponents();
 		frameMainWindow.getContentPane().add(compMainWindowContents, BorderLayout.CENTER);
 
