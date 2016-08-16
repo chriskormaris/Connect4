@@ -10,6 +10,7 @@ public class Gui {
 	static JFrame frameMainWindow;
 	static JFrame frameGameOver;
 	
+	static JPanel panelMain;
 	static JPanel panelBoardNumbers;
 	static JLayeredPane layeredGameBoard;
 	
@@ -29,11 +30,12 @@ public class Gui {
 	static String player1Color = game_params.getPlayer1Color();
 	static String player2Color = game_params.getPlayer2Color();
 	
-//	private static GamePlayer ai = new GamePlayer();
-	private static MinimaxAi ai = new MinimaxAi(maxDepth, Board.X);
+//	static GamePlayer ai = new GamePlayer();
+	static MinimaxAI ai = new MinimaxAI(maxDepth, Board.X);
 	
 	//	Player 1 letter -> X. He plays First
 	//	Player 2 letter -> O.
+	
 	
 	public Gui() {
 		try {
@@ -107,7 +109,7 @@ public class Gui {
 	// o kurios pinakas tou Connect-4
 	public static JLayeredPane createLayeredBoard() {
 		layeredGameBoard = new JLayeredPane();
-		layeredGameBoard.setPreferredSize(new Dimension(570, 520));
+		layeredGameBoard.setPreferredSize(new Dimension(570, 515));
 		layeredGameBoard.setBorder(BorderFactory.createTitledBorder("Connect-4"));
 
 		ImageIcon imageBoard = new ImageIcon(ResourceLoader.load("images/Board.gif"));
@@ -140,7 +142,7 @@ public class Gui {
 
 		frameMainWindow.addWindowListener(new WindowAdapter() {
 			public void windowClosing(WindowEvent e) {
-			System.exit(0);
+				System.exit(0);
 			}
 		});
 		
@@ -200,8 +202,7 @@ public class Gui {
 		}
 
 	}
-	
-	
+		
 	// kentrarei to parathuro sthn othonh
 	public static void centerWindow(Window frame, int width, int height) {
 	    Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize();
@@ -261,7 +262,7 @@ public class Gui {
 		}
 		
 		
-		if (board.isTerminal()) {
+		if (board.checkGameOver()) {
 			board.setGameOver(true);
 			gameOver();
 		}
@@ -293,8 +294,16 @@ public class Gui {
 		panelBoardNumbers = new JPanel();
 		panelBoardNumbers.setLayout(new GridLayout(1, 7, 6, 4));
 		panelBoardNumbers.setBorder(BorderFactory.createEmptyBorder(2, 22, 2, 22));
+//		panelBoardNumbers.setVisible(true);
 		
 		JButton col1_button = new JButton("1");
+		JButton col2_button = new JButton("2");
+		JButton col3_button = new JButton("3");
+		JButton col4_button = new JButton("4");
+		JButton col5_button = new JButton("5");
+		JButton col6_button = new JButton("6");
+		JButton col7_button = new JButton("7");
+		
 		col1_button.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				makeMove(0);
@@ -305,7 +314,6 @@ public class Gui {
 			}
 		});
 		
-		JButton col2_button = new JButton("2");
 		col2_button.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				makeMove(1);
@@ -316,7 +324,6 @@ public class Gui {
 			}
 		});
 		
-		JButton col3_button = new JButton("3");
 		col3_button.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				makeMove(2);
@@ -327,7 +334,6 @@ public class Gui {
 			}
 		});
 		
-		JButton col4_button = new JButton("4");
 		col4_button.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				makeMove(3);
@@ -338,7 +344,6 @@ public class Gui {
 			}
 		});
 		
-		JButton col5_button = new JButton("5");
 		col5_button.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				makeMove(4);
@@ -349,7 +354,6 @@ public class Gui {
 			}
 		});
 		
-		JButton col6_button = new JButton("6");
 		col6_button.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				makeMove(5);
@@ -360,7 +364,6 @@ public class Gui {
 			}
 		});
 		
-		JButton col7_button = new JButton("7");
 		col7_button.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				makeMove(6);
@@ -383,7 +386,7 @@ public class Gui {
 		layeredGameBoard = createLayeredBoard();
 
 		// dhmiourgia panel gia na krathsoume ola ta stoixeia tou pinaka
-		JPanel panelMain = new JPanel();
+		panelMain = new JPanel();
 		panelMain.setLayout(new BorderLayout());
 		panelMain.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
 
@@ -414,9 +417,19 @@ public class Gui {
 			choice = JOptionPane.showConfirmDialog(null, "It's a draw! Start a new game?" ,"GAME OVER", JOptionPane.YES_NO_OPTION);
 		}
 		
-		if(choice == JOptionPane.YES_OPTION) {
+		if (choice == JOptionPane.YES_OPTION) {
 			createNewGame();
 			AddMenus();
+		} else {			
+			int width = frameMainWindow.getSize().width;
+			int height = frameMainWindow.getSize().height;
+			
+			// Hide buttons
+			panelBoardNumbers.setVisible(false);
+			frameMainWindow.setSize(new Dimension(width, height-30));
+			
+			// Remove key listener
+			frameMainWindow.removeKeyListener(frameMainWindow.getKeyListeners()[0]);
 		}
 
 	}

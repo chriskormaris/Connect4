@@ -1,7 +1,7 @@
 import java.util.ArrayList;
 import java.util.Random;
 
-public class MinimaxAi {
+public class MinimaxAI {
 	
 		//Variable that holds the maximum depth the MiniMax algorithm will reach for this player
 		private int maxDepth;
@@ -24,12 +24,12 @@ public class MinimaxAi {
 			this.playerLetter = playerLetter;
 		}
 
-		public MinimaxAi() {
+		public MinimaxAI() {
 			maxDepth = 4;
 			playerLetter = Board.X;
 		}
 		
-		public MinimaxAi(int maxDepth, int playerLetter) {
+		public MinimaxAI(int maxDepth, int playerLetter) {
 			this.maxDepth = maxDepth;
 			this.playerLetter = playerLetter;
 		}
@@ -53,7 +53,7 @@ public class MinimaxAi {
 	        /* If MAX is called on a state that is terminal or after a maximum depth is reached,
 	         * then a heuristic is calculated on the state and the move returned.
 	         */
-			if((board.isTerminal()) || (depth == maxDepth))
+			if((board.checkGameOver()) || (depth == maxDepth))
 			{
 				Move lastMove = new Move(board.getLastMove().getRow(), board.getLastMove().getCol(), board.evaluate());
 				return lastMove;
@@ -88,7 +88,7 @@ public class MinimaxAi {
 		public Move min(Board board, int depth) {
 	        Random r = new Random();
 
-			if((board.isTerminal()) || (depth == maxDepth)) {
+			if((board.checkGameOver()) || (depth == maxDepth)) {
 				Move lastMove = new Move(board.getLastMove().getRow(), board.getLastMove().getCol(), board.evaluate());
 				return lastMove;
 			}

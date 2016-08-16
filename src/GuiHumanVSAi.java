@@ -28,8 +28,8 @@ public class GuiHumanVSAi {
 	static String player1Color = game_params.getPlayer1Color();
 	static String player2Color = game_params.getPlayer2Color();
 	
-//	private static GamePlayer ai = new GamePlayer();
-	private static MinimaxAi ai = new MinimaxAi(maxDepth, Board.X);
+//	static GamePlayer ai = new GamePlayer();
+	static MinimaxAI ai = new MinimaxAI(maxDepth, Board.X);
 	
 	//	Human player letter -> X. He plays First
 	//	Minimax AI letter -> O.
@@ -173,7 +173,8 @@ public class GuiHumanVSAi {
 			placeChecker(game_params.getPlayer2Color(), row, col);
 		}
 		
-		if (board.isTerminal()) {
+		if (board.checkGameOver()) {
+			board.setGameOver(true);
 			gameOver();
 		}
 		
@@ -183,7 +184,7 @@ public class GuiHumanVSAi {
 	// kaleitai meta thn kinhsh tou human player, wste na paixei o computer AI
 	public static void aiMove(){
 
-		if (!board.isTerminal()) {
+		if (!board.isGameOver()) {
 			// check if human player played last
 			if (board.getLastLetterPlayed() == Board.X) {
 				Move aiMove = ai.MiniMax(board);

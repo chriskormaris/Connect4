@@ -143,7 +143,8 @@ public class GuiHumanVSHuman {
 			// topothetei kitrino checker sto [row][col] tou GUI
 			placeChecker("YELLOW", row, col);
 		} 
-		if (board.isTerminal()) {
+		if (board.checkGameOver()) {
+//			board.setGameOver(true);
 			gameOver();
 		}
 
