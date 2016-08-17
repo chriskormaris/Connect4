@@ -139,7 +139,7 @@ public class PreferencesWindow extends JFrame {
 	}
 	
 	
-	public class EventHandler implements ActionListener {
+	private class EventHandler implements ActionListener {
 		
 		
 		@Override

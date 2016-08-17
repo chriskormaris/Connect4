@@ -2,6 +2,7 @@ import java.awt.*;
 import java.awt.event.*;
 
 import javax.swing.*;
+//import javax.swing.UIManager.LookAndFeelInfo;
 
 
 public class Gui {
@@ -13,6 +14,19 @@ public class Gui {
 	static JPanel panelMain;
 	static JPanel panelBoardNumbers;
 	static JLayeredPane layeredGameBoard;
+	
+	static final int DEFAULT_WIDTH = 570;
+	static final int DEFAULT_HEIGHT = 515;
+	
+	static boolean firstGame = true;
+
+	static JButton col1_button = new JButton("1");
+	static JButton col2_button = new JButton("2");
+	static JButton col3_button = new JButton("3");
+	static JButton col4_button = new JButton("4");
+	static JButton col5_button = new JButton("5");
+	static JButton col6_button = new JButton("6");
+	static JButton col7_button = new JButton("7");
 	
 	//Menu bars and items.
 	static JMenuBar menuBar;
@@ -38,13 +52,30 @@ public class Gui {
 	
 	
 	public Gui() {
+		
 		try {
-			UIManager.setLookAndFeel( UIManager.getSystemLookAndFeelClassName() );
+			
+			// Option 1
+			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+
+			// Option 2
+//			UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName());
+			
+			// Option 3
+//		    for (LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
+//		        if ("Nimbus".equals(info.getName())) {
+//		            UIManager.setLookAndFeel(info.getClassName());
+//		            break;
+//		        }
+//		    }
+		    
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		
 		createNewGame();
 		AddMenus();
+		
 	}
 	
 	//Adds the menu bars and items to the window
@@ -109,7 +140,7 @@ public class Gui {
 	// o kurios pinakas tou Connect-4
 	public static JLayeredPane createLayeredBoard() {
 		layeredGameBoard = new JLayeredPane();
-		layeredGameBoard.setPreferredSize(new Dimension(570, 515));
+		layeredGameBoard.setPreferredSize(new Dimension(DEFAULT_WIDTH, DEFAULT_HEIGHT));
 		layeredGameBoard.setBorder(BorderFactory.createTitledBorder("Connect-4"));
 
 		ImageIcon imageBoard = new ImageIcon(ResourceLoader.load("images/Board.gif"));
@@ -136,10 +167,10 @@ public class Gui {
 		
 		if (frameMainWindow != null) frameMainWindow.dispose();
 		frameMainWindow = new JFrame("Minimax Connect-4");
-		centerWindow(frameMainWindow, 570, 515); // to kurio parathuro tha emfanizetai sto kentro
+		centerWindow(frameMainWindow, DEFAULT_WIDTH, DEFAULT_HEIGHT); // to kurio parathuro tha emfanizetai sto kentro
 		Component compMainWindowContents = createContentComponents();
 		frameMainWindow.getContentPane().add(compMainWindowContents, BorderLayout.CENTER);
-
+		
 		frameMainWindow.addWindowListener(new WindowAdapter() {
 			public void windowClosing(WindowEvent e) {
 				System.exit(0);
@@ -294,85 +325,83 @@ public class Gui {
 		panelBoardNumbers = new JPanel();
 		panelBoardNumbers.setLayout(new GridLayout(1, 7, 6, 4));
 		panelBoardNumbers.setBorder(BorderFactory.createEmptyBorder(2, 22, 2, 22));
-//		panelBoardNumbers.setVisible(true);
 		
-		JButton col1_button = new JButton("1");
-		JButton col2_button = new JButton("2");
-		JButton col3_button = new JButton("3");
-		JButton col4_button = new JButton("4");
-		JButton col5_button = new JButton("5");
-		JButton col6_button = new JButton("6");
-		JButton col7_button = new JButton("7");
+		col1_button.setEnabled(true);
+		col2_button.setEnabled(true);
+		col3_button.setEnabled(true);
+		col4_button.setEnabled(true);
+		col5_button.setEnabled(true);
+		col6_button.setEnabled(true);
+		col7_button.setEnabled(true);
 		
-		col1_button.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				makeMove(0);
-				game();
-				if (gameMode == GameParameters.HumanVSAi) aiMove();
-				frameMainWindow.requestFocusInWindow();
-//				board.print();
-			}
-		});
+		if (firstGame) {
 		
-		col2_button.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				makeMove(1);
-				game();
-				if (gameMode == GameParameters.HumanVSAi) aiMove();
-				frameMainWindow.requestFocusInWindow();
-//				board.print();
-			}
-		});
-		
-		col3_button.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				makeMove(2);
-				game();
-				if (gameMode == GameParameters.HumanVSAi) aiMove();
-				frameMainWindow.requestFocusInWindow();
-//				board.print();
-			}
-		});
-		
-		col4_button.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				makeMove(3);
-				game();
-				if (gameMode == GameParameters.HumanVSAi) aiMove();
-				frameMainWindow.requestFocusInWindow();
-//				board.print();
-			}
-		});
-		
-		col5_button.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				makeMove(4);
-				game();
-				if (gameMode == GameParameters.HumanVSAi) aiMove();
-				frameMainWindow.requestFocusInWindow();
-//				board.print();
-			}
-		});
-		
-		col6_button.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				makeMove(5);
-				game();
-				if (gameMode == GameParameters.HumanVSAi) aiMove();
-				frameMainWindow.requestFocusInWindow();
-//				board.print();
-			}
-		});
-		
-		col7_button.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				makeMove(6);
-				game();
-				if (gameMode == GameParameters.HumanVSAi) aiMove();
-				frameMainWindow.requestFocusInWindow();
-//				board.print();
-			}
-		});
+			col1_button.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					makeMove(0);
+					game();
+					if (gameMode == GameParameters.HumanVSAi) aiMove();
+					frameMainWindow.requestFocusInWindow();
+				}
+			});
+			
+			col2_button.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					makeMove(1);
+					game();
+					if (gameMode == GameParameters.HumanVSAi) aiMove();
+					frameMainWindow.requestFocusInWindow();
+				}
+			});
+			
+			col3_button.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					makeMove(2);
+					game();
+					if (gameMode == GameParameters.HumanVSAi) aiMove();
+					frameMainWindow.requestFocusInWindow();
+				}
+			});
+			
+			col4_button.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					makeMove(3);
+					game();
+					if (gameMode == GameParameters.HumanVSAi) aiMove();
+					frameMainWindow.requestFocusInWindow();
+				}
+			});
+			
+			col5_button.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					makeMove(4);
+					game();
+					if (gameMode == GameParameters.HumanVSAi) aiMove();
+					frameMainWindow.requestFocusInWindow();
+				}
+			});
+			
+			col6_button.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					makeMove(5);
+					game();
+					if (gameMode == GameParameters.HumanVSAi) aiMove();
+					frameMainWindow.requestFocusInWindow();
+				}
+			});
+			
+			col7_button.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					makeMove(6);
+					game();
+					if (gameMode == GameParameters.HumanVSAi) aiMove();
+					frameMainWindow.requestFocusInWindow();
+				}
+			});
+				
+
+			firstGame = false;
+		}
 		
 		panelBoardNumbers.add(col1_button);
 		panelBoardNumbers.add(col2_button);
@@ -420,13 +449,15 @@ public class Gui {
 		if (choice == JOptionPane.YES_OPTION) {
 			createNewGame();
 			AddMenus();
-		} else {			
-			int width = frameMainWindow.getSize().width;
-			int height = frameMainWindow.getSize().height;
-			
-			// Hide buttons
-			panelBoardNumbers.setVisible(false);
-			frameMainWindow.setSize(new Dimension(width, height-30));
+		} else {
+			// Disable buttons
+			col1_button.setEnabled(false);
+			col2_button.setEnabled(false);
+			col3_button.setEnabled(false);
+			col4_button.setEnabled(false);
+			col5_button.setEnabled(false);
+			col6_button.setEnabled(false);
+			col7_button.setEnabled(false);
 			
 			// Remove key listener
 			frameMainWindow.removeKeyListener(frameMainWindow.getKeyListeners()[0]);
