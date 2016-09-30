@@ -1,5 +1,5 @@
 :: This file is for Windows only.
 
-mkdir .\bin
+mkdir bin
 javac .\src\*.java -d .\bin\
 pause;
