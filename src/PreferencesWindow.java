@@ -74,6 +74,7 @@ public class PreferencesWindow extends JFrame {
 		int index = game_params.getMaxDepth() - 1;
 		drop_down_2.setSelectedIndex(index);
 		
+		
 		drop_down_3 = new JComboBox<String>();
 		drop_down_3.addItem("RED");
 		drop_down_3.addItem("YELLOW");
@@ -137,8 +138,8 @@ public class PreferencesWindow extends JFrame {
 		cancel.setBounds(220, 225, 100, 30);
 		cancel.addActionListener(handler);
 	}
-	
-	
+
+
 	private class EventHandler implements ActionListener {
 		
 		
