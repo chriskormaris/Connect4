@@ -198,8 +198,8 @@ public class Board {
 	
 	public int evaluate() {
 		// +100 'X' wins, -100 'O' wins,
-		// +10 three 'X' in a row, -10 three 'O' in a row,
-		// +1 two 'X' in a row, -1 two 'O' in a row
+		// +10 for each three 'X' in a row, -10 for each three 'O' in a row,
+		// +1 for each two 'X' in a row, -1 for each two 'O' in a row
 		int Xlines = 0;
 		int Olines = 0;
 
@@ -227,7 +227,9 @@ public class Board {
 		//elegxos gia 4 checkers sti seira se grammi
 		for (int i=5; i>=0; i--) {
 			for (int j=0; j<4; j++) {
-				if (gameBoard[i][j] == gameBoard[i][j+1] && gameBoard[i][j] == gameBoard[i][j+2] && gameBoard[i][j] == gameBoard[i][j+3]
+				if (gameBoard[i][j] == gameBoard[i][j+1]
+						&& gameBoard[i][j] == gameBoard[i][j+2]
+						&& gameBoard[i][j] == gameBoard[i][j+3]
 						&& gameBoard[i][j] != EMPTY) {
 					setWinner(gameBoard[i][j]);
 					return true;
@@ -238,7 +240,9 @@ public class Board {
 		//elegxos gia 4 checkers sti seira se stili
 		for (int i=5; i>=3; i--) {
 			for (int j=0; j<7; j++) {
-				if (gameBoard[i][j] == gameBoard[i-1][j] && gameBoard[i][j] == gameBoard[i-2][j] && gameBoard[i][j] == gameBoard[i-3][j]
+				if (gameBoard[i][j] == gameBoard[i-1][j]
+						&& gameBoard[i][j] == gameBoard[i-2][j]
+						&& gameBoard[i][j] == gameBoard[i-3][j]
 						&& gameBoard[i][j] != EMPTY) {
 					setWinner(gameBoard[i][j]);
 					return true;
@@ -249,7 +253,9 @@ public class Board {
 		//elegxos gia 4 checkers sti seira se f8inousa diagwnio
 		for (int i=0; i<3; i++) {
 			for (int j=0; j<4; j++) {
-				if (gameBoard[i][j] == gameBoard[i+1][j+1] && gameBoard[i][j] == gameBoard[i+2][j+2] && gameBoard[i][j] == gameBoard[i+3][j+3] 
+				if (gameBoard[i][j] == gameBoard[i+1][j+1]
+						&& gameBoard[i][j] == gameBoard[i+2][j+2]
+						&& gameBoard[i][j] == gameBoard[i+3][j+3] 
 						&& gameBoard[i][j] != EMPTY) {
 					setWinner(gameBoard[i][j]);
 					return true;
@@ -261,7 +267,9 @@ public class Board {
 		for (int i=0; i<6; i++) {
 			for (int j=0; j<7; j++) {
 				if (canMove(i-3,j+3)) {
-					if (gameBoard[i][j] == gameBoard[i-1][j+1] && gameBoard[i][j] == gameBoard[i-2][j+2] && gameBoard[i][j] == gameBoard[i-3][j+3] 
+					if (gameBoard[i][j] == gameBoard[i-1][j+1]
+							&& gameBoard[i][j] == gameBoard[i-2][j+2]
+							&& gameBoard[i][j] == gameBoard[i-3][j+3] 
 							&& gameBoard[i][j] != EMPTY) {
 						setWinner(gameBoard[i][j]);
 						return true;
@@ -304,7 +312,8 @@ public class Board {
 		for (int i = 5; i >= 0; i--) {
 			for (int j = 0; j < 7; j++) {
 				if (canMove(i, j + 2)) {
-					if (gameBoard[i][j] == gameBoard[i][j + 1] && gameBoard[i][j] == gameBoard[i][j + 2]
+					if (gameBoard[i][j] == gameBoard[i][j + 1]
+							&& gameBoard[i][j] == gameBoard[i][j + 2]
 							&& gameBoard[i][j] == player) {
 						times++;
 					}
@@ -316,7 +325,8 @@ public class Board {
 		for (int i = 5; i >= 0; i--) {
 			for (int j = 0; j < 7; j++) {
 				if (canMove(i - 2, j)) {
-					if (gameBoard[i][j] == gameBoard[i - 1][j] && gameBoard[i][j] == gameBoard[i - 2][j]
+					if (gameBoard[i][j] == gameBoard[i - 1][j]
+							&& gameBoard[i][j] == gameBoard[i - 2][j]
 							&& gameBoard[i][j] == player) {
 						times++;
 					}
@@ -328,7 +338,8 @@ public class Board {
 		for (int i = 0; i < 6; i++) {
 			for (int j = 0; j < 7; j++) {
 				if (canMove(i + 2, j + 2)) {
-					if (gameBoard[i][j] == gameBoard[i + 1][j + 1] && gameBoard[i][j] == gameBoard[i + 2][j + 2]
+					if (gameBoard[i][j] == gameBoard[i + 1][j + 1]
+							&& gameBoard[i][j] == gameBoard[i + 2][j + 2]
 							&& gameBoard[i][j] == player) {
 						times++;
 					}
@@ -340,7 +351,8 @@ public class Board {
 		for (int i = 0; i < 6; i++) {
 			for (int j = 0; j < 7; j++) {
 				if (canMove(i - 2, j + 2)) {
-					if (gameBoard[i][j] == gameBoard[i - 1][j + 1] && gameBoard[i][j] == gameBoard[i - 2][j + 2]
+					if (gameBoard[i][j] == gameBoard[i - 1][j + 1]
+							&& gameBoard[i][j] == gameBoard[i - 2][j + 2]
 							&& gameBoard[i][j] == player) {
 						times++;
 					}
@@ -362,7 +374,8 @@ public class Board {
 		for (int i = 5; i >= 0; i--) {
 			for (int j = 0; j < 7; j++) {
 				if (canMove(i, j + 1)) {
-					if (gameBoard[i][j] == gameBoard[i][j + 1] && gameBoard[i][j] == player) {
+					if (gameBoard[i][j] == gameBoard[i][j + 1]
+							&& gameBoard[i][j] == player) {
 						times++;
 					}
 				}
@@ -373,7 +386,8 @@ public class Board {
 		for (int i = 5; i >= 0; i--) {
 			for (int j = 0; j < 7; j++) {
 				if (canMove(i - 1, j)) {
-					if (gameBoard[i][j] == gameBoard[i - 1][j] && gameBoard[i][j] == player) {
+					if (gameBoard[i][j] == gameBoard[i - 1][j]
+							&& gameBoard[i][j] == player) {
 						times++;
 					}
 				}
@@ -384,7 +398,8 @@ public class Board {
 		for (int i = 0; i < 6; i++) {
 			for (int j = 0; j < 7; j++) {
 				if (canMove(i + 1, j + 1)) {
-					if (gameBoard[i][j] == gameBoard[i + 1][j + 1] && gameBoard[i][j] == player) {
+					if (gameBoard[i][j] == gameBoard[i + 1][j + 1]
+							&& gameBoard[i][j] == player) {
 						times++;
 					}
 				}
@@ -395,7 +410,8 @@ public class Board {
 		for (int i = 0; i < 6; i++) {
 			for (int j = 0; j < 7; j++) {
 				if (canMove(i - 1, j + 1)) {
-					if (gameBoard[i][j] == gameBoard[i - 1][j + 1] && gameBoard[i][j] == player) {
+					if (gameBoard[i][j] == gameBoard[i - 1][j + 1]
+							&& gameBoard[i][j] == player) {
 						times++;
 					}
 				}
