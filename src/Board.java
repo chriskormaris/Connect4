@@ -196,7 +196,7 @@ public class Board {
         if (checkWinState()) {
 			if(getWinner() == X) {
 				Xlines = Xlines + 100;
-			} else {
+			} else if(getWinner() == O) {
 				Olines = Olines + 100;
 			}
 		}
