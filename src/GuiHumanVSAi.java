@@ -76,6 +76,7 @@ public class GuiHumanVSAi {
 		frameMainWindow.getContentPane().add(compMainWindowContents, BorderLayout.CENTER);
 
 		frameMainWindow.addWindowListener(new WindowAdapter() {
+			@Override
 			public void windowClosing(WindowEvent e) {
 			System.exit(0);
 			}
@@ -167,7 +168,7 @@ public class GuiHumanVSAi {
 			// topothetei checker sto [row][col] tou GUI
 			placeChecker(game_params.getPlayer1Color(), row, col);
 		}
-			
+		
 		if (currentPlayer == Board.O) {
 			// topothetei checker sto [row][col] tou GUI
 			placeChecker(game_params.getPlayer2Color(), row, col);
@@ -208,6 +209,7 @@ public class GuiHumanVSAi {
 		
 		JButton col1_button = new JButton("1");
 		col1_button.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				board.makeMove(0, Board.X);
 				game();
@@ -219,6 +221,7 @@ public class GuiHumanVSAi {
 		
 		JButton col2_button = new JButton("2");
 		col2_button.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				board.makeMove(1, Board.X);
 				game();
@@ -230,6 +233,7 @@ public class GuiHumanVSAi {
 		
 		JButton col3_button = new JButton("3");
 		col3_button.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				board.makeMove(2, Board.X);
 				game();
@@ -241,6 +245,7 @@ public class GuiHumanVSAi {
 		
 		JButton col4_button = new JButton("4");
 		col4_button.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				board.makeMove(3, Board.X);
 				game();
@@ -252,6 +257,7 @@ public class GuiHumanVSAi {
 		
 		JButton col5_button = new JButton("5");
 		col5_button.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				board.makeMove(4, Board.X);
 				game();
@@ -263,6 +269,7 @@ public class GuiHumanVSAi {
 		
 		JButton col6_button = new JButton("6");
 		col6_button.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				board.makeMove(5, Board.X);
 				game();
@@ -274,6 +281,7 @@ public class GuiHumanVSAi {
 		
 		JButton col7_button = new JButton("7");
 		col7_button.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				board.makeMove(6, Board.X);
 				game();
@@ -336,6 +344,7 @@ public class GuiHumanVSAi {
 		JButton yesButton = new JButton("Yes");
 		yesButton.setBorder(BorderFactory.createEmptyBorder(5, 30, 5, 30));
 		yesButton.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				frameGameOver.setVisible(false);
 				createNewGame();
@@ -345,6 +354,7 @@ public class GuiHumanVSAi {
 		JButton quitButton = new JButton("Quit");
 		quitButton.setBorder(BorderFactory.createEmptyBorder(5, 30, 5, 30));
 		quitButton.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				frameGameOver.setVisible(false);
 				System.exit(0);

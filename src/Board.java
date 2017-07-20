@@ -18,9 +18,8 @@ public class Board {
     private int winner;
 	private int [][] gameBoard;
 	
-	// used for exception handling
-	private boolean overflowedColumn;
-	
+	private boolean overflowOccured = false;
+		
 	private boolean isGameOver;
 	
 	// constructor
@@ -66,10 +65,6 @@ public class Board {
 		return winner;
 	}
 	
-	public boolean isOverflowedColumn() {
-		return overflowedColumn;
-	}
-	
 	public boolean isGameOver() {
 		return isGameOver;
 	}
@@ -95,28 +90,43 @@ public class Board {
 	public void setWinner(int winner) {
 		this.winner = winner;
 	}
-	
-	public void setOverflowedColumn(boolean overflowedColumn) {
-		this.overflowedColumn = overflowedColumn;
-	}
-	
+
 	public void setGameOver(boolean isGameOver) {
 		this.isGameOver = isGameOver;
 	}
 	
+	public void undoMove(int row, int col, int letter) {
+		this.gameBoard[row][col] = 0;
+		if (letter == O) {
+			this.lastLetterPlayed = X;
+		} else if (letter == X) {
+			this.lastLetterPlayed = O;
+		}
+	}
+	
 	// kanei mia kinhsh, basei seiras kai sthlhs
 	public void makeMove(int row, int col, int letter) {
-		lastMove = new Move(row, col);
-		gameBoard[row][col] = letter;
-		lastLetterPlayed = letter;
+		try {
+			this.lastMove = new Move(row, col);
+			this.lastLetterPlayed = letter;
+			this.gameBoard[row][col] = letter;
+		} catch (ArrayIndexOutOfBoundsException e) {
+			System.err.println("Column " + (col+1) + " is full!");
+			setOverflowOccured(true);
+		}
 	}
 	
 	// kanei mia kinhsh, basei sthlhs
 	public void makeMove(int col, int letter) {
-		// h lastMove prepei na allaxei prin thn gameBoard[][] logw ths getRowPosition(int col)
-		lastMove = new Move(getRowPosition(col), col);
-		gameBoard[getRowPosition(col)][col] = letter;
-		lastLetterPlayed = letter;
+		try {
+			// h lastMove prepei na allaxei prin thn gameBoard[][] logw ths getRowPosition(int col)
+			this.lastMove = new Move(getRowPosition(col), col);
+			this.lastLetterPlayed = letter;
+			this.gameBoard[getRowPosition(col)][col] = letter;
+		} catch (ArrayIndexOutOfBoundsException e) {
+			System.err.println("Column " + (col+1) + " is full!");
+			setOverflowOccured(true);
+		}
 	}
 	
 	// checks whether a move is valid; whether a square is empty
@@ -196,7 +206,7 @@ public class Board {
         if (checkWinState()) {
 			if(getWinner() == X) {
 				Xlines = Xlines + 100;
-			} else if(getWinner() == O) {
+			} else if (getWinner() == O) {
 				Olines = Olines + 100;
 			}
 		}
@@ -260,7 +270,7 @@ public class Board {
 			}
 		}
 		
-		setWinner(0);
+		setWinner(0); // set as winner no player
 		return false;
 
 	}
@@ -424,5 +434,14 @@ public class Board {
   		}
   		
   	}
+
+	public boolean isOverflowOccured() {
+		return overflowOccured;
+	}
+
+	public void setOverflowOccured(boolean overflowOccured) {
+		this.overflowOccured = overflowOccured;
+	}
+
 
 }

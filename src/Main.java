@@ -18,10 +18,12 @@ public class Main {
 		//board.setLastLetterPlayed(Board.X);
 
 		System.out.println("Connect-4!\n");
+		System.out.println("\n*****************************");
 		connect4.print();
+		System.out.println();
         // While the game has not finished
 		while(!connect4.checkGameOver()) {
-			System.out.println();
+			System.out.println("\n*****************************");
 			switch (connect4.getLastLetterPlayed()) {
 			
 					

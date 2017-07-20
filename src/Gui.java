@@ -27,16 +27,6 @@ public class Gui {
 	static JButton col5_button = new JButton("5");
 	static JButton col6_button = new JButton("6");
 	static JButton col7_button = new JButton("7");
-	
-	//Menu bars and items.
-	static JMenuBar menuBar;
-	static JMenu menu1;
-	static JMenuItem item11;
-	static JMenuItem item12;
-	static JMenuItem item13;
-	static JMenu menu2;
-	static JMenuItem item21;
-	static JMenuItem item22;
 
 	static GameParameters game_params = new GameParameters();
 	static int gameMode = game_params.getGameMode();
@@ -50,7 +40,14 @@ public class Gui {
 	//	Player 1 letter -> X. He plays First
 	//	Player 2 letter -> O.
 	
+	public static JLabel checkerLabel = null;
 	
+	// for Undo operation
+	public static int humanPlayerRowUndo;
+	public static int humanPlayerColUndo;
+	public static int humanPlayerLetter;
+	public static JLabel humanPlayerCheckerLabelUndo;
+
 	public Gui() {
 		
 		try {
@@ -78,18 +75,32 @@ public class Gui {
 		
 	}
 	
-	//Adds the menu bars and items to the window
+	// Adds the menu bars and items to the window
 	private static void AddMenus() {
-		//adding the menu bar.
+		
+		// Menu bars and items
+		JMenuBar menuBar;
+		JMenu menu1;
+		JMenuItem item11;
+		JMenuItem item12;
+		JMenuItem item13;
+		JMenuItem item14;
+		JMenu menu2;
+		JMenuItem item21;
+		JMenuItem item22;
+		
+		// Adding the menu bar
 		menuBar = new JMenuBar();
 		
 		menu1 = new JMenu("File");
 		item11 = new JMenuItem("New Game");
-		item12 = new JMenuItem("Preferences");
-		item13 = new JMenuItem("Exit");
+		item12 = new JMenuItem("Undo    Ctrl+Z");
+		item13 = new JMenuItem("Preferences");
+		item14 = new JMenuItem("Exit");
 		menu1.add(item11);
 		menu1.add(item12);
 		menu1.add(item13);
+		menu1.add(item14);
 		
 		menu2 = new JMenu("Help");
 		item21 = new JMenuItem("How to Play");
@@ -107,12 +118,18 @@ public class Gui {
 		
 		item12.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				undo();
+			}
+		});
+		
+		item13.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
 				PreferencesWindow prefs = new PreferencesWindow(game_params);
 				prefs.setVisible(true);
 			}
 		});
 		
-		item13.addActionListener(new ActionListener() {
+		item14.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				System.exit(0);
 			}
@@ -152,6 +169,92 @@ public class Gui {
 		return layeredGameBoard;
 	}
 	
+	public static KeyListener gameKeyListener = new KeyListener() {
+		@Override
+		public void keyTyped(KeyEvent e) {
+		}
+
+		@Override
+		public void keyPressed(KeyEvent e) {
+			//System.out.println("keyPressed = " + KeyEvent.getKeyText(e.getKeyCode()));
+			String button = KeyEvent.getKeyText(e.getKeyCode());
+			
+			board.setOverflowOccured(false);
+			if (button.equals("1")) {
+				makeMove(0);
+			} else if (button.equals("2")) {
+				makeMove(1);
+			} else if (button.equals("3")) {
+				makeMove(2);
+			} else if (button.equals("4")) {
+				makeMove(3);
+			} else if (button.equals("5")) {
+				makeMove(4);
+			} else if (button.equals("6")) {
+				makeMove(5);
+			} else if (button.equals("7")) {
+				makeMove(6);
+			}
+			
+			else if ((e.getKeyCode() == KeyEvent.VK_Z) && ((e.getModifiers() & KeyEvent.CTRL_MASK) != 0)) {
+                undo();
+            }
+			
+			if (button.equals("1") || button.equals("2") || button.equals("3") || button.equals("4")
+					|| button.equals("5") || button.equals("6") || button.equals("7")) {
+				if (!board.isOverflowOccured()) {
+					game();
+					saveUndoMove();
+					if (gameMode == GameParameters.HumanVSAi) aiMove();
+				}
+			}
+			
+		}
+
+		@Override
+		public void keyReleased(KeyEvent e) {
+			//System.out.println("keyReleased = " + KeyEvent.getKeyText(e.getKeyCode()));
+		}
+	};
+	
+	public static void undo() {
+		// Undo implementation for Human VS Human mode
+		if (game_params.getGameMode() == GameParameters.HumanVSHuman) {
+			try {
+				board.setGameOver(false);
+				enableButtons();
+				if (frameMainWindow.getKeyListeners().length == 0) {
+					frameMainWindow.addKeyListener(gameKeyListener);
+				}
+				board.undoMove(board.getLastMove().getRow(), board.getLastMove().getCol(), humanPlayerLetter);
+				layeredGameBoard.remove(checkerLabel);
+				frameMainWindow.paint(frameMainWindow.getGraphics());
+			} catch (ArrayIndexOutOfBoundsException ex) {
+				System.err.println("No move has been made yet!");
+				System.err.flush();
+			}
+		}
+		
+		// Undo implementation for Human VS AI mode
+		else if (game_params.getGameMode() == GameParameters.HumanVSAi) {
+			try {
+				board.setGameOver(false);
+				enableButtons();
+				if (frameMainWindow.getKeyListeners().length == 0) {
+					frameMainWindow.addKeyListener(gameKeyListener);
+				}
+				board.undoMove(board.getLastMove().getRow(), board.getLastMove().getCol(), humanPlayerLetter);
+				layeredGameBoard.remove(checkerLabel);
+				board.undoMove(humanPlayerRowUndo, humanPlayerColUndo, humanPlayerLetter);
+				layeredGameBoard.remove(humanPlayerCheckerLabelUndo);
+				frameMainWindow.paint(frameMainWindow.getGraphics());
+			} catch (ArrayIndexOutOfBoundsException ex) {
+				System.err.println("No move has been made yet!");
+				System.err.flush();
+			}
+		}
+	}
+	
 	// kaleitai otan xekinaei to paixnidi apo thn arxh
 	public static void createNewGame() {
 		board = new Board();
@@ -177,47 +280,7 @@ public class Gui {
 			}
 		});
 		
-		frameMainWindow.addKeyListener(new KeyListener() {
-			@Override
-			public void keyTyped(KeyEvent e) {
-			}
-
-			@Override
-			public void keyPressed(KeyEvent e) {
-				//System.out.println("keyPressed="+KeyEvent.getKeyText(e.getKeyCode()));
-				String button = KeyEvent.getKeyText(e.getKeyCode());
-				
-				if (button.equals("1")) {
-					makeMove(0);
-				} else if (button.equals("2")) {
-					makeMove(1);
-				} else if (button.equals("3")) {
-					makeMove(2);
-				} else if (button.equals("4")) {
-					makeMove(3);
-				} else if (button.equals("5")) {
-					makeMove(4);
-				} else if (button.equals("6")) {
-					makeMove(5);
-				} else if (button.equals("7")) {
-					makeMove(6);
-				}
-				
-				if (button.equals("1") || button.equals("2") || button.equals("3") || button.equals("4")
-						|| button.equals("5") || button.equals("6") || button.equals("7")) {
-					game();
-					if (gameMode == GameParameters.HumanVSAi) aiMove();
-				}
-				
-			}
-
-			@Override
-			public void keyReleased(KeyEvent e) {
-				//System.out.println("keyReleased="+KeyEvent.getKeyText(e.getKeyCode()));
-			}
-		});
-		
-
+		frameMainWindow.addKeyListener(gameKeyListener);
 		frameMainWindow.setFocusable(true);
 		
 		// show window
@@ -244,61 +307,68 @@ public class Gui {
 	
 	// briskei poios paiktis exei seira kai kanei eisagwgi sto Board
 	public static void makeMove(int col) {
-		try {
-			if (board.getLastLetterPlayed() == Board.O) {
-				board.makeMove(col, Board.X);
-			} else {
-				board.makeMove(col, Board.O);
-			}
+		board.setOverflowOccured(false);
+		
+		int previousRow = board.getLastMove().getRow();
+		int previousCol = board.getLastMove().getCol();
+		int previousLetter = board.getLastLetterPlayed();
+		
+		if (board.getLastLetterPlayed() == Board.O) {
+			board.makeMove(col, Board.X);
+		} else {
+			board.makeMove(col, Board.O);
 		}
-		catch (ArrayIndexOutOfBoundsException e) {
-			System.err.println("Column " + (col+1) + " is full!");
-			board.setOverflowedColumn(true);
+		
+		if (board.isOverflowOccured()) {
+			board.getLastMove().setRow(previousRow);
+			board.getLastMove().setCol(previousCol);
+			board.setLastLetterPlayed(previousLetter);
 		}
+
 	}
+	
 	
 	// topothetei checker ston pinaka
 	public static void placeChecker(String color, int row, int col) {
 		int xOffset = 75 * col;
 		int yOffset = 75 * row;
 		ImageIcon checkerIcon = new ImageIcon(ResourceLoader.load("images/" + color + ".gif"));
-		JLabel checkerLabel = new JLabel(checkerIcon);
+		checkerLabel = new JLabel(checkerIcon);
 		checkerLabel.setBounds(27 + xOffset, 27 + yOffset, checkerIcon.getIconWidth(),checkerIcon.getIconHeight());
 		layeredGameBoard.add(checkerLabel, new Integer(0), 0);
 		frameMainWindow.paint(frameMainWindow.getGraphics());
 	}
 	
+	public static void saveUndoMove() {
+		humanPlayerRowUndo = board.getLastMove().getRow();
+		humanPlayerColUndo = board.getLastMove().getCol();
+		humanPlayerLetter = board.getLastLetterPlayed();
+		humanPlayerCheckerLabelUndo = checkerLabel;
+	}
+	
 	// gets called after makeMove(int col) is called
 	public static void game() {
-	
+			
 		int row = board.getLastMove().getRow();
 		int col = board.getLastMove().getCol();
-
 		int currentPlayer = board.getLastLetterPlayed();
 		
-		if (!board.isOverflowedColumn()) {
-		
-			if (currentPlayer == Board.X) {
-				// topothetei checker sto [row][col] tou GUI
-				placeChecker(player1Color, row, col);
-			}
-				
-			if (currentPlayer == Board.O) {
-				// topothetei checker sto [row][col] tou GUI
-				placeChecker(player2Color, row, col);
-			}
-		
-		} else {
-			board.setOverflowedColumn(false);
+		if (currentPlayer == Board.X) {
+			// topothetei checker sto [row][col] tou GUI
+			placeChecker(player1Color, row, col);
 		}
-		
+			
+		if (currentPlayer == Board.O) {
+			// topothetei checker sto [row][col] tou GUI
+			placeChecker(player2Color, row, col);
+		}
 		
 		if (board.checkGameOver()) {
 			board.setGameOver(true);
 			gameOver();
 		}
-		
-
+		board.print();
+		System.out.println("\n*****************************");
 	}
 	
 	// kaleitai meta thn kinhsh tou human player, wste na paixei o computer AI
@@ -315,6 +385,26 @@ public class Gui {
 
 	}
 	
+	public static void enableButtons() {
+		col1_button.setEnabled(true);
+		col2_button.setEnabled(true);
+		col3_button.setEnabled(true);
+		col4_button.setEnabled(true);
+		col5_button.setEnabled(true);
+		col6_button.setEnabled(true);
+		col7_button.setEnabled(true);
+	}
+	
+	public static void disableButtons() {
+		col1_button.setEnabled(false);
+		col2_button.setEnabled(false);
+		col3_button.setEnabled(false);
+		col4_button.setEnabled(false);
+		col5_button.setEnabled(false);
+		col6_button.setEnabled(false);
+		col7_button.setEnabled(false);
+	}
+	
 	/**
 	 * Returns a component to be drawn by main window.
 	 * This function creates the main window components.
@@ -326,77 +416,93 @@ public class Gui {
 		panelBoardNumbers.setLayout(new GridLayout(1, 7, 6, 4));
 		panelBoardNumbers.setBorder(BorderFactory.createEmptyBorder(2, 22, 2, 22));
 		
-		col1_button.setEnabled(true);
-		col2_button.setEnabled(true);
-		col3_button.setEnabled(true);
-		col4_button.setEnabled(true);
-		col5_button.setEnabled(true);
-		col6_button.setEnabled(true);
-		col7_button.setEnabled(true);
+		enableButtons();
 		
 		if (firstGame) {
 		
 			col1_button.addActionListener(new ActionListener() {
-				public void actionPerformed(ActionEvent e) {
+				public void actionPerformed(ActionEvent e) { 
 					makeMove(0);
-					game();
-					if (gameMode == GameParameters.HumanVSAi) aiMove();
-					frameMainWindow.requestFocusInWindow();
+					if (!board.isOverflowOccured()) {
+						game();
+						saveUndoMove();
+						if (gameMode == GameParameters.HumanVSAi) aiMove();
+						frameMainWindow.requestFocusInWindow();
+					}
 				}
 			});
 			
 			col2_button.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					makeMove(1);
-					game();
-					if (gameMode == GameParameters.HumanVSAi) aiMove();
-					frameMainWindow.requestFocusInWindow();
+					if (!board.isOverflowOccured()) {
+						game();
+						saveUndoMove();
+						if (gameMode == GameParameters.HumanVSAi) aiMove();
+						frameMainWindow.requestFocusInWindow();
+					}
 				}
 			});
 			
 			col3_button.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					makeMove(2);
-					game();
-					if (gameMode == GameParameters.HumanVSAi) aiMove();
-					frameMainWindow.requestFocusInWindow();
+					if (!board.isOverflowOccured()) {
+						game();
+						saveUndoMove();
+						if (gameMode == GameParameters.HumanVSAi) aiMove();
+						frameMainWindow.requestFocusInWindow();
+					}
 				}
 			});
 			
 			col4_button.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					makeMove(3);
-					game();
-					if (gameMode == GameParameters.HumanVSAi) aiMove();
-					frameMainWindow.requestFocusInWindow();
+					if (!board.isOverflowOccured()) {
+						game();
+						saveUndoMove();
+						if (gameMode == GameParameters.HumanVSAi) aiMove();
+						frameMainWindow.requestFocusInWindow();
+					}
 				}
 			});
 			
 			col5_button.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					makeMove(4);
-					game();
-					if (gameMode == GameParameters.HumanVSAi) aiMove();
-					frameMainWindow.requestFocusInWindow();
+					if (!board.isOverflowOccured()) {
+						game();
+						saveUndoMove();
+						if (gameMode == GameParameters.HumanVSAi) aiMove();
+						frameMainWindow.requestFocusInWindow();
+					}
 				}
 			});
 			
 			col6_button.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					makeMove(5);
-					game();
-					if (gameMode == GameParameters.HumanVSAi) aiMove();
-					frameMainWindow.requestFocusInWindow();
+					if (!board.isOverflowOccured()) {
+						game();
+						saveUndoMove();
+						if (gameMode == GameParameters.HumanVSAi) aiMove();
+						frameMainWindow.requestFocusInWindow();
+					}
 				}
 			});
 			
 			col7_button.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					makeMove(6);
-					game();
-					if (gameMode == GameParameters.HumanVSAi) aiMove();
-					frameMainWindow.requestFocusInWindow();
+					if (!board.isOverflowOccured()) {
+						game();
+						saveUndoMove();
+						if (gameMode == GameParameters.HumanVSAi) aiMove();
+						frameMainWindow.requestFocusInWindow();
+					}
 				}
+
 			});
 				
 
@@ -427,6 +533,7 @@ public class Gui {
 		return panelMain;
 	}
 	
+	
 	public static void gameOver() {
         
 		int choice = 0;
@@ -451,13 +558,7 @@ public class Gui {
 			AddMenus();
 		} else {
 			// Disable buttons
-			col1_button.setEnabled(false);
-			col2_button.setEnabled(false);
-			col3_button.setEnabled(false);
-			col4_button.setEnabled(false);
-			col5_button.setEnabled(false);
-			col6_button.setEnabled(false);
-			col7_button.setEnabled(false);
+			disableButtons();
 			
 			// Remove key listener
 			frameMainWindow.removeKeyListener(frameMainWindow.getKeyListeners()[0]);
