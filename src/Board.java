@@ -1,6 +1,5 @@
 import java.util.ArrayList;
 
-// h ergasia einai basismeni panw stin triliza tou lab04
 public class Board {
 	
 	// board values
@@ -8,12 +7,12 @@ public class Board {
 	public static final int O = -1; // player 2
 	public static final int EMPTY = 0;
 	
-	 // h kinhsh pou odigise sti dimiourgia autou tou pinaka
+	// the move that was last applied on the current board
     private Move lastMove;
     
-    // metabliti pou periexei poios paiktis epaixe teleutaios,
-    // san apotelesma na dimiourgithei autos o pinakas
-    private int lastLetterPlayed;
+    // a variable to store the symbol of the player who played last,
+    // leading to the current board state
+    private int lastSymbolPlayed;
     
     private int winner;
 	private int [][] gameBoard;
@@ -22,10 +21,11 @@ public class Board {
 		
 	private boolean isGameOver;
 	
+	
 	// constructor
 	public Board() {
 		lastMove = new Move();
-		lastLetterPlayed = O;
+		lastSymbolPlayed = O;
 		winner = 0;
 		gameBoard = new int[6][7];
 		for(int i=0; i<6; i++) {
@@ -35,10 +35,11 @@ public class Board {
 		}
 	}
 	
+	
 	// copy constructor
 	public Board(Board board) {
 		lastMove = board.lastMove;
-		lastLetterPlayed = board.lastLetterPlayed;
+		lastSymbolPlayed = board.lastSymbolPlayed;
 		winner = board.winner;
 		gameBoard = new int[6][7];
 		for(int i=0; i<6; i++) {
@@ -48,25 +49,9 @@ public class Board {
 		}
 	}
 	
+	
 	public Move getLastMove() {
 		return lastMove;
-	}
-	
-	public int getLastLetterPlayed()
-	{
-		return lastLetterPlayed;
-	}
-	
-	public int[][] getGameBoard() {
-		return gameBoard;
-	}
-	
-	public int getWinner() {
-		return winner;
-	}
-	
-	public boolean isGameOver() {
-		return isGameOver;
 	}
 	
 	public void setLastMove(Move lastMove) {
@@ -75,9 +60,21 @@ public class Board {
 		this.lastMove.setValue(lastMove.getValue());
 	}
 	
-	public void setLastLetterPlayed(int lastLetterPlayed) {
-		this.lastLetterPlayed = lastLetterPlayed;
+	
+	public int getLastSymbolPlayed() {
+		return lastSymbolPlayed;
 	}
+	
+	
+	public void setLastSymbolPlayed(int lastLetterPlayed) {
+		this.lastSymbolPlayed = lastLetterPlayed;
+	}
+	
+	
+	public int[][] getGameBoard() {
+		return gameBoard;
+	}
+	
 	
 	public void setGameBoard(int[][] gameBoard) {
 		for(int i=0; i<6; i++) {
@@ -87,41 +84,45 @@ public class Board {
 		}
 	}
 	
+	
+	public int getWinner() {
+		return winner;
+	}
+	
+	
 	public void setWinner(int winner) {
 		this.winner = winner;
 	}
+	
+	
+	public boolean isGameOver() {
+		return isGameOver;
+	}
+
 
 	public void setGameOver(boolean isGameOver) {
 		this.isGameOver = isGameOver;
 	}
 	
-	public void undoMove(int row, int col, int letter) {
-		this.gameBoard[row][col] = 0;
-		if (letter == O) {
-			this.lastLetterPlayed = X;
-		} else if (letter == X) {
-			this.lastLetterPlayed = O;
-		}
+	
+	public boolean isOverflowOccured() {
+		return overflowOccured;
+	}
+
+	
+	public void setOverflowOccured(boolean overflowOccured) {
+		this.overflowOccured = overflowOccured;
 	}
 	
-	// kanei mia kinhsh, basei seiras kai sthlhs
-	public void makeMove(int row, int col, int letter) {
-		try {
-			this.lastMove = new Move(row, col);
-			this.lastLetterPlayed = letter;
-			this.gameBoard[row][col] = letter;
-		} catch (ArrayIndexOutOfBoundsException e) {
-			System.err.println("Column " + (col+1) + " is full!");
-			setOverflowOccured(true);
-		}
-	}
-	
-	// kanei mia kinhsh, basei sthlhs
+
+	// Makes a move based on the given column.
+	// It finds automatically in which row the checker should be inserted.
 	public void makeMove(int col, int letter) {
 		try {
-			// h lastMove prepei na allaxei prin thn gameBoard[][] logw ths getRowPosition(int col)
+			// The variable "lastMove" must be changed before the variable
+			// "gameBoard[][]" because of the function "getRowPosition(col)".
 			this.lastMove = new Move(getRowPosition(col), col);
-			this.lastLetterPlayed = letter;
+			this.lastSymbolPlayed = letter;
 			this.gameBoard[getRowPosition(col)][col] = letter;
 		} catch (ArrayIndexOutOfBoundsException e) {
 			System.err.println("Column " + (col+1) + " is full!");
@@ -129,47 +130,36 @@ public class Board {
 		}
 	}
 	
-	// checks whether a move is valid; whether a square is empty
-	public boolean isValidMove(int row, int col) {
-		if ((row == -1) || (col == -1) || (row > 5) || (col > 6)) {
-			return false;
+	
+	// Makes the specified cell in the border empty.
+	public void undoMove(int row, int col, int letter) {
+		this.gameBoard[row][col] = 0;
+		if (letter == O) {
+			this.lastSymbolPlayed = X;
+		} else if (letter == X) {
+			this.lastSymbolPlayed = O;
 		}
-		if(gameBoard[row][col] != EMPTY) {
-			return false;
-		}
-		return true;
 	}
 	
-	// checks whether a move is valid; whether a square is empty
-	// mono sthlh san eisodo gia na elegxoume an einai gemath 
-	public boolean isValidMove(int col) {
-		int row = getRowPosition(col);
-		
-		if ((row == -1) || (col == -1) || (row > 5) || (col > 6)) {
-			return false;
-		}
-		if(gameBoard[row][col] != EMPTY) {
-			return false;
-		}
-		return true;
-	}
 	
-	// xrisimopoieitai otan theloume na kanoume anazhthsh se olo ton pinaka
-	// xwris na bgoume exw apo ta oria tou pinaka
+	// This function is used when we want to search the whole board,
+	// without getting out of borders.
 	public boolean canMove(int row, int col) {
 		if ((row <= -1) || (col <= -1) || (row > 5) || (col > 6)) {
 			return false;
 		}
 		return true;
 	}
-		
+	
+	
 	public boolean checkFullColumn(int col) {
 		if (gameBoard[0][col] == EMPTY)
 			return false;
 		return true;
 	}
 	
-	// epistrefei th thesi ths teleutaias EMPTY seiras mias sthlhs
+	
+	// It returns the position of the last empty row in a column.
 	public int getRowPosition(int col) {
 		int rowPosition = -1;
 		for (int row=0; row<6; row++) {
@@ -180,6 +170,7 @@ public class Board {
 		return rowPosition;
 	}
 	
+	
 	/* Generates the children of the state
      * The max number of the children is 7,
      * because we have 7 columns
@@ -187,7 +178,7 @@ public class Board {
 	public ArrayList<Board> getChildren(int letter) {
 		ArrayList<Board> children = new ArrayList<Board>();
 		for(int col=0; col<7; col++) {
-			if(isValidMove(col)) {
+			if(!checkFullColumn(col)) {
 				Board child = new Board(this);
 				child.makeMove(col, letter);
 				children.add(child);
@@ -195,6 +186,7 @@ public class Board {
 		}
 		return children;
 	}
+	
 	
 	public int evaluate() {
 		// +100 'X' wins, -100 'O' wins,
@@ -218,13 +210,14 @@ public class Board {
 		return Xlines - Olines;
 	}
 	
+	
 	/*
-	 * terminal win test
+	 * Terminal win check.
+	 * It checks whether somebody has won the game.
 	 */
-	//elegxei kai tipwnei an exei nikisei kapoios to paixnidi
 	public boolean checkWinState() {
-				
-		//elegxos gia 4 checkers sti seira se grammi
+		
+		// Check for 4 consecutive checkers in a row, horizontally.
 		for (int i=5; i>=0; i--) {
 			for (int j=0; j<4; j++) {
 				if (gameBoard[i][j] == gameBoard[i][j+1]
@@ -237,7 +230,7 @@ public class Board {
 			}
 		}
 		
-		//elegxos gia 4 checkers sti seira se stili
+		// Check for 4 consecutive checkers in a row, vertically.
 		for (int i=5; i>=3; i--) {
 			for (int j=0; j<7; j++) {
 				if (gameBoard[i][j] == gameBoard[i-1][j]
@@ -250,7 +243,7 @@ public class Board {
 			}
 		}
 		
-		//elegxos gia 4 checkers sti seira se f8inousa diagwnio
+		// Check for 4 consecutive checkers in a row, in descending diagonals.
 		for (int i=0; i<3; i++) {
 			for (int j=0; j<4; j++) {
 				if (gameBoard[i][j] == gameBoard[i+1][j+1]
@@ -263,7 +256,7 @@ public class Board {
 			}
 		}
 		
-		//elegxos gia 4 checkers sti seira se auxousa diagwnio
+		// Check for 4 consecutive checkers in a row, in ascending diagonals.
 		for (int i=0; i<6; i++) {
 			for (int j=0; j<7; j++) {
 				if (canMove(i-3,j+3)) {
@@ -278,19 +271,20 @@ public class Board {
 			}
 		}
 		
-		setWinner(0); // set as winner no player
+		setWinner(0); // set as winner nobody
 		return false;
 
 	}
 	
     public boolean checkGameOver() {
-    	// elegxos an uparxei nikitis
+    	// Check if there is a winner.
     	if (checkWinState()) {
     		return true;
     	}
     	
-    	// elegxos an einai uparxei adeio keli,
-    	// diladi an uparxei isopalia
+    	// Check for an empty cell, i.e. check to find if it is a draw.
+    	// The game is in draw state, if all cells are full
+    	// and nobody has won the game.
     	for(int row=0; row<6; row++) {
 			for(int col=0; col<7; col++) {
 				if(gameBoard[row][col] == EMPTY) {
@@ -302,58 +296,58 @@ public class Board {
     	return true;
     }
 	
-	// epistrefei poses fores uparxoun 3 checkers sti seira,
-	// tou sigkekrimenou paikti
-	public int check3InARow(int player) {
+    // It returns the frequency of 3 checkers in a row
+    // for the given player.
+	public int check3InARow(int playerSymbol) {
 		
 		int times = 0;
 		
-		//elegxos gia 3 checkers sti seira se grammi
+		// Check for 3 consecutive checkers in a row, horizontally.
 		for (int i = 5; i >= 0; i--) {
 			for (int j = 0; j < 7; j++) {
 				if (canMove(i, j + 2)) {
 					if (gameBoard[i][j] == gameBoard[i][j + 1]
 							&& gameBoard[i][j] == gameBoard[i][j + 2]
-							&& gameBoard[i][j] == player) {
+							&& gameBoard[i][j] == playerSymbol) {
 						times++;
 					}
 				}
 			}
 		}
 
-		// elegxos gia 3 checkers sti seira se stili
+		// Check for 3 consecutive checkers in a row, vertically.
 		for (int i = 5; i >= 0; i--) {
 			for (int j = 0; j < 7; j++) {
 				if (canMove(i - 2, j)) {
 					if (gameBoard[i][j] == gameBoard[i - 1][j]
 							&& gameBoard[i][j] == gameBoard[i - 2][j]
-							&& gameBoard[i][j] == player) {
+							&& gameBoard[i][j] == playerSymbol) {
 						times++;
 					}
 				}
 			}
 		}
 
-		// elegxos gia 3 checkers sti seira se f8inousa diagwnio
+		// Check for 3 consecutive checkers in a row, in descending diagonal.
 		for (int i = 0; i < 6; i++) {
 			for (int j = 0; j < 7; j++) {
 				if (canMove(i + 2, j + 2)) {
 					if (gameBoard[i][j] == gameBoard[i + 1][j + 1]
 							&& gameBoard[i][j] == gameBoard[i + 2][j + 2]
-							&& gameBoard[i][j] == player) {
+							&& gameBoard[i][j] == playerSymbol) {
 						times++;
 					}
 				}
 			}
 		}
 
-		// elegxos gia 3 checkers sti seira se auxousa diagwnio
+		// Check for 3 consecutive checkers in a row, in ascending diagonal.
 		for (int i = 0; i < 6; i++) {
 			for (int j = 0; j < 7; j++) {
 				if (canMove(i - 2, j + 2)) {
 					if (gameBoard[i][j] == gameBoard[i - 1][j + 1]
 							&& gameBoard[i][j] == gameBoard[i - 2][j + 2]
-							&& gameBoard[i][j] == player) {
+							&& gameBoard[i][j] == playerSymbol) {
 						times++;
 					}
 				}
@@ -364,13 +358,13 @@ public class Board {
 				
 	}
 	
-	// epistrefei poses fores uparxoun 2 checkers sti seira,
-	// tou sigkekrimenou paikti
+    // It returns the frequency of 3 checkers in a row
+    // for the given player.
 	public int check2InARow(int player) {
 		
 		int times = 0;
 		
-		// elegxos gia 2 checkers sti seira se grammi
+		// Check for 2 consecutive checkers in a row, horizontally.
 		for (int i = 5; i >= 0; i--) {
 			for (int j = 0; j < 7; j++) {
 				if (canMove(i, j + 1)) {
@@ -382,7 +376,7 @@ public class Board {
 			}
 		}
 
-		// elegxos gia 2 checkers sti seira se stili
+		// Check for 3 consecutive checkers in a row, vertically.
 		for (int i = 5; i >= 0; i--) {
 			for (int j = 0; j < 7; j++) {
 				if (canMove(i - 1, j)) {
@@ -394,7 +388,7 @@ public class Board {
 			}
 		}
 
-		// elegxos gia 2 checkers sti seira se f8inousa diagwnio
+		// Check for 3 consecutive checkers in a row, in descending diagonal.
 		for (int i = 0; i < 6; i++) {
 			for (int j = 0; j < 7; j++) {
 				if (canMove(i + 1, j + 1)) {
@@ -406,7 +400,7 @@ public class Board {
 			}
 		}
 
-		// elegxos gia 2 checkers sti seira se auxousa diagwnio
+		// Check for 3 consecutive checkers in a row, in ascending diagonal.
 		for (int i = 0; i < 6; i++) {
 			for (int j = 0; j < 7; j++) {
 				if (canMove(i - 1, j + 1)) {
@@ -422,7 +416,7 @@ public class Board {
 				
 	}
 
-    //tipwnei ton pinaka
+    // It prints the board on the console.
   	public void print() {
   		
   		System.out.println("| 1 | 2 | 3 | 4 | 5 | 6 | 7 |");
@@ -450,14 +444,6 @@ public class Board {
   		}
   		
   	}
-
-	public boolean isOverflowOccured() {
-		return overflowOccured;
-	}
-
-	public void setOverflowOccured(boolean overflowOccured) {
-		this.overflowOccured = overflowOccured;
-	}
 
 
 }

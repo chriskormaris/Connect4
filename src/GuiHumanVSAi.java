@@ -43,7 +43,7 @@ public class GuiHumanVSAi {
 		createNewGame();
 	}
 		
-	// o kurios pinakas tou Connect-4
+	// the main Connect-4 board
 	public static JLayeredPane createLayeredBoard() {
 		layeredGameBoard = new JLayeredPane();
 		layeredGameBoard.setPreferredSize(new Dimension(570, 490));
@@ -58,20 +58,18 @@ public class GuiHumanVSAi {
 		return layeredGameBoard;
 	}
 	
-	// kaleitai otan xekinaei to paixnidi apo thn arxh
+	// To be called when the game starts for the first time
+	// or a new game starts.
 	public static void createNewGame() {
 		board = new Board();
 		
 		// set the new difficulty setting
 		ai.setMaxDepth(maxDepth);
-		
-		// debugging
-//		System.out.println("difficulty:" + gp.getDifficulty());
-//		System.out.println("color:" + gp.getColor());
              
 		if (frameMainWindow != null) frameMainWindow.dispose();
 		frameMainWindow = new JFrame("Minimax Connect-4");
-		centerWindow(frameMainWindow, 570, 490); // to kurio parathuro tha emfanizetai sto kentro
+		// make the main window appear on the center
+		centerWindow(frameMainWindow, 570, 490);
 		Component compMainWindowContents = createContentComponents();
 		frameMainWindow.getContentPane().add(compMainWindowContents, BorderLayout.CENTER);
 
@@ -89,9 +87,14 @@ public class GuiHumanVSAi {
 
 			@Override
 			public void keyPressed(KeyEvent e) {
-				//System.out.println("keyPressed="+KeyEvent.getKeyText(e.getKeyCode()));
+				//System.out.println("keyPressed = " + KeyEvent.getKeyText(e.getKeyCode()));
 				String button = KeyEvent.getKeyText(e.getKeyCode());
 				
+				board.setOverflowOccured(false);
+				int previousRow = board.getLastMove().getRow();
+				int previousCol = board.getLastMove().getCol();
+				int previousLetter = board.getLastSymbolPlayed();
+
 				if (button.equals("1")) {
 					board.makeMove(0, Board.X);
 				} else if (button.equals("2")) {
@@ -110,15 +113,21 @@ public class GuiHumanVSAi {
 				
 				if (button.equals("1") || button.equals("2") || button.equals("3") || button.equals("4")
 						|| button.equals("5") || button.equals("6") || button.equals("7")) {
-					game();
-					aiMove();
+					if (!board.isOverflowOccured()) {
+						game();
+						aiMove();
+					} else {
+						board.getLastMove().setRow(previousRow);
+						board.getLastMove().setCol(previousCol);
+						board.setLastSymbolPlayed(previousLetter);
+					}
 				}
 				
 			}
 
 			@Override
 			public void keyReleased(KeyEvent e) {
-				//System.out.println("keyReleased="+KeyEvent.getKeyText(e.getKeyCode()));
+				//System.out.println("keyReleased = " + KeyEvent.getKeyText(e.getKeyCode()));
 			}
 		});
 		
@@ -128,7 +137,7 @@ public class GuiHumanVSAi {
 		frameMainWindow.pack();
 		frameMainWindow.setVisible(true);
 
-		if (board.getLastLetterPlayed() == Board.X) {
+		if (board.getLastSymbolPlayed() == Board.X) {
 			Move aiMove = ai.MiniMax(board);
 			board.makeMove(aiMove.getCol(), Board.O);
 			game();
@@ -137,7 +146,7 @@ public class GuiHumanVSAi {
 	}
 	
 	
-	// kentrarei to parathuro sthn othonh
+	// It centers the window on screen.
 	public static void centerWindow(Window frame, int width, int height) {
 	    Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize();
 	    int x = (int) (((dimension.getWidth() - frame.getWidth()) / 2) - (width/2));
@@ -145,7 +154,7 @@ public class GuiHumanVSAi {
 	    frame.setLocation(x, y);
 	}
 	
-	// topothetei checker ston pinaka
+	// It places a checker on the board.
 	public static void placeChecker(String color, int row, int col) {
 		int xOffset = 75 * col;
 		int yOffset = 75 * row;
@@ -156,21 +165,21 @@ public class GuiHumanVSAi {
 		frameMainWindow.paint(frameMainWindow.getGraphics());
 	}
 	
-	// kaleitai kathe fora pou eisagetai mia kinhsh ston pinaka
+	// Gets called after makeMove(int col) is called.
 	public static void game() {
 	
 		int row = board.getLastMove().getRow();
 		int col = board.getLastMove().getCol();
 
-		int currentPlayer = board.getLastLetterPlayed();
+		int currentPlayer = board.getLastSymbolPlayed();
 		
 		if (currentPlayer == Board.X) {
-			// topothetei checker sto [row][col] tou GUI
+			// It places a checker in the corresponding [row][col] of the GUI.
 			placeChecker(game_params.getPlayer1Color(), row, col);
 		}
 		
 		if (currentPlayer == Board.O) {
-			// topothetei checker sto [row][col] tou GUI
+			// It places a checker in the corresponding [row][col] of the GUI.
 			placeChecker(game_params.getPlayer2Color(), row, col);
 		}
 		
@@ -182,12 +191,12 @@ public class GuiHumanVSAi {
 
 	}
 	
-	// kaleitai meta thn kinhsh tou human player, wste na paixei o computer AI
+	// Gets called after the human player makes a move. It makes an minimax AI move.
 	public static void aiMove(){
 
 		if (!board.isGameOver()) {
 			// check if human player played last
-			if (board.getLastLetterPlayed() == Board.X) {
+			if (board.getLastSymbolPlayed() == Board.X) {
 				Move aiMove = ai.MiniMax(board);
 				board.makeMove(aiMove.getCol(), Board.O);
 				game();
@@ -202,7 +211,8 @@ public class GuiHumanVSAi {
 	 * Kalei ton actionListener otan ginetai click me to pontiki panw se button.
 	 */
 	public static Component createContentComponents() {
-		// dhmiourgia panel gia na organwsoume ta buttons tou pinaka
+		
+		// Create a panel to set up the board buttons.
 		panelBoardNumbers = new JPanel();
 		panelBoardNumbers.setLayout(new GridLayout(1, 7, 6, 4));
 		panelBoardNumbers.setBorder(BorderFactory.createEmptyBorder(2, 22, 2, 22));
@@ -211,11 +221,20 @@ public class GuiHumanVSAi {
 		col1_button.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				board.setOverflowOccured(false);
+				int previousRow = board.getLastMove().getRow();
+				int previousCol = board.getLastMove().getCol();
+				int previousLetter = board.getLastSymbolPlayed();
 				board.makeMove(0, Board.X);
-				game();
-				aiMove();
+				if (!board.isOverflowOccured()) {
+					game();
+					aiMove();
+				} else {
+					board.getLastMove().setRow(previousRow);
+					board.getLastMove().setCol(previousCol);
+					board.setLastSymbolPlayed(previousLetter);
+				}
 				frameMainWindow.requestFocusInWindow();
-//				board.print();
 			}
 		});
 		
@@ -223,11 +242,20 @@ public class GuiHumanVSAi {
 		col2_button.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				board.setOverflowOccured(false);
+				int previousRow = board.getLastMove().getRow();
+				int previousCol = board.getLastMove().getCol();
+				int previousLetter = board.getLastSymbolPlayed();
 				board.makeMove(1, Board.X);
-				game();
-				aiMove();
+				if (!board.isOverflowOccured()) {
+					game();
+					aiMove();
+				} else {
+					board.getLastMove().setRow(previousRow);
+					board.getLastMove().setCol(previousCol);
+					board.setLastSymbolPlayed(previousLetter);
+				}
 				frameMainWindow.requestFocusInWindow();
-//				board.print();
 			}
 		});
 		
@@ -235,11 +263,20 @@ public class GuiHumanVSAi {
 		col3_button.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				board.setOverflowOccured(false);
+				int previousRow = board.getLastMove().getRow();
+				int previousCol = board.getLastMove().getCol();
+				int previousLetter = board.getLastSymbolPlayed();
 				board.makeMove(2, Board.X);
-				game();
-				aiMove();
+				if (!board.isOverflowOccured()) {
+					game();
+					aiMove();
+				} else {
+					board.getLastMove().setRow(previousRow);
+					board.getLastMove().setCol(previousCol);
+					board.setLastSymbolPlayed(previousLetter);
+				}
 				frameMainWindow.requestFocusInWindow();
-//				board.print();
 			}
 		});
 		
@@ -247,11 +284,20 @@ public class GuiHumanVSAi {
 		col4_button.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				board.setOverflowOccured(false);
+				int previousRow = board.getLastMove().getRow();
+				int previousCol = board.getLastMove().getCol();
+				int previousLetter = board.getLastSymbolPlayed();
 				board.makeMove(3, Board.X);
-				game();
-				aiMove();
+				if (!board.isOverflowOccured()) {
+					game();
+					aiMove();
+				} else {
+					board.getLastMove().setRow(previousRow);
+					board.getLastMove().setCol(previousCol);
+					board.setLastSymbolPlayed(previousLetter);
+				}
 				frameMainWindow.requestFocusInWindow();
-//				board.print();
 			}
 		});
 		
@@ -259,11 +305,20 @@ public class GuiHumanVSAi {
 		col5_button.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				board.setOverflowOccured(false);
+				int previousRow = board.getLastMove().getRow();
+				int previousCol = board.getLastMove().getCol();
+				int previousLetter = board.getLastSymbolPlayed();
 				board.makeMove(4, Board.X);
-				game();
-				aiMove();
+				if (!board.isOverflowOccured()) {
+					game();
+					aiMove();
+				} else {
+					board.getLastMove().setRow(previousRow);
+					board.getLastMove().setCol(previousCol);
+					board.setLastSymbolPlayed(previousLetter);
+				}
 				frameMainWindow.requestFocusInWindow();
-//				board.print();
 			}
 		});
 		
@@ -271,11 +326,20 @@ public class GuiHumanVSAi {
 		col6_button.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				board.setOverflowOccured(false);
+				int previousRow = board.getLastMove().getRow();
+				int previousCol = board.getLastMove().getCol();
+				int previousLetter = board.getLastSymbolPlayed();
 				board.makeMove(5, Board.X);
-				game();
-				aiMove();
+				if (!board.isOverflowOccured()) {
+					game();
+					aiMove();
+				} else {
+					board.getLastMove().setRow(previousRow);
+					board.getLastMove().setCol(previousCol);
+					board.setLastSymbolPlayed(previousLetter);
+				}
 				frameMainWindow.requestFocusInWindow();
-//				board.print();
 			}
 		});
 		
@@ -283,11 +347,20 @@ public class GuiHumanVSAi {
 		col7_button.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				board.setOverflowOccured(false);
+				int previousRow = board.getLastMove().getRow();
+				int previousCol = board.getLastMove().getCol();
+				int previousLetter = board.getLastSymbolPlayed();
 				board.makeMove(6, Board.X);
-				game();
-				aiMove();
+				if (!board.isOverflowOccured()) {
+					game();
+					aiMove();
+				} else {
+					board.getLastMove().setRow(previousRow);
+					board.getLastMove().setCol(previousCol);
+					board.setLastSymbolPlayed(previousLetter);
+				}
 				frameMainWindow.requestFocusInWindow();
-//				board.print();
 			}
 		});
 		
@@ -299,15 +372,15 @@ public class GuiHumanVSAi {
 		panelBoardNumbers.add(col6_button);
 		panelBoardNumbers.add(col7_button);
 
-		// dhmiourgia tou kuriou pinaka tou Connect-4, mazi me ta buttons 
+		// main Connect-4 board creation
 		layeredGameBoard = createLayeredBoard();
 
-		// dhmiourgia panel gia na krathsoume ola ta stoixeia tou pinaka
+		// panel creation to store all the elements of the board
 		JPanel panelMain = new JPanel();
 		panelMain.setLayout(new BorderLayout());
 		panelMain.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
 
-		// pros8hkh antikeimenwn sto panelMain 
+		// add button and main board components to panelMain
 		panelMain.add(panelBoardNumbers, BorderLayout.NORTH);
 		panelMain.add(layeredGameBoard, BorderLayout.CENTER);
 
@@ -371,9 +444,10 @@ public class GuiHumanVSAi {
 		frameGameOver.setVisible(true);
 	}
 	
-	@SuppressWarnings("unused")
+	@SuppressWarnings("static-access")
 	public static void main(String[] args){
-		GuiHumanVSAi Connect4 = new GuiHumanVSAi();
+		GuiHumanVSAi connect4 = new GuiHumanVSAi();
+		connect4.createNewGame();
 	}
 	
 }
