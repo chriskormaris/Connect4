@@ -37,8 +37,8 @@ public class Gui {
 //	static GamePlayer ai = new GamePlayer();
 	static MinimaxAI ai = new MinimaxAI(maxDepth, Board.X);
 	
-	//	Player 1 letter -> X. He plays First
-	//	Player 2 letter -> O.
+	//	Player 1 symbol -> X. Player 1 plays First
+	//	Player 2 symbol -> O.
 	
 	public static JLabel checkerLabel = null;
 	
@@ -48,6 +48,7 @@ public class Gui {
 	public static int humanPlayerLetter;
 	public static JLabel humanPlayerCheckerLabelUndo;
 
+	
 	public Gui() {
 		
 		try {
@@ -70,12 +71,10 @@ public class Gui {
 			e.printStackTrace();
 		}
 		
-		createNewGame();
-		AddMenus();
-		
 	}
 	
-	// Adds the menu bars and items to the window
+	
+	// Adds the menu bars and items to the window.
 	private static void AddMenus() {
 		
 		// Menu bars and items
@@ -112,7 +111,6 @@ public class Gui {
 		item11.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				createNewGame();
-				AddMenus();
 			}
 		});
 		
@@ -150,11 +148,13 @@ public class Gui {
 		menuBar.add(menu1);
 		menuBar.add(menu2);
 		frameMainWindow.setJMenuBar(menuBar);
+		// Makes the board visible after adding menus.
 		frameMainWindow.setVisible(true);
 		
 	}
-		
-	// o kurios pinakas tou Connect-4
+	
+	
+	// the main Connect-4 board
 	public static JLayeredPane createLayeredBoard() {
 		layeredGameBoard = new JLayeredPane();
 		layeredGameBoard.setPreferredSize(new Dimension(DEFAULT_WIDTH, DEFAULT_HEIGHT));
@@ -169,6 +169,7 @@ public class Gui {
 		return layeredGameBoard;
 	}
 	
+	
 	public static KeyListener gameKeyListener = new KeyListener() {
 		@Override
 		public void keyTyped(KeyEvent e) {
@@ -179,7 +180,6 @@ public class Gui {
 			//System.out.println("keyPressed = " + KeyEvent.getKeyText(e.getKeyCode()));
 			String button = KeyEvent.getKeyText(e.getKeyCode());
 			
-			board.setOverflowOccured(false);
 			if (button.equals("1")) {
 				makeMove(0);
 			} else if (button.equals("2")) {
@@ -217,8 +217,9 @@ public class Gui {
 		}
 	};
 	
+	
 	public static void undo() {
-		// Undo implementation for Human VS Human mode
+		// undo implementation for Human VS Human mode
 		if (game_params.getGameMode() == GameParameters.HumanVSHuman) {
 			try {
 				board.setGameOver(false);
@@ -235,7 +236,7 @@ public class Gui {
 			}
 		}
 		
-		// Undo implementation for Human VS AI mode
+		// undo implementation for Human VS AI mode
 		else if (game_params.getGameMode() == GameParameters.HumanVSAi) {
 			try {
 				board.setGameOver(false);
@@ -255,7 +256,9 @@ public class Gui {
 		}
 	}
 	
-	// kaleitai otan xekinaei to paixnidi apo thn arxh
+	
+	// To be called when the game starts for the first time
+	// or a new game starts.
 	public static void createNewGame() {
 		board = new Board();
 		
@@ -270,7 +273,8 @@ public class Gui {
 		
 		if (frameMainWindow != null) frameMainWindow.dispose();
 		frameMainWindow = new JFrame("Minimax Connect-4");
-		centerWindow(frameMainWindow, DEFAULT_WIDTH, DEFAULT_HEIGHT); // to kurio parathuro tha emfanizetai sto kentro
+		// make the main window appear on the center
+		centerWindow(frameMainWindow, DEFAULT_WIDTH, DEFAULT_HEIGHT);
 		Component compMainWindowContents = createContentComponents();
 		frameMainWindow.getContentPane().add(compMainWindowContents, BorderLayout.CENTER);
 		
@@ -285,19 +289,23 @@ public class Gui {
 		
 		// show window
 		frameMainWindow.pack();
+		// Makes the board visible before adding menus.
 		//frameMainWindow.setVisible(true);
 
 		if (gameMode == GameParameters.HumanVSAi)  {
-			if (board.getLastLetterPlayed() == Board.X) {
+			if (board.getLastSymbolPlayed() == Board.X) {
 				Move aiMove = ai.MiniMax(board);
 				board.makeMove(aiMove.getCol(), Board.O);
 				game();
 			}
 		}
-
+		
+		AddMenus();
+		
 	}
 		
-	// kentrarei to parathuro sthn othonh
+	
+	// It centers the window on screen.
 	public static void centerWindow(Window frame, int width, int height) {
 	    Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize();
 	    int x = (int) (((dimension.getWidth() - frame.getWidth()) / 2) - (width/2));
@@ -305,15 +313,16 @@ public class Gui {
 	    frame.setLocation(x, y);
 	}
 	
-	// briskei poios paiktis exei seira kai kanei eisagwgi sto Board
+	
+	// It finds which player plays next and makes a move on the board.
 	public static void makeMove(int col) {
 		board.setOverflowOccured(false);
 		
 		int previousRow = board.getLastMove().getRow();
 		int previousCol = board.getLastMove().getCol();
-		int previousLetter = board.getLastLetterPlayed();
+		int previousLetter = board.getLastSymbolPlayed();
 		
-		if (board.getLastLetterPlayed() == Board.O) {
+		if (board.getLastSymbolPlayed() == Board.O) {
 			board.makeMove(col, Board.X);
 		} else {
 			board.makeMove(col, Board.O);
@@ -322,13 +331,13 @@ public class Gui {
 		if (board.isOverflowOccured()) {
 			board.getLastMove().setRow(previousRow);
 			board.getLastMove().setCol(previousCol);
-			board.setLastLetterPlayed(previousLetter);
+			board.setLastSymbolPlayed(previousLetter);
 		}
 
 	}
 	
 	
-	// topothetei checker ston pinaka
+	// It places a checker on the board.
 	public static void placeChecker(String color, int row, int col) {
 		int xOffset = 75 * col;
 		int yOffset = 75 * row;
@@ -339,44 +348,46 @@ public class Gui {
 		frameMainWindow.paint(frameMainWindow.getGraphics());
 	}
 	
+	
 	public static void saveUndoMove() {
 		humanPlayerRowUndo = board.getLastMove().getRow();
 		humanPlayerColUndo = board.getLastMove().getCol();
-		humanPlayerLetter = board.getLastLetterPlayed();
+		humanPlayerLetter = board.getLastSymbolPlayed();
 		humanPlayerCheckerLabelUndo = checkerLabel;
 	}
 	
-	// gets called after makeMove(int col) is called
+	
+	// Gets called after makeMove(int col) is called.
 	public static void game() {
 			
 		int row = board.getLastMove().getRow();
 		int col = board.getLastMove().getCol();
-		int currentPlayer = board.getLastLetterPlayed();
+		int currentPlayer = board.getLastSymbolPlayed();
 		
 		if (currentPlayer == Board.X) {
-			// topothetei checker sto [row][col] tou GUI
+			// It places a checker in the corresponding [row][col] of the GUI.
 			placeChecker(player1Color, row, col);
 		}
 			
 		if (currentPlayer == Board.O) {
-			// topothetei checker sto [row][col] tou GUI
+			// It places a checker in the corresponding [row][col] of the GUI.
 			placeChecker(player2Color, row, col);
 		}
 		
 		if (board.checkGameOver()) {
-			board.setGameOver(true);
 			gameOver();
 		}
 		board.print();
 		System.out.println("\n*****************************");
 	}
 	
-	// kaleitai meta thn kinhsh tou human player, wste na paixei o computer AI
+	
+	// Gets called after the human player makes a move. It makes an minimax AI move.
 	public static void aiMove(){
 
 		if (!board.isGameOver()) {
 			// check if human player played last
-			if (board.getLastLetterPlayed() == Board.X) {
+			if (board.getLastSymbolPlayed() == Board.X) {
 				Move aiMove = ai.MiniMax(board);
 				board.makeMove(aiMove.getCol(), Board.O);
 				game();
@@ -384,6 +395,7 @@ public class Gui {
 		}
 
 	}
+	
 	
 	public static void enableButtons() {
 		col1_button.setEnabled(true);
@@ -395,6 +407,7 @@ public class Gui {
 		col7_button.setEnabled(true);
 	}
 	
+	
 	public static void disableButtons() {
 		col1_button.setEnabled(false);
 		col2_button.setEnabled(false);
@@ -405,13 +418,15 @@ public class Gui {
 		col7_button.setEnabled(false);
 	}
 	
+	
 	/**
 	 * Returns a component to be drawn by main window.
 	 * This function creates the main window components.
-	 * Kalei ton actionListener otan ginetai click me to pontiki panw se button.
+	 * It calls the "actionListener" function, when a click on a button is made.
 	 */
 	public static Component createContentComponents() {
-		// dhmiourgia panel gia na organwsoume ta buttons tou pinaka
+		
+		// Create a panel to set up the board buttons.
 		panelBoardNumbers = new JPanel();
 		panelBoardNumbers.setLayout(new GridLayout(1, 7, 6, 4));
 		panelBoardNumbers.setBorder(BorderFactory.createEmptyBorder(2, 22, 2, 22));
@@ -427,8 +442,8 @@ public class Gui {
 						game();
 						saveUndoMove();
 						if (gameMode == GameParameters.HumanVSAi) aiMove();
-						frameMainWindow.requestFocusInWindow();
 					}
+					frameMainWindow.requestFocusInWindow();
 				}
 			});
 			
@@ -439,8 +454,8 @@ public class Gui {
 						game();
 						saveUndoMove();
 						if (gameMode == GameParameters.HumanVSAi) aiMove();
-						frameMainWindow.requestFocusInWindow();
 					}
+					frameMainWindow.requestFocusInWindow();
 				}
 			});
 			
@@ -451,8 +466,8 @@ public class Gui {
 						game();
 						saveUndoMove();
 						if (gameMode == GameParameters.HumanVSAi) aiMove();
-						frameMainWindow.requestFocusInWindow();
 					}
+					frameMainWindow.requestFocusInWindow();
 				}
 			});
 			
@@ -463,8 +478,8 @@ public class Gui {
 						game();
 						saveUndoMove();
 						if (gameMode == GameParameters.HumanVSAi) aiMove();
-						frameMainWindow.requestFocusInWindow();
 					}
+					frameMainWindow.requestFocusInWindow();
 				}
 			});
 			
@@ -475,8 +490,8 @@ public class Gui {
 						game();
 						saveUndoMove();
 						if (gameMode == GameParameters.HumanVSAi) aiMove();
-						frameMainWindow.requestFocusInWindow();
 					}
+					frameMainWindow.requestFocusInWindow();
 				}
 			});
 			
@@ -487,8 +502,8 @@ public class Gui {
 						game();
 						saveUndoMove();
 						if (gameMode == GameParameters.HumanVSAi) aiMove();
-						frameMainWindow.requestFocusInWindow();
 					}
+					frameMainWindow.requestFocusInWindow();
 				}
 			});
 			
@@ -499,8 +514,8 @@ public class Gui {
 						game();
 						saveUndoMove();
 						if (gameMode == GameParameters.HumanVSAi) aiMove();
-						frameMainWindow.requestFocusInWindow();
 					}
+					frameMainWindow.requestFocusInWindow();
 				}
 
 			});
@@ -517,15 +532,15 @@ public class Gui {
 		panelBoardNumbers.add(col6_button);
 		panelBoardNumbers.add(col7_button);
 
-		// dhmiourgia tou kuriou pinaka tou Connect-4, mazi me ta buttons 
+		// main Connect-4 board creation
 		layeredGameBoard = createLayeredBoard();
 
-		// dhmiourgia panel gia na krathsoume ola ta stoixeia tou pinaka
+		// panel creation to store all the elements of the board
 		panelMain = new JPanel();
 		panelMain.setLayout(new BorderLayout());
 		panelMain.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
 
-		// pros8hkh antikeimenwn sto panelMain 
+		// add button and main board components to panelMain
 		panelMain.add(panelBoardNumbers, BorderLayout.NORTH);
 		panelMain.add(layeredGameBoard, BorderLayout.CENTER);
 
@@ -535,7 +550,8 @@ public class Gui {
 	
 	
 	public static void gameOver() {
-        
+		board.setGameOver(true);
+
 		int choice = 0;
 		board.checkWinState();
 		
@@ -555,7 +571,6 @@ public class Gui {
 		
 		if (choice == JOptionPane.YES_OPTION) {
 			createNewGame();
-			AddMenus();
 		} else {
 			// Disable buttons
 			disableButtons();
@@ -566,9 +581,12 @@ public class Gui {
 
 	}
 	
-	@SuppressWarnings("unused")
+	
+	@SuppressWarnings("static-access")
 	public static void main(String[] args){
-		Gui Connect4 = new Gui();
+		Gui connect4 = new Gui();
+		connect4.createNewGame();
 	}
+	
 	
 }

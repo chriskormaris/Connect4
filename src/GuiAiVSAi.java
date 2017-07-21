@@ -12,20 +12,19 @@ public class GuiAiVSAi {
 	static JPanel panelBoardNumbers;
 	static JLayeredPane layeredGameBoard;
 	
-	// arxikopoioume me maxDepth = 4, mporei na parei allh timh gia rythmish duskolias 
+	// Initialize maxDepth = 4. We can change this value for difficulty adjustment.
 	static MinimaxAI ai1 = new MinimaxAI(4, Board.X);
 	static MinimaxAI ai2 = new MinimaxAI(4, Board.O);
 	
 	public GuiAiVSAi() {
 		try {
-			UIManager.setLookAndFeel( UIManager.getSystemLookAndFeelClassName() );
+			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		createNewGame();
 	}
 	
-	// o kurios pinakas tou Connect-4
+	// the main Connect-4 board
 	public static JLayeredPane createLayeredBoard() {
 		layeredGameBoard = new JLayeredPane();
 		layeredGameBoard.setPreferredSize(new Dimension(570, 490));
@@ -40,13 +39,14 @@ public class GuiAiVSAi {
 		return layeredGameBoard;
 	}
 	
-	// kaleitai otan xekinaei to paixnidi apo thn arxh
+	// To be called when the game starts for the first time.
 	public static void createNewGame() {
 		board = new Board();
                 
 		if (frameMainWindow != null) frameMainWindow.dispose();
 		frameMainWindow = new JFrame("Minimax Connect-4");
-		centreWindow(frameMainWindow, 570, 490); // to kurio parathuro tha emfanizetai sto kentro
+		// make the main window appear on the center
+		centerWindow(frameMainWindow, 570, 490);
 		Component compMainWindowContents = createContentComponents();
 		frameMainWindow.getContentPane().add(compMainWindowContents, BorderLayout.CENTER);
 
@@ -64,7 +64,7 @@ public class GuiAiVSAi {
 		// AI VS AI implementation HERE
 		while (!board.isGameOver()) {
 			
-			if (board.getLastLetterPlayed() == Board.O) {
+			if (board.getLastSymbolPlayed() == Board.O) {
 				aiMove(ai1, Board.X);
 //				Move aiMove = ai.MiniMax(board);
 //				board.makeMove(aiMove.getCol(), Board.X);
@@ -74,7 +74,7 @@ public class GuiAiVSAi {
 			
 			if (!board.isGameOver()) {
 				
-				if (board.getLastLetterPlayed() == Board.X) {
+				if (board.getLastSymbolPlayed() == Board.X) {
 					aiMove(ai2, Board.O);
 //					Move ai2Move = ai2.MiniMax(board);
 //					board.makeMove(ai2Move.getCol(), Board.O);
@@ -87,15 +87,15 @@ public class GuiAiVSAi {
 
 	}
 	
-	// kentrarei to parathuro sthn othonh
-	public static void centreWindow(Window frame, int width, int height) {
+	// It centers the window on screen.
+	public static void centerWindow(Window frame, int width, int height) {
 	    Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize();
 	    int x = (int) (((dimension.getWidth() - frame.getWidth()) / 2) - (width/2));
 	    int y = (int) (((dimension.getHeight() - frame.getHeight()) / 2) - (height/2));
 	    frame.setLocation(x, y);
 	}
 	
-	// topothetei checker ston pinaka
+	// It places a checker on the board.
 	public static void placeChecker(String color, int row, int col) {
 		int xOffset = 75 * col;
 		int yOffset = 75 * row;
@@ -106,18 +106,18 @@ public class GuiAiVSAi {
 		frameMainWindow.paint(frameMainWindow.getGraphics());
 	}
 	
-	// kaleitai kathe fora pou eisagetai mia kinhsh ston pinaka
+	// Gets called after makeMove(int col) is called.
 	public static void game() {
 	
 		int row = board.getLastMove().getRow();
 		int col = board.getLastMove().getCol();
 
-		int lastPlayerLetter = board.getLastLetterPlayed();
+		int lastPlayerLetter = board.getLastSymbolPlayed();
 		if (lastPlayerLetter == Board.X) {
-			// topothetei kokkino checker sto [row][col] tou GUI
+			// It places a red checker in the corresponding [row][col] of the GUI.
 			placeChecker("RED", row, col);
 		} else if (lastPlayerLetter == Board.O) {
-			// topothetei kitrino checker sto [row][col] tou GUI
+			// It places a yellow checker in the corresponding [row][col] of the GUI.
 			placeChecker("YELLOW", row, col);
 		}
 		if (board.checkGameOver()) {
@@ -136,18 +136,18 @@ public class GuiAiVSAi {
 	/**
 	 * Returns a component to be drawn by main window.
 	 * This function creates the main window components.
-	 * Kalei ton actionListener otan ginetai click me to pontiki panw se button.
+	 * It calls the "actionListener" function, when a click on a button is made.
 	 */
 	public static Component createContentComponents() {
-		// dhmiourgia tou kuriou pinaka tou Connect-4
+		// main Connect-4 board creation
 		layeredGameBoard = createLayeredBoard();
 
-		// dhmiourgia panel gia na krathsoume ola ta stoixeia tou pinaka
+		// panel creation to store all the elements of the board
 		JPanel panelMain = new JPanel();
 		panelMain.setLayout(new BorderLayout());
 		panelMain.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
 
-		// pros8hkh antikeimenwn sto panelMain 
+		// add components to panelMain
 		panelMain.add(layeredGameBoard, BorderLayout.CENTER);
 
 		frameMainWindow.setResizable(false);
@@ -159,7 +159,7 @@ public class GuiAiVSAi {
 //		panelBoardNumbers.setVisible(false);
 		frameGameOver = new JFrame("Game over!");
 		frameGameOver.setBounds(620, 400, 350, 128);
-		centreWindow(frameGameOver, 0, 0);
+		centerWindow(frameGameOver, 0, 0);
 		JPanel winPanel = new JPanel(new BorderLayout());
 		winPanel.setBorder(BorderFactory.createEmptyBorder(15, 30, 15, 30));
 		
@@ -210,7 +210,8 @@ public class GuiAiVSAi {
 	
 	@SuppressWarnings("unused")
 	public static void main(String[] args){
-		GuiAiVSAi Connect4 = new GuiAiVSAi();
+		GuiAiVSAi connect4 = new GuiAiVSAi();
+		GuiAiVSAi.createNewGame();
 	}
 		
 }

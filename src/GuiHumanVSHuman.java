@@ -24,7 +24,7 @@ public class GuiHumanVSHuman {
 		createNewGame();
 	}
 	
-	// o kurios pinakas tou Connect-4
+	// the main Connect-4 board
 	public static JLayeredPane createLayeredBoard() {
 		layeredGameBoard = new JLayeredPane();
 		layeredGameBoard.setPreferredSize(new Dimension(570, 490));
@@ -39,13 +39,14 @@ public class GuiHumanVSHuman {
 		return layeredGameBoard;
 	}
 	
-	// kaleitai otan xekinaei to paixnidi apo thn arxh
+	// To be called when the game starts for the first time.
 	public static void createNewGame() {
 		board = new Board();
                 
 		if (frameMainWindow != null) frameMainWindow.dispose();
 		frameMainWindow = new JFrame("Minimax Connect-4");
-		centreWindow(frameMainWindow, 570, 490); // to kurio parathuro tha emfanizetai sto kentro
+		// make the main window appear on the center
+		centreWindow(frameMainWindow, 570, 490);
 		Component compMainWindowContents = createContentComponents();
 		frameMainWindow.getContentPane().add(compMainWindowContents, BorderLayout.CENTER);
 		
@@ -83,14 +84,18 @@ public class GuiHumanVSHuman {
 				
 				if (button.equals("1") || button.equals("2") || button.equals("3") || button.equals("4")
 						|| button.equals("5") || button.equals("6") || button.equals("7")) {
-					game();
+					if (!board.isOverflowOccured()) {
+						game();
+					} else {
+						board.setOverflowOccured(false);
+					}
 				}
 				
 			}
 
 			@Override
 			public void keyReleased(KeyEvent e) {
-				//System.out.println("keyReleased="+KeyEvent.getKeyText(e.getKeyCode()));
+				//System.out.println("keyReleased = " + KeyEvent.getKeyText(e.getKeyCode()));
 			}
 		});
 		
@@ -102,7 +107,7 @@ public class GuiHumanVSHuman {
 
 	}
 	
-	// kentrarei to parathuro sthn othonh
+	// It centers the window on screen.
 	public static void centreWindow(Window frame, int width, int height) {
 	    Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize();
 	    int x = (int) (((dimension.getWidth() - frame.getWidth()) / 2) - (width/2));
@@ -110,16 +115,28 @@ public class GuiHumanVSHuman {
 	    frame.setLocation(x, y);
 	}
 	
-	// briskei poios paiktis exei seira kai kanei eisagwgi sto Board
+	// It finds which player plays next and makes a move on the board.
 	public static void makeMove(int col) {
-		if (board.getLastLetterPlayed() == Board.O) {
+		board.setOverflowOccured(false);
+		
+		int previousRow = board.getLastMove().getRow();
+		int previousCol = board.getLastMove().getCol();
+		int previousLetter = board.getLastSymbolPlayed();
+		
+		if (board.getLastSymbolPlayed() == Board.O) {
 			board.makeMove(col, Board.X);
 		} else {
 			board.makeMove(col, Board.O);
 		}
+		
+		if (board.isOverflowOccured()) {
+			board.getLastMove().setRow(previousRow);
+			board.getLastMove().setCol(previousCol);
+			board.setLastSymbolPlayed(previousLetter);
+		}
 	}
 	
-	// topothetei checker ston pinaka
+	// It places a checker on the board.
 	public static void placeChecker(String color, int row, int col) {
 		int xOffset = 75 * col;
 		int yOffset = 75 * row;
@@ -130,21 +147,20 @@ public class GuiHumanVSHuman {
 		frameMainWindow.paint(frameMainWindow.getGraphics());
 	}
 	
-	// kaleitai kathe fora pou eisagetai mia kinhsh ston pinaka
+	// Gets called after makeMove(int col) is called.
 	public static void game() {
 	
 		int row = board.getLastMove().getRow();
 		int col = board.getLastMove().getCol();
 		
-		if (board.getLastLetterPlayed() == Board.X) {
-			// topothetei kokkino checker sto [row][col] tou GUI
+		if (board.getLastSymbolPlayed() == Board.X) {
+			// It places a checker in the corresponding [row][col] of the GUI.
 			placeChecker("RED", row, col);
-		} else if (board.getLastLetterPlayed() == Board.O) {
-			// topothetei kitrino checker sto [row][col] tou GUI
+		} else if (board.getLastSymbolPlayed() == Board.O) {
+			// It places a checker in the corresponding [row][col] of the GUI.
 			placeChecker("YELLOW", row, col);
 		} 
 		if (board.checkGameOver()) {
-//			board.setGameOver(true);
 			gameOver();
 		}
 
@@ -156,7 +172,8 @@ public class GuiHumanVSHuman {
 	 * Kalei ton actionListener otan ginetai click me to pontiki panw se button.
 	 */
 	public static Component createContentComponents() {
-		// dhmiourgia panel gia na organwsoume ta buttons tou pinaka
+		
+		// Create a panel to set up the board buttons.
 		panelBoardNumbers = new JPanel();
 		panelBoardNumbers.setLayout(new GridLayout(1, 7, 6, 4));
 		panelBoardNumbers.setBorder(BorderFactory.createEmptyBorder(2, 22, 2, 22));
@@ -165,9 +182,10 @@ public class GuiHumanVSHuman {
 		col1_button.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				makeMove(0);
-				game();
+				if (!board.isOverflowOccured()) {
+					game();
+				}
 				frameMainWindow.requestFocusInWindow();
-//				board.print();
 			}
 		});
 		
@@ -175,9 +193,10 @@ public class GuiHumanVSHuman {
 		col2_button.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				makeMove(1);
-				game();
+				if (!board.isOverflowOccured()) {
+					game();
+				}
 				frameMainWindow.requestFocusInWindow();
-//				board.print();
 			}
 		});
 		
@@ -185,9 +204,10 @@ public class GuiHumanVSHuman {
 		col3_button.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				makeMove(2);
-				game();
+				if (!board.isOverflowOccured()) {
+					game();
+				}
 				frameMainWindow.requestFocusInWindow();
-//				board.print();
 			}
 		});
 		
@@ -195,9 +215,10 @@ public class GuiHumanVSHuman {
 		col4_button.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				makeMove(3);
-				game();
+				if (!board.isOverflowOccured()) {
+					game();
+				}
 				frameMainWindow.requestFocusInWindow();
-//				board.print();
 			}
 		});
 		
@@ -205,9 +226,10 @@ public class GuiHumanVSHuman {
 		col5_button.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				makeMove(4);
-				game();
+				if (!board.isOverflowOccured()) {
+					game();
+				}
 				frameMainWindow.requestFocusInWindow();
-//				board.print();
 			}
 		});
 		
@@ -215,9 +237,10 @@ public class GuiHumanVSHuman {
 		col6_button.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				makeMove(5);
-				game();
+				if (!board.isOverflowOccured()) {
+					game();
+				}
 				frameMainWindow.requestFocusInWindow();
-//				board.print();
 			}
 		});
 		
@@ -225,9 +248,10 @@ public class GuiHumanVSHuman {
 		col7_button.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				makeMove(6);
-				game();
+				if (!board.isOverflowOccured()) {
+					game();
+				}
 				frameMainWindow.requestFocusInWindow();
-//				board.print();
 			}
 		});
 		
@@ -239,15 +263,15 @@ public class GuiHumanVSHuman {
 		panelBoardNumbers.add(col6_button);
 		panelBoardNumbers.add(col7_button);
 
-		// dhmiourgia tou kuriou pinaka tou Connect-4, mazi me ta buttons 
+		// main Connect-4 board creation
 		layeredGameBoard = createLayeredBoard();
 
-		// dhmiourgia panel gia na krathsoume ola ta stoixeia tou pinaka
+		// panel creation to store all the elements of the board
 		JPanel panelMain = new JPanel();
 		panelMain.setLayout(new BorderLayout());
 		panelMain.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
 
-		// pros8hkh antikeimenwn sto panelMain 
+		// add button and main board components to panelMain
 		panelMain.add(panelBoardNumbers, BorderLayout.NORTH);
 		panelMain.add(layeredGameBoard, BorderLayout.CENTER);
 
@@ -256,7 +280,8 @@ public class GuiHumanVSHuman {
 	}
 	
 	public static void gameOver() {
-		        		        
+		board.setGameOver(true);
+	        
 //		panelBoardNumbers.setVisible(false);
 		frameGameOver = new JFrame("Game over!");
 		frameGameOver.setBounds(620, 400, 350, 128);
@@ -309,9 +334,10 @@ public class GuiHumanVSHuman {
 		frameGameOver.setVisible(true);
 	}
 	
-	@SuppressWarnings("unused")
+	@SuppressWarnings("static-access")
 	public static void main(String[] args){
-		GuiHumanVSHuman Connect4 = new GuiHumanVSHuman();
+		 GuiHumanVSHuman connect4 = new GuiHumanVSHuman();
+		connect4.createNewGame();
 	}
 		
 }

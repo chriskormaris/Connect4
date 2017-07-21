@@ -179,10 +179,10 @@ public class PreferencesWindow extends JFrame {
 					System.err.println("ERROR : " + e.getMessage());
 				}
 				
-			}//else if.
+			} //else if.
 			
-		}//action performed.
+		} //action performed.
 		
-	}//inner class.
+	} //inner class.
 	
-}//class end.
+} //class end.
