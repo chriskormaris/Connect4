@@ -1,3 +1,13 @@
+﻿/*************************************************************************
+ * ΤΕΧΝΗΤΗ ΝΟΗΜΟΣΥΝΗ
+ *
+ * ΕΡΓΑΣΙΑ 1Η
+ *
+ * ΚΟΡΜΑΡΗΣ ΧΡΗΣΤΟΣ: 3110086
+ * 
+ * ΗΜΕΡΟΜΗΝΙΑ ΠΑΡΑΔΟΣΗΣ: 25/11/2013
+ *************************************************************************/
+
 import java.util.Scanner;
 import java.util.InputMismatchException; // gia thn Scanner
 //import java.util.Random;
@@ -56,7 +66,7 @@ public class Main {
                     System.out.println("AI 'O' moves.");
                     
                     // minimax move
-					Move OMove = OPlayer.MiniMax(connect4);
+					Move OMove = OPlayer.MiniMaxAlphaBeta(connect4);
 					
 					// random move
 					//Random r = new Random();

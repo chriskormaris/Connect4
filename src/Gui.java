@@ -1,3 +1,13 @@
+﻿/*************************************************************************
+ * ΤΕΧΝΗΤΗ ΝΟΗΜΟΣΥΝΗ
+ *
+ * ΕΡΓΑΣΙΑ 1Η
+ *
+ * ΚΟΡΜΑΡΗΣ ΧΡΗΣΤΟΣ: 3110086
+ * 
+ * ΗΜΕΡΟΜΗΝΙΑ ΠΑΡΑΔΟΣΗΣ: 25/11/2013
+ *************************************************************************/
+
 import java.awt.*;
 import java.awt.event.*;
 
@@ -164,7 +174,7 @@ public class Gui {
 		JLabel imageBoardLabel = new JLabel(imageBoard);
 
 		imageBoardLabel.setBounds(20, 20, imageBoard.getIconWidth(), imageBoard.getIconHeight());
-		layeredGameBoard.add(imageBoardLabel, new Integer (0), 1);
+		layeredGameBoard.add(imageBoardLabel, 0, 1);
 
 		return layeredGameBoard;
 	}
@@ -196,7 +206,7 @@ public class Gui {
 				makeMove(6);
 			}
 			
-			else if ((e.getKeyCode() == KeyEvent.VK_Z) && ((e.getModifiers() & KeyEvent.CTRL_MASK) != 0)) {
+			else if ((e.getKeyCode() == KeyEvent.VK_Z) && ((e.getModifiersEx() & KeyEvent.CTRL_DOWN_MASK) != 0)) {
                 undo();
             }
 			
@@ -344,7 +354,7 @@ public class Gui {
 		ImageIcon checkerIcon = new ImageIcon(ResourceLoader.load("images/" + color + ".gif"));
 		checkerLabel = new JLabel(checkerIcon);
 		checkerLabel.setBounds(27 + xOffset, 27 + yOffset, checkerIcon.getIconWidth(),checkerIcon.getIconHeight());
-		layeredGameBoard.add(checkerLabel, new Integer(0), 0);
+		layeredGameBoard.add(checkerLabel, 0, 0);
 		frameMainWindow.paint(frameMainWindow.getGraphics());
 	}
 	
@@ -388,7 +398,7 @@ public class Gui {
 		if (!board.isGameOver()) {
 			// check if human player played last
 			if (board.getLastSymbolPlayed() == Board.X) {
-				Move aiMove = ai.MiniMax(board);
+				Move aiMove = ai.MiniMaxAlphaBeta(board);
 				board.makeMove(aiMove.getCol(), Board.O);
 				game();
 			}

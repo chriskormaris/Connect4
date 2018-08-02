@@ -1,4 +1,4 @@
-public class GameParameters {
+﻿public class GameParameters {
 	
 	private int gameMode;
 	private int maxDepth;
