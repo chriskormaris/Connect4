@@ -1,4 +1,4 @@
-import java.awt.*;
+﻿import java.awt.*;
 import java.awt.event.*;
 
 import javax.swing.*;
@@ -34,7 +34,7 @@ public class GuiHumanVSHuman {
 		JLabel imageBoardLabel = new JLabel(imageBoard);
 
 		imageBoardLabel.setBounds(20, 20, imageBoard.getIconWidth(), imageBoard.getIconHeight());
-		layeredGameBoard.add(imageBoardLabel, new Integer (0), 1);
+		layeredGameBoard.add(imageBoardLabel, 0, 1);
 
 		return layeredGameBoard;
 	}
@@ -143,7 +143,7 @@ public class GuiHumanVSHuman {
 		ImageIcon checkerIcon = new ImageIcon(ResourceLoader.load("images/" + color + ".gif"));
 		JLabel checkerLabel = new JLabel(checkerIcon);
 		checkerLabel.setBounds(27 + xOffset, 27 + yOffset, checkerIcon.getIconWidth(),checkerIcon.getIconHeight());
-		layeredGameBoard.add(checkerLabel, new Integer(0), 0);
+		layeredGameBoard.add(checkerLabel, 0, 0);
 		frameMainWindow.paint(frameMainWindow.getGraphics());
 	}
 	
