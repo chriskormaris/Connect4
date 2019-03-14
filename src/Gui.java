@@ -135,13 +135,17 @@ public class Gui {
 		
 		item21.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				JOptionPane.showMessageDialog(null , "Click on the buttons or press 1-7 on your keyboard to insert a new checker.\nTo win you must place 4 checkers in an row, horizontally, vertically or diagonally." , "How to Play" , JOptionPane.INFORMATION_MESSAGE);
+				JOptionPane.showMessageDialog(null,
+            "Click on the buttons or press 1-7 on your keyboard to insert a new checker.\nTo win you must place 4 checkers in an row, horizontally, vertically or diagonally.",
+            "How to Play", JOptionPane.INFORMATION_MESSAGE);
 			}
 		});
 		
 		item22.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				JOptionPane.showMessageDialog(null , "© Created by: Chris Kormaris" , "About" , JOptionPane.INFORMATION_MESSAGE);
+				JOptionPane.showMessageDialog(null,
+						"© Created by: Christos Kormaris\nVersion 2.0",
+            "About", JOptionPane.INFORMATION_MESSAGE);
 			}
 		});
 		
