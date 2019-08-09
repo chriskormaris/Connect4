@@ -56,7 +56,7 @@ public class Gui {
 			// Option 1
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 
-			// Option 2
+			// Option 2 (Default)
 //			UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName());
 			
 			// Option 3
