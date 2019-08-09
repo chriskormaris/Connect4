@@ -1,8 +1,8 @@
-import java.awt.*;
+﻿import java.awt.*;
 import java.awt.event.*;
 
 import javax.swing.*;
-//import javax.swing.UIManager.LookAndFeelInfo;
+// import javax.swing.UIManager.LookAndFeelInfo;
 
 
 public class Gui {
@@ -35,7 +35,7 @@ public class Gui {
 	static String player2Color = game_params.getPlayer2Color();
 	
 //	static GamePlayer ai = new GamePlayer();
-	static MinimaxAI ai = new MinimaxAI(maxDepth, Board.X);
+	static MinimaxAi ai = new MinimaxAi(maxDepth, Board.X);
 	
 	//	Player 1 symbol -> X. Player 1 plays First
 	//	Player 2 symbol -> O.
@@ -79,78 +79,78 @@ public class Gui {
 		
 		// Menu bars and items
 		JMenuBar menuBar;
-		JMenu menu1;
-		JMenuItem item11;
-		JMenuItem item12;
-		JMenuItem item13;
-		JMenuItem item14;
-		JMenu menu2;
-		JMenuItem item21;
-		JMenuItem item22;
+		JMenu fileMenu;
+		JMenuItem newGameItem;
+		JMenuItem undoItem;
+		JMenuItem preferencesItem;
+		JMenuItem exitItem;
+		JMenu helpMenu;
+		JMenuItem howToPlayItem;
+		JMenuItem aboutItem;
 		
 		// Adding the menu bar
 		menuBar = new JMenuBar();
 		
-		menu1 = new JMenu("File");
-		item11 = new JMenuItem("New Game");
-		item12 = new JMenuItem("Undo    Ctrl+Z");
-		item13 = new JMenuItem("Preferences");
-		item14 = new JMenuItem("Exit");
-		menu1.add(item11);
-		menu1.add(item12);
-		menu1.add(item13);
-		menu1.add(item14);
+		fileMenu = new JMenu("File");
+		newGameItem = new JMenuItem("New Game");
+		undoItem = new JMenuItem("Undo    Ctrl+Z");
+		preferencesItem = new JMenuItem("Preferences");
+		exitItem = new JMenuItem("Exit");
+		fileMenu.add(newGameItem);
+		fileMenu.add(undoItem);
+		fileMenu.add(preferencesItem);
+		fileMenu.add(exitItem);
 		
-		menu2 = new JMenu("Help");
-		item21 = new JMenuItem("How to Play");
-		item22 = new JMenuItem("About");
-		menu2.add(item21);
-		menu2.add(item22);
+		helpMenu = new JMenu("Help");
+		howToPlayItem = new JMenuItem("How to Play");
+		aboutItem = new JMenuItem("About");
+		helpMenu.add(howToPlayItem);
+		helpMenu.add(aboutItem);
 
 		
-		item11.addActionListener(new ActionListener() {
+		newGameItem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				createNewGame();
 			}
 		});
 		
-		item12.addActionListener(new ActionListener() {
+		undoItem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				undo();
 			}
 		});
 		
-		item13.addActionListener(new ActionListener() {
+		preferencesItem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				PreferencesWindow prefs = new PreferencesWindow(game_params);
 				prefs.setVisible(true);
 			}
 		});
 		
-		item14.addActionListener(new ActionListener() {
+		exitItem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				System.exit(0);
 			}
 		});
 		
-		item21.addActionListener(new ActionListener() {
+		howToPlayItem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				JOptionPane.showMessageDialog(null,
-            "Click on the buttons or press 1-7 on your keyboard to insert a new checker.\nTo win you must place 4 checkers in an row, horizontally, vertically or diagonally.",
-            "How to Play", JOptionPane.INFORMATION_MESSAGE);
+						"Click on the buttons or press 1-7 on your keyboard to insert a new checker.\nTo win you must place 4 checkers in an row, horizontally, vertically or diagonally.",
+						"How to Play", JOptionPane.INFORMATION_MESSAGE);
 			}
 		});
 		
-		item22.addActionListener(new ActionListener() {
+		aboutItem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				JOptionPane.showMessageDialog(null,
 						"© Created by: Christos Kormaris\nVersion 2.0",
-            "About", JOptionPane.INFORMATION_MESSAGE);
+						"About", JOptionPane.INFORMATION_MESSAGE);
 			}
 		});
 		
-		menuBar.add(menu1);
-		menuBar.add(menu2);
+		menuBar.add(fileMenu);
+		menuBar.add(helpMenu);
 		frameMainWindow.setJMenuBar(menuBar);
 		// Makes the board visible after adding menus.
 		frameMainWindow.setVisible(true);
@@ -158,7 +158,7 @@ public class Gui {
 	}
 	
 	
-	// the main Connect-4 board
+	// This is the main Connect-4 board.
 	public static JLayeredPane createLayeredBoard() {
 		layeredGameBoard = new JLayeredPane();
 		layeredGameBoard.setPreferredSize(new Dimension(DEFAULT_WIDTH, DEFAULT_HEIGHT));
@@ -177,11 +177,12 @@ public class Gui {
 	public static KeyListener gameKeyListener = new KeyListener() {
 		@Override
 		public void keyTyped(KeyEvent e) {
+			
 		}
 
 		@Override
 		public void keyPressed(KeyEvent e) {
-			//System.out.println("keyPressed = " + KeyEvent.getKeyText(e.getKeyCode()));
+			// System.out.println("keyPressed = " + KeyEvent.getKeyText(e.getKeyCode()));
 			String button = KeyEvent.getKeyText(e.getKeyCode());
 			
 			if (button.equals("1")) {
@@ -209,7 +210,7 @@ public class Gui {
 				if (!board.isOverflowOccured()) {
 					game();
 					saveUndoMove();
-					if (gameMode == GameParameters.HumanVSAi) aiMove();
+					if (gameMode == GameParameters.HumanVsAi) aiMove();
 				}
 			}
 			
@@ -217,14 +218,14 @@ public class Gui {
 
 		@Override
 		public void keyReleased(KeyEvent e) {
-			//System.out.println("keyReleased = " + KeyEvent.getKeyText(e.getKeyCode()));
+			// System.out.println("keyReleased = " + KeyEvent.getKeyText(e.getKeyCode()));
 		}
 	};
 	
 	
 	public static void undo() {
-		// undo implementation for Human VS Human mode
-		if (game_params.getGameMode() == GameParameters.HumanVSHuman) {
+		// This is the undo implementation for Human VS Human mode.
+		if (game_params.getGameMode() == GameParameters.HumanVsHuman) {
 			try {
 				board.setGameOver(false);
 				enableButtons();
@@ -240,8 +241,8 @@ public class Gui {
 			}
 		}
 		
-		// undo implementation for Human VS AI mode
-		else if (game_params.getGameMode() == GameParameters.HumanVSAi) {
+		// This is the undo implementation for Human VS AI mode.
+		else if (game_params.getGameMode() == GameParameters.HumanVsAi) {
 			try {
 				board.setGameOver(false);
 				enableButtons();
@@ -296,9 +297,9 @@ public class Gui {
 		// Makes the board visible before adding menus.
 		//frameMainWindow.setVisible(true);
 
-		if (gameMode == GameParameters.HumanVSAi)  {
+		if (gameMode == GameParameters.HumanVsAi)  {
 			if (board.getLastSymbolPlayed() == Board.X) {
-				Move aiMove = ai.MiniMax(board);
+				Move aiMove = ai.miniMax(board);
 				board.makeMove(aiMove.getCol(), Board.O);
 				game();
 			}
@@ -307,7 +308,7 @@ public class Gui {
 		AddMenus();
 		
 	}
-		
+	
 	
 	// It centers the window on screen.
 	public static void centerWindow(Window frame, int width, int height) {
@@ -363,7 +364,7 @@ public class Gui {
 	
 	// Gets called after makeMove(int col) is called.
 	public static void game() {
-			
+		
 		int row = board.getLastMove().getRow();
 		int col = board.getLastMove().getCol();
 		int currentPlayer = board.getLastSymbolPlayed();
@@ -372,7 +373,7 @@ public class Gui {
 			// It places a checker in the corresponding [row][col] of the GUI.
 			placeChecker(player1Color, row, col);
 		}
-			
+		
 		if (currentPlayer == Board.O) {
 			// It places a checker in the corresponding [row][col] of the GUI.
 			placeChecker(player2Color, row, col);
@@ -386,13 +387,13 @@ public class Gui {
 	}
 	
 	
-	// Gets called after the human player makes a move. It makes an minimax AI move.
+	// Gets called after the human player makes a move. It makes a Minimax AI move.
 	public static void aiMove(){
 
 		if (!board.isGameOver()) {
 			// check if human player played last
 			if (board.getLastSymbolPlayed() == Board.X) {
-				Move aiMove = ai.MiniMaxAlphaBeta(board);
+				Move aiMove = ai.miniMax(board);
 				board.makeMove(aiMove.getCol(), Board.O);
 				game();
 			}
@@ -445,7 +446,7 @@ public class Gui {
 					if (!board.isOverflowOccured()) {
 						game();
 						saveUndoMove();
-						if (gameMode == GameParameters.HumanVSAi) aiMove();
+						if (gameMode == GameParameters.HumanVsAi) aiMove();
 					}
 					frameMainWindow.requestFocusInWindow();
 				}
@@ -457,7 +458,7 @@ public class Gui {
 					if (!board.isOverflowOccured()) {
 						game();
 						saveUndoMove();
-						if (gameMode == GameParameters.HumanVSAi) aiMove();
+						if (gameMode == GameParameters.HumanVsAi) aiMove();
 					}
 					frameMainWindow.requestFocusInWindow();
 				}
@@ -469,7 +470,7 @@ public class Gui {
 					if (!board.isOverflowOccured()) {
 						game();
 						saveUndoMove();
-						if (gameMode == GameParameters.HumanVSAi) aiMove();
+						if (gameMode == GameParameters.HumanVsAi) aiMove();
 					}
 					frameMainWindow.requestFocusInWindow();
 				}
@@ -481,7 +482,7 @@ public class Gui {
 					if (!board.isOverflowOccured()) {
 						game();
 						saveUndoMove();
-						if (gameMode == GameParameters.HumanVSAi) aiMove();
+						if (gameMode == GameParameters.HumanVsAi) aiMove();
 					}
 					frameMainWindow.requestFocusInWindow();
 				}
@@ -493,7 +494,7 @@ public class Gui {
 					if (!board.isOverflowOccured()) {
 						game();
 						saveUndoMove();
-						if (gameMode == GameParameters.HumanVSAi) aiMove();
+						if (gameMode == GameParameters.HumanVsAi) aiMove();
 					}
 					frameMainWindow.requestFocusInWindow();
 				}
@@ -505,7 +506,7 @@ public class Gui {
 					if (!board.isOverflowOccured()) {
 						game();
 						saveUndoMove();
-						if (gameMode == GameParameters.HumanVSAi) aiMove();
+						if (gameMode == GameParameters.HumanVsAi) aiMove();
 					}
 					frameMainWindow.requestFocusInWindow();
 				}
@@ -517,7 +518,7 @@ public class Gui {
 					if (!board.isOverflowOccured()) {
 						game();
 						saveUndoMove();
-						if (gameMode == GameParameters.HumanVSAi) aiMove();
+						if (gameMode == GameParameters.HumanVsAi) aiMove();
 					}
 					frameMainWindow.requestFocusInWindow();
 				}
@@ -560,14 +561,14 @@ public class Gui {
 		board.checkWinState();
 		
 		if (board.getWinner() == Board.X) {
-			if (gameMode == GameParameters.HumanVSAi)
+			if (gameMode == GameParameters.HumanVsAi)
 				choice = JOptionPane.showConfirmDialog(null, "You win! Start a new game?" ,"GAME OVER", JOptionPane.YES_NO_OPTION);
-			else if (gameMode == GameParameters.HumanVSHuman)
+			else if (gameMode == GameParameters.HumanVsHuman)
 				choice = JOptionPane.showConfirmDialog(null, "Player 1 wins! Start a new game?" ,"GAME OVER", JOptionPane.YES_NO_OPTION);
 		} else if (board.getWinner() == Board.O) {
-			if (gameMode == GameParameters.HumanVSAi)
+			if (gameMode == GameParameters.HumanVsAi)
 				choice = JOptionPane.showConfirmDialog(null, "Computer AI wins! Start a new game?" ,"GAME OVER", JOptionPane.YES_NO_OPTION);
-			else if (gameMode == GameParameters.HumanVSHuman)
+			else if (gameMode == GameParameters.HumanVsHuman)
 				choice = JOptionPane.showConfirmDialog(null, "Player 2 wins! Start a new game?" ,"GAME OVER", JOptionPane.YES_NO_OPTION);
 		} else {
 			choice = JOptionPane.showConfirmDialog(null, "It's a draw! Start a new game?" ,"GAME OVER", JOptionPane.YES_NO_OPTION);
