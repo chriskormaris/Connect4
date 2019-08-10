@@ -1,4 +1,6 @@
-﻿final public class ResourceLoader {
+import java.net.URL;
+
+final public class ResourceLoader {
 	
 	public static URL load(String path) {
 		// InputStream input = ResourceLoader.class.getResourceAsStream(path);

@@ -1,5 +1,9 @@
-﻿public class PreferencesWindow extends JFrame {
-	
+import javax.swing.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+
+public class PreferencesWindow extends JFrame {
 	
 	private static final long serialVersionUID = 1L;
 	
@@ -114,7 +118,6 @@
 		else if (selectedPlayer2Color.equals("PURPLE"))
 			drop_down_4.setSelectedIndex(5);
 		
-		
 		add(drop_down_1);
 		add(drop_down_2);
 		add(drop_down_3);
@@ -136,7 +139,6 @@
 
 
 	private class EventHandler implements ActionListener {
-		
 		
 		@Override
 		public void actionPerformed(ActionEvent ev) {
