@@ -1,9 +1,9 @@
-import java.awt.*;
+﻿import java.awt.*;
 import java.awt.event.*;
 
 import javax.swing.*;
 
-public class GuiAiVSAi {
+public class GuiAiVsAi {
 	
 	static Board board = new Board();
 	static JFrame frameMainWindow;
@@ -13,10 +13,10 @@ public class GuiAiVSAi {
 	static JLayeredPane layeredGameBoard;
 	
 	// Initialize maxDepth = 4. We can change this value for difficulty adjustment.
-	static MinimaxAI ai1 = new MinimaxAI(4, Board.X);
-	static MinimaxAI ai2 = new MinimaxAI(4, Board.O);
+	static MiniMaxAi ai1 = new MiniMaxAi(4, Board.X);
+	static MiniMaxAi ai2 = new MiniMaxAi(4, Board.O);
 	
-	public GuiAiVSAi() {
+	public GuiAiVsAi() {
 		try {
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 		} catch (Exception e) {
@@ -66,7 +66,7 @@ public class GuiAiVSAi {
 			
 			if (board.getLastSymbolPlayed() == Board.O) {
 				aiMove(ai1, Board.X);
-//				Move aiMove = ai.MiniMaxAlphaBeta(board);
+//				Move aiMove = ai.MiniMax(board);
 //				board.makeMove(aiMove.getCol(), Board.X);
 //				game();
 			}
@@ -76,7 +76,7 @@ public class GuiAiVSAi {
 				
 				if (board.getLastSymbolPlayed() == Board.X) {
 					aiMove(ai2, Board.O);
-//					Move ai2Move = ai2.MiniMaxAlphaBeta(board);
+//					Move ai2Move = ai2.MiniMax(board);
 //					board.makeMove(ai2Move.getCol(), Board.O);
 //					game();
 				}
@@ -127,8 +127,8 @@ public class GuiAiVSAi {
 
 	}
 	
-	public static void aiMove(MinimaxAI player, int checker){
-		Move aiMove = player.MiniMaxAlphaBeta(board);
+	public static void aiMove(MiniMaxAi player, int checker){
+		Move aiMove = player.miniMax(board);
 		board.makeMove(aiMove.getCol(), checker);
 		game();
 	}
@@ -210,8 +210,8 @@ public class GuiAiVSAi {
 	
 	@SuppressWarnings("unused")
 	public static void main(String[] args){
-		GuiAiVSAi connect4 = new GuiAiVSAi();
-		GuiAiVSAi.createNewGame();
+		GuiAiVsAi connect4 = new GuiAiVsAi();
+		GuiAiVsAi.createNewGame();
 	}
 		
 }

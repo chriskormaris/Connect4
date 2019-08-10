@@ -1,10 +1,10 @@
-import java.awt.*;
+﻿import java.awt.*;
 import java.awt.event.*;
 
 import javax.swing.*;
 
 
-public class GuiHumanVSAi {
+public class GuiHumanVsAi {
 	
 	static Board board = new Board();
 	static JFrame frameMainWindow;
@@ -13,7 +13,7 @@ public class GuiHumanVSAi {
 	static JPanel panelBoardNumbers;
 	static JLayeredPane layeredGameBoard;
 	
-	//Menu bars and items.
+	// Menu bars and items.
 	static JMenuBar menuBar;
 	static JMenu menu1;
 	static JMenuItem item11;
@@ -29,12 +29,12 @@ public class GuiHumanVSAi {
 	static String player2Color = game_params.getPlayer2Color();
 	
 //	static GamePlayer ai = new GamePlayer();
-	static MinimaxAI ai = new MinimaxAI(maxDepth, Board.X);
+	static MiniMaxAi ai = new MiniMaxAi(maxDepth, Board.X);
 	
 	//	Human player letter -> X. He plays First
 	//	Minimax AI letter -> O.
 	
-	public GuiHumanVSAi() {
+	public GuiHumanVsAi() {
 		try {
 			UIManager.setLookAndFeel( UIManager.getSystemLookAndFeelClassName() );
 		} catch (Exception e) {
@@ -138,7 +138,7 @@ public class GuiHumanVSAi {
 		frameMainWindow.setVisible(true);
 
 		if (board.getLastSymbolPlayed() == Board.X) {
-			Move aiMove = ai.MiniMaxAlphaBeta(board);
+			Move aiMove = ai.miniMax(board);
 			board.makeMove(aiMove.getCol(), Board.O);
 			game();
 		}
@@ -197,7 +197,7 @@ public class GuiHumanVSAi {
 		if (!board.isGameOver()) {
 			// check if human player played last
 			if (board.getLastSymbolPlayed() == Board.X) {
-				Move aiMove = ai.MiniMaxAlphaBeta(board);
+				Move aiMove = ai.miniMax(board);
 				board.makeMove(aiMove.getCol(), Board.O);
 				game();
 			}
@@ -446,7 +446,7 @@ public class GuiHumanVSAi {
 	
 	@SuppressWarnings("static-access")
 	public static void main(String[] args){
-		GuiHumanVSAi connect4 = new GuiHumanVSAi();
+		GuiHumanVsAi connect4 = new GuiHumanVsAi();
 		connect4.createNewGame();
 	}
 	

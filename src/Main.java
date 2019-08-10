@@ -1,6 +1,6 @@
-import java.util.Scanner;
+﻿import java.util.Scanner;
 import java.util.InputMismatchException; // gia thn Scanner
-//import java.util.Random;
+// import java.util.Random;
 
 public class Main {
 	
@@ -12,11 +12,11 @@ public class Main {
 		// The bigger the value of "maxDepth" is, the more difficult the game is. 
 		int XColumnPosition;
 		int maxDepth = 4;
-		MinimaxAI OPlayer = new MinimaxAI(maxDepth, Board.O);
+		MiniMaxAi OPlayer = new MiniMaxAi(maxDepth, Board.O);
 		Board connect4 = new Board();
 
         // Uncomment this, for "O" to play first
-		//board.setLastLetterPlayed(Board.X);
+		// board.setLastLetterPlayed(Board.X);
 
 		System.out.println("Connect-4!\n");
 		System.out.println("\n*****************************");
@@ -56,12 +56,12 @@ public class Main {
                     System.out.println("AI 'O' moves.");
                     
                     // minimax move
-					Move OMove = OPlayer.MiniMaxAlphaBeta(connect4);
+					Move OMove = OPlayer.miniMax(connect4);
 					
 					// random move
-					//Random r = new Random();
-					//int randomNum = r.nextInt(7);
-					//connect4.makeMove(randomNum, Board.O);
+					// Random r = new Random();
+					// int randomNum = r.nextInt(7);
+					// connect4.makeMove(randomNum, Board.O);
 
 					connect4.makeMove(OMove.getCol(), Board.O);
 					System.out.println();

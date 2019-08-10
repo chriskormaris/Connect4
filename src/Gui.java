@@ -35,7 +35,7 @@ public class Gui {
 	static String player2Color = game_params.getPlayer2Color();
 	
 //	static GamePlayer ai = new GamePlayer();
-	static MinimaxAi ai = new MinimaxAi(maxDepth, Board.X);
+	static MiniMaxAi ai = new MiniMaxAi(maxDepth, Board.X);
 	
 	//	Player 1 symbol -> X. Player 1 plays First
 	//	Player 2 symbol -> O.
@@ -152,6 +152,7 @@ public class Gui {
 		menuBar.add(fileMenu);
 		menuBar.add(helpMenu);
 		frameMainWindow.setJMenuBar(menuBar);
+		
 		// Makes the board visible after adding menus.
 		frameMainWindow.setVisible(true);
 		

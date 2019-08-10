@@ -1,9 +1,9 @@
-import java.awt.*;
+﻿import java.awt.*;
 import java.awt.event.*;
 
 import javax.swing.*;
 
-public class GuiHumanVSHuman {
+public class GuiHumanVsHuman {
 	
 	static Board board = new Board();
 	static JFrame frameMainWindow;
@@ -15,7 +15,7 @@ public class GuiHumanVSHuman {
 	//	Player 1 letter -> X. He plays First
 	//	Player 2 letter -> O.
 	
-	public GuiHumanVSHuman() {
+	public GuiHumanVsHuman() {
 		try {
 			UIManager.setLookAndFeel( UIManager.getSystemLookAndFeelClassName() );
 		} catch (Exception e) {
@@ -336,7 +336,7 @@ public class GuiHumanVSHuman {
 	
 	@SuppressWarnings("static-access")
 	public static void main(String[] args){
-		 GuiHumanVSHuman connect4 = new GuiHumanVSHuman();
+		 GuiHumanVsHuman connect4 = new GuiHumanVsHuman();
 		connect4.createNewGame();
 	}
 		
