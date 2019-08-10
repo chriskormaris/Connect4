@@ -1,4 +1,4 @@
-﻿import java.awt.*;
+import java.awt.*;
 import java.awt.event.*;
 
 import javax.swing.*;
@@ -61,14 +61,14 @@ public class GuiAiVsAi {
 		frameMainWindow.setVisible(true);
 
 		
-		// AI VS AI implementation HERE
+		// AI vs AI implementation HERE
 		while (!board.isGameOver()) {
 			
 			if (board.getLastSymbolPlayed() == Board.O) {
 				aiMove(ai1, Board.X);
-//				Move aiMove = ai.MiniMax(board);
-//				board.makeMove(aiMove.getCol(), Board.X);
-//				game();
+				// Move aiMove = ai.MiniMax(board);
+				// board.makeMove(aiMove.getCol(), Board.X);
+				// game();
 			}
 			
 			
@@ -76,9 +76,9 @@ public class GuiAiVsAi {
 				
 				if (board.getLastSymbolPlayed() == Board.X) {
 					aiMove(ai2, Board.O);
-//					Move ai2Move = ai2.MiniMax(board);
-//					board.makeMove(ai2Move.getCol(), Board.O);
-//					game();
+					// Move ai2Move = ai2.MiniMax(board);
+					// board.makeMove(ai2Move.getCol(), Board.O);
+					// game();
 				}
 				
 			}
@@ -156,15 +156,15 @@ public class GuiAiVsAi {
 	
 	public static void gameOver() {
 		        		        
-//		panelBoardNumbers.setVisible(false);
+		// panelBoardNumbers.setVisible(false);
 		frameGameOver = new JFrame("Game over!");
 		frameGameOver.setBounds(620, 400, 350, 128);
 		centerWindow(frameGameOver, 0, 0);
 		JPanel winPanel = new JPanel(new BorderLayout());
 		winPanel.setBorder(BorderFactory.createEmptyBorder(15, 30, 15, 30));
 		
-//		ImageIcon winIcon = new ImageIcon(ResourceLoader.load("images/win.gif"));
-//		JLabel winLabel = new JLabel(winIcon);
+		// ImageIcon winIcon = new ImageIcon(ResourceLoader.load("images/win.gif"));
+		// JLabel winLabel = new JLabel(winIcon);
 		JLabel winLabel;
 		board.checkWinState();
 		if (board.getWinner() == Board.X) {

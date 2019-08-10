@@ -1,4 +1,4 @@
-﻿import java.awt.*;
+import java.awt.*;
 import java.awt.event.*;
 
 import javax.swing.*;
@@ -12,8 +12,8 @@ public class GuiHumanVsHuman {
 	static JPanel panelBoardNumbers;
 	static JLayeredPane layeredGameBoard;
 	
-	//	Player 1 letter -> X. He plays First
-	//	Player 2 letter -> O.
+	// Player 1 letter -> X. He plays First
+	// Player 2 letter -> O.
 	
 	public GuiHumanVsHuman() {
 		try {
@@ -63,7 +63,7 @@ public class GuiHumanVsHuman {
 
 			@Override
 			public void keyPressed(KeyEvent e) {
-				//System.out.println("keyPressed="+KeyEvent.getKeyText(e.getKeyCode()));
+				// System.out.println("keyPressed="+KeyEvent.getKeyText(e.getKeyCode()));
 				String button = KeyEvent.getKeyText(e.getKeyCode());
 				
 				if (button.equals("1")) {
@@ -95,7 +95,7 @@ public class GuiHumanVsHuman {
 
 			@Override
 			public void keyReleased(KeyEvent e) {
-				//System.out.println("keyReleased = " + KeyEvent.getKeyText(e.getKeyCode()));
+				// System.out.println("keyReleased = " + KeyEvent.getKeyText(e.getKeyCode()));
 			}
 		});
 		
@@ -282,15 +282,15 @@ public class GuiHumanVsHuman {
 	public static void gameOver() {
 		board.setGameOver(true);
 	        
-//		panelBoardNumbers.setVisible(false);
+		// panelBoardNumbers.setVisible(false);
 		frameGameOver = new JFrame("Game over!");
 		frameGameOver.setBounds(620, 400, 350, 128);
 		centreWindow(frameGameOver, 0, 0);
 		JPanel winPanel = new JPanel(new BorderLayout());
 		winPanel.setBorder(BorderFactory.createEmptyBorder(15, 30, 15, 30));
 		
-//		ImageIcon winIcon = new ImageIcon(ResourceLoader.load("images/win.gif"));
-//		JLabel winLabel = new JLabel(winIcon);
+		// ImageIcon winIcon = new ImageIcon(ResourceLoader.load("images/win.gif"));
+		// JLabel winLabel = new JLabel(winIcon);
 		JLabel winLabel;
 		board.checkWinState();
 		if (board.getWinner() == Board.X) {

@@ -1,4 +1,4 @@
-﻿import java.awt.*;
+import java.awt.*;
 import java.awt.event.*;
 
 import javax.swing.*;
@@ -28,11 +28,11 @@ public class GuiHumanVsAi {
 	static String player1Color = game_params.getPlayer1Color();
 	static String player2Color = game_params.getPlayer2Color();
 	
-//	static GamePlayer ai = new GamePlayer();
+	// static GamePlayer ai = new GamePlayer();
 	static MiniMaxAi ai = new MiniMaxAi(maxDepth, Board.X);
 	
-	//	Human player letter -> X. He plays First
-	//	Minimax AI letter -> O.
+	// Human player letter -> X. He plays First
+	// Minimax AI letter -> O.
 	
 	public GuiHumanVsAi() {
 		try {
@@ -87,7 +87,7 @@ public class GuiHumanVsAi {
 
 			@Override
 			public void keyPressed(KeyEvent e) {
-				//System.out.println("keyPressed = " + KeyEvent.getKeyText(e.getKeyCode()));
+				// System.out.println("keyPressed = " + KeyEvent.getKeyText(e.getKeyCode()));
 				String button = KeyEvent.getKeyText(e.getKeyCode());
 				
 				board.setOverflowOccured(false);
@@ -127,8 +127,9 @@ public class GuiHumanVsAi {
 
 			@Override
 			public void keyReleased(KeyEvent e) {
-				//System.out.println("keyReleased = " + KeyEvent.getKeyText(e.getKeyCode()));
+				// System.out.println("keyReleased = " + KeyEvent.getKeyText(e.getKeyCode()));
 			}
+			
 		});
 		
 		frameMainWindow.setFocusable(true);
@@ -390,15 +391,15 @@ public class GuiHumanVsAi {
 	
 	public static void gameOver() {
 		        		        
-//		panelBoardNumbers.setVisible(false);
+		// panelBoardNumbers.setVisible(false);
 		frameGameOver = new JFrame("Game over!");
 		frameGameOver.setBounds(620, 400, 350, 128);
 		centerWindow(frameGameOver, 0, 0);
 		JPanel winPanel = new JPanel(new BorderLayout());
 		winPanel.setBorder(BorderFactory.createEmptyBorder(15, 30, 15, 30));
 		
-//		ImageIcon winIcon = new ImageIcon(ResourceLoader.load("images/win.gif"));
-//		JLabel winLabel = new JLabel(winIcon);
+		// ImageIcon winIcon = new ImageIcon(ResourceLoader.load("images/win.gif"));
+		// JLabel winLabel = new JLabel(winIcon);
 		JLabel winLabel;
 		board.checkWinState();
 		if (board.getWinner() == Board.X) {

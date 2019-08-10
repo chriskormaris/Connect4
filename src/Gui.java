@@ -1,4 +1,4 @@
-﻿import java.awt.*;
+import java.awt.*;
 import java.awt.event.*;
 
 import javax.swing.*;
@@ -34,11 +34,11 @@ public class Gui {
 	static String player1Color = game_params.getPlayer1Color();
 	static String player2Color = game_params.getPlayer2Color();
 	
-//	static GamePlayer ai = new GamePlayer();
+	// static GamePlayer ai = new GamePlayer();
 	static MiniMaxAi ai = new MiniMaxAi(maxDepth, Board.X);
 	
-	//	Player 1 symbol -> X. Player 1 plays First
-	//	Player 2 symbol -> O.
+	// Player 1 symbol -> X. Player 1 plays First
+	// Player 2 symbol -> O.
 	
 	public static JLabel checkerLabel = null;
 	
