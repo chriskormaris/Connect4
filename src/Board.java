@@ -1,11 +1,11 @@
-import java.util.ArrayList;
+﻿import java.util.ArrayList;
 
 // The project is based on lab04.
 public class Board {
 	
 	// board values
-	public static final int X = 1; // player 1
-	public static final int O = -1; // player 2
+	public static final int X = 1;  // Player 1
+	public static final int O = -1;  // Player 2
 	public static final int EMPTY = 0;
 	
 	// the move that was last applied on the current board
@@ -172,7 +172,7 @@ public class Board {
 	}
 	
 	
-	/* Generates the children of the state
+	/* Generates the children of the state.
      * The max number of the children is 7,
      * because we have 7 columns
      */

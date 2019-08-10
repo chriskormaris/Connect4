@@ -1,9 +1,4 @@
-import javax.swing.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-
-
-public class PreferencesWindow extends JFrame {
+﻿public class PreferencesWindow extends JFrame {
 	
 	
 	private static final long serialVersionUID = 1L;
@@ -58,9 +53,9 @@ public class PreferencesWindow extends JFrame {
 		drop_down_1.addItem("Human VS Human");
 		
 		int selectedMode = game_params.getGameMode();
-		if (selectedMode == GameParameters.HumanVSAi)
+		if (selectedMode == GameParameters.HumanVsAi)
 			drop_down_1.setSelectedIndex(0);
-		else if (selectedMode == GameParameters.HumanVSHuman)
+		else if (selectedMode == GameParameters.HumanVsHuman)
 			drop_down_1.setSelectedIndex(1);
 		
 		drop_down_2 = new JComboBox<Integer>();
@@ -124,10 +119,10 @@ public class PreferencesWindow extends JFrame {
 		add(drop_down_2);
 		add(drop_down_3);
 		add(drop_down_4);
-		drop_down_1.setBounds(220,25,160,20);
-		drop_down_2.setBounds(220,75,160,20);
-		drop_down_3.setBounds(220,125,160,20);
-		drop_down_4.setBounds(220,175,160,20);
+		drop_down_1.setBounds(220, 25, 160, 20);
+		drop_down_2.setBounds(220, 75, 160, 20);
+		drop_down_3.setBounds(220, 125, 160, 20);
+		drop_down_4.setBounds(220, 175, 160, 20);
 		
 		apply = new JButton("Apply");
 		cancel = new JButton("Cancel");
@@ -155,17 +150,17 @@ public class PreferencesWindow extends JFrame {
 					
 					String game_mode_string = (String)drop_down_1.getSelectedItem();
 					int depth = (int) drop_down_2.getSelectedItem();
-					String player1_color = (String)drop_down_3.getSelectedItem();
-					String player2_color = (String)drop_down_4.getSelectedItem();
+					String player1_color = (String) drop_down_3.getSelectedItem();
+					String player2_color = (String) drop_down_4.getSelectedItem();
 					
-					int game_mode = (game_mode_string.equals("Human VS AI")) ? GameParameters.HumanVSAi : GameParameters.HumanVSHuman;
+					int game_mode = (game_mode_string.equals("Human VS AI")) ? GameParameters.HumanVsAi : GameParameters.HumanVsHuman;
 					
 					if(player1_color == player2_color) {
 						JOptionPane.showMessageDialog(null , "Player 1 and Player 2 cannot have the same color for their checkers!!" , "ERROR" , JOptionPane.ERROR_MESSAGE);
 						return;
 					}
 					
-					// change game parameters bases on settings
+					// Change game parameters based on settings.
 					game_params.setGameMode(game_mode);
 					game_params.setMaxDepth(depth);
 					game_params.setPlayer1Color(player1_color);
@@ -179,10 +174,10 @@ public class PreferencesWindow extends JFrame {
 					System.err.println("ERROR : " + e.getMessage());
 				}
 				
-			} //else if.
+			} // else if.
 			
-		} //action performed.
+		} // action performed.
 		
-	} //inner class.
+	} // inner class.
 	
-} //class end.
+} // class end.

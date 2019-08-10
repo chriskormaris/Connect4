@@ -1,19 +1,19 @@
-public class GameParameters {
+﻿public class GameParameters {
 	
 	private int gameMode;
 	private int maxDepth;
 	private String player1Color;
 	private String player2Color;
 	
-	public static final int HumanVSAi = 1;
-	public static final int HumanVSHuman = 2;
+	public static final int HumanVsAi = 1;
+	public static final int HumanVsHuman = 2;
 	
 	public GameParameters() {
 		// Default values
 		this.maxDepth = 4;
 		this.player1Color = "RED";
 		this.player2Color = "YELLOW";
-		this.gameMode = HumanVSAi;
+		this.gameMode = HumanVsAi;
 	}
 
 	public int getMaxDepth() {
