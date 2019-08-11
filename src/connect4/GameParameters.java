@@ -4,17 +4,33 @@ public class GameParameters {
 	
 	private int gameMode;
 	private int maxDepth;
-	private String player1Color;
-	private String player2Color;
+	private int player1Color;
+	private int player2Color;
+	
+	// Colors
+	public static final int RED = 1;
+	public static final int YELLOW = 2;
+	public static final int BLACK = 3;
+	public static final int GREEN = 4;
+	public static final int ORANGE = 5;
+	public static final int PURPLE = 6;
 	
 	public static final int HumanVsAi = 1;
 	public static final int HumanVsHuman = 2;
 	
+	// Default values
 	public GameParameters() {
-		// Default values
 		this.maxDepth = 4;
-		this.player1Color = "RED";
-		this.player2Color = "YELLOW";
+		this.player1Color = RED;
+		this.player2Color = YELLOW;
+		this.gameMode = HumanVsAi;
+	}
+	
+	// Given values
+	public GameParameters(int maxDepth, int player1Color, int player2Color, int gameMode) {
+		this.maxDepth = 4;
+		this.player1Color = RED;
+		this.player2Color = YELLOW;
 		this.gameMode = HumanVsAi;
 	}
 
@@ -26,19 +42,19 @@ public class GameParameters {
 		this.maxDepth = difficulty;
 	}
 	
-	public String getPlayer1Color() {
+	public int getPlayer1Color() {
 		return player1Color;
 	}
 
-	public void setPlayer1Color(String player1Color) {
+	public void setPlayer1Color(int player1Color) {
 		this.player1Color = player1Color;
 	}
 	
-	public String getPlayer2Color() {
+	public int getPlayer2Color() {
 		return player2Color;
 	}
 
-	public void setPlayer2Color(String player2Color) {
+	public void setPlayer2Color(int player2Color) {
 		this.player2Color = player2Color;
 	}
 
@@ -50,5 +66,23 @@ public class GameParameters {
 		this.gameMode = gameMode;
 	}
 
-
+	public static final String getColorNameByNumber(int number) {
+		switch (number) {
+			case 1:
+				return "RED";
+			case 2:
+				return "YELLOW";
+			case 3:
+				return "BLACK";
+			case 4:
+				return "GREEN";
+			case 5:
+				return "ORANGE";
+			case 6:
+				return "PURPLE";
+			default:
+				return "RED";
+		}
+	}
+	
 }

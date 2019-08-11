@@ -38,8 +38,8 @@ public class Gui {
 	static GameParameters game_params = new GameParameters();
 	static int gameMode = game_params.getGameMode();
 	static int maxDepth = game_params.getMaxDepth();
-	static String player1Color = game_params.getPlayer1Color();
-	static String player2Color = game_params.getPlayer2Color();
+	static int player1Color = game_params.getPlayer1Color();
+	static int player2Color = game_params.getPlayer2Color();
 	
 //	static GamePlayer ai = new GamePlayer();
 	static MiniMaxAi ai = new MiniMaxAi(maxDepth, Board.X);
@@ -214,7 +214,7 @@ public class Gui {
 			
 			if (button.equals("1") || button.equals("2") || button.equals("3") || button.equals("4")
 					|| button.equals("5") || button.equals("6") || button.equals("7")) {
-				if (!board.isOverflowOccured()) {
+				if (!board.hasOverflowOccured()) {
 					game();
 					saveUndoMove();
 					if (gameMode == GameParameters.HumanVsAi) aiMove();
@@ -340,7 +340,7 @@ public class Gui {
 			board.makeMove(col, Board.O);
 		}
 		
-		if (board.isOverflowOccured()) {
+		if (board.hasOverflowOccured()) {
 			board.getLastMove().setRow(previousRow);
 			board.getLastMove().setCol(previousCol);
 			board.setLastSymbolPlayed(previousLetter);
@@ -350,10 +350,11 @@ public class Gui {
 	
 	
 	// It places a checker on the board.
-	public static void placeChecker(String color, int row, int col) {
+	public static void placeChecker(int color, int row, int col) {
+		String colorString = GameParameters.getColorNameByNumber(color);
 		int xOffset = 75 * col;
 		int yOffset = 75 * row;
-		ImageIcon checkerIcon = new ImageIcon(ResourceLoader.load("images/" + color + ".gif"));
+		ImageIcon checkerIcon = new ImageIcon(ResourceLoader.load("images/" + colorString + ".gif"));
 		checkerLabel = new JLabel(checkerIcon);
 		checkerLabel.setBounds(27 + xOffset, 27 + yOffset, checkerIcon.getIconWidth(),checkerIcon.getIconHeight());
 		layeredGameBoard.add(checkerLabel, 0, 0);
@@ -450,7 +451,7 @@ public class Gui {
 			col1_button.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) { 
 					makeMove(0);
-					if (!board.isOverflowOccured()) {
+					if (!board.hasOverflowOccured()) {
 						game();
 						saveUndoMove();
 						if (gameMode == GameParameters.HumanVsAi) aiMove();
@@ -462,7 +463,7 @@ public class Gui {
 			col2_button.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					makeMove(1);
-					if (!board.isOverflowOccured()) {
+					if (!board.hasOverflowOccured()) {
 						game();
 						saveUndoMove();
 						if (gameMode == GameParameters.HumanVsAi) aiMove();
@@ -474,7 +475,7 @@ public class Gui {
 			col3_button.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					makeMove(2);
-					if (!board.isOverflowOccured()) {
+					if (!board.hasOverflowOccured()) {
 						game();
 						saveUndoMove();
 						if (gameMode == GameParameters.HumanVsAi) aiMove();
@@ -486,7 +487,7 @@ public class Gui {
 			col4_button.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					makeMove(3);
-					if (!board.isOverflowOccured()) {
+					if (!board.hasOverflowOccured()) {
 						game();
 						saveUndoMove();
 						if (gameMode == GameParameters.HumanVsAi) aiMove();
@@ -498,7 +499,7 @@ public class Gui {
 			col5_button.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					makeMove(4);
-					if (!board.isOverflowOccured()) {
+					if (!board.hasOverflowOccured()) {
 						game();
 						saveUndoMove();
 						if (gameMode == GameParameters.HumanVsAi) aiMove();
@@ -510,7 +511,7 @@ public class Gui {
 			col6_button.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					makeMove(5);
-					if (!board.isOverflowOccured()) {
+					if (!board.hasOverflowOccured()) {
 						game();
 						saveUndoMove();
 						if (gameMode == GameParameters.HumanVsAi) aiMove();
@@ -522,7 +523,7 @@ public class Gui {
 			col7_button.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					makeMove(6);
-					if (!board.isOverflowOccured()) {
+					if (!board.hasOverflowOccured()) {
 						game();
 						saveUndoMove();
 						if (gameMode == GameParameters.HumanVsAi) aiMove();

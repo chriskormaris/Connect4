@@ -2,6 +2,7 @@ package connect4;
 
 import java.util.ArrayList;
 
+// The project is based on lab04.
 public class Board {
 	
 	// board values
@@ -107,7 +108,7 @@ public class Board {
 	}
 	
 	
-	public boolean isOverflowOccured() {
+	public boolean hasOverflowOccured() {
 		return overflowOccured;
 	}
 
