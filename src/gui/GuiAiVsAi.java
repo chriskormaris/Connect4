@@ -6,6 +6,7 @@ import java.awt.event.*;
 import javax.swing.*;
 
 import connect4.Board;
+import connect4.GameParameters;
 import connect4.MiniMaxAi;
 import connect4.Move;
 
@@ -17,10 +18,16 @@ public class GuiAiVsAi {
 	
 	static JPanel panelBoardNumbers;
 	static JLayeredPane layeredGameBoard;
+
+	static GameParameters game_params = new GameParameters();
+	static int ai1MaxDepth = game_params.getMaxDepth();
+	static int ai2MaxDepth = game_params.getMaxDepth();
+	static int player1Color = game_params.getPlayer1Color();
+	static int player2Color = game_params.getPlayer2Color();
 	
 	// Initialize maxDepth = 4. We can change this value for difficulty adjustment.
-	static MiniMaxAi ai1 = new MiniMaxAi(4, Board.X);
-	static MiniMaxAi ai2 = new MiniMaxAi(4, Board.O);
+	static MiniMaxAi ai1 = new MiniMaxAi(ai1MaxDepth, Board.X);
+	static MiniMaxAi ai2 = new MiniMaxAi(ai2MaxDepth, Board.O);
 	
 	public GuiAiVsAi() {
 		try {
@@ -102,10 +109,11 @@ public class GuiAiVsAi {
 	}
 	
 	// It places a checker on the board.
-	public static void placeChecker(String color, int row, int col) {
+	public static void placeChecker(int color, int row, int col) {
+		String colorString = GameParameters.getColorNameByNumber(color);
 		int xOffset = 75 * col;
 		int yOffset = 75 * row;
-		ImageIcon checkerIcon = new ImageIcon(ResourceLoader.load("images/" + color + ".gif"));
+		ImageIcon checkerIcon = new ImageIcon(ResourceLoader.load("images/" + colorString + ".gif"));
 		JLabel checkerLabel = new JLabel(checkerIcon);
 		checkerLabel.setBounds(27 + xOffset, 27 + yOffset, checkerIcon.getIconWidth(),checkerIcon.getIconHeight());
 		layeredGameBoard.add(checkerLabel, 0, 0);
@@ -121,10 +129,10 @@ public class GuiAiVsAi {
 		int lastPlayerLetter = board.getLastSymbolPlayed();
 		if (lastPlayerLetter == Board.X) {
 			// It places a red checker in the corresponding [row][col] of the GUI.
-			placeChecker("RED", row, col);
+			placeChecker(player1Color, row, col);
 		} else if (lastPlayerLetter == Board.O) {
 			// It places a yellow checker in the corresponding [row][col] of the GUI.
-			placeChecker("YELLOW", row, col);
+			placeChecker(player2Color, row, col);
 		}
 		if (board.checkGameOver()) {
 			board.setGameOver(true);
@@ -174,10 +182,12 @@ public class GuiAiVsAi {
 		JLabel winLabel;
 		board.checkWinState();
 		if (board.getWinner() == Board.X) {
-			winLabel = new JLabel("AI 1 (Red) wins! Start a new game?");
+			String player1ColorString = GameParameters.getColorNameByNumber(player1Color);
+			winLabel = new JLabel("AI 1 (" + player1ColorString + ") wins! Start a new game?");
 			winPanel.add(winLabel);
 		} else if (board.getWinner() == Board.O) {
-			winLabel = new JLabel("AI 2 (Yellow) wins! Start a new game?");
+			String player2ColorString = GameParameters.getColorNameByNumber(player2Color);
+			winLabel = new JLabel("AI 2 (" + player2ColorString + ") wins! Start a new game?");
 			winPanel.add(winLabel);
 		} else {
 			winLabel = new JLabel("It's a draw! Start a new game?");

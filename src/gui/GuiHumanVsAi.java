@@ -32,8 +32,8 @@ public class GuiHumanVsAi {
 
 	static GameParameters game_params = new GameParameters();
 	static int maxDepth = game_params.getMaxDepth();
-	static String player1Color = game_params.getPlayer1Color();
-	static String player2Color = game_params.getPlayer2Color();
+	static int player1Color = game_params.getPlayer1Color();
+	static int player2Color = game_params.getPlayer2Color();
 	
 //	static GamePlayer ai = new GamePlayer();
 	static MiniMaxAi ai = new MiniMaxAi(maxDepth, Board.X);
@@ -120,7 +120,7 @@ public class GuiHumanVsAi {
 				
 				if (button.equals("1") || button.equals("2") || button.equals("3") || button.equals("4")
 						|| button.equals("5") || button.equals("6") || button.equals("7")) {
-					if (!board.isOverflowOccured()) {
+					if (!board.hasOverflowOccured()) {
 						game();
 						aiMove();
 					} else {
@@ -162,10 +162,11 @@ public class GuiHumanVsAi {
 	}
 	
 	// It places a checker on the board.
-	public static void placeChecker(String color, int row, int col) {
+	public static void placeChecker(int color, int row, int col) {
+		String colorString = GameParameters.getColorNameByNumber(color);
 		int xOffset = 75 * col;
 		int yOffset = 75 * row;
-		ImageIcon checkerIcon = new ImageIcon(ResourceLoader.load("images/" + color + ".gif"));
+		ImageIcon checkerIcon = new ImageIcon(ResourceLoader.load("images/" + colorString + ".gif"));
 		JLabel checkerLabel = new JLabel(checkerIcon);
 		checkerLabel.setBounds(27 + xOffset, 27 + yOffset, checkerIcon.getIconWidth(),checkerIcon.getIconHeight());
 		layeredGameBoard.add(checkerLabel, 0, 0);
@@ -182,12 +183,12 @@ public class GuiHumanVsAi {
 		
 		if (currentPlayer == Board.X) {
 			// It places a checker in the corresponding [row][col] of the GUI.
-			placeChecker(game_params.getPlayer1Color(), row, col);
+			placeChecker(player1Color, row, col);
 		}
 		
 		if (currentPlayer == Board.O) {
 			// It places a checker in the corresponding [row][col] of the GUI.
-			placeChecker(game_params.getPlayer2Color(), row, col);
+			placeChecker(player2Color, row, col);
 		}
 		
 		if (board.checkGameOver()) {
@@ -233,7 +234,7 @@ public class GuiHumanVsAi {
 				int previousCol = board.getLastMove().getCol();
 				int previousLetter = board.getLastSymbolPlayed();
 				board.makeMove(0, Board.X);
-				if (!board.isOverflowOccured()) {
+				if (!board.hasOverflowOccured()) {
 					game();
 					aiMove();
 				} else {
@@ -254,7 +255,7 @@ public class GuiHumanVsAi {
 				int previousCol = board.getLastMove().getCol();
 				int previousLetter = board.getLastSymbolPlayed();
 				board.makeMove(1, Board.X);
-				if (!board.isOverflowOccured()) {
+				if (!board.hasOverflowOccured()) {
 					game();
 					aiMove();
 				} else {
@@ -275,7 +276,7 @@ public class GuiHumanVsAi {
 				int previousCol = board.getLastMove().getCol();
 				int previousLetter = board.getLastSymbolPlayed();
 				board.makeMove(2, Board.X);
-				if (!board.isOverflowOccured()) {
+				if (!board.hasOverflowOccured()) {
 					game();
 					aiMove();
 				} else {
@@ -296,7 +297,7 @@ public class GuiHumanVsAi {
 				int previousCol = board.getLastMove().getCol();
 				int previousLetter = board.getLastSymbolPlayed();
 				board.makeMove(3, Board.X);
-				if (!board.isOverflowOccured()) {
+				if (!board.hasOverflowOccured()) {
 					game();
 					aiMove();
 				} else {
@@ -317,7 +318,7 @@ public class GuiHumanVsAi {
 				int previousCol = board.getLastMove().getCol();
 				int previousLetter = board.getLastSymbolPlayed();
 				board.makeMove(4, Board.X);
-				if (!board.isOverflowOccured()) {
+				if (!board.hasOverflowOccured()) {
 					game();
 					aiMove();
 				} else {
@@ -338,7 +339,7 @@ public class GuiHumanVsAi {
 				int previousCol = board.getLastMove().getCol();
 				int previousLetter = board.getLastSymbolPlayed();
 				board.makeMove(5, Board.X);
-				if (!board.isOverflowOccured()) {
+				if (!board.hasOverflowOccured()) {
 					game();
 					aiMove();
 				} else {
@@ -359,7 +360,7 @@ public class GuiHumanVsAi {
 				int previousCol = board.getLastMove().getCol();
 				int previousLetter = board.getLastSymbolPlayed();
 				board.makeMove(6, Board.X);
-				if (!board.isOverflowOccured()) {
+				if (!board.hasOverflowOccured()) {
 					game();
 					aiMove();
 				} else {

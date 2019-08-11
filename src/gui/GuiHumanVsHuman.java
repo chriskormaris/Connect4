@@ -6,6 +6,7 @@ import java.awt.event.*;
 import javax.swing.*;
 
 import connect4.Board;
+import connect4.GameParameters;
 
 public class GuiHumanVsHuman {
 	
@@ -15,6 +16,10 @@ public class GuiHumanVsHuman {
 	
 	static JPanel panelBoardNumbers;
 	static JLayeredPane layeredGameBoard;
+	
+	static GameParameters game_params = new GameParameters();
+	static int player1Color = game_params.getPlayer1Color();
+	static int player2Color = game_params.getPlayer2Color();
 	
 	//	Player 1 letter -> X. He plays First
 	//	Player 2 letter -> O.
@@ -88,7 +93,7 @@ public class GuiHumanVsHuman {
 				
 				if (button.equals("1") || button.equals("2") || button.equals("3") || button.equals("4")
 						|| button.equals("5") || button.equals("6") || button.equals("7")) {
-					if (!board.isOverflowOccured()) {
+					if (!board.hasOverflowOccured()) {
 						game();
 					} else {
 						board.setOverflowOccured(false);
@@ -133,7 +138,7 @@ public class GuiHumanVsHuman {
 			board.makeMove(col, Board.O);
 		}
 		
-		if (board.isOverflowOccured()) {
+		if (board.hasOverflowOccured()) {
 			board.getLastMove().setRow(previousRow);
 			board.getLastMove().setCol(previousCol);
 			board.setLastSymbolPlayed(previousLetter);
@@ -141,10 +146,11 @@ public class GuiHumanVsHuman {
 	}
 	
 	// It places a checker on the board.
-	public static void placeChecker(String color, int row, int col) {
+	public static void placeChecker(int color, int row, int col) {
+		String colorString = GameParameters.getColorNameByNumber(color);
 		int xOffset = 75 * col;
 		int yOffset = 75 * row;
-		ImageIcon checkerIcon = new ImageIcon(ResourceLoader.load("images/" + color + ".gif"));
+		ImageIcon checkerIcon = new ImageIcon(ResourceLoader.load("images/" + colorString + ".gif"));
 		JLabel checkerLabel = new JLabel(checkerIcon);
 		checkerLabel.setBounds(27 + xOffset, 27 + yOffset, checkerIcon.getIconWidth(),checkerIcon.getIconHeight());
 		layeredGameBoard.add(checkerLabel, 0, 0);
@@ -159,10 +165,10 @@ public class GuiHumanVsHuman {
 		
 		if (board.getLastSymbolPlayed() == Board.X) {
 			// It places a checker in the corresponding [row][col] of the GUI.
-			placeChecker("RED", row, col);
+			placeChecker(player1Color, row, col);
 		} else if (board.getLastSymbolPlayed() == Board.O) {
 			// It places a checker in the corresponding [row][col] of the GUI.
-			placeChecker("YELLOW", row, col);
+			placeChecker(player2Color, row, col);
 		} 
 		if (board.checkGameOver()) {
 			gameOver();
@@ -186,7 +192,7 @@ public class GuiHumanVsHuman {
 		col1_button.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				makeMove(0);
-				if (!board.isOverflowOccured()) {
+				if (!board.hasOverflowOccured()) {
 					game();
 				}
 				frameMainWindow.requestFocusInWindow();
@@ -197,7 +203,7 @@ public class GuiHumanVsHuman {
 		col2_button.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				makeMove(1);
-				if (!board.isOverflowOccured()) {
+				if (!board.hasOverflowOccured()) {
 					game();
 				}
 				frameMainWindow.requestFocusInWindow();
@@ -208,7 +214,7 @@ public class GuiHumanVsHuman {
 		col3_button.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				makeMove(2);
-				if (!board.isOverflowOccured()) {
+				if (!board.hasOverflowOccured()) {
 					game();
 				}
 				frameMainWindow.requestFocusInWindow();
@@ -219,7 +225,7 @@ public class GuiHumanVsHuman {
 		col4_button.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				makeMove(3);
-				if (!board.isOverflowOccured()) {
+				if (!board.hasOverflowOccured()) {
 					game();
 				}
 				frameMainWindow.requestFocusInWindow();
@@ -230,7 +236,7 @@ public class GuiHumanVsHuman {
 		col5_button.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				makeMove(4);
-				if (!board.isOverflowOccured()) {
+				if (!board.hasOverflowOccured()) {
 					game();
 				}
 				frameMainWindow.requestFocusInWindow();
@@ -241,7 +247,7 @@ public class GuiHumanVsHuman {
 		col6_button.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				makeMove(5);
-				if (!board.isOverflowOccured()) {
+				if (!board.hasOverflowOccured()) {
 					game();
 				}
 				frameMainWindow.requestFocusInWindow();
@@ -252,7 +258,7 @@ public class GuiHumanVsHuman {
 		col7_button.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				makeMove(6);
-				if (!board.isOverflowOccured()) {
+				if (!board.hasOverflowOccured()) {
 					game();
 				}
 				frameMainWindow.requestFocusInWindow();
