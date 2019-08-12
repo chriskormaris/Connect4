@@ -2,9 +2,9 @@ package connect4;
 
 import java.util.Scanner;
 import java.util.InputMismatchException; // gia thn Scanner
-// import java.util.Random;
+//import java.util.Random;
 
-public class Main {
+public class ConsoleMain {
 	
 	public static void main(String[] args) {
 		
@@ -22,7 +22,7 @@ public class Main {
 
 		System.out.println("Connect-4!\n");
 		System.out.println("\n*****************************");
-		connect4.print();
+		connect4.printBoard();
 		System.out.println();
         // While the game has not finished
 		while(!connect4.checkGameOver()) {
@@ -72,7 +72,7 @@ public class Main {
 				default:
 					break;
 			}
-			connect4.print();
+			connect4.printBoard();
 		}
 		
 		System.out.println();

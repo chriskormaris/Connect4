@@ -5,16 +5,16 @@ import java.util.ArrayList;
 // The project is based on lab04.
 public class Board {
 	
-	// board values
+	// Board values
 	public static final int X = 1;  // Player 1
 	public static final int O = -1;  // Player 2
 	public static final int EMPTY = 0;
 	
-	// the move that was last applied on the current board
+    // Immediate move that led to this board.
     private Move lastMove;
     
-    // a variable to store the symbol of the player who played last,
-    // leading to the current board state
+    // A variable to store the symbol of the player who played last,
+    // leading to the current board state.
     private int lastSymbolPlayed;
     
     private int winner;
@@ -420,7 +420,7 @@ public class Board {
 	}
 
     // It prints the board on the console.
-  	public void print() {
+  	public void printBoard() {
   		
   		System.out.println("| 1 | 2 | 3 | 4 | 5 | 6 | 7 |");
   		System.out.println();

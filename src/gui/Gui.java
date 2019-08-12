@@ -5,6 +5,7 @@ import java.awt.event.*;
 
 import javax.swing.*;
 // import javax.swing.UIManager.LookAndFeelInfo;
+import javax.swing.UIManager.LookAndFeelInfo;
 
 import connect4.Board;
 import connect4.GameParameters;
@@ -50,10 +51,10 @@ public class Gui {
 	public static JLabel checkerLabel = null;
 	
 	// for Undo operation
-	public static int humanPlayerRowUndo;
-	public static int humanPlayerColUndo;
-	public static int humanPlayerLetter;
-	public static JLabel humanPlayerCheckerLabelUndo;
+	private static int humanPlayerUndoRow;
+	private static int humanPlayerUndoCol;
+	private static int humanPlayerUndoLetter;
+	private static JLabel humanPlayerUndoCheckerLabel;
 
 	
 	public Gui() {
@@ -62,18 +63,7 @@ public class Gui {
 			
 			// Option 1
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-
-			// Option 2
-//			UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName());
 			
-			// Option 3
-//		    for (LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
-//		        if ("Nimbus".equals(info.getName())) {
-//		            UIManager.setLookAndFeel(info.getClassName());
-//		            break;
-//		        }
-//		    }
-		    
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -114,7 +104,6 @@ public class Gui {
 		helpMenu.add(howToPlayItem);
 		helpMenu.add(aboutItem);
 
-		
 		newGameItem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				createNewGame();
@@ -230,7 +219,7 @@ public class Gui {
 	};
 	
 	
-	public static void undo() {
+	private static void undo() {
 		// This is the undo implementation for Human VS Human mode.
 		if (game_params.getGameMode() == GameParameters.HumanVsHuman) {
 			try {
@@ -239,7 +228,7 @@ public class Gui {
 				if (frameMainWindow.getKeyListeners().length == 0) {
 					frameMainWindow.addKeyListener(gameKeyListener);
 				}
-				board.undoMove(board.getLastMove().getRow(), board.getLastMove().getCol(), humanPlayerLetter);
+				board.undoMove(board.getLastMove().getRow(), board.getLastMove().getCol(), humanPlayerUndoLetter);
 				layeredGameBoard.remove(checkerLabel);
 				frameMainWindow.paint(frameMainWindow.getGraphics());
 			} catch (ArrayIndexOutOfBoundsException ex) {
@@ -256,10 +245,10 @@ public class Gui {
 				if (frameMainWindow.getKeyListeners().length == 0) {
 					frameMainWindow.addKeyListener(gameKeyListener);
 				}
-				board.undoMove(board.getLastMove().getRow(), board.getLastMove().getCol(), humanPlayerLetter);
+				board.undoMove(board.getLastMove().getRow(), board.getLastMove().getCol(), humanPlayerUndoLetter);
 				layeredGameBoard.remove(checkerLabel);
-				board.undoMove(humanPlayerRowUndo, humanPlayerColUndo, humanPlayerLetter);
-				layeredGameBoard.remove(humanPlayerCheckerLabelUndo);
+				board.undoMove(humanPlayerUndoRow, humanPlayerUndoCol, humanPlayerUndoLetter);
+				layeredGameBoard.remove(humanPlayerUndoCheckerLabel);
 				frameMainWindow.paint(frameMainWindow.getGraphics());
 			} catch (ArrayIndexOutOfBoundsException ex) {
 				System.err.println("No move has been made yet!");
@@ -272,6 +261,9 @@ public class Gui {
 	// To be called when the game starts for the first time
 	// or a new game starts.
 	public static void createNewGame() {
+		
+		configureGuiStyle();
+
 		board = new Board();
 		
 		// get the new parameters based on previously changed settings
@@ -316,12 +308,33 @@ public class Gui {
 		
 	}
 	
-	
+	private static void configureGuiStyle() {
+		try {
+			if (game_params.getGuiStyle() == GameParameters.SystemStyle) {
+				// Option 1
+				UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+			} else if (game_params.getGuiStyle() == GameParameters.CrossPlatformStyle) {
+				// Option 2
+				UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName());
+			} else if (game_params.getGuiStyle() == GameParameters.NimbusStyle) {
+				// Option 3
+			    for (LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
+			        if ("Nimbus".equals(info.getName())) {
+			            UIManager.setLookAndFeel(info.getClassName());
+			            break;
+			        }
+			    }
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
 	// It centers the window on screen.
 	public static void centerWindow(Window frame, int width, int height) {
 	    Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize();
-	    int x = (int) (((dimension.getWidth() - frame.getWidth()) / 2) - (width/2));
-	    int y = (int) (((dimension.getHeight() - frame.getHeight()) / 2) - (height/2));
+	    int x = (int) (dimension.getWidth() - frame.getWidth() - width) / 2;
+	    int y = (int) (dimension.getHeight() - frame.getHeight() - height) / 2;
 	    frame.setLocation(x, y);
 	}
 	
@@ -363,10 +376,10 @@ public class Gui {
 	
 	
 	public static void saveUndoMove() {
-		humanPlayerRowUndo = board.getLastMove().getRow();
-		humanPlayerColUndo = board.getLastMove().getCol();
-		humanPlayerLetter = board.getLastSymbolPlayed();
-		humanPlayerCheckerLabelUndo = checkerLabel;
+		humanPlayerUndoRow = board.getLastMove().getRow();
+		humanPlayerUndoCol = board.getLastMove().getCol();
+		humanPlayerUndoLetter = board.getLastSymbolPlayed();
+		humanPlayerUndoCheckerLabel = checkerLabel;
 	}
 	
 	
@@ -390,7 +403,7 @@ public class Gui {
 		if (board.checkGameOver()) {
 			gameOver();
 		}
-		board.print();
+		board.printBoard();
 		System.out.println("\n*****************************");
 	}
 	
@@ -570,16 +583,26 @@ public class Gui {
 		
 		if (board.getWinner() == Board.X) {
 			if (gameMode == GameParameters.HumanVsAi)
-				choice = JOptionPane.showConfirmDialog(null, "You win! Start a new game?" ,"GAME OVER", JOptionPane.YES_NO_OPTION);
+				choice = JOptionPane.showConfirmDialog(null,
+						"You win! Start a new game?",
+						"GAME OVER", JOptionPane.YES_NO_OPTION);
 			else if (gameMode == GameParameters.HumanVsHuman)
-				choice = JOptionPane.showConfirmDialog(null, "Player 1 wins! Start a new game?" ,"GAME OVER", JOptionPane.YES_NO_OPTION);
+				choice = JOptionPane.showConfirmDialog(null,
+						"Player 1 wins! Start a new game?",
+						"GAME OVER", JOptionPane.YES_NO_OPTION);
 		} else if (board.getWinner() == Board.O) {
 			if (gameMode == GameParameters.HumanVsAi)
-				choice = JOptionPane.showConfirmDialog(null, "Computer AI wins! Start a new game?" ,"GAME OVER", JOptionPane.YES_NO_OPTION);
+				choice = JOptionPane.showConfirmDialog(null,
+						"Computer AI wins! Start a new game?",
+						"GAME OVER", JOptionPane.YES_NO_OPTION);
 			else if (gameMode == GameParameters.HumanVsHuman)
-				choice = JOptionPane.showConfirmDialog(null, "Player 2 wins! Start a new game?" ,"GAME OVER", JOptionPane.YES_NO_OPTION);
+				choice = JOptionPane.showConfirmDialog(null,
+						"Player 2 wins! Start a new game?",
+						"GAME OVER", JOptionPane.YES_NO_OPTION);
 		} else {
-			choice = JOptionPane.showConfirmDialog(null, "It's a draw! Start a new game?" ,"GAME OVER", JOptionPane.YES_NO_OPTION);
+			choice = JOptionPane.showConfirmDialog(null,
+					"It's a draw! Start a new game?",
+					"GAME OVER", JOptionPane.YES_NO_OPTION);
 		}
 		
 		if (choice == JOptionPane.YES_OPTION) {

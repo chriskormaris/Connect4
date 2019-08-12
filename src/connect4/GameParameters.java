@@ -2,10 +2,16 @@ package connect4;
 
 public class GameParameters {
 	
+	private int guiStyle;
 	private int gameMode;
 	private int maxDepth;
 	private int player1Color;
 	private int player2Color;
+	
+	// GUI styles
+	public static final int SystemStyle = 1;
+	public static final int CrossPlatformStyle = 2;
+	public static final int NimbusStyle = 3;
 	
 	// Colors
 	public static final int RED = 1;
@@ -15,11 +21,13 @@ public class GameParameters {
 	public static final int ORANGE = 5;
 	public static final int PURPLE = 6;
 	
+	// Game modes
 	public static final int HumanVsAi = 1;
 	public static final int HumanVsHuman = 2;
 	
 	// Default values
 	public GameParameters() {
+		this.guiStyle = SystemStyle;
 		this.maxDepth = 4;
 		this.player1Color = RED;
 		this.player2Color = YELLOW;
@@ -27,11 +35,21 @@ public class GameParameters {
 	}
 	
 	// Given values
-	public GameParameters(int maxDepth, int player1Color, int player2Color, int gameMode) {
+	public GameParameters(int guiStyle, int maxDepth, int player1Color, int player2Color,
+			int gameMode) {
+		this.guiStyle = guiStyle;
 		this.maxDepth = 4;
 		this.player1Color = RED;
 		this.player2Color = YELLOW;
 		this.gameMode = HumanVsAi;
+	}
+	
+	public int getGuiStyle() {
+		return guiStyle;
+	}
+
+	public void setGuiStyle(int guiStyle) {
+		this.guiStyle = guiStyle;
 	}
 
 	public int getMaxDepth() {
