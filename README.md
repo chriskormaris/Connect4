@@ -24,4 +24,4 @@ HOT TO RUN IN ECLIPSE:
 
 ### Screenshot
 
-![screenshot](/screenshots/screenshot.png)
+![screenshot](/screenshots/screenshot_ubuntu.png)

@@ -10,14 +10,18 @@ import java.awt.event.ActionListener;
 
 public class PreferencesWindow extends JFrame {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 6651737783332653136L;
 	
-	private static final long serialVersionUID = 1L;
-	
+	private JLabel guiStyleLabel;
 	private JLabel gameModeLabel;
 	private JLabel maxDepthLabel;
 	private JLabel player1ColorLabel;
 	private JLabel player2ColorLabel;
 	
+	private JComboBox<String> gui_style_drop_down;
 	private JComboBox<String> game_mode_drop_down;
 	private JComboBox<Integer> max_depth_drop_down;
 	private JComboBox<String> player1_color_drop_down;
@@ -39,25 +43,42 @@ public class PreferencesWindow extends JFrame {
 		
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setLayout(null);
-		setSize(400, 300);
+		setSize(450, 400);
 		setLocationRelativeTo(null);
 		setResizable(false);
 		
 		handler = new EventHandler();
 		
+		guiStyleLabel = new JLabel("GUI style: ");
 		gameModeLabel = new JLabel("Game mode: ");
 		maxDepthLabel = new JLabel("Minimax AI search depth: ");
 		player1ColorLabel = new JLabel("Player 1 checker color: ");
 		player2ColorLabel = new JLabel("Player 2 checker color: ");
+		
+		add(guiStyleLabel);
 		add(gameModeLabel);
 		add(maxDepthLabel);
 		add(player1ColorLabel);
 		add(player2ColorLabel);
 		
-		gameModeLabel.setBounds(20, 25, 175, 20);
-		maxDepthLabel.setBounds(20, 75, 175, 20);
-		player1ColorLabel.setBounds(20, 125, 175, 20);
-		player2ColorLabel.setBounds(20, 175, 175, 20);
+		guiStyleLabel.setBounds(20, 25, 175, 20);
+		gameModeLabel.setBounds(20, 75, 175, 20);
+		maxDepthLabel.setBounds(20, 125, 175, 20);
+		player1ColorLabel.setBounds(20, 175, 175, 20);
+		player2ColorLabel.setBounds(20, 225, 175, 20);
+		
+		gui_style_drop_down = new JComboBox<String>();
+		gui_style_drop_down.addItem("System style");
+		gui_style_drop_down.addItem("Cross-Platform style");
+		gui_style_drop_down.addItem("Nimbus style");
+		
+		int selectedGuiStyle = game_params.getGameMode();
+		if (selectedGuiStyle == GameParameters.SystemStyle)
+			gui_style_drop_down.setSelectedIndex(GameParameters.SystemStyle - 1);
+		else if (selectedGuiStyle == GameParameters.CrossPlatformStyle)
+			gui_style_drop_down.setSelectedIndex(GameParameters.CrossPlatformStyle - 1);
+		else if (selectedGuiStyle == GameParameters.NimbusStyle)
+			gui_style_drop_down.setSelectedIndex(GameParameters.NimbusStyle - 1);
 		
 		game_mode_drop_down = new JComboBox<String>();
 		game_mode_drop_down.addItem("Human Vs AI");
@@ -65,9 +86,9 @@ public class PreferencesWindow extends JFrame {
 		
 		int selectedMode = game_params.getGameMode();
 		if (selectedMode == GameParameters.HumanVsAi)
-			game_mode_drop_down.setSelectedIndex(0);
+			game_mode_drop_down.setSelectedIndex(GameParameters.HumanVsAi - 1);
 		else if (selectedMode == GameParameters.HumanVsHuman)
-			game_mode_drop_down.setSelectedIndex(1);
+			game_mode_drop_down.setSelectedIndex(GameParameters.HumanVsHuman - 1);
 		
 		max_depth_drop_down = new JComboBox<Integer>();
 		max_depth_drop_down.addItem(1);
@@ -79,7 +100,6 @@ public class PreferencesWindow extends JFrame {
 		
 		int index = game_params.getMaxDepth() - 1;
 		max_depth_drop_down.setSelectedIndex(index);
-		
 		
 		player1_color_drop_down = new JComboBox<String>();
 		player1_color_drop_down.addItem("RED");
@@ -125,56 +145,63 @@ public class PreferencesWindow extends JFrame {
 		else if (selectedPlayer2Color == GameParameters.PURPLE)
 			player2_color_drop_down.setSelectedIndex(GameParameters.PURPLE - 1);
 		
+		add(gui_style_drop_down);
 		add(game_mode_drop_down);
 		add(max_depth_drop_down);
 		add(player1_color_drop_down);
 		add(player2_color_drop_down);
-		game_mode_drop_down.setBounds(220, 25, 160, 20);
-		max_depth_drop_down.setBounds(220, 75, 160, 20);
-		player1_color_drop_down.setBounds(220, 125, 160, 20);
-		player2_color_drop_down.setBounds(220, 175, 160, 20);
+		gui_style_drop_down.setBounds(220, 25, 160, 20);
+		game_mode_drop_down.setBounds(220, 75, 160, 20);
+		max_depth_drop_down.setBounds(220, 125, 160, 20);
+		player1_color_drop_down.setBounds(220, 175, 160, 20);
+		player2_color_drop_down.setBounds(220, 225, 160, 20);
 		
 		apply = new JButton("Apply");
 		cancel = new JButton("Cancel");
 		add(apply);
 		add(cancel);
-		apply.setBounds(80, 225, 100, 30);
+		apply.setBounds(80, 275, 100, 30);
 		apply.addActionListener(handler);
-		cancel.setBounds(220, 225, 100, 30);
+		cancel.setBounds(220, 275, 100, 30);
 		cancel.addActionListener(handler);
 	}
 
 
 	private class EventHandler implements ActionListener {
 		
-		
 		@Override
 		public void actionPerformed(ActionEvent ev) {
 			
-			if(ev.getSource() == cancel) {
+			if (ev.getSource() == cancel) {
 				dispose();
 			}
 			
-			else if(ev.getSource() == apply) {
+			else if (ev.getSource() == apply) {
 				try {
 					
+					int gui_style = gui_style_drop_down.getSelectedIndex() + 1;
 					int game_mode = game_mode_drop_down.getSelectedIndex() + 1;
 					int depth = (int) max_depth_drop_down.getSelectedItem();
 					int player1_color = player1_color_drop_down.getSelectedIndex() + 1;
 					int player2_color = player2_color_drop_down.getSelectedIndex() + 1;
 										
 					if(player1_color == player2_color) {
-						JOptionPane.showMessageDialog(null , "Player 1 and Player 2 cannot have the same color for their checkers!!" , "ERROR" , JOptionPane.ERROR_MESSAGE);
+						JOptionPane.showMessageDialog(null,
+								"Player 1 and Player 2 cannot have the same color for their checkers!!",
+								"ERROR", JOptionPane.ERROR_MESSAGE);
 						return;
 					}
 					
 					// Change game parameters based on settings.
+					game_params.setGuiStyle(gui_style);
 					game_params.setGameMode(game_mode);
 					game_params.setMaxDepth(depth);
 					game_params.setPlayer1Color(player1_color);
 					game_params.setPlayer2Color(player2_color);
 					
-					JOptionPane.showMessageDialog(null , "Game settings have been changed.\nThe changes will be applied in the next game." , "" , JOptionPane.INFORMATION_MESSAGE);
+					JOptionPane.showMessageDialog(null,
+							"Game settings have been changed.\nThe changes will be applied in the next game.",
+							"", JOptionPane.INFORMATION_MESSAGE);
 					dispose();
 				}
 				
