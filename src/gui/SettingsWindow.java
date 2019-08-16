@@ -43,7 +43,7 @@ public class SettingsWindow extends JFrame {
 		
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setLayout(null);
-		setSize(450, 400);
+		setSize(450, 375);
 		setLocationRelativeTo(null);
 		setResizable(false);
 		
