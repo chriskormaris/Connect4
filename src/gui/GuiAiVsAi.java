@@ -20,13 +20,14 @@ public class GuiAiVsAi {
 	static JLayeredPane layeredGameBoard;
 
 	static GameParameters game_params = new GameParameters();
+	// Initial maxDepth = 4. We can change this value for difficulty adjustment.
 	static int maxDepth = game_params.getMaxDepth();
 	static int player1Color = game_params.getPlayer1Color();
 	static int player2Color = game_params.getPlayer2Color();
 	
-	// Initialize maxDepth = 4. We can change this value for difficulty adjustment.
-	static MiniMaxAi ai = new MiniMaxAi(maxDepth, Board.X);
-	
+	static MiniMaxAi ai1;
+	static MiniMaxAi ai2;
+
 	public GuiAiVsAi() {
 		try {
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
@@ -72,13 +73,15 @@ public class GuiAiVsAi {
 		frameMainWindow.setVisible(true);
 
 		// AI VS AI implementation HERE
+		ai1 = new MiniMaxAi(maxDepth, Board.X);
+		ai2 = new MiniMaxAi(maxDepth, Board.O);
 		while (!board.isGameOver()) {
 //			if (board.getLastSymbolPlayed() == Board.O)
-				aiMove(ai, Board.X);
+				aiMove(ai1);
 			
 			if (!board.isGameOver()) {
 //				if (board.getLastSymbolPlayed() == Board.X)
-					aiMove(ai, Board.O);
+					aiMove(ai2);
 			}
 		}
 
@@ -109,25 +112,29 @@ public class GuiAiVsAi {
 	
 		int row = board.getLastMove().getRow();
 		int col = board.getLastMove().getCol();
-
-		int lastPlayerLetter = board.getLastSymbolPlayed();
-		if (lastPlayerLetter == Board.X) {
+		int currentPlayer = board.getLastSymbolPlayed();
+		
+		if (currentPlayer == Board.X) {
 			// It places a red checker in the corresponding [row][col] of the GUI.
 			placeChecker(player1Color, row, col);
-		} else if (lastPlayerLetter == Board.O) {
+		} else if (currentPlayer == Board.O) {
 			// It places a yellow checker in the corresponding [row][col] of the GUI.
 			placeChecker(player2Color, row, col);
 		}
+		
 		if (board.checkGameOver()) {
 			board.setGameOver(true);
 			gameOver();
 		}
-
+		
+		board.printBoard();
+		System.out.println("\n*****************************");
+		
 	}
 	
-	public static void aiMove(MiniMaxAi player, int checker){
-		Move aiMove = player.miniMax(board);
-		board.makeMove(aiMove.getCol(), checker);
+	public static void aiMove(MiniMaxAi ai){
+		Move aiMove = ai.miniMax(board);
+		board.makeMove(aiMove.getCol(), ai.getAiLetter());
 		game();
 	}
 	

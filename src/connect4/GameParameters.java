@@ -24,7 +24,8 @@ public class GameParameters {
 	// Game modes
 	public static final int HumanVsAi = 1;
 	public static final int HumanVsHuman = 2;
-	
+	public static final int AiVsAi = 3;
+
 	// Default values
 	public GameParameters() {
 		this.guiStyle = SystemStyle;

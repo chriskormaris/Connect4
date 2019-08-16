@@ -56,17 +56,16 @@ public class Gui {
 	static JButton col6_button = new JButton("6");
 	static JButton col7_button = new JButton("7");
 
-	static GameParameters game_params = new GameParameters();
-	static int gameMode = game_params.getGameMode();
-	static int maxDepth = game_params.getMaxDepth();
-	static int player1Color = game_params.getPlayer1Color();
-	static int player2Color = game_params.getPlayer2Color();
+	static GameParameters game_params;
+	static int gameMode;
+	static int maxDepth;
+	static int player1Color;
+	static int player2Color;
 	
-	static MiniMaxAi ai1 = new MiniMaxAi(maxDepth, Board.X);
-	static MiniMaxAi ai2 = new MiniMaxAi(maxDepth, Board.O);
+	static MiniMaxAi ai;
 
-	//	Player 1 symbol -> X. Player 1 plays First
-	//	Player 2 symbol -> O.
+	//	Player 1 symbol: X. Player 1 plays first.
+	//	Player 2 symbol: O.
 	
 	public static JLabel checkerLabel = null;
 	
@@ -81,7 +80,7 @@ public class Gui {
 	static JMenu fileMenu;
 	static JMenuItem newGameItem;
 	static JMenuItem undoItem;
-	static JMenuItem preferencesItem;
+	static JMenuItem settingsItem;
 	static JMenuItem exitItem;
 	static JMenu helpMenu;
 	static JMenuItem howToPlayItem;
@@ -89,7 +88,12 @@ public class Gui {
 	
 	public Gui() {
 		
-		configureGuiStyle();
+		try {
+			// Option 1
+			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		
 	}
 	
@@ -103,14 +107,14 @@ public class Gui {
 		fileMenu = new JMenu("File");
 		newGameItem = new JMenuItem("New Game");
 		undoItem = new JMenuItem("Undo    Ctrl+Z");
-		preferencesItem = new JMenuItem("Preferences");
+		settingsItem = new JMenuItem("Settings");
 		exitItem = new JMenuItem("Exit");
 		
 		undoItem.setEnabled(false);
 
 		fileMenu.add(newGameItem);
 		fileMenu.add(undoItem);
-		fileMenu.add(preferencesItem);
+		fileMenu.add(settingsItem);
 		fileMenu.add(exitItem);
 		
 		helpMenu = new JMenu("Help");
@@ -131,9 +135,9 @@ public class Gui {
 			}
 		});
 		
-		preferencesItem.addActionListener(new ActionListener() {
+		settingsItem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				PreferencesWindow prefs = new PreferencesWindow(game_params);
+				SettingsWindow prefs = new SettingsWindow(game_params);
 				prefs.setVisible(true);
 			}
 		});
@@ -147,7 +151,8 @@ public class Gui {
 		howToPlayItem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				JOptionPane.showMessageDialog(null,
-						"Click on the buttons or press 1-7 on your keyboard to insert a new checker.\nTo win you must place 4 checkers in an row, horizontally, vertically or diagonally.",
+						"Click on the buttons or press 1-7 on your keyboard to insert a new checker."
+						+ "\nTo win you must place 4 checkers in an row, horizontally, vertically or diagonally.",
 						"How to Play", JOptionPane.INFORMATION_MESSAGE);
 			}
 		});
@@ -162,6 +167,7 @@ public class Gui {
 		
 		menuBar.add(fileMenu);
 		menuBar.add(helpMenu);
+		
 		frameMainWindow.setJMenuBar(menuBar);
 		// Makes the board visible after adding menus.
 		frameMainWindow.setVisible(true);
@@ -221,7 +227,7 @@ public class Gui {
 				if (!board.hasOverflowOccured()) {
 					game();
 					saveUndoMove();
-					if (gameMode == GameParameters.HumanVsAi) aiMove();
+					if (gameMode == GameParameters.HumanVsAi) aiMove(ai);
 				}
 			}
 			
@@ -288,9 +294,6 @@ public class Gui {
 		player1Color = game_params.getPlayer1Color();
 		player2Color = game_params.getPlayer2Color();
 		
-		// set the new max depth setting
-		ai1.setMaxDepth(maxDepth);
-		
 		if (frameMainWindow != null) frameMainWindow.dispose();
 		frameMainWindow = new JFrame("Minimax Connect-4");
 		// make the main window appear on the center
@@ -310,17 +313,15 @@ public class Gui {
 		// show window
 		frameMainWindow.pack();
 		// Makes the board visible before adding menus.
-		//frameMainWindow.setVisible(true);
+		// frameMainWindow.setVisible(true);
 
-		if (gameMode == GameParameters.HumanVsAi)  {
-			if (board.getLastSymbolPlayed() == Board.X) {
-				Move aiMove = ai1.miniMax(board);
-				board.makeMove(aiMove.getCol(), Board.O);
-				game();
-			}
-		}
-		
 		AddMenus();
+
+		if (gameMode == GameParameters.HumanVsAi) {
+			ai = new MiniMaxAi(maxDepth, Board.O);
+			if (board.getLastSymbolPlayed() == Board.X)
+				aiMove(ai);
+		}
 		
 	}
 	
@@ -416,10 +417,8 @@ public class Gui {
 			placeChecker(player2Color, row, col);
 		}
 		
-		if (board.checkGameOver()) {
-			board.setGameOver(true);
-			gameOver();
-		}
+		gameOver();
+		
 		board.printBoard();
 		System.out.println("\n*****************************");
 		
@@ -428,17 +427,10 @@ public class Gui {
 	
 	
 	// Gets called after the human player makes a move. It makes a Minimax AI move.
-	public static void aiMove(){
-
-		if (!board.isGameOver()) {
-			// check if human player played last
-			if (board.getLastSymbolPlayed() == Board.X) {
-				Move aiMove = ai1.miniMax(board);
-				board.makeMove(aiMove.getCol(), Board.O);
-				game();
-			}
-		}
-
+	public static void aiMove(MiniMaxAi ai){
+		Move aiMove = ai.miniMax(board);
+		board.makeMove(aiMove.getCol(), ai.getAiLetter());
+		game();
 	}
 	
 	
@@ -486,7 +478,7 @@ public class Gui {
 					if (!board.hasOverflowOccured()) {
 						game();
 						saveUndoMove();
-						if (gameMode == GameParameters.HumanVsAi) aiMove();
+						if (gameMode == GameParameters.HumanVsAi) aiMove(ai);
 					}
 					frameMainWindow.requestFocusInWindow();
 				}
@@ -498,7 +490,7 @@ public class Gui {
 					if (!board.hasOverflowOccured()) {
 						game();
 						saveUndoMove();
-						if (gameMode == GameParameters.HumanVsAi) aiMove();
+						if (gameMode == GameParameters.HumanVsAi) aiMove(ai);
 					}
 					frameMainWindow.requestFocusInWindow();
 				}
@@ -510,7 +502,7 @@ public class Gui {
 					if (!board.hasOverflowOccured()) {
 						game();
 						saveUndoMove();
-						if (gameMode == GameParameters.HumanVsAi) aiMove();
+						if (gameMode == GameParameters.HumanVsAi) aiMove(ai);
 					}
 					frameMainWindow.requestFocusInWindow();
 				}
@@ -522,7 +514,7 @@ public class Gui {
 					if (!board.hasOverflowOccured()) {
 						game();
 						saveUndoMove();
-						if (gameMode == GameParameters.HumanVsAi) aiMove();
+						if (gameMode == GameParameters.HumanVsAi) aiMove(ai);
 					}
 					frameMainWindow.requestFocusInWindow();
 				}
@@ -534,7 +526,7 @@ public class Gui {
 					if (!board.hasOverflowOccured()) {
 						game();
 						saveUndoMove();
-						if (gameMode == GameParameters.HumanVsAi) aiMove();
+						if (gameMode == GameParameters.HumanVsAi) aiMove(ai);
 					}
 					frameMainWindow.requestFocusInWindow();
 				}
@@ -546,7 +538,7 @@ public class Gui {
 					if (!board.hasOverflowOccured()) {
 						game();
 						saveUndoMove();
-						if (gameMode == GameParameters.HumanVsAi) aiMove();
+						if (gameMode == GameParameters.HumanVsAi) aiMove(ai);
 					}
 					frameMainWindow.requestFocusInWindow();
 				}
@@ -558,7 +550,7 @@ public class Gui {
 					if (!board.hasOverflowOccured()) {
 						game();
 						saveUndoMove();
-						if (gameMode == GameParameters.HumanVsAi) aiMove();
+						if (gameMode == GameParameters.HumanVsAi) aiMove(ai);
 					}
 					frameMainWindow.requestFocusInWindow();
 				}
@@ -595,10 +587,13 @@ public class Gui {
 	
 	
 	public static void gameOver() {
-		board.setGameOver(true);
-
 		int choice = 0;
-		board.checkWinState();
+		
+		if (board.checkWinState()) {
+			board.setGameOver(true);
+		} else {
+			return;
+		}
 		
 		if (board.getWinner() == Board.X) {
 			if (gameMode == GameParameters.HumanVsAi)
@@ -640,6 +635,13 @@ public class Gui {
 	@SuppressWarnings("static-access")
 	public static void main(String[] args){
 		Gui connect4 = new Gui();
+		
+		game_params = new GameParameters();
+		gameMode = game_params.getGameMode();
+		maxDepth = game_params.getMaxDepth();
+		player1Color = game_params.getPlayer1Color();
+		player2Color = game_params.getPlayer2Color();
+		
 		connect4.createNewGame();
 	}
 	

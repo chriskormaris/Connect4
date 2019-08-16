@@ -5,19 +5,20 @@ import java.util.Random;
 
 public class MiniMaxAi {
 	
-		//Variable that holds the maximum depth the MiniMax algorithm will reach for this player
+		// Variable that holds the maximum depth the MiniMax algorithm will reach for this player
 		private int maxDepth;
-	    //Variable that holds which letter this player controls
-		private int playerLetter;
+		
+	    // Variable that holds which letter this player controls
+		private int aiLetter;
 
 		public MiniMaxAi() {
 			maxDepth = 4;
-			playerLetter = Board.O;
+			aiLetter = Board.O;
 		}
 		
-		public MiniMaxAi(int maxDepth, int playerLetter) {
+		public MiniMaxAi(int maxDepth, int aiLetter) {
 			this.maxDepth = maxDepth;
-			this.playerLetter = playerLetter;
+			this.aiLetter = aiLetter;
 		}
 		
 		public int getMaxDepth() {
@@ -28,18 +29,18 @@ public class MiniMaxAi {
 			this.maxDepth = maxDepth;
 		}
 
-		public int getPlayerLetter() {
-			return playerLetter;
+		public int getAiLetter() {
+			return aiLetter;
 		}
 
-		public void setPlayerLetter(int playerLetter) {
-			this.playerLetter = playerLetter;
+		public void setAiLetter(int aiLetter) {
+			this.aiLetter = aiLetter;
 		}
 
 	    //Initiates the MiniMax algorithm
 		public Move miniMax(Board board) {
 	        //If the X plays then it wants to MAXimize the heuristics value
-	        if (playerLetter == Board.X) {
+	        if (aiLetter == Board.X) {
 	            return max(new Board(board), 0);
 	        }
 	        //If the O plays then it wants to MINimize the heuristics value
