@@ -2,7 +2,7 @@ package connect4;
 
 import java.util.Scanner;
 import java.util.InputMismatchException; // gia thn Scanner
-//import java.util.Random;
+// import java.util.Random;
 
 public class ConsoleMain {
 	

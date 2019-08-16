@@ -8,7 +8,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 
-public class PreferencesWindow extends JFrame {
+public class SettingsWindow extends JFrame {
 	
 	/**
 	 * 
@@ -35,8 +35,8 @@ public class PreferencesWindow extends JFrame {
 	private GameParameters game_params; 
 	
 	
-	public PreferencesWindow(GameParameters gp) {
-		super("Preferences");
+	public SettingsWindow(GameParameters gp) {
+		super("Settings");
 		
 		// copy passed argument object to class object
 		this.game_params = gp; 
@@ -214,5 +214,6 @@ public class PreferencesWindow extends JFrame {
 		} // action performed.
 		
 	} // inner class.
+	
 	
 } // class end.
