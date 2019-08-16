@@ -35,10 +35,9 @@ public class GuiHumanVsAi {
 	static int player1Color = game_params.getPlayer1Color();
 	static int player2Color = game_params.getPlayer2Color();
 	
-//	static GamePlayer ai = new GamePlayer();
 	static MiniMaxAi ai = new MiniMaxAi(maxDepth, Board.X);
 	
-	//	Human player letter -> X. He plays First
+	//	Human player letter -> X. He plays first.
 	//	Minimax AI letter -> O.
 	
 	public GuiHumanVsAi() {

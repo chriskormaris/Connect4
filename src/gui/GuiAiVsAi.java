@@ -20,14 +20,12 @@ public class GuiAiVsAi {
 	static JLayeredPane layeredGameBoard;
 
 	static GameParameters game_params = new GameParameters();
-	static int ai1MaxDepth = game_params.getMaxDepth();
-	static int ai2MaxDepth = game_params.getMaxDepth();
+	static int maxDepth = game_params.getMaxDepth();
 	static int player1Color = game_params.getPlayer1Color();
 	static int player2Color = game_params.getPlayer2Color();
 	
 	// Initialize maxDepth = 4. We can change this value for difficulty adjustment.
-	static MiniMaxAi ai1 = new MiniMaxAi(ai1MaxDepth, Board.X);
-	static MiniMaxAi ai2 = new MiniMaxAi(ai2MaxDepth, Board.O);
+	static MiniMaxAi ai = new MiniMaxAi(maxDepth, Board.X);
 	
 	public GuiAiVsAi() {
 		try {
@@ -73,29 +71,15 @@ public class GuiAiVsAi {
 		frameMainWindow.pack();
 		frameMainWindow.setVisible(true);
 
-		
 		// AI VS AI implementation HERE
 		while (!board.isGameOver()) {
-			
-			if (board.getLastSymbolPlayed() == Board.O) {
-				aiMove(ai1, Board.X);
-//				Move aiMove = ai.MiniMax(board);
-//				board.makeMove(aiMove.getCol(), Board.X);
-//				game();
-			}
-			
+//			if (board.getLastSymbolPlayed() == Board.O)
+				aiMove(ai, Board.X);
 			
 			if (!board.isGameOver()) {
-				
-				if (board.getLastSymbolPlayed() == Board.X) {
-					aiMove(ai2, Board.O);
-//					Move ai2Move = ai2.MiniMax(board);
-//					board.makeMove(ai2Move.getCol(), Board.O);
-//					game();
-				}
-				
+//				if (board.getLastSymbolPlayed() == Board.X)
+					aiMove(ai, Board.O);
 			}
-			
 		}
 
 	}
