@@ -20,17 +20,19 @@ public class Board {
     private int winner;
 	private int [][] gameBoard;
 	
-	private boolean overflowOccured = false;
+	private boolean overflowOccured;
 		
-	private boolean isGameOver;
+	private boolean gameOver;
 	
 	
 	// constructor
 	public Board() {
-		lastMove = new Move();
-		lastSymbolPlayed = O;
-		winner = 0;
-		gameBoard = new int[6][7];
+		this.lastMove = new Move();
+		this.lastSymbolPlayed = O;
+		this.winner = 0;
+		this.gameBoard = new int[6][7];
+		this.overflowOccured = false;
+		this.gameOver = false;
 		for(int i=0; i<6; i++) {
 			for(int j=0; j<7; j++) {
 				gameBoard[i][j] = EMPTY;
@@ -45,6 +47,8 @@ public class Board {
 		lastSymbolPlayed = board.lastSymbolPlayed;
 		winner = board.winner;
 		gameBoard = new int[6][7];
+		this.overflowOccured = false;
+		this.gameOver = false;
 		for(int i=0; i<6; i++) {
 			for(int j=0; j<7; j++) {
 				gameBoard[i][j] = board.gameBoard[i][j];
@@ -99,12 +103,12 @@ public class Board {
 	
 	
 	public boolean isGameOver() {
-		return isGameOver;
+		return gameOver;
 	}
 
 
 	public void setGameOver(boolean isGameOver) {
-		this.isGameOver = isGameOver;
+		this.gameOver = isGameOver;
 	}
 	
 	
@@ -274,7 +278,7 @@ public class Board {
 			}
 		}
 		
-		setWinner(0); // set as winner nobody
+		setWinner(EMPTY); // set as winner nobody
 		return false;
 
 	}

@@ -179,25 +179,25 @@ public class PreferencesWindow extends JFrame {
 			else if (ev.getSource() == apply) {
 				try {
 					
-					int gui_style = gui_style_drop_down.getSelectedIndex() + 1;
-					int game_mode = game_mode_drop_down.getSelectedIndex() + 1;
+					int guiStyle = gui_style_drop_down.getSelectedIndex() + 1;
+					int gameMode = game_mode_drop_down.getSelectedIndex() + 1;
 					int depth = (int) max_depth_drop_down.getSelectedItem();
-					int player1_color = player1_color_drop_down.getSelectedIndex() + 1;
-					int player2_color = player2_color_drop_down.getSelectedIndex() + 1;
+					int player1Color = player1_color_drop_down.getSelectedIndex() + 1;
+					int player2Color = player2_color_drop_down.getSelectedIndex() + 1;
 										
-					if(player1_color == player2_color) {
+					if(player1Color == player2Color) {
 						JOptionPane.showMessageDialog(null,
-								"Player 1 and Player 2 cannot have the same color for their checkers!!",
+								"Player 1 and Player 2 cannot have the same color of checkers!",
 								"ERROR", JOptionPane.ERROR_MESSAGE);
 						return;
 					}
 					
 					// Change game parameters based on settings.
-					game_params.setGuiStyle(gui_style);
-					game_params.setGameMode(game_mode);
+					game_params.setGuiStyle(guiStyle);
+					game_params.setGameMode(gameMode);
 					game_params.setMaxDepth(depth);
-					game_params.setPlayer1Color(player1_color);
-					game_params.setPlayer2Color(player2_color);
+					game_params.setPlayer1Color(player1Color);
+					game_params.setPlayer2Color(player2Color);
 					
 					JOptionPane.showMessageDialog(null,
 							"Game settings have been changed.\nThe changes will be applied in the next game.",

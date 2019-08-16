@@ -1,10 +1,30 @@
 package gui;
 
-import java.awt.*;
-import java.awt.event.*;
+import java.awt.BorderLayout;
+import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.GridLayout;
+import java.awt.Toolkit;
+import java.awt.Window;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
-import javax.swing.*;
-// import javax.swing.UIManager.LookAndFeelInfo;
+import javax.swing.BorderFactory;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JLayeredPane;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.UIManager;
 import javax.swing.UIManager.LookAndFeelInfo;
 
 import connect4.Board;
@@ -42,9 +62,9 @@ public class Gui {
 	static int player1Color = game_params.getPlayer1Color();
 	static int player2Color = game_params.getPlayer2Color();
 	
-//	static GamePlayer ai = new GamePlayer();
-	static MiniMaxAi ai = new MiniMaxAi(maxDepth, Board.X);
-	
+	static MiniMaxAi ai1 = new MiniMaxAi(maxDepth, Board.X);
+	static MiniMaxAi ai2 = new MiniMaxAi(maxDepth, Board.O);
+
 	//	Player 1 symbol -> X. Player 1 plays First
 	//	Player 2 symbol -> O.
 	
@@ -56,34 +76,26 @@ public class Gui {
 	private static int humanPlayerUndoLetter;
 	private static JLabel humanPlayerUndoCheckerLabel;
 
+	// Menu bars and items
+	static JMenuBar menuBar;
+	static JMenu fileMenu;
+	static JMenuItem newGameItem;
+	static JMenuItem undoItem;
+	static JMenuItem preferencesItem;
+	static JMenuItem exitItem;
+	static JMenu helpMenu;
+	static JMenuItem howToPlayItem;
+	static JMenuItem aboutItem;
 	
 	public Gui() {
 		
-		try {
-			
-			// Option 1
-			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-			
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+		configureGuiStyle();
 		
 	}
 	
 	
 	// Adds the menu bars and items to the window.
 	private static void AddMenus() {
-		
-		// Menu bars and items
-		JMenuBar menuBar;
-		JMenu fileMenu;
-		JMenuItem newGameItem;
-		JMenuItem undoItem;
-		JMenuItem preferencesItem;
-		JMenuItem exitItem;
-		JMenu helpMenu;
-		JMenuItem howToPlayItem;
-		JMenuItem aboutItem;
 		
 		// Adding the menu bar
 		menuBar = new JMenuBar();
@@ -93,6 +105,9 @@ public class Gui {
 		undoItem = new JMenuItem("Undo    Ctrl+Z");
 		preferencesItem = new JMenuItem("Preferences");
 		exitItem = new JMenuItem("Exit");
+		
+		undoItem.setEnabled(false);
+
 		fileMenu.add(newGameItem);
 		fileMenu.add(undoItem);
 		fileMenu.add(preferencesItem);
@@ -255,6 +270,7 @@ public class Gui {
 				System.err.flush();
 			}
 		}
+		undoItem.setEnabled(false);
 	}
 	
 	
@@ -273,7 +289,7 @@ public class Gui {
 		player2Color = game_params.getPlayer2Color();
 		
 		// set the new max depth setting
-		ai.setMaxDepth(maxDepth);
+		ai1.setMaxDepth(maxDepth);
 		
 		if (frameMainWindow != null) frameMainWindow.dispose();
 		frameMainWindow = new JFrame("Minimax Connect-4");
@@ -298,7 +314,7 @@ public class Gui {
 
 		if (gameMode == GameParameters.HumanVsAi)  {
 			if (board.getLastSymbolPlayed() == Board.X) {
-				Move aiMove = ai.miniMax(board);
+				Move aiMove = ai1.miniMax(board);
 				board.makeMove(aiMove.getCol(), Board.O);
 				game();
 			}
@@ -401,10 +417,13 @@ public class Gui {
 		}
 		
 		if (board.checkGameOver()) {
+			board.setGameOver(true);
 			gameOver();
 		}
 		board.printBoard();
 		System.out.println("\n*****************************");
+		
+		undoItem.setEnabled(true);
 	}
 	
 	
@@ -414,7 +433,7 @@ public class Gui {
 		if (!board.isGameOver()) {
 			// check if human player played last
 			if (board.getLastSymbolPlayed() == Board.X) {
-				Move aiMove = ai.miniMax(board);
+				Move aiMove = ai1.miniMax(board);
 				board.makeMove(aiMove.getCol(), Board.O);
 				game();
 			}
