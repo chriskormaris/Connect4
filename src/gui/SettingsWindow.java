@@ -2,6 +2,7 @@ package gui;
 
 import javax.swing.*;
 
+import connect4.Constants;
 import connect4.GameParameters;
 
 import java.awt.event.ActionEvent;
@@ -31,15 +32,10 @@ public class SettingsWindow extends JFrame {
 	private JButton cancel;
 	
 	private EventHandler handler;
-	
-	private GameParameters game_params; 
-	
-	
-	public SettingsWindow(GameParameters gp) {
-		super("Settings");
 		
-		// copy passed argument object to class object
-		this.game_params = gp; 
+	
+	public SettingsWindow() {
+		super("Settings");
 		
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setLayout(null);
@@ -49,6 +45,12 @@ public class SettingsWindow extends JFrame {
 		
 		handler = new EventHandler();
 		
+		int selectedGuiStyle = GameParameters.gameMode;
+		int selectedMode = GameParameters.gameMode;
+		int maxDepth = GameParameters.maxDepth - 1;
+		int selectedPlayer1Color = GameParameters.player1Color;
+		int selectedPlayer2Color = GameParameters.player2Color;
+
 		guiStyleLabel = new JLabel("GUI style: ");
 		gameModeLabel = new JLabel("Game mode: ");
 		maxDepthLabel = new JLabel("Minimax AI search depth: ");
@@ -72,23 +74,21 @@ public class SettingsWindow extends JFrame {
 		gui_style_drop_down.addItem("Cross-Platform style");
 		gui_style_drop_down.addItem("Nimbus style");
 		
-		int selectedGuiStyle = game_params.getGameMode();
-		if (selectedGuiStyle == GameParameters.SystemStyle)
-			gui_style_drop_down.setSelectedIndex(GameParameters.SystemStyle - 1);
-		else if (selectedGuiStyle == GameParameters.CrossPlatformStyle)
-			gui_style_drop_down.setSelectedIndex(GameParameters.CrossPlatformStyle - 1);
-		else if (selectedGuiStyle == GameParameters.NimbusStyle)
-			gui_style_drop_down.setSelectedIndex(GameParameters.NimbusStyle - 1);
+		if (selectedGuiStyle == Constants.SystemStyle)
+			gui_style_drop_down.setSelectedIndex(Constants.SystemStyle - 1);
+		else if (selectedGuiStyle == Constants.CrossPlatformStyle)
+			gui_style_drop_down.setSelectedIndex(Constants.CrossPlatformStyle - 1);
+		else if (selectedGuiStyle == Constants.NimbusStyle)
+			gui_style_drop_down.setSelectedIndex(Constants.NimbusStyle - 1);
 		
 		game_mode_drop_down = new JComboBox<String>();
 		game_mode_drop_down.addItem("Human Vs AI");
 		game_mode_drop_down.addItem("Human Vs Human");
 		
-		int selectedMode = game_params.getGameMode();
-		if (selectedMode == GameParameters.HumanVsAi)
-			game_mode_drop_down.setSelectedIndex(GameParameters.HumanVsAi - 1);
-		else if (selectedMode == GameParameters.HumanVsHuman)
-			game_mode_drop_down.setSelectedIndex(GameParameters.HumanVsHuman - 1);
+		if (selectedMode == Constants.HumanVsAi)
+			game_mode_drop_down.setSelectedIndex(Constants.HumanVsAi - 1);
+		else if (selectedMode == Constants.HumanVsHuman)
+			game_mode_drop_down.setSelectedIndex(Constants.HumanVsHuman - 1);
 		
 		max_depth_drop_down = new JComboBox<Integer>();
 		max_depth_drop_down.addItem(1);
@@ -98,8 +98,7 @@ public class SettingsWindow extends JFrame {
 		max_depth_drop_down.addItem(5);
 		max_depth_drop_down.addItem(6);
 		
-		int index = game_params.getMaxDepth() - 1;
-		max_depth_drop_down.setSelectedIndex(index);
+		max_depth_drop_down.setSelectedIndex(maxDepth);
 		
 		player1_color_drop_down = new JComboBox<String>();
 		player1_color_drop_down.addItem("RED");
@@ -109,19 +108,18 @@ public class SettingsWindow extends JFrame {
 		player1_color_drop_down.addItem("ORANGE");
 		player1_color_drop_down.addItem("PURPLE");
 		
-		int selectedPlayer1Color = game_params.getPlayer1Color();
-		if (selectedPlayer1Color == GameParameters.RED)
-			player1_color_drop_down.setSelectedIndex(GameParameters.RED - 1);
-		else if (selectedPlayer1Color == GameParameters.YELLOW)
-			player1_color_drop_down.setSelectedIndex(GameParameters.YELLOW - 1);
-		else if (selectedPlayer1Color == GameParameters.BLACK)
-			player1_color_drop_down.setSelectedIndex(GameParameters.BLACK - 1);
-		else if (selectedPlayer1Color == GameParameters.GREEN)
-			player1_color_drop_down.setSelectedIndex(GameParameters.GREEN - 1);
-		else if (selectedPlayer1Color == GameParameters.ORANGE)
-			player1_color_drop_down.setSelectedIndex(GameParameters.ORANGE - 1);
-		else if (selectedPlayer1Color == GameParameters.PURPLE)
-			player1_color_drop_down.setSelectedIndex(GameParameters.PURPLE - 1);
+		if (selectedPlayer1Color == Constants.RED)
+			player1_color_drop_down.setSelectedIndex(Constants.RED - 1);
+		else if (selectedPlayer1Color == Constants.YELLOW)
+			player1_color_drop_down.setSelectedIndex(Constants.YELLOW - 1);
+		else if (selectedPlayer1Color == Constants.BLACK)
+			player1_color_drop_down.setSelectedIndex(Constants.BLACK - 1);
+		else if (selectedPlayer1Color == Constants.GREEN)
+			player1_color_drop_down.setSelectedIndex(Constants.GREEN - 1);
+		else if (selectedPlayer1Color == Constants.ORANGE)
+			player1_color_drop_down.setSelectedIndex(Constants.ORANGE - 1);
+		else if (selectedPlayer1Color == Constants.PURPLE)
+			player1_color_drop_down.setSelectedIndex(Constants.PURPLE - 1);
 		
 		player2_color_drop_down = new JComboBox<String>();
 		player2_color_drop_down.addItem("RED");
@@ -131,19 +129,18 @@ public class SettingsWindow extends JFrame {
 		player2_color_drop_down.addItem("ORANGE");
 		player2_color_drop_down.addItem("PURPLE");
 		
-		int selectedPlayer2Color = game_params.getPlayer2Color();
-		if (selectedPlayer2Color == GameParameters.RED)
-			player2_color_drop_down.setSelectedIndex(GameParameters.RED - 1);
-		else if (selectedPlayer2Color == GameParameters.YELLOW)
-			player2_color_drop_down.setSelectedIndex(GameParameters.YELLOW - 1);
-		else if (selectedPlayer2Color == GameParameters.BLACK)
-			player2_color_drop_down.setSelectedIndex(GameParameters.BLACK - 1);
-		else if (selectedPlayer2Color == GameParameters.GREEN)
-			player2_color_drop_down.setSelectedIndex(GameParameters.GREEN - 1);
-		else if (selectedPlayer2Color == GameParameters.ORANGE)
-			player2_color_drop_down.setSelectedIndex(GameParameters.ORANGE - 1);
-		else if (selectedPlayer2Color == GameParameters.PURPLE)
-			player2_color_drop_down.setSelectedIndex(GameParameters.PURPLE - 1);
+		if (selectedPlayer2Color == Constants.RED)
+			player2_color_drop_down.setSelectedIndex(Constants.RED - 1);
+		else if (selectedPlayer2Color == Constants.YELLOW)
+			player2_color_drop_down.setSelectedIndex(Constants.YELLOW - 1);
+		else if (selectedPlayer2Color == Constants.BLACK)
+			player2_color_drop_down.setSelectedIndex(Constants.BLACK - 1);
+		else if (selectedPlayer2Color == Constants.GREEN)
+			player2_color_drop_down.setSelectedIndex(Constants.GREEN - 1);
+		else if (selectedPlayer2Color == Constants.ORANGE)
+			player2_color_drop_down.setSelectedIndex(Constants.ORANGE - 1);
+		else if (selectedPlayer2Color == Constants.PURPLE)
+			player2_color_drop_down.setSelectedIndex(Constants.PURPLE - 1);
 		
 		add(gui_style_drop_down);
 		add(game_mode_drop_down);
@@ -181,7 +178,7 @@ public class SettingsWindow extends JFrame {
 					
 					int guiStyle = gui_style_drop_down.getSelectedIndex() + 1;
 					int gameMode = game_mode_drop_down.getSelectedIndex() + 1;
-					int depth = (int) max_depth_drop_down.getSelectedItem();
+					int maxDepth = (int) max_depth_drop_down.getSelectedItem();
 					int player1Color = player1_color_drop_down.getSelectedIndex() + 1;
 					int player2Color = player2_color_drop_down.getSelectedIndex() + 1;
 										
@@ -193,11 +190,11 @@ public class SettingsWindow extends JFrame {
 					}
 					
 					// Change game parameters based on settings.
-					game_params.setGuiStyle(guiStyle);
-					game_params.setGameMode(gameMode);
-					game_params.setMaxDepth(depth);
-					game_params.setPlayer1Color(player1Color);
-					game_params.setPlayer2Color(player2Color);
+					GameParameters.guiStyle = guiStyle;
+					GameParameters.gameMode = gameMode;
+					GameParameters.maxDepth = maxDepth;
+					GameParameters.player1Color = player1Color;
+					GameParameters.player2Color = player2Color;
 					
 					JOptionPane.showMessageDialog(null,
 							"Game settings have been changed.\nThe changes will be applied in the next game.",

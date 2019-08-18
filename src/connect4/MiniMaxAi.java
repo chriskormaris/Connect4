@@ -13,7 +13,7 @@ public class MiniMaxAi {
 
 		public MiniMaxAi() {
 			maxDepth = 4;
-			aiLetter = Board.O;
+			aiLetter = Constants.O;
 		}
 		
 		public MiniMaxAi(int maxDepth, int aiLetter) {
@@ -40,7 +40,7 @@ public class MiniMaxAi {
 	    //Initiates the MiniMax algorithm
 		public Move miniMax(Board board) {
 	        //If the X plays then it wants to MAXimize the heuristics value
-	        if (aiLetter == Board.X) {
+	        if (aiLetter == Constants.X) {
 	            return max(new Board(board), 0);
 	        }
 	        //If the O plays then it wants to MINimize the heuristics value
@@ -56,13 +56,12 @@ public class MiniMaxAi {
 	        /* If MAX is called on a state that is terminal or after a maximum depth is reached,
 	         * then a heuristic is calculated on the state and the move returned.
 	         */
-			if((board.checkGameOver()) || (depth == maxDepth))
-			{
+			if((board.checkGameOver()) || (depth == maxDepth)) {
 				Move lastMove = new Move(board.getLastMove().getRow(), board.getLastMove().getCol(), board.evaluate());
 				return lastMove;
 			}
 	        //The children-moves of the state are calculated
-			ArrayList<Board> children = new ArrayList<Board>(board.getChildren(Board.X));
+			ArrayList<Board> children = new ArrayList<Board>(board.getChildren(Constants.X));
 			Move maxMove = new Move(Integer.MIN_VALUE);
 			for (Board child : children) {
 	            //And for each child min is called, on a lower depth
@@ -95,7 +94,7 @@ public class MiniMaxAi {
 				Move lastMove = new Move(board.getLastMove().getRow(), board.getLastMove().getCol(), board.evaluate());
 				return lastMove;
 			}
-			ArrayList<Board> children = new ArrayList<Board>(board.getChildren(Board.O));
+			ArrayList<Board> children = new ArrayList<Board>(board.getChildren(Constants.O));
 			Move minMove = new Move(Integer.MAX_VALUE);
 			for (Board child : children) {
 				Move move = max(child, depth + 1);

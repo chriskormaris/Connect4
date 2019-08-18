@@ -6,6 +6,7 @@ import java.awt.event.*;
 import javax.swing.*;
 
 import connect4.Board;
+import connect4.Constants;
 import connect4.GameParameters;
 import connect4.MiniMaxAi;
 import connect4.Move;
@@ -18,12 +19,6 @@ public class GuiAiVsAi {
 	
 	static JPanel panelBoardNumbers;
 	static JLayeredPane layeredGameBoard;
-
-	static GameParameters game_params = new GameParameters();
-	// Initial maxDepth = 4. We can change this value for difficulty adjustment.
-	static int maxDepth = game_params.getMaxDepth();
-	static int player1Color = game_params.getPlayer1Color();
-	static int player2Color = game_params.getPlayer2Color();
 	
 	static MiniMaxAi ai1;
 	static MiniMaxAi ai2;
@@ -73,8 +68,10 @@ public class GuiAiVsAi {
 		frameMainWindow.setVisible(true);
 
 		// AI VS AI implementation HERE
-		ai1 = new MiniMaxAi(maxDepth, Board.X);
-		ai2 = new MiniMaxAi(maxDepth, Board.O);
+		// Initial maxDepth = 4. We can change this value for difficulty adjustment.
+		ai1 = new MiniMaxAi(GameParameters.maxDepth, Constants.X);
+		ai2 = new MiniMaxAi(GameParameters.maxDepth, Constants.O);
+		
 		while (!board.isGameOver()) {
 //			if (board.getLastSymbolPlayed() == Board.O)
 				aiMove(ai1);
@@ -114,12 +111,12 @@ public class GuiAiVsAi {
 		int col = board.getLastMove().getCol();
 		int currentPlayer = board.getLastSymbolPlayed();
 		
-		if (currentPlayer == Board.X) {
+		if (currentPlayer == Constants.X) {
 			// It places a red checker in the corresponding [row][col] of the GUI.
-			placeChecker(player1Color, row, col);
-		} else if (currentPlayer == Board.O) {
+			placeChecker(GameParameters.player1Color, row, col);
+		} else if (currentPlayer == Constants.O) {
 			// It places a yellow checker in the corresponding [row][col] of the GUI.
-			placeChecker(player2Color, row, col);
+			placeChecker(GameParameters.player2Color, row, col);
 		}
 		
 		if (board.checkGameOver()) {
@@ -127,7 +124,7 @@ public class GuiAiVsAi {
 			gameOver();
 		}
 		
-		board.printBoard();
+		Board.printBoard(board.getGameBoard());
 		System.out.println("\n*****************************");
 		
 	}
@@ -172,12 +169,12 @@ public class GuiAiVsAi {
 //		JLabel winLabel = new JLabel(winIcon);
 		JLabel winLabel;
 		board.checkWinState();
-		if (board.getWinner() == Board.X) {
-			String player1ColorString = GameParameters.getColorNameByNumber(player1Color);
+		if (board.getWinner() == Constants.X) {
+			String player1ColorString = GameParameters.getColorNameByNumber(GameParameters.player1Color);
 			winLabel = new JLabel("AI 1 (" + player1ColorString + ") wins! Start a new game?");
 			winPanel.add(winLabel);
-		} else if (board.getWinner() == Board.O) {
-			String player2ColorString = GameParameters.getColorNameByNumber(player2Color);
+		} else if (board.getWinner() == Constants.O) {
+			String player2ColorString = GameParameters.getColorNameByNumber(GameParameters.player2Color);
 			winLabel = new JLabel("AI 2 (" + player2ColorString + ") wins! Start a new game?");
 			winPanel.add(winLabel);
 		} else {

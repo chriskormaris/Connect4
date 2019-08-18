@@ -6,6 +6,7 @@ import java.awt.event.*;
 import javax.swing.*;
 
 import connect4.Board;
+import connect4.Constants;
 import connect4.GameParameters;
 import connect4.MiniMaxAi;
 import connect4.Move;
@@ -30,12 +31,7 @@ public class GuiHumanVsAi {
 	static JMenuItem item21;
 	static JMenuItem item22;
 
-	static GameParameters game_params = new GameParameters();
-	static int maxDepth = game_params.getMaxDepth();
-	static int player1Color = game_params.getPlayer1Color();
-	static int player2Color = game_params.getPlayer2Color();
-	
-	static MiniMaxAi ai = new MiniMaxAi(maxDepth, Board.X);
+	static MiniMaxAi ai = new MiniMaxAi(GameParameters.maxDepth, Constants.X);
 	
 	//	Human player letter -> X. He plays first.
 	//	Minimax AI letter -> O.
@@ -70,7 +66,7 @@ public class GuiHumanVsAi {
 		board = new Board();
 		
 		// set the new difficulty setting
-		ai.setMaxDepth(maxDepth);
+		ai.setMaxDepth(GameParameters.maxDepth);
              
 		if (frameMainWindow != null) frameMainWindow.dispose();
 		frameMainWindow = new JFrame("Minimax Connect-4");
@@ -102,19 +98,19 @@ public class GuiHumanVsAi {
 				int previousLetter = board.getLastSymbolPlayed();
 
 				if (button.equals("1")) {
-					board.makeMove(0, Board.X);
+					board.makeMove(0, Constants.X);
 				} else if (button.equals("2")) {
-					board.makeMove(1, Board.X);
+					board.makeMove(1, Constants.X);
 				} else if (button.equals("3")) {
-					board.makeMove(2, Board.X);
+					board.makeMove(2, Constants.X);
 				} else if (button.equals("4")) {
-					board.makeMove(3, Board.X);
+					board.makeMove(3, Constants.X);
 				} else if (button.equals("5")) {
-					board.makeMove(4, Board.X);
+					board.makeMove(4, Constants.X);
 				} else if (button.equals("6")) {
-					board.makeMove(5, Board.X);
+					board.makeMove(5, Constants.X);
 				} else if (button.equals("7")) {
-					board.makeMove(6, Board.X);
+					board.makeMove(6, Constants.X);
 				}
 				
 				if (button.equals("1") || button.equals("2") || button.equals("3") || button.equals("4")
@@ -143,9 +139,9 @@ public class GuiHumanVsAi {
 		frameMainWindow.pack();
 		frameMainWindow.setVisible(true);
 
-		if (board.getLastSymbolPlayed() == Board.X) {
+		if (board.getLastSymbolPlayed() == Constants.X) {
 			Move aiMove = ai.miniMax(board);
-			board.makeMove(aiMove.getCol(), Board.O);
+			board.makeMove(aiMove.getCol(), Constants.O);
 			game();
 		}
 
@@ -180,14 +176,14 @@ public class GuiHumanVsAi {
 
 		int currentPlayer = board.getLastSymbolPlayed();
 		
-		if (currentPlayer == Board.X) {
+		if (currentPlayer == Constants.X) {
 			// It places a checker in the corresponding [row][col] of the GUI.
-			placeChecker(player1Color, row, col);
+			placeChecker(GameParameters.player1Color, row, col);
 		}
 		
-		if (currentPlayer == Board.O) {
+		if (currentPlayer == Constants.O) {
 			// It places a checker in the corresponding [row][col] of the GUI.
-			placeChecker(player2Color, row, col);
+			placeChecker(GameParameters.player2Color, row, col);
 		}
 		
 		if (board.checkGameOver()) {
@@ -203,9 +199,9 @@ public class GuiHumanVsAi {
 
 		if (!board.isGameOver()) {
 			// check if human player played last
-			if (board.getLastSymbolPlayed() == Board.X) {
+			if (board.getLastSymbolPlayed() == Constants.X) {
 				Move aiMove = ai.miniMax(board);
-				board.makeMove(aiMove.getCol(), Board.O);
+				board.makeMove(aiMove.getCol(), Constants.O);
 				game();
 			}
 		}
@@ -232,7 +228,7 @@ public class GuiHumanVsAi {
 				int previousRow = board.getLastMove().getRow();
 				int previousCol = board.getLastMove().getCol();
 				int previousLetter = board.getLastSymbolPlayed();
-				board.makeMove(0, Board.X);
+				board.makeMove(0, Constants.X);
 				if (!board.hasOverflowOccured()) {
 					game();
 					aiMove();
@@ -253,7 +249,7 @@ public class GuiHumanVsAi {
 				int previousRow = board.getLastMove().getRow();
 				int previousCol = board.getLastMove().getCol();
 				int previousLetter = board.getLastSymbolPlayed();
-				board.makeMove(1, Board.X);
+				board.makeMove(1, Constants.X);
 				if (!board.hasOverflowOccured()) {
 					game();
 					aiMove();
@@ -274,7 +270,7 @@ public class GuiHumanVsAi {
 				int previousRow = board.getLastMove().getRow();
 				int previousCol = board.getLastMove().getCol();
 				int previousLetter = board.getLastSymbolPlayed();
-				board.makeMove(2, Board.X);
+				board.makeMove(2, Constants.X);
 				if (!board.hasOverflowOccured()) {
 					game();
 					aiMove();
@@ -295,7 +291,7 @@ public class GuiHumanVsAi {
 				int previousRow = board.getLastMove().getRow();
 				int previousCol = board.getLastMove().getCol();
 				int previousLetter = board.getLastSymbolPlayed();
-				board.makeMove(3, Board.X);
+				board.makeMove(3, Constants.X);
 				if (!board.hasOverflowOccured()) {
 					game();
 					aiMove();
@@ -316,7 +312,7 @@ public class GuiHumanVsAi {
 				int previousRow = board.getLastMove().getRow();
 				int previousCol = board.getLastMove().getCol();
 				int previousLetter = board.getLastSymbolPlayed();
-				board.makeMove(4, Board.X);
+				board.makeMove(4, Constants.X);
 				if (!board.hasOverflowOccured()) {
 					game();
 					aiMove();
@@ -337,7 +333,7 @@ public class GuiHumanVsAi {
 				int previousRow = board.getLastMove().getRow();
 				int previousCol = board.getLastMove().getCol();
 				int previousLetter = board.getLastSymbolPlayed();
-				board.makeMove(5, Board.X);
+				board.makeMove(5, Constants.X);
 				if (!board.hasOverflowOccured()) {
 					game();
 					aiMove();
@@ -358,7 +354,7 @@ public class GuiHumanVsAi {
 				int previousRow = board.getLastMove().getRow();
 				int previousCol = board.getLastMove().getCol();
 				int previousLetter = board.getLastSymbolPlayed();
-				board.makeMove(6, Board.X);
+				board.makeMove(6, Constants.X);
 				if (!board.hasOverflowOccured()) {
 					game();
 					aiMove();
@@ -408,10 +404,10 @@ public class GuiHumanVsAi {
 //		JLabel winLabel = new JLabel(winIcon);
 		JLabel winLabel;
 		board.checkWinState();
-		if (board.getWinner() == Board.X) {
+		if (board.getWinner() == Constants.X) {
 			winLabel = new JLabel("You win! Start a new game?");
 			winPanel.add(winLabel);
-		} else if (board.getWinner() == Board.O) {
+		} else if (board.getWinner() == Constants.O) {
 			winLabel = new JLabel("Computer AI wins! Start a new game?");
 			winPanel.add(winLabel);
 		} else {

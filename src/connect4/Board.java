@@ -2,12 +2,8 @@ package connect4;
 
 import java.util.ArrayList;
 
+// The project is based on lab04.
 public class Board {
-	
-	// Board values
-	public static final int X = 1;  // Player 1
-	public static final int O = -1;  // Player 2
-	public static final int EMPTY = 0;
 	
     // Immediate move that led to this board.
     private Move lastMove;
@@ -27,14 +23,14 @@ public class Board {
 	// constructor
 	public Board() {
 		this.lastMove = new Move();
-		this.lastSymbolPlayed = O;
+		this.lastSymbolPlayed = Constants.O;
 		this.winner = 0;
 		this.gameBoard = new int[6][7];
 		this.overflowOccured = false;
 		this.gameOver = false;
 		for(int i=0; i<6; i++) {
 			for(int j=0; j<7; j++) {
-				gameBoard[i][j] = EMPTY;
+				gameBoard[i][j] = Constants.EMPTY;
 			}
 		}
 	}
@@ -140,10 +136,10 @@ public class Board {
 	// Makes the specified cell in the border empty.
 	public void undoMove(int row, int col, int letter) {
 		this.gameBoard[row][col] = 0;
-		if (letter == O) {
-			this.lastSymbolPlayed = X;
-		} else if (letter == X) {
-			this.lastSymbolPlayed = O;
+		if (letter == Constants.O) {
+			this.lastSymbolPlayed = Constants.X;
+		} else if (letter == Constants.X) {
+			this.lastSymbolPlayed = Constants.O;
 		}
 	}
 	
@@ -159,7 +155,7 @@ public class Board {
 	
 	
 	public boolean checkFullColumn(int col) {
-		if (gameBoard[0][col] == EMPTY)
+		if (gameBoard[0][col] == Constants.EMPTY)
 			return false;
 		return true;
 	}
@@ -169,7 +165,7 @@ public class Board {
 	public int getRowPosition(int col) {
 		int rowPosition = -1;
 		for (int row=0; row<6; row++) {
-			if (gameBoard[row][col] == EMPTY) {
+			if (gameBoard[row][col] == Constants.EMPTY) {
 				rowPosition = row;
 			}
 		}
@@ -195,22 +191,22 @@ public class Board {
 	
 	
 	public int evaluate() {
-		// +100 'X' wins, -100 'O' wins,
-		// +10 for each three 'X' in a row, -10 for each three 'O' in a row,
-		// +1 for each two 'X' in a row, -1 for each two 'O' in a row
+		// +100 'Constants.X' wins, -100 'Constants.O' wins,
+		// +10 for each three 'Constants.X' in a row, -10 for each three 'Constants.O' in a row,
+		// +1 for each two 'Constants.X' in a row, -1 for each two 'Constants.O' in a row
 		int Xlines = 0;
 		int Olines = 0;
 
         if (checkWinState()) {
-			if(getWinner() == X) {
+			if(getWinner() == Constants.X) {
 				Xlines = Xlines + 100;
-			} else if (getWinner() == O) {
+			} else if (getWinner() == Constants.O) {
 				Olines = Olines + 100;
 			}
 		}
 		
-        Xlines  = Xlines + count3InARow(X) * 10 + count2InARow(X);
-        Olines  = Olines + count3InARow(O) * 10 + count2InARow(O);
+        Xlines  = Xlines + count3InARow(Constants.X) * 10 + count2InARow(Constants.X);
+        Olines  = Olines + count3InARow(Constants.O) * 10 + count2InARow(Constants.O);
 		
         // if the result is 0, then it'a a draw 
 		return Xlines - Olines;
@@ -229,7 +225,7 @@ public class Board {
 				if (gameBoard[i][j] == gameBoard[i][j+1]
 						&& gameBoard[i][j] == gameBoard[i][j+2]
 						&& gameBoard[i][j] == gameBoard[i][j+3]
-						&& gameBoard[i][j] != EMPTY) {
+						&& gameBoard[i][j] != Constants.EMPTY) {
 					setWinner(gameBoard[i][j]);
 					return true;
 				}
@@ -242,7 +238,7 @@ public class Board {
 				if (gameBoard[i][j] == gameBoard[i-1][j]
 						&& gameBoard[i][j] == gameBoard[i-2][j]
 						&& gameBoard[i][j] == gameBoard[i-3][j]
-						&& gameBoard[i][j] != EMPTY) {
+						&& gameBoard[i][j] != Constants.EMPTY) {
 					setWinner(gameBoard[i][j]);
 					return true;
 				}
@@ -255,7 +251,7 @@ public class Board {
 				if (gameBoard[i][j] == gameBoard[i+1][j+1]
 						&& gameBoard[i][j] == gameBoard[i+2][j+2]
 						&& gameBoard[i][j] == gameBoard[i+3][j+3] 
-						&& gameBoard[i][j] != EMPTY) {
+						&& gameBoard[i][j] != Constants.EMPTY) {
 					setWinner(gameBoard[i][j]);
 					return true;
 				}
@@ -269,7 +265,7 @@ public class Board {
 					if (gameBoard[i][j] == gameBoard[i-1][j+1]
 							&& gameBoard[i][j] == gameBoard[i-2][j+2]
 							&& gameBoard[i][j] == gameBoard[i-3][j+3] 
-							&& gameBoard[i][j] != EMPTY) {
+							&& gameBoard[i][j] != Constants.EMPTY) {
 						setWinner(gameBoard[i][j]);
 						return true;
 					}
@@ -277,7 +273,7 @@ public class Board {
 			}
 		}
 		
-		setWinner(EMPTY); // set as winner nobody
+		setWinner(Constants.EMPTY); // set as winner nobody
 		return false;
 
 	}
@@ -293,7 +289,7 @@ public class Board {
     	// and nobody has won the game.
     	for(int row=0; row<6; row++) {
 			for(int col=0; col<7; col++) {
-				if(gameBoard[row][col] == EMPTY) {
+				if(gameBoard[row][col] == Constants.EMPTY) {
                     return false;
                 }
             }
