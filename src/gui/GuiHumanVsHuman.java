@@ -6,6 +6,7 @@ import java.awt.event.*;
 import javax.swing.*;
 
 import connect4.Board;
+import connect4.Constants;
 import connect4.GameParameters;
 
 public class GuiHumanVsHuman {
@@ -17,11 +18,7 @@ public class GuiHumanVsHuman {
 	static JPanel panelBoardNumbers;
 	static JLayeredPane layeredGameBoard;
 	
-	static GameParameters game_params = new GameParameters();
-	static int player1Color = game_params.getPlayer1Color();
-	static int player2Color = game_params.getPlayer2Color();
-	
-	//	Player 1 letter -> X. He plays First
+	//	Player 1 letter -> X. He plays first.
 	//	Player 2 letter -> O.
 	
 	public GuiHumanVsHuman() {
@@ -132,10 +129,10 @@ public class GuiHumanVsHuman {
 		int previousCol = board.getLastMove().getCol();
 		int previousLetter = board.getLastSymbolPlayed();
 		
-		if (board.getLastSymbolPlayed() == Board.O) {
-			board.makeMove(col, Board.X);
+		if (board.getLastSymbolPlayed() == Constants.O) {
+			board.makeMove(col, Constants.X);
 		} else {
-			board.makeMove(col, Board.O);
+			board.makeMove(col, Constants.O);
 		}
 		
 		if (board.hasOverflowOccured()) {
@@ -163,12 +160,12 @@ public class GuiHumanVsHuman {
 		int row = board.getLastMove().getRow();
 		int col = board.getLastMove().getCol();
 		
-		if (board.getLastSymbolPlayed() == Board.X) {
+		if (board.getLastSymbolPlayed() == Constants.X) {
 			// It places a checker in the corresponding [row][col] of the GUI.
-			placeChecker(player1Color, row, col);
-		} else if (board.getLastSymbolPlayed() == Board.O) {
+			placeChecker(GameParameters.player1Color, row, col);
+		} else if (board.getLastSymbolPlayed() == Constants.O) {
 			// It places a checker in the corresponding [row][col] of the GUI.
-			placeChecker(player2Color, row, col);
+			placeChecker(GameParameters.player2Color, row, col);
 		} 
 		if (board.checkGameOver()) {
 			gameOver();
@@ -303,10 +300,10 @@ public class GuiHumanVsHuman {
 //		JLabel winLabel = new JLabel(winIcon);
 		JLabel winLabel;
 		board.checkWinState();
-		if (board.getWinner() == Board.X) {
+		if (board.getWinner() == Constants.X) {
 			winLabel = new JLabel("Player 1 (Red) wins! Start a new game?");
 			winPanel.add(winLabel);
-		} else if (board.getWinner() == Board.O) {
+		} else if (board.getWinner() == Constants.O) {
 			winLabel = new JLabel("Player 2 (Yellow) wins! Start a new game?");
 			winPanel.add(winLabel);
 		} else {

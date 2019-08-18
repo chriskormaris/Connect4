@@ -28,6 +28,7 @@ import javax.swing.UIManager;
 import javax.swing.UIManager.LookAndFeelInfo;
 
 import connect4.Board;
+import connect4.Constants;
 import connect4.GameParameters;
 import connect4.MiniMaxAi;
 import connect4.Move;
@@ -56,12 +57,6 @@ public class Gui {
 	static JButton col6_button = new JButton("6");
 	static JButton col7_button = new JButton("7");
 
-	static GameParameters game_params;
-	static int gameMode;
-	static int maxDepth;
-	static int player1Color;
-	static int player2Color;
-	
 	static MiniMaxAi ai;
 
 	//	Player 1 symbol: X. Player 1 plays first.
@@ -137,7 +132,7 @@ public class Gui {
 		
 		settingsItem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				SettingsWindow settings = new SettingsWindow(game_params);
+				SettingsWindow settings = new SettingsWindow();
 				settings.setVisible(true);
 			}
 		});
@@ -227,7 +222,7 @@ public class Gui {
 				if (!board.hasOverflowOccured()) {
 					game();
 					saveUndoMove();
-					if (gameMode == GameParameters.HumanVsAi) aiMove(ai);
+					if (GameParameters.gameMode == Constants.HumanVsAi) aiMove(ai);
 				}
 			}
 			
@@ -242,7 +237,7 @@ public class Gui {
 	
 	private static void undo() {
 		// This is the undo implementation for Human VS Human mode.
-		if (game_params.getGameMode() == GameParameters.HumanVsHuman) {
+		if (GameParameters.gameMode == Constants.HumanVsHuman) {
 			try {
 				board.setGameOver(false);
 				enableButtons();
@@ -259,7 +254,7 @@ public class Gui {
 		}
 		
 		// This is the undo implementation for Human VS AI mode.
-		else if (game_params.getGameMode() == GameParameters.HumanVsAi) {
+		else if (GameParameters.gameMode == Constants.HumanVsAi) {
 			try {
 				board.setGameOver(false);
 				enableButtons();
@@ -288,12 +283,6 @@ public class Gui {
 
 		board = new Board();
 		
-		// get the new parameters based on previously changed settings
-		gameMode = game_params.getGameMode();
-		maxDepth = game_params.getMaxDepth();
-		player1Color = game_params.getPlayer1Color();
-		player2Color = game_params.getPlayer2Color();
-		
 		if (frameMainWindow != null) frameMainWindow.dispose();
 		frameMainWindow = new JFrame("Minimax Connect-4");
 		// make the main window appear on the center
@@ -317,9 +306,9 @@ public class Gui {
 
 		AddMenus();
 
-		if (gameMode == GameParameters.HumanVsAi) {
-			ai = new MiniMaxAi(maxDepth, Board.O);
-			if (board.getLastSymbolPlayed() == Board.X)
+		if (GameParameters.gameMode == Constants.HumanVsAi) {
+			ai = new MiniMaxAi(GameParameters.maxDepth, Constants.O);
+			if (board.getLastSymbolPlayed() == Constants.X)
 				aiMove(ai);
 		}
 		
@@ -327,13 +316,13 @@ public class Gui {
 	
 	private static void configureGuiStyle() {
 		try {
-			if (game_params.getGuiStyle() == GameParameters.SystemStyle) {
+			if (GameParameters.guiStyle == Constants.SystemStyle) {
 				// Option 1
 				UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-			} else if (game_params.getGuiStyle() == GameParameters.CrossPlatformStyle) {
+			} else if (GameParameters.guiStyle == Constants.CrossPlatformStyle) {
 				// Option 2
 				UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName());
-			} else if (game_params.getGuiStyle() == GameParameters.NimbusStyle) {
+			} else if (GameParameters.guiStyle == Constants.NimbusStyle) {
 				// Option 3
 			    for (LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
 			        if ("Nimbus".equals(info.getName())) {
@@ -364,10 +353,10 @@ public class Gui {
 		int previousCol = board.getLastMove().getCol();
 		int previousLetter = board.getLastSymbolPlayed();
 		
-		if (board.getLastSymbolPlayed() == Board.O) {
-			board.makeMove(col, Board.X);
+		if (board.getLastSymbolPlayed() == Constants.O) {
+			board.makeMove(col, Constants.X);
 		} else {
-			board.makeMove(col, Board.O);
+			board.makeMove(col, Constants.O);
 		}
 		
 		if (board.hasOverflowOccured()) {
@@ -407,19 +396,19 @@ public class Gui {
 		int col = board.getLastMove().getCol();
 		int currentPlayer = board.getLastSymbolPlayed();
 		
-		if (currentPlayer == Board.X) {
+		if (currentPlayer == Constants.X) {
 			// It places a checker in the corresponding [row][col] of the GUI.
-			placeChecker(player1Color, row, col);
+			placeChecker(GameParameters.player1Color, row, col);
 		}
 		
-		if (currentPlayer == Board.O) {
+		if (currentPlayer == Constants.O) {
 			// It places a checker in the corresponding [row][col] of the GUI.
-			placeChecker(player2Color, row, col);
+			placeChecker(GameParameters.player2Color, row, col);
 		}
 		
 		gameOver();
 		
-		board.printBoard();
+		Board.printBoard(board.getGameBoard());
 		System.out.println("\n*****************************");
 		
 		undoItem.setEnabled(true);
@@ -478,7 +467,7 @@ public class Gui {
 					if (!board.hasOverflowOccured()) {
 						game();
 						saveUndoMove();
-						if (gameMode == GameParameters.HumanVsAi) aiMove(ai);
+						if (GameParameters.gameMode == Constants.HumanVsAi) aiMove(ai);
 					}
 					frameMainWindow.requestFocusInWindow();
 				}
@@ -490,7 +479,7 @@ public class Gui {
 					if (!board.hasOverflowOccured()) {
 						game();
 						saveUndoMove();
-						if (gameMode == GameParameters.HumanVsAi) aiMove(ai);
+						if (GameParameters.gameMode == Constants.HumanVsAi) aiMove(ai);
 					}
 					frameMainWindow.requestFocusInWindow();
 				}
@@ -502,7 +491,7 @@ public class Gui {
 					if (!board.hasOverflowOccured()) {
 						game();
 						saveUndoMove();
-						if (gameMode == GameParameters.HumanVsAi) aiMove(ai);
+						if (GameParameters.gameMode == Constants.HumanVsAi) aiMove(ai);
 					}
 					frameMainWindow.requestFocusInWindow();
 				}
@@ -514,7 +503,7 @@ public class Gui {
 					if (!board.hasOverflowOccured()) {
 						game();
 						saveUndoMove();
-						if (gameMode == GameParameters.HumanVsAi) aiMove(ai);
+						if (GameParameters.gameMode == Constants.HumanVsAi) aiMove(ai);
 					}
 					frameMainWindow.requestFocusInWindow();
 				}
@@ -526,7 +515,7 @@ public class Gui {
 					if (!board.hasOverflowOccured()) {
 						game();
 						saveUndoMove();
-						if (gameMode == GameParameters.HumanVsAi) aiMove(ai);
+						if (GameParameters.gameMode == Constants.HumanVsAi) aiMove(ai);
 					}
 					frameMainWindow.requestFocusInWindow();
 				}
@@ -538,7 +527,7 @@ public class Gui {
 					if (!board.hasOverflowOccured()) {
 						game();
 						saveUndoMove();
-						if (gameMode == GameParameters.HumanVsAi) aiMove(ai);
+						if (GameParameters.gameMode == Constants.HumanVsAi) aiMove(ai);
 					}
 					frameMainWindow.requestFocusInWindow();
 				}
@@ -550,7 +539,7 @@ public class Gui {
 					if (!board.hasOverflowOccured()) {
 						game();
 						saveUndoMove();
-						if (gameMode == GameParameters.HumanVsAi) aiMove(ai);
+						if (GameParameters.gameMode == Constants.HumanVsAi) aiMove(ai);
 					}
 					frameMainWindow.requestFocusInWindow();
 				}
@@ -595,21 +584,21 @@ public class Gui {
 			return;
 		}
 		
-		if (board.getWinner() == Board.X) {
-			if (gameMode == GameParameters.HumanVsAi)
+		if (board.getWinner() == Constants.X) {
+			if (GameParameters.gameMode == Constants.HumanVsAi)
 				choice = JOptionPane.showConfirmDialog(null,
 						"You win! Start a new game?",
 						"GAME OVER", JOptionPane.YES_NO_OPTION);
-			else if (gameMode == GameParameters.HumanVsHuman)
+			else if (GameParameters.gameMode == Constants.HumanVsHuman)
 				choice = JOptionPane.showConfirmDialog(null,
 						"Player 1 wins! Start a new game?",
 						"GAME OVER", JOptionPane.YES_NO_OPTION);
-		} else if (board.getWinner() == Board.O) {
-			if (gameMode == GameParameters.HumanVsAi)
+		} else if (board.getWinner() == Constants.O) {
+			if (GameParameters.gameMode == Constants.HumanVsAi)
 				choice = JOptionPane.showConfirmDialog(null,
 						"Computer AI wins! Start a new game?",
 						"GAME OVER", JOptionPane.YES_NO_OPTION);
-			else if (gameMode == GameParameters.HumanVsHuman)
+			else if (GameParameters.gameMode == Constants.HumanVsHuman)
 				choice = JOptionPane.showConfirmDialog(null,
 						"Player 2 wins! Start a new game?",
 						"GAME OVER", JOptionPane.YES_NO_OPTION);
@@ -636,11 +625,16 @@ public class Gui {
 	public static void main(String[] args){
 		Gui connect4 = new Gui();
 		
-		game_params = new GameParameters();
-		gameMode = game_params.getGameMode();
-		maxDepth = game_params.getMaxDepth();
-		player1Color = game_params.getPlayer1Color();
-		player2Color = game_params.getPlayer2Color();
+		// These are the default values.
+		// Feel free to change them, before running.
+		// You can also change them later, from the GUI window.
+		/*
+		GameParameters.guiStyle = Constants.SystemStyle;
+		GameParameters.gameMode = Constants.HumanVsAi;
+		GameParameters.maxDepth = 4;
+		GameParameters.player1Color = Constants.RED;
+		GameParameters.player2Color = Constants.YELLOW;
+		*/
 		
 		connect4.createNewGame();
 	}

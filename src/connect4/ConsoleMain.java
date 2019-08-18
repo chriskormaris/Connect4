@@ -14,25 +14,25 @@ public class ConsoleMain {
 		// The bigger the value of "maxDepth" is, the more difficult the game is. 
 		int XColumnPosition;
 		int maxDepth = 4;
-		MiniMaxAi OPlayer = new MiniMaxAi(maxDepth, Board.O);
-		Board connect4 = new Board();
+		MiniMaxAi OPlayer = new MiniMaxAi(maxDepth, Constants.O);
+		Board connect4Board = new Board();
 
         // Uncomment this, for "O" to play first
 		//board.setLastLetterPlayed(Board.X);
 
 		System.out.println("Connect-4!\n");
 		System.out.println("\n*****************************");
-		connect4.printBoard();
+		Board.printBoard(connect4Board.getGameBoard());
 		System.out.println();
         // While the game has not finished
-		while(!connect4.checkGameOver()) {
+		while(!connect4Board.checkGameOver()) {
 			System.out.println("\n*****************************");
-			switch (connect4.getLastSymbolPlayed()) {
+			switch (connect4Board.getLastSymbolPlayed()) {
 			
 					
                 // If "O" played last, then "X" plays now.
 				// "X" is the user-player
-				case Board.O:
+				case Constants.O:
                     System.out.print("Human 'X' moves.");
                     try {
         				do {
@@ -40,7 +40,7 @@ public class ConsoleMain {
 							@SuppressWarnings("resource")
 							Scanner in = new Scanner(System.in);
         					XColumnPosition = in.nextInt();
-        				} while (connect4.checkFullColumn(XColumnPosition-1));
+        				} while (connect4Board.checkFullColumn(XColumnPosition-1));
         			} catch (ArrayIndexOutOfBoundsException e){
         				System.err.println("\nValid numbers are 1,2,3, 4,5, 6 or 7.\n");
         				break;
@@ -48,38 +48,38 @@ public class ConsoleMain {
         				System.err.println("\nInput an integer number.\n");
         				break;
         			}
-					connect4.makeMove(XColumnPosition-1, Board.X);
+					connect4Board.makeMove(XColumnPosition-1, Constants.X);
 					System.out.println();
 					break;
 					
                 // If "X" played last, then "O" plays now.
 				// "O" is the AI computer
-				case Board.X:
+				case Constants.X:
                     System.out.println("AI 'O' moves.");
                     
-                    // minimax move
-					Move OMove = OPlayer.miniMax(connect4);
+                    // Make MiniMax move.
+					Move OMove = OPlayer.miniMax(connect4Board);
 					
-					// random move
-					//Random r = new Random();
-					//int randomNum = r.nextInt(7);
-					//connect4.makeMove(randomNum, Board.O);
+					// Make a random move.
+					// Random r = new Random();
+					// int randomNum = r.nextInt(7);
+					// connect4.makeMove(randomNum, Constants.O);
 
-					connect4.makeMove(OMove.getCol(), Board.O);
+					connect4Board.makeMove(OMove.getCol(), Constants.O);
 					System.out.println();
 					break;
 					
 				default:
 					break;
 			}
-			connect4.printBoard();
+			Board.printBoard(connect4Board.getGameBoard());
 		}
 		
 		System.out.println();
 
-		if (connect4.getWinner() == Board.X) {
+		if (connect4Board.getWinner() == Constants.X) {
 			System.out.println("Human player 'X' wins!");
-		} else if (connect4.getWinner() == Board.O) {
+		} else if (connect4Board.getWinner() == Constants.O) {
 			System.out.println("AI computer 'O' wins!");
 		} else {
 			System.out.println("It's a draw!");
