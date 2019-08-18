@@ -2,7 +2,6 @@ package connect4;
 
 import java.util.ArrayList;
 
-// The project is based on lab04.
 public class Board {
 	
 	// Board values
@@ -210,8 +209,8 @@ public class Board {
 			}
 		}
 		
-        Xlines  = Xlines + check3InARow(X)*10 + check2InARow(X);
-        Olines  = Olines + check3InARow(O)*10 + check2InARow(O);
+        Xlines  = Xlines + count3InARow(X) * 10 + count2InARow(X);
+        Olines  = Olines + count3InARow(O) * 10 + count2InARow(O);
 		
         // if the result is 0, then it'a a draw 
 		return Xlines - Olines;
@@ -305,7 +304,7 @@ public class Board {
 	
     // It returns the frequency of 3 checkers in a row
     // for the given player.
-	public int check3InARow(int playerSymbol) {
+	public int count3InARow(int playerSymbol) {
 		
 		int times = 0;
 		
@@ -367,7 +366,7 @@ public class Board {
 	
     // It returns the frequency of 3 checkers in a row
     // for the given player.
-	public int check2InARow(int player) {
+	public int count2InARow(int player) {
 		
 		int times = 0;
 		
@@ -424,7 +423,7 @@ public class Board {
 	}
 
     // It prints the board on the console.
-  	public void printBoard() {
+  	public static void printBoard(int[][] gameBoard) {
   		
   		System.out.println("| 1 | 2 | 3 | 4 | 5 | 6 | 7 |");
   		System.out.println();
