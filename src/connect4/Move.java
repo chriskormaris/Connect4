@@ -1,5 +1,6 @@
 package connect4;
 
+
 public class Move {
 	
 	private int row;

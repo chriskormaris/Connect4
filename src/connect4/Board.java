@@ -1,5 +1,6 @@
 package connect4;
 
+
 import java.util.ArrayList;
 
 // The project is based on lab04.

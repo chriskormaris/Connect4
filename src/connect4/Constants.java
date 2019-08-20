@@ -1,16 +1,17 @@
 package connect4;
 
+
 public class Constants {
 
-	// GUI styles
-	public static final int SystemStyle = 1;
-	public static final int CrossPlatformStyle = 2;
-	public static final int NimbusStyle = 3;
-	
 	// Board values
 	public static final int X = 1;  // Player 1
 	public static final int O = -1;  // Player 2
 	public static final int EMPTY = 0;
+	
+	// GUI styles
+	public static final int SystemStyle = 1;
+	public static final int CrossPlatformStyle = 2;
+	public static final int NimbusStyle = 3;
 	
 	// Colors
 	public static final int RED = 1;
