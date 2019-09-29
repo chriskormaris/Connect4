@@ -1,5 +1,6 @@
 :: This file is for Windows only.
 
-:: copy "images" folder from "res\images" inside "bin" directory
-java -cp .\bin\gui\:.\bin\connect4\ Gui
+:: copy the "images" folder from "res\images" inside the "bin" directory
+cp res\images bin\
+java -cp .\bin gui.Gui
 pause;
