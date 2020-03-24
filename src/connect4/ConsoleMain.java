@@ -1,9 +1,11 @@
 package connect4;
 
 
-import java.util.Scanner;
-import java.util.InputMismatchException; // gia thn Scanner
+// exception for the class "Scanner"
+import java.util.InputMismatchException;
 // import java.util.Random;
+import java.util.Scanner;
+
 
 public class ConsoleMain {
 	
@@ -19,12 +21,14 @@ public class ConsoleMain {
 		Board connect4Board = new Board();
 
         // Uncomment this, for "O" to play first
-		//board.setLastLetterPlayed(Board.X);
+		// board.setLastLetterPlayed(Board.X);
 
 		System.out.println("Connect-4!\n");
 		System.out.println("\n*****************************");
 		Board.printBoard(connect4Board.getGameBoard());
 		System.out.println();
+		
+    	Scanner in = new Scanner(System.in);
         // While the game has not finished
 		while(!connect4Board.checkGameOver()) {
 			System.out.println("\n*****************************");
@@ -38,15 +42,14 @@ public class ConsoleMain {
                     try {
         				do {
         					System.out.print("\nGive column (1-7): ");
-							@SuppressWarnings("resource")
-							Scanner in = new Scanner(System.in);
         					XColumnPosition = in.nextInt();
         				} while (connect4Board.checkFullColumn(XColumnPosition-1));
         			} catch (ArrayIndexOutOfBoundsException e){
-        				System.err.println("\nValid numbers are 1,2,3, 4,5, 6 or 7.\n");
+        				System.err.println("\nValid numbers are 1, 2, 3, 4, 5, 6 or 7.\n");
         				break;
         			} catch (InputMismatchException e){
-        				System.err.println("\nInput an integer number.\n");
+        				System.err.println("\nInput an integer number.");
+        				System.err.println("Valid numbers are 1, 2, 3, 4, 5, 6 or 7.\n");
         				break;
         			}
 					connect4Board.makeMove(XColumnPosition-1, Constants.X);
@@ -75,6 +78,7 @@ public class ConsoleMain {
 			}
 			Board.printBoard(connect4Board.getGameBoard());
 		}
+		in.close();
 		
 		System.out.println();
 

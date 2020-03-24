@@ -6,7 +6,8 @@ public class GameParameters {
 	/* Default values */
 	public static int guiStyle = Constants.SystemStyle;
 	public static int gameMode = Constants.HumanVsAi;
-	public static int maxDepth = 4;
+	public static int maxDepth1 = 4;
+	public static int maxDepth2 = 4;
 	public static int player1Color = Constants.RED;
 	public static int player2Color = Constants.YELLOW;
 	

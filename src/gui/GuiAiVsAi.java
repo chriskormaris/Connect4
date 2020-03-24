@@ -1,9 +1,24 @@
 package gui;
 
-import java.awt.*;
-import java.awt.event.*;
 
-import javax.swing.*;
+import java.awt.BorderLayout;
+import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.Toolkit;
+import java.awt.Window;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+
+import javax.swing.BorderFactory;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JLayeredPane;
+import javax.swing.JPanel;
+import javax.swing.UIManager;
 
 import connect4.Board;
 import connect4.Constants;
@@ -11,14 +26,18 @@ import connect4.GameParameters;
 import connect4.MiniMaxAi;
 import connect4.Move;
 
+
 public class GuiAiVsAi {
 	
-	static Board board = new Board();
+	static Board board;
 	static JFrame frameMainWindow;
 	static JFrame frameGameOver;
 	
 	static JPanel panelBoardNumbers;
 	static JLayeredPane layeredGameBoard;
+	
+	static final int DEFAULT_WIDTH = 570;
+	static final int DEFAULT_HEIGHT = 490;
 	
 	static MiniMaxAi ai1;
 	static MiniMaxAi ai2;
@@ -34,10 +53,10 @@ public class GuiAiVsAi {
 	// the main Connect-4 board
 	public static JLayeredPane createLayeredBoard() {
 		layeredGameBoard = new JLayeredPane();
-		layeredGameBoard.setPreferredSize(new Dimension(570, 490));
+		layeredGameBoard.setPreferredSize(new Dimension(DEFAULT_WIDTH, DEFAULT_HEIGHT));
 		layeredGameBoard.setBorder(BorderFactory.createTitledBorder("Connect-4"));
 
-		ImageIcon imageBoard = new ImageIcon(ResourceLoader.load("images/Board.gif"));
+		ImageIcon imageBoard = new ImageIcon(ResourceLoader.load("images/Board.png"));
 		JLabel imageBoardLabel = new JLabel(imageBoard);
 
 		imageBoardLabel.setBounds(20, 20, imageBoard.getIconWidth(), imageBoard.getIconHeight());
@@ -52,8 +71,8 @@ public class GuiAiVsAi {
                 
 		if (frameMainWindow != null) frameMainWindow.dispose();
 		frameMainWindow = new JFrame("Minimax Connect-4");
-		// make the main window appear on the center
-		centerWindow(frameMainWindow, 570, 490);
+		// Make the main window appear on the center.
+		centerWindow(frameMainWindow, DEFAULT_WIDTH, DEFAULT_HEIGHT);
 		Component compMainWindowContents = createContentComponents();
 		frameMainWindow.getContentPane().add(compMainWindowContents, BorderLayout.CENTER);
 
@@ -63,22 +82,20 @@ public class GuiAiVsAi {
 			}
 		});
 
-		// show window
+		// Show the main window.
 		frameMainWindow.pack();
 		frameMainWindow.setVisible(true);
 
-		// AI VS AI implementation HERE
+		// AI Vs AI implementation HERE
 		// Initial maxDepth = 4. We can change this value for difficulty adjustment.
-		ai1 = new MiniMaxAi(GameParameters.maxDepth, Constants.X);
-		ai2 = new MiniMaxAi(GameParameters.maxDepth, Constants.O);
+		ai1 = new MiniMaxAi(GameParameters.maxDepth1, Constants.X);
+		ai2 = new MiniMaxAi(GameParameters.maxDepth2, Constants.O);
 		
 		while (!board.isGameOver()) {
-//			if (board.getLastSymbolPlayed() == Board.O)
-				aiMove(ai1);
+			aiMove(ai1);
 			
 			if (!board.isGameOver()) {
-//				if (board.getLastSymbolPlayed() == Board.X)
-					aiMove(ai2);
+				aiMove(ai2);
 			}
 		}
 
@@ -97,14 +114,14 @@ public class GuiAiVsAi {
 		String colorString = GameParameters.getColorNameByNumber(color);
 		int xOffset = 75 * col;
 		int yOffset = 75 * row;
-		ImageIcon checkerIcon = new ImageIcon(ResourceLoader.load("images/" + colorString + ".gif"));
+		ImageIcon checkerIcon = new ImageIcon(ResourceLoader.load("images/" + colorString + ".png"));
 		JLabel checkerLabel = new JLabel(checkerIcon);
 		checkerLabel.setBounds(27 + xOffset, 27 + yOffset, checkerIcon.getIconWidth(),checkerIcon.getIconHeight());
 		layeredGameBoard.add(checkerLabel, 0, 0);
 		frameMainWindow.paint(frameMainWindow.getGraphics());
 	}
 	
-	// Gets called after makeMove(int col) is called.
+	// Gets called after makeMove(int, col) is called.
 	public static void game() {
 	
 		int row = board.getLastMove().getRow();
@@ -120,7 +137,6 @@ public class GuiAiVsAi {
 		}
 		
 		if (board.checkGameOver()) {
-			board.setGameOver(true);
 			gameOver();
 		}
 		
@@ -135,6 +151,27 @@ public class GuiAiVsAi {
 		game();
 	}
 	
+	
+	public static void enableButtons() {
+//		col1_button.setEnabled(true);
+//		col2_button.setEnabled(true);
+//		col3_button.setEnabled(true);
+//		col4_button.setEnabled(true);
+//		col5_button.setEnabled(true);
+//		col6_button.setEnabled(true);
+//		col7_button.setEnabled(true);
+	}
+	
+	
+	public static void disableButtons() {
+//		col1_button.setEnabled(false);
+//		col2_button.setEnabled(false);
+//		col3_button.setEnabled(false);
+//		col4_button.setEnabled(false);
+//		col5_button.setEnabled(false);
+//		col6_button.setEnabled(false);
+//		col7_button.setEnabled(false);
+	}
 	/**
 	 * Returns a component to be drawn by main window.
 	 * This function creates the main window components.
@@ -156,8 +193,13 @@ public class GuiAiVsAi {
 		return panelMain;
 	}
 	
+	
+	// It gets called only of the game is over.
+	// We can check if the game is over by calling the method "checkGameOver()"
+	// of the class "Board".
 	public static void gameOver() {
-		        		        
+		board.setGameOver(true);
+		        
 //		panelBoardNumbers.setVisible(false);
 		frameGameOver = new JFrame("Game over!");
 		frameGameOver.setBounds(620, 400, 350, 128);
@@ -165,17 +207,17 @@ public class GuiAiVsAi {
 		JPanel winPanel = new JPanel(new BorderLayout());
 		winPanel.setBorder(BorderFactory.createEmptyBorder(15, 30, 15, 30));
 		
-//		ImageIcon winIcon = new ImageIcon(ResourceLoader.load("images/win.gif"));
+//		ImageIcon winIcon = new ImageIcon(ResourceLoader.load("images/win.png"));
 //		JLabel winLabel = new JLabel(winIcon);
 		JLabel winLabel;
 		board.checkWinState();
 		if (board.getWinner() == Constants.X) {
 			String player1ColorString = GameParameters.getColorNameByNumber(GameParameters.player1Color);
-			winLabel = new JLabel("AI 1 (" + player1ColorString + ") wins! Start a new game?");
+			winLabel = new JLabel("AI1 (" + player1ColorString + ") wins! Start a new game?");
 			winPanel.add(winLabel);
 		} else if (board.getWinner() == Constants.O) {
 			String player2ColorString = GameParameters.getColorNameByNumber(GameParameters.player2Color);
-			winLabel = new JLabel("AI 2 (" + player2ColorString + ") wins! Start a new game?");
+			winLabel = new JLabel("AI2 (" + player2ColorString + ") wins! Start a new game?");
 			winPanel.add(winLabel);
 		} else {
 			winLabel = new JLabel("It's a draw! Start a new game?");
@@ -212,10 +254,10 @@ public class GuiAiVsAi {
 		frameGameOver.setVisible(true);
 	}
 	
-	@SuppressWarnings("unused")
+	@SuppressWarnings("static-access")
 	public static void main(String[] args){
 		GuiAiVsAi connect4 = new GuiAiVsAi();
-		GuiAiVsAi.createNewGame();
+		connect4.createNewGame();
 	}
 		
 }
