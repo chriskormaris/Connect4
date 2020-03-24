@@ -1,5 +1,6 @@
 package gui;
 
+
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Dimension;
@@ -36,7 +37,7 @@ import connect4.Move;
 
 public class Gui {
 	
-	static Board board = new Board();
+	static Board board;
 	static JFrame frameMainWindow;
 	static JFrame frameGameOver;
 	
@@ -59,12 +60,12 @@ public class Gui {
 
 	static MiniMaxAi ai;
 
-	//	Player 1 symbol: X. Player 1 plays first.
-	//	Player 2 symbol: O.
+	// Player 1 symbol: X. Player 1 plays first.
+	// Player 2 symbol: O.
 	
 	public static JLabel checkerLabel = null;
 	
-	// for Undo operation
+	// for the Undo operation
 	private static int humanPlayerUndoRow;
 	private static int humanPlayerUndoCol;
 	private static int humanPlayerUndoLetter;
@@ -93,10 +94,10 @@ public class Gui {
 	}
 	
 	
-	// Adds the menu bars and items to the window.
+	// Add the menu bars and items to the window.
 	private static void AddMenus() {
 		
-		// Adding the menu bar
+		// Add the menu bar.
 		menuBar = new JMenuBar();
 		
 		fileMenu = new JMenu("File");
@@ -155,7 +156,7 @@ public class Gui {
 		aboutItem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				JOptionPane.showMessageDialog(null,
-						"© Created by: Christos Kormaris\nVersion 2.0",
+						"© Created by: Christos Kormaris\nVersion " + Constants.version,
 						"About", JOptionPane.INFORMATION_MESSAGE);
 			}
 		});
@@ -164,7 +165,7 @@ public class Gui {
 		menuBar.add(helpMenu);
 		
 		frameMainWindow.setJMenuBar(menuBar);
-		// Makes the board visible after adding menus.
+		// Make the board visible after adding the menus.
 		frameMainWindow.setVisible(true);
 		
 	}
@@ -176,7 +177,7 @@ public class Gui {
 		layeredGameBoard.setPreferredSize(new Dimension(DEFAULT_WIDTH, DEFAULT_HEIGHT));
 		layeredGameBoard.setBorder(BorderFactory.createTitledBorder("Connect-4"));
 
-		ImageIcon imageBoard = new ImageIcon(ResourceLoader.load("images/Board.gif"));
+		ImageIcon imageBoard = new ImageIcon(ResourceLoader.load("images/Board.png"));
 		JLabel imageBoardLabel = new JLabel(imageBoard);
 
 		imageBoardLabel.setBounds(20, 20, imageBoard.getIconWidth(), imageBoard.getIconHeight());
@@ -307,9 +308,24 @@ public class Gui {
 		AddMenus();
 
 		if (GameParameters.gameMode == Constants.HumanVsAi) {
-			ai = new MiniMaxAi(GameParameters.maxDepth, Constants.O);
+			ai = new MiniMaxAi(GameParameters.maxDepth1, Constants.O);
 			if (board.getLastSymbolPlayed() == Constants.X)
 				aiMove(ai);
+		} else if (GameParameters.gameMode == Constants.AiVsAi) {
+			disableButtons();
+			
+			// AI VS AI implementation here
+			// Initial maxDepth = 4. We can change this value for difficulty adjustment.
+			MiniMaxAi ai1 = new MiniMaxAi(GameParameters.maxDepth1, Constants.X);
+			MiniMaxAi ai2 = new MiniMaxAi(GameParameters.maxDepth2, Constants.O);
+			
+			while (!board.isGameOver()) {
+				aiMove(ai1);
+				
+				if (!board.isGameOver()) {
+					aiMove(ai2);
+				}
+			}
 		}
 		
 	}
@@ -373,7 +389,7 @@ public class Gui {
 		String colorString = GameParameters.getColorNameByNumber(color);
 		int xOffset = 75 * col;
 		int yOffset = 75 * row;
-		ImageIcon checkerIcon = new ImageIcon(ResourceLoader.load("images/" + colorString + ".gif"));
+		ImageIcon checkerIcon = new ImageIcon(ResourceLoader.load("images/" + colorString + ".png"));
 		checkerLabel = new JLabel(checkerIcon);
 		checkerLabel.setBounds(27 + xOffset, 27 + yOffset, checkerIcon.getIconWidth(),checkerIcon.getIconHeight());
 		layeredGameBoard.add(checkerLabel, 0, 0);
@@ -389,7 +405,7 @@ public class Gui {
 	}
 	
 	
-	// Gets called after makeMove(int col) is called.
+	// Gets called after makeMove(int, col) is called.
 	public static void game() {
 		
 		int row = board.getLastMove().getRow();
@@ -406,7 +422,9 @@ public class Gui {
 			placeChecker(GameParameters.player2Color, row, col);
 		}
 		
-		gameOver();
+		if (board.checkGameOver()) {
+			gameOver();
+		}
 		
 		Board.printBoard(board.getGameBoard());
 		System.out.println("\n*****************************");
@@ -457,7 +475,8 @@ public class Gui {
 		panelBoardNumbers.setLayout(new GridLayout(1, 7, 6, 4));
 		panelBoardNumbers.setBorder(BorderFactory.createEmptyBorder(2, 22, 2, 22));
 		
-		enableButtons();
+		if (GameParameters.gameMode != Constants.AiVsAi)
+			enableButtons();
 		
 		if (firstGame) {
 		
@@ -575,15 +594,13 @@ public class Gui {
 	}
 	
 	
+	// It gets called only of the game is over.
+	// We can check if the game is over by calling the method "checkGameOver()"
+	// of the class "Board".
 	public static void gameOver() {
+		board.setGameOver(true);
+		
 		int choice = 0;
-		
-		if (board.checkWinState()) {
-			board.setGameOver(true);
-		} else {
-			return;
-		}
-		
 		if (board.getWinner() == Constants.X) {
 			if (GameParameters.gameMode == Constants.HumanVsAi)
 				choice = JOptionPane.showConfirmDialog(null,
@@ -593,6 +610,10 @@ public class Gui {
 				choice = JOptionPane.showConfirmDialog(null,
 						"Player 1 wins! Start a new game?",
 						"GAME OVER", JOptionPane.YES_NO_OPTION);
+			else if (GameParameters.gameMode == Constants.AiVsAi)
+				choice = JOptionPane.showConfirmDialog(null,
+						"Minimax AI 1 wins! Start a new game?",
+						"GAME OVER", JOptionPane.YES_NO_OPTION);
 		} else if (board.getWinner() == Constants.O) {
 			if (GameParameters.gameMode == Constants.HumanVsAi)
 				choice = JOptionPane.showConfirmDialog(null,
@@ -601,6 +622,10 @@ public class Gui {
 			else if (GameParameters.gameMode == Constants.HumanVsHuman)
 				choice = JOptionPane.showConfirmDialog(null,
 						"Player 2 wins! Start a new game?",
+						"GAME OVER", JOptionPane.YES_NO_OPTION);
+			else if (GameParameters.gameMode == Constants.AiVsAi)
+				choice = JOptionPane.showConfirmDialog(null,
+						"Minimax AI 2 wins! Start a new game?",
 						"GAME OVER", JOptionPane.YES_NO_OPTION);
 		} else {
 			choice = JOptionPane.showConfirmDialog(null,
@@ -630,8 +655,10 @@ public class Gui {
 		// You can also change them later, from the GUI window.
 		/*
 		GameParameters.guiStyle = Constants.SystemStyle;
-		GameParameters.gameMode = Constants.HumanVsAi;
-		GameParameters.maxDepth = 4;
+		// GameParameters.gameMode = Constants.HumanVsAi;
+		GameParameters.gameMode = Constants.AiVsAi;
+		GameParameters.maxDepth1 = 4;
+		GameParameters.maxDepth2 = 4;
 		GameParameters.player1Color = Constants.RED;
 		GameParameters.player2Color = Constants.YELLOW;
 		*/

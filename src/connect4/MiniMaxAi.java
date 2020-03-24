@@ -4,6 +4,7 @@ package connect4;
 import java.util.ArrayList;
 import java.util.Random;
 
+
 public class MiniMaxAi {
 	
 		// Variable that holds the maximum depth the MiniMax algorithm will reach for this player
