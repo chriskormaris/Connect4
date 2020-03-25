@@ -24,6 +24,7 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
+import javax.swing.JToolBar;
 import javax.swing.UIManager;
 
 import connect4.Board;
@@ -64,6 +65,8 @@ public class GuiHumanVsAi {
 	static JButton col5_button = new JButton("5");
 	static JButton col6_button = new JButton("6");
 	static JButton col7_button = new JButton("7");
+	
+    static JLabel turnMessage;
 
 	static MiniMaxAi ai = new MiniMaxAi(GameParameters.maxDepth1, Constants.X);
 	
@@ -72,7 +75,8 @@ public class GuiHumanVsAi {
 	
 	public GuiHumanVsAi() {
 		try {
-			UIManager.setLookAndFeel( UIManager.getSystemLookAndFeelClassName() );
+			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+			// UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -169,6 +173,13 @@ public class GuiHumanVsAi {
 		
 		frameMainWindow.setFocusable(true);
 		
+		// Add the turn label.
+		JToolBar tools = new JToolBar();
+        tools.setFloatable(false);
+        frameMainWindow.add(tools, BorderLayout.PAGE_END);
+        turnMessage = new JLabel("Turn: " + board.getTurn());
+        tools.add(turnMessage);
+		
 		// show window
 		frameMainWindow.pack();
 		frameMainWindow.setVisible(true);
@@ -205,6 +216,8 @@ public class GuiHumanVsAi {
 	// Gets called after makeMove(int, col) is called.
 	public static void game() {
 	
+        turnMessage.setText("Turn: " + board.getTurn());
+		
 		int row = board.getLastMove().getRow();
 		int col = board.getLastMove().getCol();
 
@@ -219,11 +232,15 @@ public class GuiHumanVsAi {
 			// It places a checker in the corresponding [row][col] of the GUI.
 			placeChecker(GameParameters.player2Color, row, col);
 		}
+
+		System.out.println("Turn: " + board.getTurn());
+		Board.printBoard(board.getGameBoard());
+		System.out.println("\n*****************************");
 		
 		if (board.checkGameOver()) {
 			gameOver();
 		}
-
+		
 	}
 	
 	

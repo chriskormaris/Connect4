@@ -3,7 +3,7 @@ package connect4;
 
 public class Constants {
 	
-	public static final double version = 2.1;
+	public static final double version = 2.2;
 
 	// Board values
 	public static final int X = 1;  // Player 1

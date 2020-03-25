@@ -21,6 +21,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
 import javax.swing.JPanel;
+import javax.swing.JToolBar;
 import javax.swing.UIManager;
 
 import connect4.Board;
@@ -50,12 +51,15 @@ public class GuiHumanVsHuman {
 	static JButton col6_button = new JButton("6");
 	static JButton col7_button = new JButton("7");
 	
+    static JLabel turnMessage;
+
 	// Player 1 letter -> X. He plays first.
 	// Player 2 letter -> O.
 	
 	public GuiHumanVsHuman() {
 		try {
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+			// UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -139,6 +143,13 @@ public class GuiHumanVsHuman {
 		
 		frameMainWindow.setFocusable(true);
 		
+		// Add the turn label.
+		JToolBar tools = new JToolBar();
+        tools.setFloatable(false);
+        frameMainWindow.add(tools, BorderLayout.PAGE_END);
+        turnMessage = new JLabel("Turn: " + board.getTurn());
+        tools.add(turnMessage);
+        
 		// show window
 		frameMainWindow.pack();
 		frameMainWindow.setVisible(true);
@@ -188,7 +199,9 @@ public class GuiHumanVsHuman {
 	
 	// Gets called after makeMove(int, col) is called.
 	public static void game() {
-	
+		
+        turnMessage.setText("Turn: " + board.getTurn());
+
 		int row = board.getLastMove().getRow();
 		int col = board.getLastMove().getCol();
 		
@@ -199,11 +212,15 @@ public class GuiHumanVsHuman {
 			// It places a checker in the corresponding [row][col] of the GUI.
 			placeChecker(GameParameters.player2Color, row, col);
 		} 
-		
+
+		System.out.println("Turn: " + board.getTurn());
+		Board.printBoard(board.getGameBoard());
+		System.out.println("\n*****************************");
+
 		if (board.checkGameOver()) {
 			gameOver();
 		}
-
+		
 	}
 	
 	public static void enableButtons() {

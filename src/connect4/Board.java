@@ -20,6 +20,8 @@ public class Board {
 		
 	private boolean gameOver;
 	
+	private int turn;
+	
 	
 	// constructor
 	public Board() {
@@ -96,6 +98,16 @@ public class Board {
 	public void setWinner(int winner) {
 		this.winner = winner;
 	}
+
+	
+	public int getTurn() {
+		return turn;
+	}
+
+	
+	public void setTurn(int turn) {
+		this.turn = turn;
+	}
 	
 	
 	public boolean isGameOver() {
@@ -127,6 +139,7 @@ public class Board {
 			this.lastMove = new Move(getEmptyRowPosition(col), col);
 			this.lastSymbolPlayed = letter;
 			this.gameBoard[getEmptyRowPosition(col)][col] = letter;
+			this.turn++;
 		} catch (ArrayIndexOutOfBoundsException e) {
 			System.err.println("Column " + (col+1) + " is full!");
 			setOverflowOccured(true);
@@ -142,6 +155,7 @@ public class Board {
 		} else if (letter == Constants.X) {
 			this.lastSymbolPlayed = Constants.O;
 		}
+		this.turn--;
 	}
 	
 	
