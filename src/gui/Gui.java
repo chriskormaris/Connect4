@@ -25,6 +25,7 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JToolBar;
 import javax.swing.UIManager;
 import javax.swing.UIManager.LookAndFeelInfo;
 
@@ -46,7 +47,7 @@ public class Gui {
 	static JLayeredPane layeredGameBoard;
 	
 	static final int DEFAULT_WIDTH = 570;
-	static final int DEFAULT_HEIGHT = 515;
+	static final int DEFAULT_HEIGHT = 525;
 	
 	static boolean firstGame = true;
 
@@ -58,6 +59,8 @@ public class Gui {
 	static JButton col6_button = new JButton("6");
 	static JButton col7_button = new JButton("7");
 
+    static JLabel turnMessage;
+    
 	static MiniMaxAi ai;
 
 	// Player 1 symbol: X. Player 1 plays first.
@@ -83,13 +86,6 @@ public class Gui {
 	static JMenuItem aboutItem;
 	
 	public Gui() {
-		
-		try {
-			// Option 1
-			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
 		
 	}
 	
@@ -192,7 +188,7 @@ public class Gui {
 		public void keyTyped(KeyEvent e) {
 			
 		}
-
+		
 		@Override
 		public void keyPressed(KeyEvent e) {
 			// System.out.println("keyPressed = " + KeyEvent.getKeyText(e.getKeyCode()));
@@ -280,7 +276,7 @@ public class Gui {
 	// or a new game starts.
 	public static void createNewGame() {
 		
-		configureGuiStyle();
+		configureGuiStyle();		
 
 		board = new Board();
 		
@@ -305,8 +301,15 @@ public class Gui {
 		// Makes the board visible before adding menus.
 		// frameMainWindow.setVisible(true);
 
+		// Add the turn label.
+		JToolBar tools = new JToolBar();
+        tools.setFloatable(false);
+        frameMainWindow.add(tools, BorderLayout.PAGE_END);
+        turnMessage = new JLabel("Turn: " + board.getTurn());
+        tools.add(turnMessage);
+		
 		AddMenus();
-
+		
 		if (GameParameters.gameMode == Constants.HumanVsAi) {
 			ai = new MiniMaxAi(GameParameters.maxDepth1, Constants.O);
 			if (board.getLastSymbolPlayed() == Constants.X)
@@ -340,7 +343,7 @@ public class Gui {
 				UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName());
 			} else if (GameParameters.guiStyle == Constants.NimbusStyle) {
 				// Option 3
-			    for (LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
+			    for (LookAndFeelInfo info: UIManager.getInstalledLookAndFeels()) {
 			        if ("Nimbus".equals(info.getName())) {
 			            UIManager.setLookAndFeel(info.getClassName());
 			            break;
@@ -408,6 +411,8 @@ public class Gui {
 	// Gets called after makeMove(int, col) is called.
 	public static void game() {
 		
+        turnMessage.setText("Turn: " + board.getTurn());
+        
 		int row = board.getLastMove().getRow();
 		int col = board.getLastMove().getCol();
 		int currentPlayer = board.getLastSymbolPlayed();
@@ -422,12 +427,13 @@ public class Gui {
 			placeChecker(GameParameters.player2Color, row, col);
 		}
 		
+		System.out.println("Turn: " + board.getTurn());
+		Board.printBoard(board.getGameBoard());
+		System.out.println("\n*****************************");
+		
 		if (board.checkGameOver()) {
 			gameOver();
 		}
-		
-		Board.printBoard(board.getGameBoard());
-		System.out.println("\n*****************************");
 		
 		undoItem.setEnabled(true);
 	}

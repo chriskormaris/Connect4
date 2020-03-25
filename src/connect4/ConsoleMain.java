@@ -76,6 +76,7 @@ public class ConsoleMain {
 				default:
 					break;
 			}
+			System.out.println("Turn: " + connect4Board.getTurn());
 			Board.printBoard(connect4Board.getGameBoard());
 		}
 		in.close();

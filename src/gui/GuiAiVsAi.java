@@ -18,6 +18,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
 import javax.swing.JPanel;
+import javax.swing.JToolBar;
 import javax.swing.UIManager;
 
 import connect4.Board;
@@ -39,12 +40,15 @@ public class GuiAiVsAi {
 	static final int DEFAULT_WIDTH = 570;
 	static final int DEFAULT_HEIGHT = 490;
 	
+    static JLabel turnMessage;
+
 	static MiniMaxAi ai1;
 	static MiniMaxAi ai2;
 
 	public GuiAiVsAi() {
 		try {
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+			// UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -82,10 +86,17 @@ public class GuiAiVsAi {
 			}
 		});
 
+		// Add the turn label.
+		JToolBar tools = new JToolBar();
+        tools.setFloatable(false);
+        frameMainWindow.add(tools, BorderLayout.PAGE_END);
+        turnMessage = new JLabel("Turn: " + board.getTurn());
+        tools.add(turnMessage);
+
 		// Show the main window.
 		frameMainWindow.pack();
 		frameMainWindow.setVisible(true);
-
+		
 		// AI Vs AI implementation HERE
 		// Initial maxDepth = 4. We can change this value for difficulty adjustment.
 		ai1 = new MiniMaxAi(GameParameters.maxDepth1, Constants.X);
@@ -123,7 +134,9 @@ public class GuiAiVsAi {
 	
 	// Gets called after makeMove(int, col) is called.
 	public static void game() {
-	
+		
+        turnMessage.setText("Turn: " + board.getTurn());
+        
 		int row = board.getLastMove().getRow();
 		int col = board.getLastMove().getCol();
 		int currentPlayer = board.getLastSymbolPlayed();
@@ -135,13 +148,14 @@ public class GuiAiVsAi {
 			// It places a yellow checker in the corresponding [row][col] of the GUI.
 			placeChecker(GameParameters.player2Color, row, col);
 		}
+
+		System.out.println("Turn: " + board.getTurn());
+		Board.printBoard(board.getGameBoard());
+		System.out.println("\n*****************************");
 		
 		if (board.checkGameOver()) {
 			gameOver();
 		}
-		
-		Board.printBoard(board.getGameBoard());
-		System.out.println("\n*****************************");
 		
 	}
 	
