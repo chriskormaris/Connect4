@@ -48,6 +48,7 @@ public class Board {
 		gameBoard = new int[6][7];
 		this.overflowOccured = false;
 		this.gameOver = false;
+		this.turn = 0;
 		for(int i=0; i<6; i++) {
 			for(int j=0; j<7; j++) {
 				gameBoard[i][j] = board.gameBoard[i][j];
