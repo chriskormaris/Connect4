@@ -65,7 +65,10 @@ public class GuiHumanVsAi {
 	static JButton col5_button = new JButton("5");
 	static JButton col6_button = new JButton("6");
 	static JButton col7_button = new JButton("7");
-	
+	static JButton[] buttons = new JButton[] 
+			{col1_button, col2_button, col3_button, col4_button,
+			 col5_button, col6_button, col7_button};
+
     static JLabel turnMessage;
 
 	static MiniMaxAi ai = new MiniMaxAi(GameParameters.maxDepth1, Constants.X);
@@ -259,32 +262,17 @@ public class GuiHumanVsAi {
 	}
 	
 	
-	public static void enableButtons() {
-		col1_button.setEnabled(true);
-		col2_button.setEnabled(true);
-		col3_button.setEnabled(true);
-		col4_button.setEnabled(true);
-		col5_button.setEnabled(true);
-		col6_button.setEnabled(true);
-		col7_button.setEnabled(true);
-	}
-	
-	
-	public static void disableButtons() {
-		col1_button.setEnabled(false);
-		col2_button.setEnabled(false);
-		col3_button.setEnabled(false);
-		col4_button.setEnabled(false);
-		col5_button.setEnabled(false);
-		col6_button.setEnabled(false);
-		col7_button.setEnabled(false);
+	public static void setAllButtonsEnabled(boolean b) {
+		for (JButton button: buttons) {
+			button.setEnabled(b);
+		}
 	}
 	
 	
 	/**
-	 * Returns a component to be drawn by main window.
+	 * It returns a component to be drawn by main window.
 	 * This function creates the main window components.
-	 * Kalei ton actionListener otan ginetai click me to pontiki panw se button.
+	 * It calls the "actionListener" function, when a click on a button is made.
 	 */
 	public static Component createContentComponents() {
 		
@@ -293,161 +281,42 @@ public class GuiHumanVsAi {
 		panelBoardNumbers.setLayout(new GridLayout(1, 7, 6, 4));
 		panelBoardNumbers.setBorder(BorderFactory.createEmptyBorder(2, 22, 2, 22));
 		
-		enableButtons();
+		setAllButtonsEnabled(true);
 		
 		if (firstGame) {
 			
-			col1_button.addActionListener(new ActionListener() {
-				@Override
-				public void actionPerformed(ActionEvent e) {
-					board.setOverflowOccured(false);
-					int previousRow = board.getLastMove().getRow();
-					int previousCol = board.getLastMove().getCol();
-					int previousLetter = board.getLastSymbolPlayed();
-					board.makeMove(0, Constants.X);
-					if (!board.hasOverflowOccured()) {
-						game();
-						aiMove();
-					} else {
-						board.getLastMove().setRow(previousRow);
-						board.getLastMove().setCol(previousCol);
-						board.setLastSymbolPlayed(previousLetter);
+			for (int i=0; i<buttons.length; i++) {
+				JButton button = buttons[i];
+				int column = i;
+				
+				button.addActionListener(new ActionListener() {
+					@Override
+					public void actionPerformed(ActionEvent e) {
+						board.setOverflowOccured(false);
+						int previousRow = board.getLastMove().getRow();
+						int previousCol = board.getLastMove().getCol();
+						int previousLetter = board.getLastSymbolPlayed();
+						board.makeMove(column, Constants.X);
+						if (!board.hasOverflowOccured()) {
+							game();
+							aiMove();
+						} else {
+							board.getLastMove().setRow(previousRow);
+							board.getLastMove().setCol(previousCol);
+							board.setLastSymbolPlayed(previousLetter);
+						}
+						frameMainWindow.requestFocusInWindow();
 					}
-					frameMainWindow.requestFocusInWindow();
-				}
-			});
+				});
+			}
 			
-			col2_button.addActionListener(new ActionListener() {
-				@Override
-				public void actionPerformed(ActionEvent e) {
-					board.setOverflowOccured(false);
-					int previousRow = board.getLastMove().getRow();
-					int previousCol = board.getLastMove().getCol();
-					int previousLetter = board.getLastSymbolPlayed();
-					board.makeMove(1, Constants.X);
-					if (!board.hasOverflowOccured()) {
-						game();
-						aiMove();
-					} else {
-						board.getLastMove().setRow(previousRow);
-						board.getLastMove().setCol(previousCol);
-						board.setLastSymbolPlayed(previousLetter);
-					}
-					frameMainWindow.requestFocusInWindow();
-				}
-			});
-			
-			col3_button.addActionListener(new ActionListener() {
-				@Override
-				public void actionPerformed(ActionEvent e) {
-					board.setOverflowOccured(false);
-					int previousRow = board.getLastMove().getRow();
-					int previousCol = board.getLastMove().getCol();
-					int previousLetter = board.getLastSymbolPlayed();
-					board.makeMove(2, Constants.X);
-					if (!board.hasOverflowOccured()) {
-						game();
-						aiMove();
-					} else {
-						board.getLastMove().setRow(previousRow);
-						board.getLastMove().setCol(previousCol);
-						board.setLastSymbolPlayed(previousLetter);
-					}
-					frameMainWindow.requestFocusInWindow();
-				}
-			});
-			
-			col4_button.addActionListener(new ActionListener() {
-				@Override
-				public void actionPerformed(ActionEvent e) {
-					board.setOverflowOccured(false);
-					int previousRow = board.getLastMove().getRow();
-					int previousCol = board.getLastMove().getCol();
-					int previousLetter = board.getLastSymbolPlayed();
-					board.makeMove(3, Constants.X);
-					if (!board.hasOverflowOccured()) {
-						game();
-						aiMove();
-					} else {
-						board.getLastMove().setRow(previousRow);
-						board.getLastMove().setCol(previousCol);
-						board.setLastSymbolPlayed(previousLetter);
-					}
-					frameMainWindow.requestFocusInWindow();
-				}
-			});
-			
-			col5_button.addActionListener(new ActionListener() {
-				@Override
-				public void actionPerformed(ActionEvent e) {
-					board.setOverflowOccured(false);
-					int previousRow = board.getLastMove().getRow();
-					int previousCol = board.getLastMove().getCol();
-					int previousLetter = board.getLastSymbolPlayed();
-					board.makeMove(4, Constants.X);
-					if (!board.hasOverflowOccured()) {
-						game();
-						aiMove();
-					} else {
-						board.getLastMove().setRow(previousRow);
-						board.getLastMove().setCol(previousCol);
-						board.setLastSymbolPlayed(previousLetter);
-					}
-					frameMainWindow.requestFocusInWindow();
-				}
-			});
-			
-			col6_button.addActionListener(new ActionListener() {
-				@Override
-				public void actionPerformed(ActionEvent e) {
-					board.setOverflowOccured(false);
-					int previousRow = board.getLastMove().getRow();
-					int previousCol = board.getLastMove().getCol();
-					int previousLetter = board.getLastSymbolPlayed();
-					board.makeMove(5, Constants.X);
-					if (!board.hasOverflowOccured()) {
-						game();
-						aiMove();
-					} else {
-						board.getLastMove().setRow(previousRow);
-						board.getLastMove().setCol(previousCol);
-						board.setLastSymbolPlayed(previousLetter);
-					}
-					frameMainWindow.requestFocusInWindow();
-				}
-			});
-			
-			col7_button.addActionListener(new ActionListener() {
-				@Override
-				public void actionPerformed(ActionEvent e) {
-					board.setOverflowOccured(false);
-					int previousRow = board.getLastMove().getRow();
-					int previousCol = board.getLastMove().getCol();
-					int previousLetter = board.getLastSymbolPlayed();
-					board.makeMove(6, Constants.X);
-					if (!board.hasOverflowOccured()) {
-						game();
-						aiMove();
-					} else {
-						board.getLastMove().setRow(previousRow);
-						board.getLastMove().setCol(previousCol);
-						board.setLastSymbolPlayed(previousLetter);
-					}
-					frameMainWindow.requestFocusInWindow();
-				}
-			});
-		
 			firstGame = false;
 		}
 		
-		panelBoardNumbers.add(col1_button);
-		panelBoardNumbers.add(col2_button);
-		panelBoardNumbers.add(col3_button);
-		panelBoardNumbers.add(col4_button);
-		panelBoardNumbers.add(col5_button);
-		panelBoardNumbers.add(col6_button);
-		panelBoardNumbers.add(col7_button);
-
+		for (JButton button: buttons) {
+			panelBoardNumbers.add(button);
+		}
+		
 		// main Connect-4 board creation
 		layeredGameBoard = createLayeredBoard();
 		
@@ -471,18 +340,18 @@ public class GuiHumanVsAi {
 	public static void gameOver() {
 		board.setGameOver(true);
 		
-		disableButtons();
+		setAllButtonsEnabled(false);
 		frameMainWindow.removeKeyListener(frameMainWindow.getKeyListeners()[0]);
 		
-//		panelBoardNumbers.setVisible(false);
+		// panelBoardNumbers.setVisible(false);
 		frameGameOver = new JFrame("Game over!");
 		frameGameOver.setBounds(620, 400, 350, 128);
 		centerWindow(frameGameOver, 0, 0);
 		JPanel winPanel = new JPanel(new BorderLayout());
 		winPanel.setBorder(BorderFactory.createEmptyBorder(15, 30, 15, 30));
 		
-//		ImageIcon winIcon = new ImageIcon(ResourceLoader.load("images/win.png"));
-//		JLabel winLabel = new JLabel(winIcon);
+		// ImageIcon winIcon = new ImageIcon(ResourceLoader.load("images/win.png"));
+		// JLabel winLabel = new JLabel(winIcon);
 		JLabel winLabel;
 		board.checkWinState();
 		if (board.getWinner() == Constants.X) {

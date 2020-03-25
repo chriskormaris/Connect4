@@ -58,6 +58,9 @@ public class Gui {
 	static JButton col5_button = new JButton("5");
 	static JButton col6_button = new JButton("6");
 	static JButton col7_button = new JButton("7");
+	static JButton[] buttons = new JButton[] 
+			{col1_button, col2_button, col3_button, col4_button,
+			 col5_button, col6_button, col7_button};
 
     static JLabel turnMessage;
     
@@ -210,7 +213,8 @@ public class Gui {
 				makeMove(6);
 			}
 			
-			else if ((e.getKeyCode() == KeyEvent.VK_Z) && ((e.getModifiersEx() & KeyEvent.CTRL_DOWN_MASK) != 0)) {
+			else if (((e.getModifiersEx() & KeyEvent.CTRL_DOWN_MASK) != 0) &&
+						(e.getKeyCode() == KeyEvent.VK_Z)) {
                 undo();
             }
 			
@@ -237,12 +241,13 @@ public class Gui {
 		if (GameParameters.gameMode == Constants.HumanVsHuman) {
 			try {
 				board.setGameOver(false);
-				enableButtons();
+				setAllButtonsEnabled(true);
 				if (frameMainWindow.getKeyListeners().length == 0) {
 					frameMainWindow.addKeyListener(gameKeyListener);
 				}
 				board.undoMove(board.getLastMove().getRow(), board.getLastMove().getCol(), humanPlayerUndoLetter);
 				layeredGameBoard.remove(checkerLabel);
+				turnMessage.setText("Turn: " + board.getTurn());
 				frameMainWindow.paint(frameMainWindow.getGraphics());
 			} catch (ArrayIndexOutOfBoundsException ex) {
 				System.err.println("No move has been made yet!");
@@ -254,7 +259,7 @@ public class Gui {
 		else if (GameParameters.gameMode == Constants.HumanVsAi) {
 			try {
 				board.setGameOver(false);
-				enableButtons();
+				setAllButtonsEnabled(true);
 				if (frameMainWindow.getKeyListeners().length == 0) {
 					frameMainWindow.addKeyListener(gameKeyListener);
 				}
@@ -262,6 +267,7 @@ public class Gui {
 				layeredGameBoard.remove(checkerLabel);
 				board.undoMove(humanPlayerUndoRow, humanPlayerUndoCol, humanPlayerUndoLetter);
 				layeredGameBoard.remove(humanPlayerUndoCheckerLabel);
+				turnMessage.setText("Turn: " + board.getTurn());
 				frameMainWindow.paint(frameMainWindow.getGraphics());
 			} catch (ArrayIndexOutOfBoundsException ex) {
 				System.err.println("No move has been made yet!");
@@ -315,7 +321,7 @@ public class Gui {
 			if (board.getLastSymbolPlayed() == Constants.X)
 				aiMove(ai);
 		} else if (GameParameters.gameMode == Constants.AiVsAi) {
-			disableButtons();
+			setAllButtonsEnabled(false);
 			
 			// AI VS AI implementation here
 			// Initial maxDepth = 4. We can change this value for difficulty adjustment.
@@ -447,30 +453,15 @@ public class Gui {
 	}
 	
 	
-	public static void enableButtons() {
-		col1_button.setEnabled(true);
-		col2_button.setEnabled(true);
-		col3_button.setEnabled(true);
-		col4_button.setEnabled(true);
-		col5_button.setEnabled(true);
-		col6_button.setEnabled(true);
-		col7_button.setEnabled(true);
-	}
-	
-	
-	public static void disableButtons() {
-		col1_button.setEnabled(false);
-		col2_button.setEnabled(false);
-		col3_button.setEnabled(false);
-		col4_button.setEnabled(false);
-		col5_button.setEnabled(false);
-		col6_button.setEnabled(false);
-		col7_button.setEnabled(false);
+	public static void setAllButtonsEnabled(boolean b) {
+		for (JButton button: buttons) {
+			button.setEnabled(b);
+		}
 	}
 	
 	
 	/**
-	 * Returns a component to be drawn by main window.
+	 * It returns a component to be drawn by main window.
 	 * This function creates the main window components.
 	 * It calls the "actionListener" function, when a click on a button is made.
 	 */
@@ -482,107 +473,34 @@ public class Gui {
 		panelBoardNumbers.setBorder(BorderFactory.createEmptyBorder(2, 22, 2, 22));
 		
 		if (GameParameters.gameMode != Constants.AiVsAi)
-			enableButtons();
+			setAllButtonsEnabled(true);
 		
 		if (firstGame) {
 		
-			col1_button.addActionListener(new ActionListener() {
-				public void actionPerformed(ActionEvent e) { 
-					makeMove(0);
-					if (!board.hasOverflowOccured()) {
-						game();
-						saveUndoMove();
-						if (GameParameters.gameMode == Constants.HumanVsAi) aiMove(ai);
-					}
-					frameMainWindow.requestFocusInWindow();
-				}
-			});
-			
-			col2_button.addActionListener(new ActionListener() {
-				public void actionPerformed(ActionEvent e) {
-					makeMove(1);
-					if (!board.hasOverflowOccured()) {
-						game();
-						saveUndoMove();
-						if (GameParameters.gameMode == Constants.HumanVsAi) aiMove(ai);
-					}
-					frameMainWindow.requestFocusInWindow();
-				}
-			});
-			
-			col3_button.addActionListener(new ActionListener() {
-				public void actionPerformed(ActionEvent e) {
-					makeMove(2);
-					if (!board.hasOverflowOccured()) {
-						game();
-						saveUndoMove();
-						if (GameParameters.gameMode == Constants.HumanVsAi) aiMove(ai);
-					}
-					frameMainWindow.requestFocusInWindow();
-				}
-			});
-			
-			col4_button.addActionListener(new ActionListener() {
-				public void actionPerformed(ActionEvent e) {
-					makeMove(3);
-					if (!board.hasOverflowOccured()) {
-						game();
-						saveUndoMove();
-						if (GameParameters.gameMode == Constants.HumanVsAi) aiMove(ai);
-					}
-					frameMainWindow.requestFocusInWindow();
-				}
-			});
-			
-			col5_button.addActionListener(new ActionListener() {
-				public void actionPerformed(ActionEvent e) {
-					makeMove(4);
-					if (!board.hasOverflowOccured()) {
-						game();
-						saveUndoMove();
-						if (GameParameters.gameMode == Constants.HumanVsAi) aiMove(ai);
-					}
-					frameMainWindow.requestFocusInWindow();
-				}
-			});
-			
-			col6_button.addActionListener(new ActionListener() {
-				public void actionPerformed(ActionEvent e) {
-					makeMove(5);
-					if (!board.hasOverflowOccured()) {
-						game();
-						saveUndoMove();
-						if (GameParameters.gameMode == Constants.HumanVsAi) aiMove(ai);
-					}
-					frameMainWindow.requestFocusInWindow();
-				}
-			});
-			
-			col7_button.addActionListener(new ActionListener() {
-				public void actionPerformed(ActionEvent e) {
-					makeMove(6);
-					if (!board.hasOverflowOccured()) {
-						game();
-						saveUndoMove();
-						if (GameParameters.gameMode == Constants.HumanVsAi) aiMove(ai);
-					}
-					frameMainWindow.requestFocusInWindow();
-				}
-
-			});
+			for (int i=0; i<buttons.length; i++) {
+				JButton button = buttons[i];
+				int column = i;
 				
+				button.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent e) {
+						makeMove(column);
+						if (!board.hasOverflowOccured()) {
+							game();
+							saveUndoMove();
+							if (GameParameters.gameMode == Constants.HumanVsAi) aiMove(ai);
+						}
+						frameMainWindow.requestFocusInWindow();
+					}
+				});
+			}				
 
 			firstGame = false;
 		}
 		
-		panelBoardNumbers.add(col1_button);
-		panelBoardNumbers.add(col2_button);
-		panelBoardNumbers.add(col3_button);
-		panelBoardNumbers.add(col4_button);
-		panelBoardNumbers.add(col5_button);
-		panelBoardNumbers.add(col6_button);
-		panelBoardNumbers.add(col7_button);
-
+		for (JButton button: buttons) {
+			panelBoardNumbers.add(button);
+		}
+		
 		// main Connect-4 board creation
 		layeredGameBoard = createLayeredBoard();
 
@@ -643,7 +561,7 @@ public class Gui {
 			createNewGame();
 		} else {
 			// Disable buttons
-			disableButtons();
+			setAllButtonsEnabled(false);
 			
 			// Remove key listener
 			frameMainWindow.removeKeyListener(frameMainWindow.getKeyListeners()[0]);
