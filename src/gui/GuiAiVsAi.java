@@ -166,28 +166,8 @@ public class GuiAiVsAi {
 	}
 	
 	
-	public static void enableButtons() {
-//		col1_button.setEnabled(true);
-//		col2_button.setEnabled(true);
-//		col3_button.setEnabled(true);
-//		col4_button.setEnabled(true);
-//		col5_button.setEnabled(true);
-//		col6_button.setEnabled(true);
-//		col7_button.setEnabled(true);
-	}
-	
-	
-	public static void disableButtons() {
-//		col1_button.setEnabled(false);
-//		col2_button.setEnabled(false);
-//		col3_button.setEnabled(false);
-//		col4_button.setEnabled(false);
-//		col5_button.setEnabled(false);
-//		col6_button.setEnabled(false);
-//		col7_button.setEnabled(false);
-	}
 	/**
-	 * Returns a component to be drawn by main window.
+	 * It returns a component to be drawn by main window.
 	 * This function creates the main window components.
 	 * It calls the "actionListener" function, when a click on a button is made.
 	 */

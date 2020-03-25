@@ -27,10 +27,11 @@ public class Board {
 	public Board() {
 		this.lastMove = new Move();
 		this.lastSymbolPlayed = Constants.O;
-		this.winner = 0;
-		this.gameBoard = new int[6][7];
+		this.winner = Constants.EMPTY;
+		this.gameBoard = new int[7][8];
 		this.overflowOccured = false;
 		this.gameOver = false;
+		this.turn = 0;
 		for(int i=0; i<6; i++) {
 			for(int j=0; j<7; j++) {
 				gameBoard[i][j] = Constants.EMPTY;
