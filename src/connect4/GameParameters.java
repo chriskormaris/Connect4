@@ -15,19 +15,19 @@ public class GameParameters {
 	public static final String getColorNameByNumber(int number) {
 		switch (number) {
 			case 1:
-				return "RED";
+				return "Red";
 			case 2:
-				return "YELLOW";
+				return "Yellow";
 			case 3:
-				return "BLACK";
+				return "Black";
 			case 4:
-				return "GREEN";
+				return "Green";
 			case 5:
-				return "ORANGE";
+				return "Orange";
 			case 6:
-				return "PURPLE";
+				return "Purple";
 			default:
-				return "RED";
+				return "Red";
 		}
 	}
 	
