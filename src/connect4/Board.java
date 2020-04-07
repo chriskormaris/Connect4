@@ -237,18 +237,6 @@ public class Board {
 	public boolean checkWinState() {
 		
 		// Check for 4 consecutive checkers in a row, horizontally.
-		
-//		for (int i=5; i>=0; i--) {
-//			for (int j=0; j<4; j++) {
-//				if (gameBoard[i][j] == gameBoard[i][j+1]
-//						&& gameBoard[i][j] == gameBoard[i][j+2]
-//						&& gameBoard[i][j] == gameBoard[i][j+3]
-//						&& gameBoard[i][j] != Constants.EMPTY) {
-//					setWinner(gameBoard[i][j]);
-//					return true;
-//				}
-//			}
-//		}
 		for (int i=0; i<6; i++) {
 			for (int j=0; j<7; j++) {
 				if (canMove(i, j+3)) {
@@ -264,18 +252,6 @@ public class Board {
 		}
 		
 		// Check for 4 consecutive checkers in a row, vertically.
-		
-//		for (int i=5; i>=3; i--) {
-//			for (int j=0; j<7; j++) {
-//				if (gameBoard[i][j] == gameBoard[i-1][j]
-//						&& gameBoard[i][j] == gameBoard[i-2][j]
-//						&& gameBoard[i][j] == gameBoard[i-3][j]
-//						&& gameBoard[i][j] != Constants.EMPTY) {
-//					setWinner(gameBoard[i][j]);
-//					return true;
-//				}
-//			}
-//		}
 		for (int i=0; i<6; i++) {
 			for (int j=0; j<7; j++) {
 				if (canMove(i-3, j)) {
@@ -292,18 +268,6 @@ public class Board {
 		
 		
 		// Check for 4 consecutive checkers in a row, in descending diagonals.
-		
-//		for (int i=0; i<3; i++) {
-//			for (int j=0; j<4; j++) {
-//				if (gameBoard[i][j] == gameBoard[i+1][j+1]
-//						&& gameBoard[i][j] == gameBoard[i+2][j+2]
-//						&& gameBoard[i][j] == gameBoard[i+3][j+3] 
-//						&& gameBoard[i][j] != Constants.EMPTY) {
-//					setWinner(gameBoard[i][j]);
-//					return true;
-//				}
-//			}
-//		}
 		for (int i=0; i<6; i++) {
 			for (int j=0; j<7; j++) {
 				if (canMove(i+3, j+3)) {
@@ -368,18 +332,6 @@ public class Board {
 		
 		
 		// Check for 3 consecutive checkers in a row, horizontally.
-		
-//		for (int i=5; i>=0; i--) {
-//			for (int j=0; j<7; j++) {
-//				if (canMove(i, j+2)) {
-//					if (gameBoard[i][j] == gameBoard[i][j+1]
-//							&& gameBoard[i][j] == gameBoard[i][j+2]
-//							&& gameBoard[i][j] == playerSymbol) {
-//						times++;
-//					}
-//				}
-//			}
-//		}
 		for (int i=0; i<6; i++) {
 			for (int j=0; j<7; j++) {
 				if (canMove(i, j+2)) {
@@ -394,18 +346,6 @@ public class Board {
 		
 
 		// Check for 3 consecutive checkers in a row, vertically.
-		
-//		for (int i=5; i>=0; i--) {
-//			for (int j=0; j<7; j++) {
-//				if (canMove(i-2, j)) {
-//					if (gameBoard[i][j] == gameBoard[i-1][j]
-//							&& gameBoard[i][j] == gameBoard[i-2][j]
-//							&& gameBoard[i][j] == playerSymbol) {
-//						times++;
-//					}
-//				}
-//			}
-//		}
 		for (int i=0; i<6; i++) {
 			for (int j=0; j<7; j++) {
 				if (canMove(i-2, j)) {
@@ -420,18 +360,6 @@ public class Board {
 
 		
 		// Check for 3 consecutive checkers in a row, in descending diagonal.
-		
-//		for (int i=0; i<6; i++) {
-//			for (int j=0; j<7; j++) {
-//				if (canMove(i+2, j+2)) {
-//					if (gameBoard[i][j] == gameBoard[i+1][j+1]
-//							&& gameBoard[i][j] == gameBoard[i+2][j+2]
-//							&& gameBoard[i][j] == playerSymbol) {
-//						times++;
-//					}
-//				}
-//			}
-//		}
 		for (int i=0; i<6; i++) {
 			for (int j=0; j<7; j++) {
 				if (canMove(i+2, j+2)) {
@@ -446,7 +374,6 @@ public class Board {
 
 		
 		// Check for 3 consecutive checkers in a row, in ascending diagonal.
-		
 		for (int i=0; i<6; i++) {
 			for (int j=0; j<7; j++) {
 				if (canMove(i-2, j+2)) {
@@ -471,17 +398,6 @@ public class Board {
 		int times = 0;
 		
 		// Check for 2 consecutive checkers in a row, horizontally.
-		
-//		for (int i=5; i>=0; i--) {
-//			for (int j=0; j<7; j++) {
-//				if (canMove(i, j+1)) {
-//					if (gameBoard[i][j] == gameBoard[i][j+1]
-//							&& gameBoard[i][j] == player) {
-//						times++;
-//					}
-//				}
-//			}
-//		}
 		for (int i=0; i<6; i++) {
 			for (int j=0; j<7; j++) {
 				if (canMove(i, j+1)) {
@@ -495,17 +411,6 @@ public class Board {
 		
 		
 		// Check for 3 consecutive checkers in a row, vertically.
-		
-//		for (int i=5; i>=0; i--) {
-//			for (int j=0; j<7; j++) {
-//				if (canMove(i-1, j)) {
-//					if (gameBoard[i][j] == gameBoard[i-1][j]
-//							&& gameBoard[i][j] == player) {
-//						times++;
-//					}
-//				}
-//			}
-//		}
 		for (int i=0; i<6; i++) {
 			for (int j=0; j<7; j++) {
 				if (canMove(i-1, j)) {
@@ -519,7 +424,6 @@ public class Board {
 
 		
 		// Check for 3 consecutive checkers in a row, in descending diagonal.
-		
 		for (int i=0; i<6; i++) {
 			for (int j=0; j<7; j++) {
 				if (canMove(i+1, j+1)) {
@@ -533,7 +437,6 @@ public class Board {
 
 		
 		// Check for 3 consecutive checkers in a row, in ascending diagonal.
-		
 		for (int i=0; i<6; i++) {
 			for (int j=0; j<7; j++) {
 				if (canMove(i-1, j + 1)) {
