@@ -50,17 +50,8 @@ public class Gui {
 	static final int DEFAULT_HEIGHT = 525;
 	
 	static boolean firstGame = true;
-
-	static JButton col1_button = new JButton("1");
-	static JButton col2_button = new JButton("2");
-	static JButton col3_button = new JButton("3");
-	static JButton col4_button = new JButton("4");
-	static JButton col5_button = new JButton("5");
-	static JButton col6_button = new JButton("6");
-	static JButton col7_button = new JButton("7");
-	static JButton[] buttons = new JButton[] 
-			{col1_button, col2_button, col3_button, col4_button,
-			 col5_button, col6_button, col7_button};
+	
+	static JButton[] buttons;
 
     static JLabel turnMessage;
     
@@ -89,7 +80,10 @@ public class Gui {
 	static JMenuItem aboutItem;
 	
 	public Gui() {
-		
+		buttons = new JButton[7];
+		for (int i=0; i<7; i++) {
+			buttons[i] = new JButton(i+1+"");
+		}
 	}
 	
 	
@@ -107,16 +101,9 @@ public class Gui {
 		
 		undoItem.setEnabled(false);
 
-		fileMenu.add(newGameItem);
-		fileMenu.add(undoItem);
-		fileMenu.add(settingsItem);
-		fileMenu.add(exitItem);
-		
 		helpMenu = new JMenu("Help");
 		howToPlayItem = new JMenuItem("How to Play");
 		aboutItem = new JMenuItem("About");
-		helpMenu.add(howToPlayItem);
-		helpMenu.add(aboutItem);
 
 		newGameItem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -159,7 +146,15 @@ public class Gui {
 						"About", JOptionPane.INFORMATION_MESSAGE);
 			}
 		});
+
+		fileMenu.add(newGameItem);
+		fileMenu.add(undoItem);
+		fileMenu.add(settingsItem);
+		fileMenu.add(exitItem);
 		
+		helpMenu.add(howToPlayItem);
+		helpMenu.add(aboutItem);
+
 		menuBar.add(fileMenu);
 		menuBar.add(helpMenu);
 		
@@ -181,7 +176,7 @@ public class Gui {
 
 		imageBoardLabel.setBounds(20, 20, imageBoard.getIconWidth(), imageBoard.getIconHeight());
 		layeredGameBoard.add(imageBoardLabel, 0, 1);
-
+		
 		return layeredGameBoard;
 	}
 	
@@ -195,38 +190,26 @@ public class Gui {
 		@Override
 		public void keyPressed(KeyEvent e) {
 			// System.out.println("keyPressed = " + KeyEvent.getKeyText(e.getKeyCode()));
-			String button = KeyEvent.getKeyText(e.getKeyCode());
+			String keyText = KeyEvent.getKeyText(e.getKeyCode());
 			
-			if (button.equals("1")) {
-				makeMove(0);
-			} else if (button.equals("2")) {
-				makeMove(1);
-			} else if (button.equals("3")) {
-				makeMove(2);
-			} else if (button.equals("4")) {
-				makeMove(3);
-			} else if (button.equals("5")) {
-				makeMove(4);
-			} else if (button.equals("6")) {
-				makeMove(5);
-			} else if (button.equals("7")) {
-				makeMove(6);
-			}
-			
-			else if (((e.getModifiersEx() & KeyEvent.CTRL_DOWN_MASK) != 0) &&
-						(e.getKeyCode() == KeyEvent.VK_Z)) {
-                undo();
-            }
-			
-			if (button.equals("1") || button.equals("2") || button.equals("3") || button.equals("4")
-					|| button.equals("5") || button.equals("6") || button.equals("7")) {
-				if (!board.hasOverflowOccured()) {
-					game();
-					saveUndoMove();
-					if (GameParameters.gameMode == Constants.HumanVsAi) aiMove(ai);
+			for (int i=0; i<7; i++) {
+				if (keyText.equals(i+1+"")) {
+					makeMove(i);
+					
+					if (!board.hasOverflowOccured()) {
+						boolean isGameOver = game();
+						saveUndoMove();
+						if (GameParameters.gameMode == Constants.HumanVsAi && !isGameOver) { 
+							aiMove(ai);
+						}
+					}
+					break;
 				}
 			}
-			
+			if (((e.getModifiersEx() & KeyEvent.CTRL_DOWN_MASK) != 0) &&
+					(e.getKeyCode() == KeyEvent.VK_Z)) {
+                undo();
+            }
 		}
 
 		@Override
@@ -269,7 +252,7 @@ public class Gui {
 				layeredGameBoard.remove(humanPlayerUndoCheckerLabel);
 				turnMessage.setText("Turn: " + board.getTurn());
 				frameMainWindow.paint(frameMainWindow.getGraphics());
-			} catch (ArrayIndexOutOfBoundsException ex) {
+			} catch (NullPointerException|ArrayIndexOutOfBoundsException ex) {
 				System.err.println("No move has been made yet!");
 				System.err.flush();
 			}
@@ -318,8 +301,6 @@ public class Gui {
 		
 		if (GameParameters.gameMode == Constants.HumanVsAi) {
 			ai = new MiniMaxAi(GameParameters.maxDepth1, Constants.O);
-			if (board.getLastSymbolPlayed() == Constants.X)
-				aiMove(ai);
 		} else if (GameParameters.gameMode == Constants.AiVsAi) {
 			setAllButtonsEnabled(false);
 			
@@ -339,6 +320,7 @@ public class Gui {
 		
 	}
 	
+	
 	private static void configureGuiStyle() {
 		try {
 			if (GameParameters.guiStyle == Constants.SystemStyle) {
@@ -356,11 +338,16 @@ public class Gui {
 			        }
 			    }
 			}
-		} catch (Exception e) {
-			e.printStackTrace();
+		} catch (Exception e1) {
+			try {
+				UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+			} catch (Exception e2) {
+				e2.printStackTrace();	
+			}
 		}
 	}
 
+	
 	// It centers the window on screen.
 	public static void centerWindow(Window frame, int width, int height) {
 	    Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize();
@@ -415,7 +402,7 @@ public class Gui {
 	
 	
 	// Gets called after makeMove(int, col) is called.
-	public static void game() {
+	public static boolean game() {
 		
         turnMessage.setText("Turn: " + board.getTurn());
         
@@ -435,13 +422,14 @@ public class Gui {
 		
 		System.out.println("Turn: " + board.getTurn());
 		Board.printBoard(board.getGameBoard());
-		System.out.println("\n*****************************");
 		
-		if (board.checkGameOver()) {
+		boolean isGameOver = board.checkGameOver(); 
+		if (isGameOver) {
 			gameOver();
 		}
 		
 		undoItem.setEnabled(true);
+		return isGameOver;
 	}
 	
 	
@@ -485,15 +473,16 @@ public class Gui {
 					public void actionPerformed(ActionEvent e) {
 						makeMove(column);
 						if (!board.hasOverflowOccured()) {
-							game();
+							boolean isGameOver = game();
 							saveUndoMove();
-							if (GameParameters.gameMode == Constants.HumanVsAi) aiMove(ai);
+							if (GameParameters.gameMode == Constants.HumanVsAi && !isGameOver)
+								aiMove(ai);
 						}
 						frameMainWindow.requestFocusInWindow();
 					}
 				});
-			}				
-
+			}		
+			
 			firstGame = false;
 		}
 		
@@ -503,7 +492,7 @@ public class Gui {
 		
 		// main Connect-4 board creation
 		layeredGameBoard = createLayeredBoard();
-
+		
 		// panel creation to store all the elements of the board
 		panelMain = new JPanel();
 		panelMain.setLayout(new BorderLayout());
@@ -529,32 +518,32 @@ public class Gui {
 			if (GameParameters.gameMode == Constants.HumanVsAi)
 				choice = JOptionPane.showConfirmDialog(null,
 						"You win! Start a new game?",
-						"GAME OVER", JOptionPane.YES_NO_OPTION);
+						"Game Over", JOptionPane.YES_NO_OPTION);
 			else if (GameParameters.gameMode == Constants.HumanVsHuman)
 				choice = JOptionPane.showConfirmDialog(null,
 						"Player 1 wins! Start a new game?",
-						"GAME OVER", JOptionPane.YES_NO_OPTION);
+						"Game Over", JOptionPane.YES_NO_OPTION);
 			else if (GameParameters.gameMode == Constants.AiVsAi)
 				choice = JOptionPane.showConfirmDialog(null,
 						"Minimax AI 1 wins! Start a new game?",
-						"GAME OVER", JOptionPane.YES_NO_OPTION);
+						"Game Over", JOptionPane.YES_NO_OPTION);
 		} else if (board.getWinner() == Constants.O) {
 			if (GameParameters.gameMode == Constants.HumanVsAi)
 				choice = JOptionPane.showConfirmDialog(null,
 						"Computer AI wins! Start a new game?",
-						"GAME OVER", JOptionPane.YES_NO_OPTION);
+						"Game Over", JOptionPane.YES_NO_OPTION);
 			else if (GameParameters.gameMode == Constants.HumanVsHuman)
 				choice = JOptionPane.showConfirmDialog(null,
 						"Player 2 wins! Start a new game?",
-						"GAME OVER", JOptionPane.YES_NO_OPTION);
+						"Game Over", JOptionPane.YES_NO_OPTION);
 			else if (GameParameters.gameMode == Constants.AiVsAi)
 				choice = JOptionPane.showConfirmDialog(null,
 						"Minimax AI 2 wins! Start a new game?",
-						"GAME OVER", JOptionPane.YES_NO_OPTION);
+						"Game Over", JOptionPane.YES_NO_OPTION);
 		} else {
 			choice = JOptionPane.showConfirmDialog(null,
 					"It's a draw! Start a new game?",
-					"GAME OVER", JOptionPane.YES_NO_OPTION);
+					"Game Over", JOptionPane.YES_NO_OPTION);
 		}
 		
 		if (choice == JOptionPane.YES_OPTION) {
