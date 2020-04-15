@@ -31,7 +31,7 @@ public class Board {
 		this.gameBoard = new int[7][8];
 		this.overflowOccured = false;
 		this.gameOver = false;
-		this.turn = 0;
+		this.turn = 1;
 		for(int i=0; i<6; i++) {
 			for(int j=0; j<7; j++) {
 				gameBoard[i][j] = Constants.EMPTY;
@@ -48,7 +48,7 @@ public class Board {
 		gameBoard = new int[6][7];
 		this.overflowOccured = false;
 		this.gameOver = false;
-		this.turn = 0;
+		this.turn = 1;
 		for(int i=0; i<6; i++) {
 			for(int j=0; j<7; j++) {
 				gameBoard[i][j] = board.gameBoard[i][j];
@@ -157,7 +157,8 @@ public class Board {
 		} else if (letter == Constants.X) {
 			this.lastSymbolPlayed = Constants.O;
 		}
-		this.turn--;
+		if (this.turn > 1)
+			this.turn--;
 	}
 	
 	

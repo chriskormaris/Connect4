@@ -64,8 +64,8 @@ public class Gui {
 	
 	// for the Undo operation
 	private static int humanPlayerUndoRow;
-	private static int humanPlayerUndoCol;
-	private static int humanPlayerUndoLetter;
+	private static int humanPlayerUndoColumn;
+	private static int humanPlayerUndoSymbol;
 	private static JLabel humanPlayerUndoCheckerLabel;
 
 	// Menu bars and items
@@ -220,44 +220,49 @@ public class Gui {
 	
 	
 	private static void undo() {
-		// This is the undo implementation for Human VS Human mode.
-		if (GameParameters.gameMode == Constants.HumanVsHuman) {
-			try {
-				board.setGameOver(false);
-				setAllButtonsEnabled(true);
-				if (frameMainWindow.getKeyListeners().length == 0) {
-					frameMainWindow.addKeyListener(gameKeyListener);
+		if (undoItem.isEnabled()) {
+			// This is the undo implementation for Human VS Human mode.
+			if (GameParameters.gameMode == Constants.HumanVsHuman) {
+				try {
+					board.setGameOver(false);
+					board.undoMove(board.getLastMove().getRow(), board.getLastMove().getCol(), humanPlayerUndoSymbol);
+					layeredGameBoard.remove(checkerLabel);
+					turnMessage.setText("Turn: " + board.getTurn());
+					frameMainWindow.paint(frameMainWindow.getGraphics());
+				} catch (ArrayIndexOutOfBoundsException ex) {
+					System.err.println("No move has been made yet!");
+					System.err.flush();
 				}
-				board.undoMove(board.getLastMove().getRow(), board.getLastMove().getCol(), humanPlayerUndoLetter);
-				layeredGameBoard.remove(checkerLabel);
-				turnMessage.setText("Turn: " + board.getTurn());
-				frameMainWindow.paint(frameMainWindow.getGraphics());
-			} catch (ArrayIndexOutOfBoundsException ex) {
-				System.err.println("No move has been made yet!");
-				System.err.flush();
-			}
-		}
-		
-		// This is the undo implementation for Human VS AI mode.
-		else if (GameParameters.gameMode == Constants.HumanVsAi) {
-			try {
-				board.setGameOver(false);
-				setAllButtonsEnabled(true);
-				if (frameMainWindow.getKeyListeners().length == 0) {
-					frameMainWindow.addKeyListener(gameKeyListener);
+				
+				if (board.getTurn() > 1) {
+					board.setTurn(board.getTurn() - 1);
+			        turnMessage.setText("Turn: " + board.getTurn());
 				}
-				board.undoMove(board.getLastMove().getRow(), board.getLastMove().getCol(), humanPlayerUndoLetter);
-				layeredGameBoard.remove(checkerLabel);
-				board.undoMove(humanPlayerUndoRow, humanPlayerUndoCol, humanPlayerUndoLetter);
-				layeredGameBoard.remove(humanPlayerUndoCheckerLabel);
-				turnMessage.setText("Turn: " + board.getTurn());
-				frameMainWindow.paint(frameMainWindow.getGraphics());
-			} catch (NullPointerException|ArrayIndexOutOfBoundsException ex) {
-				System.err.println("No move has been made yet!");
-				System.err.flush();
 			}
+			
+			// This is the undo implementation for Human VS AI mode.
+			else if (GameParameters.gameMode == Constants.HumanVsAi) {
+				try {
+					board.setGameOver(false);
+					board.undoMove(board.getLastMove().getRow(), board.getLastMove().getCol(), humanPlayerUndoSymbol);
+					layeredGameBoard.remove(checkerLabel);
+					board.undoMove(humanPlayerUndoRow, humanPlayerUndoColumn, humanPlayerUndoSymbol);
+					layeredGameBoard.remove(humanPlayerUndoCheckerLabel);
+					turnMessage.setText("Turn: " + board.getTurn());
+					frameMainWindow.paint(frameMainWindow.getGraphics());
+				} catch (NullPointerException|ArrayIndexOutOfBoundsException ex) {
+					System.err.println("No move has been made yet!");
+					System.err.flush();
+				}
+				
+				if (board.getTurn() > 2) {
+					board.setTurn(board.getTurn() - 2);
+			        turnMessage.setText("Turn: " + board.getTurn());
+				}
+			}
+
+			undoItem.setEnabled(false);
 		}
-		undoItem.setEnabled(false);
 	}
 	
 	
@@ -395,8 +400,8 @@ public class Gui {
 	
 	public static void saveUndoMove() {
 		humanPlayerUndoRow = board.getLastMove().getRow();
-		humanPlayerUndoCol = board.getLastMove().getCol();
-		humanPlayerUndoLetter = board.getLastSymbolPlayed();
+		humanPlayerUndoColumn = board.getLastMove().getCol();
+		humanPlayerUndoSymbol = board.getLastSymbolPlayed();
 		humanPlayerUndoCheckerLabel = checkerLabel;
 	}
 	
