@@ -225,6 +225,9 @@ public class Gui {
 			if (GameParameters.gameMode == Constants.HumanVsHuman) {
 				try {
 					board.setGameOver(false);
+					setAllButtonsEnabled(true);
+					if (frameMainWindow.getKeyListeners().length == 0)
+						frameMainWindow.addKeyListener(gameKeyListener);
 					board.undoMove(board.getLastMove().getRow(), board.getLastMove().getCol(), humanPlayerUndoSymbol);
 					layeredGameBoard.remove(checkerLabel);
 					turnMessage.setText("Turn: " + board.getTurn());
@@ -244,6 +247,9 @@ public class Gui {
 			else if (GameParameters.gameMode == Constants.HumanVsAi) {
 				try {
 					board.setGameOver(false);
+					setAllButtonsEnabled(true);
+					if (frameMainWindow.getKeyListeners().length == 0)
+						frameMainWindow.addKeyListener(gameKeyListener);
 					board.undoMove(board.getLastMove().getRow(), board.getLastMove().getCol(), humanPlayerUndoSymbol);
 					layeredGameBoard.remove(checkerLabel);
 					board.undoMove(humanPlayerUndoRow, humanPlayerUndoColumn, humanPlayerUndoSymbol);
