@@ -62,12 +62,12 @@ public class SettingsWindow extends JFrame {
 		int selectedPlayer1Color = GameParameters.player1Color;
 		int selectedPlayer2Color = GameParameters.player2Color;
 
-		guiStyleLabel = new JLabel("GUI style: ");
-		gameModeLabel = new JLabel("Game mode: ");
-		maxDepth1Label = new JLabel("Minimax AI1 max depth: ");
-		maxDepth2Label = new JLabel("Minimax AI2 max depth (AiVsAi): ");
-		player1ColorLabel = new JLabel("Player 1 checker color: ");
-		player2ColorLabel = new JLabel("Player 2 checker color: ");
+		guiStyleLabel = new JLabel("GUI style");
+		gameModeLabel = new JLabel("Game mode");
+		maxDepth1Label = new JLabel("Ai1 depth");
+		maxDepth2Label = new JLabel("Ai2 depth (AiVsAi)");
+		player1ColorLabel = new JLabel("Player 1 color");
+		player2ColorLabel = new JLabel("Player 2 color");
 		
 		add(guiStyleLabel);
 		add(gameModeLabel);
@@ -78,7 +78,7 @@ public class SettingsWindow extends JFrame {
 		
 		gui_style_drop_down = new JComboBox<String>();
 		gui_style_drop_down.addItem("System style");
-		gui_style_drop_down.addItem("Cross-Platform style");
+		gui_style_drop_down.addItem("Cross-platform style");
 		gui_style_drop_down.addItem("Nimbus style");
 		
 		if (selectedGuiStyle == Constants.SystemStyle)
@@ -89,9 +89,9 @@ public class SettingsWindow extends JFrame {
 			gui_style_drop_down.setSelectedIndex(Constants.NimbusStyle - 1);
 		
 		game_mode_drop_down = new JComboBox<String>();
-		game_mode_drop_down.addItem("Human Vs AI");
+		game_mode_drop_down.addItem("Human Vs Minimax AI");
 		game_mode_drop_down.addItem("Human Vs Human");
-		game_mode_drop_down.addItem("AI Vs AI");
+		game_mode_drop_down.addItem("Minimax AI Vs Minimax AI");
 		
 		if (selectedMode == Constants.HumanVsAi)
 			game_mode_drop_down.setSelectedIndex(Constants.HumanVsAi - 1);
@@ -214,7 +214,7 @@ public class SettingsWindow extends JFrame {
 					int player1Color = player1_color_drop_down.getSelectedIndex() + 1;
 					int player2Color = player2_color_drop_down.getSelectedIndex() + 1;
 										
-					if(player1Color == player2Color) {
+					if (player1Color == player2Color) {
 						JOptionPane.showMessageDialog(null,
 								"Player 1 and Player 2 cannot have the same color of checkers!",
 								"ERROR", JOptionPane.ERROR_MESSAGE);
@@ -230,8 +230,8 @@ public class SettingsWindow extends JFrame {
 					GameParameters.player2Color = player2Color;
 					
 					JOptionPane.showMessageDialog(null,
-							"Game settings have been changed.\nThe changes will be applied in the next game.",
-							"", JOptionPane.INFORMATION_MESSAGE);
+							"Game settings have been changed.\nThe changes will be applied in the next new game.",
+							"Notice", JOptionPane.INFORMATION_MESSAGE);
 					dispose();
 				}
 				

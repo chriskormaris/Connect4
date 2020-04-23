@@ -11,7 +11,7 @@ final public class ResourceLoader {
 			input = ResourceLoader.class.getResource("/" + path);
 		}
 		// String in = input.getPath();
-		// System.out.println("in:" + in);
+		// System.out.println("in: " + in);
 		return input;
 	}
 

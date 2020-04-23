@@ -13,6 +13,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.util.Stack;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
@@ -38,6 +39,10 @@ import connect4.Move;
 
 public class Gui {
 	
+	static final int numOfRows = Constants.numOfRows;
+	static final int numOfColumns = Constants.numOfColumns;
+	static final int inARow = Constants.inARow;
+	
 	static Board board;
 	static JFrame frameMainWindow;
 	static JFrame frameGameOver;
@@ -48,9 +53,7 @@ public class Gui {
 	
 	static final int DEFAULT_WIDTH = 570;
 	static final int DEFAULT_HEIGHT = 525;
-	
-	static boolean firstGame = true;
-	
+		
 	static JButton[] buttons;
 
     static JLabel turnMessage;
@@ -63,11 +66,9 @@ public class Gui {
 	public static JLabel checkerLabel = null;
 	
 	// for the Undo operation
-	private static int humanPlayerUndoRow;
-	private static int humanPlayerUndoColumn;
-	private static int humanPlayerUndoSymbol;
-	private static JLabel humanPlayerUndoCheckerLabel;
-
+	static Stack<Board> previousBoards = new Stack<Board>();
+	static Stack<JLabel> previousCheckerLabels = new Stack<JLabel>();
+	
 	// Menu bars and items
 	static JMenuBar menuBar;
 	static JMenu fileMenu;
@@ -80,9 +81,10 @@ public class Gui {
 	static JMenuItem aboutItem;
 	
 	public Gui() {
-		buttons = new JButton[7];
-		for (int i=0; i<7; i++) {
+		buttons = new JButton[numOfColumns];
+		for (int i=0; i<numOfColumns; i++) {
 			buttons[i] = new JButton(i+1+"");
+			buttons[i].setFocusable(false);
 		}
 	}
 	
@@ -99,11 +101,11 @@ public class Gui {
 		settingsItem = new JMenuItem("Settings");
 		exitItem = new JMenuItem("Exit");
 		
-		undoItem.setEnabled(false);
-
 		helpMenu = new JMenu("Help");
 		howToPlayItem = new JMenuItem("How to Play");
 		aboutItem = new JMenuItem("About");
+		
+		undoItem.setEnabled(false);
 
 		newGameItem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -133,8 +135,8 @@ public class Gui {
 		howToPlayItem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				JOptionPane.showMessageDialog(null,
-						"Click on the buttons or press 1-7 on your keyboard to insert a new checker."
-						+ "\nTo win you must place 4 checkers in an row, horizontally, vertically or diagonally.",
+						"Click on the buttons or press 1-" + numOfColumns + " on your keyboard to insert a new checker."
+						+ "\nTo win you must place " + inARow + " checkers in an row, horizontally, vertically or diagonally.",
 						"How to Play", JOptionPane.INFORMATION_MESSAGE);
 			}
 		});
@@ -142,7 +144,7 @@ public class Gui {
 		aboutItem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				JOptionPane.showMessageDialog(null,
-						"Â© Created by: Christos Kormaris\nVersion " + Constants.version,
+						"© Created by: Christos Kormaris\nVersion " + Constants.version,
 						"About", JOptionPane.INFORMATION_MESSAGE);
 			}
 		});
@@ -192,13 +194,13 @@ public class Gui {
 			// System.out.println("keyPressed = " + KeyEvent.getKeyText(e.getKeyCode()));
 			String keyText = KeyEvent.getKeyText(e.getKeyCode());
 			
-			for (int i=0; i<7; i++) {
+			for (int i=0; i<Constants.numOfColumns; i++) {
 				if (keyText.equals(i+1+"")) {
+			        previousBoards.push(new Board(board));
 					makeMove(i);
 					
-					if (!board.hasOverflowOccured()) {
+					if (!board.isOverflow()) {
 						boolean isGameOver = game();
-						saveUndoMove();
 						if (GameParameters.gameMode == Constants.HumanVsAi && !isGameOver) { 
 							aiMove(ai);
 						}
@@ -220,26 +222,26 @@ public class Gui {
 	
 	
 	private static void undo() {
-		if (undoItem.isEnabled()) {
+		if (!previousBoards.isEmpty()) {
 			// This is the undo implementation for Human VS Human mode.
 			if (GameParameters.gameMode == Constants.HumanVsHuman) {
 				try {
 					board.setGameOver(false);
+					
 					setAllButtonsEnabled(true);
-					if (frameMainWindow.getKeyListeners().length == 0)
+					
+					if (frameMainWindow.getKeyListeners().length == 0) {
 						frameMainWindow.addKeyListener(gameKeyListener);
-					board.undoMove(board.getLastMove().getRow(), board.getLastMove().getCol(), humanPlayerUndoSymbol);
-					layeredGameBoard.remove(checkerLabel);
+					}
+					
+					board = new Board(previousBoards.pop());
+					layeredGameBoard.remove(previousCheckerLabels.pop());
+					
 					turnMessage.setText("Turn: " + board.getTurn());
 					frameMainWindow.paint(frameMainWindow.getGraphics());
 				} catch (ArrayIndexOutOfBoundsException ex) {
 					System.err.println("No move has been made yet!");
 					System.err.flush();
-				}
-				
-				if (board.getTurn() > 1) {
-					board.setTurn(board.getTurn() - 1);
-			        turnMessage.setText("Turn: " + board.getTurn());
 				}
 			}
 			
@@ -250,24 +252,24 @@ public class Gui {
 					setAllButtonsEnabled(true);
 					if (frameMainWindow.getKeyListeners().length == 0)
 						frameMainWindow.addKeyListener(gameKeyListener);
-					board.undoMove(board.getLastMove().getRow(), board.getLastMove().getCol(), humanPlayerUndoSymbol);
-					layeredGameBoard.remove(checkerLabel);
-					board.undoMove(humanPlayerUndoRow, humanPlayerUndoColumn, humanPlayerUndoSymbol);
-					layeredGameBoard.remove(humanPlayerUndoCheckerLabel);
+					
+					board = new Board(previousBoards.pop());
+					layeredGameBoard.remove(previousCheckerLabels.pop());
+					layeredGameBoard.remove(previousCheckerLabels.pop());
+					
 					turnMessage.setText("Turn: " + board.getTurn());
 					frameMainWindow.paint(frameMainWindow.getGraphics());
 				} catch (NullPointerException|ArrayIndexOutOfBoundsException ex) {
 					System.err.println("No move has been made yet!");
 					System.err.flush();
 				}
-				
-				if (board.getTurn() > 2) {
-					board.setTurn(board.getTurn() - 2);
-			        turnMessage.setText("Turn: " + board.getTurn());
-				}
 			}
 
-			undoItem.setEnabled(false);
+			if (previousBoards.isEmpty())
+				undoItem.setEnabled(false);
+			
+			System.out.println("Turn: " + board.getTurn());
+			Board.printBoard(board.getGameBoard());
 		}
 	}
 	
@@ -276,9 +278,16 @@ public class Gui {
 	// or a new game starts.
 	public static void createNewGame() {
 		
-		configureGuiStyle();		
-
+		configureGuiStyle();
+		
+		if (GameParameters.gameMode != Constants.AiVsAi) {
+			setAllButtonsEnabled(true);
+		}
+		
 		board = new Board();
+		
+		previousBoards.clear();
+		previousCheckerLabels.clear();
 		
 		if (frameMainWindow != null) frameMainWindow.dispose();
 		frameMainWindow = new JFrame("Minimax Connect-4");
@@ -293,7 +302,10 @@ public class Gui {
 			}
 		});
 		
-		frameMainWindow.addKeyListener(gameKeyListener);
+		if (frameMainWindow.getKeyListeners().length == 0) {
+			frameMainWindow.addKeyListener(gameKeyListener);
+		}
+		
 		frameMainWindow.setFocusable(true);
 		
 		// show window
@@ -310,15 +322,18 @@ public class Gui {
 		
 		AddMenus();
 		
+		System.out.println("Turn: " + board.getTurn());
+		Board.printBoard(board.getGameBoard());
+		
 		if (GameParameters.gameMode == Constants.HumanVsAi) {
-			ai = new MiniMaxAi(GameParameters.maxDepth1, Constants.O);
+			ai = new MiniMaxAi(GameParameters.maxDepth1, Constants.P2);
 		} else if (GameParameters.gameMode == Constants.AiVsAi) {
 			setAllButtonsEnabled(false);
 			
 			// AI VS AI implementation here
 			// Initial maxDepth = 4. We can change this value for difficulty adjustment.
-			MiniMaxAi ai1 = new MiniMaxAi(GameParameters.maxDepth1, Constants.X);
-			MiniMaxAi ai2 = new MiniMaxAi(GameParameters.maxDepth2, Constants.O);
+			MiniMaxAi ai1 = new MiniMaxAi(GameParameters.maxDepth1, Constants.P1);
+			MiniMaxAi ai2 = new MiniMaxAi(GameParameters.maxDepth2, Constants.P2);
 			
 			while (!board.isGameOver()) {
 				aiMove(ai1);
@@ -357,7 +372,7 @@ public class Gui {
 			}
 		}
 	}
-
+	
 	
 	// It centers the window on screen.
 	public static void centerWindow(Window frame, int width, int height) {
@@ -370,22 +385,24 @@ public class Gui {
 	
 	// It finds which player plays next and makes a move on the board.
 	public static void makeMove(int col) {
-		board.setOverflowOccured(false);
+		board.setOverflow(false);
 		
 		int previousRow = board.getLastMove().getRow();
-		int previousCol = board.getLastMove().getCol();
-		int previousLetter = board.getLastSymbolPlayed();
+		int previousCol = board.getLastMove().getColumn();
+		int previousLetter = board.getLastPlayer();
 		
-		if (board.getLastSymbolPlayed() == Constants.O) {
-			board.makeMove(col, Constants.X);
+		if (board.getLastPlayer() == Constants.P2) {
+			board.makeMove(col, Constants.P1);
 		} else {
-			board.makeMove(col, Constants.O);
+			board.makeMove(col, Constants.P2);
 		}
 		
-		if (board.hasOverflowOccured()) {
+		if (board.isOverflow()) {
 			board.getLastMove().setRow(previousRow);
-			board.getLastMove().setCol(previousCol);
-			board.setLastSymbolPlayed(previousLetter);
+			board.getLastMove().setColumn(previousCol);
+			board.setLastPlayer(previousLetter);
+			
+			previousBoards.pop();
 		}
 
 	}
@@ -397,36 +414,39 @@ public class Gui {
 		int xOffset = 75 * col;
 		int yOffset = 75 * row;
 		ImageIcon checkerIcon = new ImageIcon(ResourceLoader.load("images/" + colorString + ".png"));
-		checkerLabel = new JLabel(checkerIcon);
+		
+		JLabel checkerLabel = new JLabel(checkerIcon);
 		checkerLabel.setBounds(27 + xOffset, 27 + yOffset, checkerIcon.getIconWidth(),checkerIcon.getIconHeight());
 		layeredGameBoard.add(checkerLabel, 0, 0);
-		frameMainWindow.paint(frameMainWindow.getGraphics());
-	}
-	
-	
-	public static void saveUndoMove() {
-		humanPlayerUndoRow = board.getLastMove().getRow();
-		humanPlayerUndoColumn = board.getLastMove().getCol();
-		humanPlayerUndoSymbol = board.getLastSymbolPlayed();
-		humanPlayerUndoCheckerLabel = checkerLabel;
+		
+		previousCheckerLabels.push(checkerLabel);
+		
+		try {
+			if (GameParameters.gameMode == Constants.AiVsAi) {
+				Thread.sleep(200);
+				frameMainWindow.paint(frameMainWindow.getGraphics());
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 	
 	
 	// Gets called after makeMove(int, col) is called.
 	public static boolean game() {
 		
-        turnMessage.setText("Turn: " + board.getTurn());
-        
+		turnMessage.setText("Turn: " + board.getTurn());
+
 		int row = board.getLastMove().getRow();
-		int col = board.getLastMove().getCol();
-		int currentPlayer = board.getLastSymbolPlayed();
+		int col = board.getLastMove().getColumn();
+		int currentPlayer = board.getLastPlayer();
 		
-		if (currentPlayer == Constants.X) {
+		if (currentPlayer == Constants.P1) {
 			// It places a checker in the corresponding [row][col] of the GUI.
 			placeChecker(GameParameters.player1Color, row, col);
 		}
 		
-		if (currentPlayer == Constants.O) {
+		if (currentPlayer == Constants.P2) {
 			// It places a checker in the corresponding [row][col] of the GUI.
 			placeChecker(GameParameters.player2Color, row, col);
 		}
@@ -434,27 +454,59 @@ public class Gui {
 		System.out.println("Turn: " + board.getTurn());
 		Board.printBoard(board.getGameBoard());
 		
-		boolean isGameOver = board.checkGameOver(); 
+		boolean isGameOver = board.checkForGameOver(); 
 		if (isGameOver) {
 			gameOver();
 		}
 		
 		undoItem.setEnabled(true);
+		
 		return isGameOver;
 	}
 	
 	
 	// Gets called after the human player makes a move. It makes a Minimax AI move.
 	public static void aiMove(MiniMaxAi ai){
-		Move aiMove = ai.miniMax(board);
-		board.makeMove(aiMove.getCol(), ai.getAiLetter());
+		// Move aiMove = ai.miniMax(board);
+		Move aiMove = ai.miniMaxAlphaBeta(board);
+		board.makeMove(aiMove.getColumn(), ai.getAiPlayer());
 		game();
 	}
 	
 	
 	public static void setAllButtonsEnabled(boolean b) {
-		for (JButton button: buttons) {
-			button.setEnabled(b);
+		if (b) {
+			
+			for (int i=0; i<buttons.length; i++) {
+				JButton button = buttons[i];
+				int column = i;
+				
+				if (button.getActionListeners().length == 0) { 
+					button.addActionListener(new ActionListener() {
+						public void actionPerformed(ActionEvent e) {
+					        previousBoards.push(new Board(board));
+							makeMove(column);
+							
+							if (!board.isOverflow()) {
+								boolean isGameOver = game();
+								if (GameParameters.gameMode == Constants.HumanVsAi && !isGameOver) {
+									aiMove(ai);
+								}
+							}
+							frameMainWindow.requestFocusInWindow();
+						}
+					});
+				}
+			}
+		
+		} else {
+			
+			for (JButton button: buttons) {
+				for (ActionListener actionListener: button.getActionListeners()) {
+					button.removeActionListener(actionListener);
+				}
+			}
+		
 		}
 	}
 	
@@ -468,34 +520,8 @@ public class Gui {
 		
 		// Create a panel to set up the board buttons.
 		panelBoardNumbers = new JPanel();
-		panelBoardNumbers.setLayout(new GridLayout(1, 7, 6, 4));
+		panelBoardNumbers.setLayout(new GridLayout(1, numOfColumns, numOfRows, 4));
 		panelBoardNumbers.setBorder(BorderFactory.createEmptyBorder(2, 22, 2, 22));
-		
-		if (GameParameters.gameMode != Constants.AiVsAi)
-			setAllButtonsEnabled(true);
-		
-		if (firstGame) {
-		
-			for (int i=0; i<buttons.length; i++) {
-				JButton button = buttons[i];
-				int column = i;
-				
-				button.addActionListener(new ActionListener() {
-					public void actionPerformed(ActionEvent e) {
-						makeMove(column);
-						if (!board.hasOverflowOccured()) {
-							boolean isGameOver = game();
-							saveUndoMove();
-							if (GameParameters.gameMode == Constants.HumanVsAi && !isGameOver)
-								aiMove(ai);
-						}
-						frameMainWindow.requestFocusInWindow();
-					}
-				});
-			}		
-			
-			firstGame = false;
-		}
 		
 		for (JButton button: buttons) {
 			panelBoardNumbers.add(button);
@@ -525,7 +551,7 @@ public class Gui {
 		board.setGameOver(true);
 		
 		int choice = 0;
-		if (board.getWinner() == Constants.X) {
+		if (board.getWinner() == Constants.P1) {
 			if (GameParameters.gameMode == Constants.HumanVsAi)
 				choice = JOptionPane.showConfirmDialog(null,
 						"You win! Start a new game?",
@@ -538,7 +564,7 @@ public class Gui {
 				choice = JOptionPane.showConfirmDialog(null,
 						"Minimax AI 1 wins! Start a new game?",
 						"Game Over", JOptionPane.YES_NO_OPTION);
-		} else if (board.getWinner() == Constants.O) {
+		} else if (board.getWinner() == Constants.P2) {
 			if (GameParameters.gameMode == Constants.HumanVsAi)
 				choice = JOptionPane.showConfirmDialog(null,
 						"Computer AI wins! Start a new game?",
@@ -557,14 +583,16 @@ public class Gui {
 					"Game Over", JOptionPane.YES_NO_OPTION);
 		}
 		
+		// Disable buttons
+		setAllButtonsEnabled(false);
+
+		// Remove key listener
+		for (KeyListener keyListener: frameMainWindow.getKeyListeners()) {
+			frameMainWindow.removeKeyListener(keyListener);
+		}
+		
 		if (choice == JOptionPane.YES_OPTION) {
 			createNewGame();
-		} else {
-			// Disable buttons
-			setAllButtonsEnabled(false);
-			
-			// Remove key listener
-			frameMainWindow.removeKeyListener(frameMainWindow.getKeyListeners()[0]);
 		}
 
 	}
@@ -580,6 +608,7 @@ public class Gui {
 		/*
 		GameParameters.guiStyle = Constants.SystemStyle;
 		// GameParameters.gameMode = Constants.HumanVsAi;
+ 		// GameParameters.gameMode = Constants.HumanVsHuman;
 		GameParameters.gameMode = Constants.AiVsAi;
 		GameParameters.maxDepth1 = 4;
 		GameParameters.maxDepth2 = 4;
