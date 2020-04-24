@@ -207,70 +207,101 @@ public class Board {
     }
     
     
-    // It returns the frequency of N checkers in a row,
-    // for the given player.
+    // It returns the frequency of "N" checkers in a row,
+    // for the given player, with "inARow - N" adjacent checkers
+    // of the same player or empty tiles. 
+    // The aim is to search for checkers in a row,
+    // with a potential to form a Connect-"inARow".
 	public int countNInARow(int N, int player) {
 		
 		int times = 0;
 		
-		// Check for "inARow" consecutive checkers in a row, horizontally.
+		// Check for "inARow" consecutive checkers of the same player or empty tiles in a row, horizontally.
 		for (int i=0; i<numOfRows; i++) {
 			for (int j=0; j<numOfColumns; j++) {
 				if (canMove(i, j+inARow-1)) {
 					
+					// Check for "N" consecutive checkers of the same player in a row, horizontally.
 					int k = 0;
-					while (k < inARow && gameBoard[i][j+k] == player) {
+					while (k < N && gameBoard[i][j+k] == player) {
 						k++;
 					}
-					if (k==inARow) times++;
+					// Check for "inARow - N" consecutive checkers of the same player or empty tiles in a row, horizontally.
+					if (k==N) {
+						while (k < inARow && (gameBoard[i][j+k] == player || gameBoard[i][j+k] == Constants.EMPTY)) {
+							k++;
+						}
+						if (k==inARow) times++;
+					}
 					
 				}
 			}
 		}
 		
 		
-		// Check for "inARow" consecutive checkers in a row, vertically.
+		// Check for "inARow" consecutive checkers of the same player or empty tiles in a row, vertically.
 		for (int i=0; i<numOfRows; i++) {
 			for (int j=0; j<numOfColumns; j++) {
 				if (canMove(i-inARow+1, j)) {
 					
+					// Check for "N" consecutive checkers of the same player in a row, vertically.
 					int k = 0;
-					while (k < inARow && gameBoard[i-k][j] == player) {
+					while (k < N && gameBoard[i-k][j] == player) {
 						k++;
 					}
-					if (k==inARow) times++;
+					// Check for "inARow - N" consecutive checkers of the same player or empty tiles in a row, vertically.
+					if (k==inARow) {
+						while (k < inARow && (gameBoard[i-k][j] == player || gameBoard[i-k][j] == Constants.EMPTY)) {
+							k++;
+						}
+						if (k==inARow) times++;
+					}
 					
 				}
 			}
 		}
 
 		
-		// Check for "inARow" consecutive checkers in a row, in descending diagonal.
+		// Check for "inARow" consecutive checkers of the same player or empty tiles in a row, in descending diagonal.
 		for (int i=0; i<numOfRows; i++) {
 			for (int j=0; j<numOfColumns; j++) {
 				if (canMove(i+inARow-1, j+inARow-1)) {
 					
+					// Check for "N" consecutive checkers of the same player in a row, in descending diagonal.
 					int k = 0;
-					while (k < inARow && gameBoard[i+k][j+k] == player) {
+					while (k < N && gameBoard[i+k][j+k] == player) {
 						k++;
 					}
-					if (k==inARow) times++;
+					// Check for "inARow - N" consecutive checkers of the same player or empty tiles in a row, in descending diagonal.
+					if (k==inARow) {
+						while (k < inARow && (gameBoard[i+k][j+k] == player || gameBoard[i+k][j+k] == Constants.EMPTY)) {
+							k++;
+						}
+						if (k==inARow) times++;
+					}
 					
 				}
 			}
 		}
 
 		
-		// Check for "inARow" consecutive checkers in a row, in ascending diagonal.
+		// Check for "inARow" consecutive checkers of the same player or empty tiles in a row, in ascending diagonal.
 		for (int i=0; i<numOfRows; i++) {
 			for (int j=0; j<numOfColumns; j++) {
 				if (canMove(i-inARow+1, j+inARow-1)) {
 					
+					// Check for "N" consecutive checkers of the same player in a row, in ascending diagonal.
 					int k = 0;
-					while (k < inARow && gameBoard[i-k][j+k] == player) {
+					while (k < N && gameBoard[i-k][j+k] == player) {
 						k++;
 					}
-					if (k==inARow) times++;
+					// Check for "inARow - N" consecutive checkers of the same player or empty tiles in a row, in ascending diagonal.
+					if (k==inARow) {
+						while (k < inARow && (gameBoard[i-k][j+k] == player || gameBoard[i-k][j+k] == Constants.EMPTY)) {
+							k++;
+						}
+						if (k==inARow) times++;
+					}
 					
 				}
 			}

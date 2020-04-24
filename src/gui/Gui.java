@@ -60,20 +60,23 @@ public class Gui {
     
 	static MiniMaxAi ai;
 
-	// Player 1 symbol: X. Player 1 plays first.
+	// Player 1 symbol: X. Plays first.
 	// Player 2 symbol: O.
 	
 	public static JLabel checkerLabel = null;
 	
-	// for the Undo operation
-	static Stack<Board> previousBoards = new Stack<Board>();
-	static Stack<JLabel> previousCheckerLabels = new Stack<JLabel>();
-	
+	// These Stack objects are used for the "Undo" and "Redo" functionalities.
+	static Stack<Board> undoBoards = new Stack<Board>();
+	static Stack<JLabel> undoCheckerLabels = new Stack<JLabel>();
+	static Stack<Board> redoBoards = new Stack<Board>();
+	static Stack<JLabel> redoCheckerLabels = new Stack<JLabel>();
+
 	// Menu bars and items
 	static JMenuBar menuBar;
 	static JMenu fileMenu;
 	static JMenuItem newGameItem;
 	static JMenuItem undoItem;
+	static JMenuItem redoItem;
 	static JMenuItem settingsItem;
 	static JMenuItem exitItem;
 	static JMenu helpMenu;
@@ -98,6 +101,7 @@ public class Gui {
 		fileMenu = new JMenu("File");
 		newGameItem = new JMenuItem("New Game");
 		undoItem = new JMenuItem("Undo    Ctrl+Z");
+		redoItem = new JMenuItem("Redo    Ctrl+Y");
 		settingsItem = new JMenuItem("Settings");
 		exitItem = new JMenuItem("Exit");
 		
@@ -106,6 +110,7 @@ public class Gui {
 		aboutItem = new JMenuItem("About");
 		
 		undoItem.setEnabled(false);
+		redoItem.setEnabled(false);
 
 		newGameItem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -116,6 +121,12 @@ public class Gui {
 		undoItem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				undo();
+			}
+		});
+		
+		undoItem.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				redo();
 			}
 		});
 		
@@ -151,6 +162,7 @@ public class Gui {
 
 		fileMenu.add(newGameItem);
 		fileMenu.add(undoItem);
+		fileMenu.add(redoItem);
 		fileMenu.add(settingsItem);
 		fileMenu.add(exitItem);
 		
@@ -196,7 +208,7 @@ public class Gui {
 			
 			for (int i=0; i<Constants.numOfColumns; i++) {
 				if (keyText.equals(i+1+"")) {
-			        previousBoards.push(new Board(board));
+			        undoBoards.push(new Board(board));
 					makeMove(i);
 					
 					if (!board.isOverflow()) {
@@ -212,6 +224,10 @@ public class Gui {
 					(e.getKeyCode() == KeyEvent.VK_Z)) {
                 undo();
             }
+			else if (((e.getModifiersEx() & KeyEvent.CTRL_DOWN_MASK) != 0) &&
+					(e.getKeyCode() == KeyEvent.VK_Y)) {
+				redo();
+            }
 		}
 
 		@Override
@@ -222,7 +238,7 @@ public class Gui {
 	
 	
 	private static void undo() {
-		if (!previousBoards.isEmpty()) {
+		if (!undoBoards.isEmpty()) {
 			// This is the undo implementation for Human VS Human mode.
 			if (GameParameters.gameMode == Constants.HumanVsHuman) {
 				try {
@@ -234,8 +250,14 @@ public class Gui {
 						frameMainWindow.addKeyListener(gameKeyListener);
 					}
 					
-					board = new Board(previousBoards.pop());
-					layeredGameBoard.remove(previousCheckerLabels.pop());
+					Board previousBoard = undoBoards.pop();
+					JLabel previousCheckerLabel = undoCheckerLabels.pop();
+
+					redoBoards.push(new Board(board));
+					redoCheckerLabels.push(previousCheckerLabel);
+
+					board = new Board(previousBoard);
+					layeredGameBoard.remove(previousCheckerLabel);
 					
 					turnMessage.setText("Turn: " + board.getTurn());
 					frameMainWindow.paint(frameMainWindow.getGraphics());
@@ -253,9 +275,17 @@ public class Gui {
 					if (frameMainWindow.getKeyListeners().length == 0)
 						frameMainWindow.addKeyListener(gameKeyListener);
 					
-					board = new Board(previousBoards.pop());
-					layeredGameBoard.remove(previousCheckerLabels.pop());
-					layeredGameBoard.remove(previousCheckerLabels.pop());
+					Board previousBoard = undoBoards.pop();
+					JLabel previousAiCheckerLabel = undoCheckerLabels.pop();
+					JLabel previousHumanCheckerLabel = undoCheckerLabels.pop();
+
+					redoBoards.push(new Board(board));
+					redoCheckerLabels.push(previousAiCheckerLabel);
+					redoCheckerLabels.push(previousHumanCheckerLabel);
+					
+					board = new Board(previousBoard);
+					layeredGameBoard.remove(previousAiCheckerLabel);
+					layeredGameBoard.remove(previousHumanCheckerLabel);
 					
 					turnMessage.setText("Turn: " + board.getTurn());
 					frameMainWindow.paint(frameMainWindow.getGraphics());
@@ -265,8 +295,80 @@ public class Gui {
 				}
 			}
 
-			if (previousBoards.isEmpty())
+			if (undoBoards.isEmpty()) {
 				undoItem.setEnabled(false);
+			}
+			
+			redoItem.setEnabled(true);
+
+			System.out.println("Turn: " + board.getTurn());
+			Board.printBoard(board.getGameBoard());
+		}
+	}
+	
+	
+	private static void redo() {
+		if (!redoBoards.isEmpty()) {
+			// This is the redo implementation for Human VS Human mode.
+			if (GameParameters.gameMode == Constants.HumanVsHuman) {
+				try {
+					board.setGameOver(false);
+					
+					setAllButtonsEnabled(true);
+					
+					if (frameMainWindow.getKeyListeners().length == 0) {
+						frameMainWindow.addKeyListener(gameKeyListener);
+					}
+					
+					Board redoBoard = redoBoards.pop();
+					JLabel redoCheckerLabel = redoCheckerLabels.pop();
+
+					undoBoards.push(new Board(board));
+					undoCheckerLabels.push(redoCheckerLabel);
+					
+					board = new Board(redoBoard);
+					layeredGameBoard.add(redoCheckerLabel, 0, 0);
+					
+					turnMessage.setText("Turn: " + board.getTurn());
+					frameMainWindow.paint(frameMainWindow.getGraphics());
+				} catch (ArrayIndexOutOfBoundsException ex) {
+					System.err.println("There is no move to redo!");
+					System.err.flush();
+				}
+			}
+			
+			// This is the redo implementation for Human VS AI mode.
+			else if (GameParameters.gameMode == Constants.HumanVsAi) {
+				try {
+					board.setGameOver(false);
+					setAllButtonsEnabled(true);
+					if (frameMainWindow.getKeyListeners().length == 0)
+						frameMainWindow.addKeyListener(gameKeyListener);
+					
+					Board redoBoard = redoBoards.pop();
+					JLabel redoAiCheckerLabel = redoCheckerLabels.pop();
+					JLabel redoHumanCheckerLabel = redoCheckerLabels.pop();
+
+					undoBoards.push(new Board(board));
+					undoCheckerLabels.push(redoAiCheckerLabel);
+					undoCheckerLabels.push(redoHumanCheckerLabel);
+					
+					board = new Board(redoBoard);
+					layeredGameBoard.add(redoAiCheckerLabel, 0, 0);
+					layeredGameBoard.add(redoHumanCheckerLabel, 0, 0);
+					
+					turnMessage.setText("Turn: " + board.getTurn());
+					frameMainWindow.paint(frameMainWindow.getGraphics());
+				} catch (NullPointerException|ArrayIndexOutOfBoundsException ex) {
+					System.err.println("There is no move to redo!");
+					System.err.flush();
+				}
+			}
+			
+			if (redoBoards.isEmpty())
+				redoItem.setEnabled(false);
+			
+			undoItem.setEnabled(true);
 			
 			System.out.println("Turn: " + board.getTurn());
 			Board.printBoard(board.getGameBoard());
@@ -286,8 +388,11 @@ public class Gui {
 		
 		board = new Board();
 		
-		previousBoards.clear();
-		previousCheckerLabels.clear();
+		undoBoards.clear();
+		undoCheckerLabels.clear();
+		
+		redoBoards.clear();
+		redoCheckerLabels.clear();
 		
 		if (frameMainWindow != null) frameMainWindow.dispose();
 		frameMainWindow = new JFrame("Minimax Connect-4");
@@ -402,7 +507,7 @@ public class Gui {
 			board.getLastMove().setColumn(previousCol);
 			board.setLastPlayer(previousLetter);
 			
-			previousBoards.pop();
+			undoBoards.pop();
 		}
 
 	}
@@ -419,7 +524,7 @@ public class Gui {
 		checkerLabel.setBounds(27 + xOffset, 27 + yOffset, checkerIcon.getIconWidth(),checkerIcon.getIconHeight());
 		layeredGameBoard.add(checkerLabel, 0, 0);
 		
-		previousCheckerLabels.push(checkerLabel);
+		undoCheckerLabels.push(checkerLabel);
 		
 		try {
 			if (GameParameters.gameMode == Constants.AiVsAi) {
@@ -461,6 +566,10 @@ public class Gui {
 		
 		undoItem.setEnabled(true);
 		
+		redoBoards.clear();
+		redoCheckerLabels.clear();
+		redoItem.setEnabled(false);
+
 		return isGameOver;
 	}
 	
@@ -484,7 +593,7 @@ public class Gui {
 				if (button.getActionListeners().length == 0) { 
 					button.addActionListener(new ActionListener() {
 						public void actionPerformed(ActionEvent e) {
-					        previousBoards.push(new Board(board));
+					        undoBoards.push(new Board(board));
 							makeMove(column);
 							
 							if (!board.isOverflow()) {
