@@ -250,13 +250,12 @@ public class Gui {
 						frameMainWindow.addKeyListener(gameKeyListener);
 					}
 					
-					Board previousBoard = undoBoards.pop();
 					JLabel previousCheckerLabel = undoCheckerLabels.pop();
-
+					
 					redoBoards.push(new Board(board));
 					redoCheckerLabels.push(previousCheckerLabel);
 
-					board = new Board(previousBoard);
+					board = undoBoards.pop();
 					layeredGameBoard.remove(previousCheckerLabel);
 					
 					turnMessage.setText("Turn: " + board.getTurn());
@@ -275,7 +274,6 @@ public class Gui {
 					if (frameMainWindow.getKeyListeners().length == 0)
 						frameMainWindow.addKeyListener(gameKeyListener);
 					
-					Board previousBoard = undoBoards.pop();
 					JLabel previousAiCheckerLabel = undoCheckerLabels.pop();
 					JLabel previousHumanCheckerLabel = undoCheckerLabels.pop();
 
@@ -283,7 +281,7 @@ public class Gui {
 					redoCheckerLabels.push(previousAiCheckerLabel);
 					redoCheckerLabels.push(previousHumanCheckerLabel);
 					
-					board = new Board(previousBoard);
+					board = undoBoards.pop();
 					layeredGameBoard.remove(previousAiCheckerLabel);
 					layeredGameBoard.remove(previousHumanCheckerLabel);
 					
@@ -320,17 +318,21 @@ public class Gui {
 						frameMainWindow.addKeyListener(gameKeyListener);
 					}
 					
-					Board redoBoard = redoBoards.pop();
 					JLabel redoCheckerLabel = redoCheckerLabels.pop();
-
+					
 					undoBoards.push(new Board(board));
 					undoCheckerLabels.push(redoCheckerLabel);
 					
-					board = new Board(redoBoard);
+					board = new Board(redoBoards.pop());
 					layeredGameBoard.add(redoCheckerLabel, 0, 0);
 					
 					turnMessage.setText("Turn: " + board.getTurn());
 					frameMainWindow.paint(frameMainWindow.getGraphics());
+					
+					boolean isGameOver = board.checkForGameOver(); 
+					if (isGameOver) {
+						gameOver();
+					}
 				} catch (ArrayIndexOutOfBoundsException ex) {
 					System.err.println("There is no move to redo!");
 					System.err.flush();
@@ -345,7 +347,6 @@ public class Gui {
 					if (frameMainWindow.getKeyListeners().length == 0)
 						frameMainWindow.addKeyListener(gameKeyListener);
 					
-					Board redoBoard = redoBoards.pop();
 					JLabel redoAiCheckerLabel = redoCheckerLabels.pop();
 					JLabel redoHumanCheckerLabel = redoCheckerLabels.pop();
 
@@ -353,12 +354,17 @@ public class Gui {
 					undoCheckerLabels.push(redoAiCheckerLabel);
 					undoCheckerLabels.push(redoHumanCheckerLabel);
 					
-					board = new Board(redoBoard);
+					board = new Board(redoBoards.pop());
 					layeredGameBoard.add(redoAiCheckerLabel, 0, 0);
 					layeredGameBoard.add(redoHumanCheckerLabel, 0, 0);
 					
 					turnMessage.setText("Turn: " + board.getTurn());
 					frameMainWindow.paint(frameMainWindow.getGraphics());
+					
+					boolean isGameOver = board.checkForGameOver(); 
+					if (isGameOver) {
+						gameOver();
+					}
 				} catch (NullPointerException|ArrayIndexOutOfBoundsException ex) {
 					System.err.println("There is no move to redo!");
 					System.err.flush();
@@ -686,7 +692,7 @@ public class Gui {
 				choice = JOptionPane.showConfirmDialog(null,
 						"Minimax AI 2 wins! Start a new game?",
 						"Game Over", JOptionPane.YES_NO_OPTION);
-		} else {
+		} else if (board.checkForDraw()) {
 			choice = JOptionPane.showConfirmDialog(null,
 					"It's a draw! Start a new game?",
 					"Game Over", JOptionPane.YES_NO_OPTION);

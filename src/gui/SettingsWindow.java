@@ -64,8 +64,8 @@ public class SettingsWindow extends JFrame {
 
 		guiStyleLabel = new JLabel("GUI style");
 		gameModeLabel = new JLabel("Game mode");
-		maxDepth1Label = new JLabel("Ai1 depth");
-		maxDepth2Label = new JLabel("Ai2 depth (AiVsAi)");
+		maxDepth1Label = new JLabel("AI 1 depth");
+		maxDepth2Label = new JLabel("AI 2 depth (AiVsAi)");
 		player1ColorLabel = new JLabel("Player 1 color");
 		player2ColorLabel = new JLabel("Player 2 color");
 		
