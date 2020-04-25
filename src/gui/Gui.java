@@ -124,7 +124,7 @@ public class Gui {
 			}
 		});
 		
-		undoItem.addActionListener(new ActionListener() {
+		redoItem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				redo();
 			}
