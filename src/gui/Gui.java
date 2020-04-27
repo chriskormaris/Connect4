@@ -582,8 +582,7 @@ public class Gui {
 	
 	// Gets called after the human player makes a move. It makes a Minimax AI move.
 	public static void aiMove(MiniMaxAi ai){
-		// Move aiMove = ai.miniMax(board);
-		Move aiMove = ai.miniMaxAlphaBeta(board);
+		Move aiMove = ai.miniMax(board);
 		board.makeMove(aiMove.getColumn(), ai.getAiPlayer());
 		game();
 	}
