@@ -6,9 +6,9 @@ import java.util.ArrayList;
 
 public class Board {
 	
-	static final int numOfRows = Constants.numOfRows;
-	static final int numOfColumns = Constants.numOfColumns;
-	static final int inARow = Constants.inARow;
+	static final int numOfRows = Constants.NUM_OF_ROWS;
+	static final int numOfColumns = Constants.NUM_OF_COLUMNS;
+	static final int inARow = Constants.IN_A_ROW;
 	
     // Immediate move that led to this board.
     private Move lastMove;

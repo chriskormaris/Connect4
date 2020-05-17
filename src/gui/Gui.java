@@ -39,9 +39,9 @@ import connect4.Move;
 
 public class Gui {
 	
-	static final int numOfRows = Constants.numOfRows;
-	static final int numOfColumns = Constants.numOfColumns;
-	static final int inARow = Constants.inARow;
+	static final int numOfRows = Constants.NUM_OF_ROWS;
+	static final int numOfColumns = Constants.NUM_OF_COLUMNS;
+	static final int inARow = Constants.IN_A_ROW;
 	
 	static Board board;
 	static JFrame frameMainWindow;
@@ -154,9 +154,9 @@ public class Gui {
 		
 		aboutItem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				JOptionPane.showMessageDialog(null,
-						"© Created by: Christos Kormaris\nVersion " + Constants.version,
-						"About", JOptionPane.INFORMATION_MESSAGE);
+				JLabel label = new JLabel("<html><center>Â© Created by: Christos Kormaris<br>"
+						+ "Version " + Constants.VERSION + "</center></html>");
+				JOptionPane.showMessageDialog(frameMainWindow, label, "About", JOptionPane.INFORMATION_MESSAGE);
 			}
 		});
 
@@ -206,14 +206,14 @@ public class Gui {
 			// System.out.println("keyPressed = " + KeyEvent.getKeyText(e.getKeyCode()));
 			String keyText = KeyEvent.getKeyText(e.getKeyCode());
 			
-			for (int i=0; i<Constants.numOfColumns; i++) {
+			for (int i=0; i<Constants.NUM_OF_COLUMNS; i++) {
 				if (keyText.equals(i+1+"")) {
 			        undoBoards.push(new Board(board));
 					makeMove(i);
 					
 					if (!board.isOverflow()) {
 						boolean isGameOver = game();
-						if (GameParameters.gameMode == Constants.HumanVsAi && !isGameOver) { 
+						if (GameParameters.gameMode == Constants.HUMAN_VS_AI && !isGameOver) { 
 							aiMove(ai);
 						}
 					}
@@ -240,7 +240,7 @@ public class Gui {
 	private static void undo() {
 		if (!undoBoards.isEmpty()) {
 			// This is the undo implementation for Human VS Human mode.
-			if (GameParameters.gameMode == Constants.HumanVsHuman) {
+			if (GameParameters.gameMode == Constants.HUMAN_VS_HUMAN) {
 				try {
 					board.setGameOver(false);
 					
@@ -267,7 +267,7 @@ public class Gui {
 			}
 			
 			// This is the undo implementation for Human VS AI mode.
-			else if (GameParameters.gameMode == Constants.HumanVsAi) {
+			else if (GameParameters.gameMode == Constants.HUMAN_VS_AI) {
 				try {
 					board.setGameOver(false);
 					setAllButtonsEnabled(true);
@@ -308,7 +308,7 @@ public class Gui {
 	private static void redo() {
 		if (!redoBoards.isEmpty()) {
 			// This is the redo implementation for Human VS Human mode.
-			if (GameParameters.gameMode == Constants.HumanVsHuman) {
+			if (GameParameters.gameMode == Constants.HUMAN_VS_HUMAN) {
 				try {
 					board.setGameOver(false);
 					
@@ -340,7 +340,7 @@ public class Gui {
 			}
 			
 			// This is the redo implementation for Human VS AI mode.
-			else if (GameParameters.gameMode == Constants.HumanVsAi) {
+			else if (GameParameters.gameMode == Constants.HUMAN_VS_AI) {
 				try {
 					board.setGameOver(false);
 					setAllButtonsEnabled(true);
@@ -388,7 +388,7 @@ public class Gui {
 		
 		configureGuiStyle();
 		
-		if (GameParameters.gameMode != Constants.AiVsAi) {
+		if (GameParameters.gameMode != Constants.AI_VS_AI) {
 			setAllButtonsEnabled(true);
 		}
 		
@@ -436,9 +436,9 @@ public class Gui {
 		System.out.println("Turn: " + board.getTurn());
 		Board.printBoard(board.getGameBoard());
 		
-		if (GameParameters.gameMode == Constants.HumanVsAi) {
+		if (GameParameters.gameMode == Constants.HUMAN_VS_AI) {
 			ai = new MiniMaxAi(GameParameters.maxDepth1, Constants.P2);
-		} else if (GameParameters.gameMode == Constants.AiVsAi) {
+		} else if (GameParameters.gameMode == Constants.AI_VS_AI) {
 			setAllButtonsEnabled(false);
 			
 			// AI VS AI implementation here
@@ -460,13 +460,13 @@ public class Gui {
 	
 	private static void configureGuiStyle() {
 		try {
-			if (GameParameters.guiStyle == Constants.SystemStyle) {
+			if (GameParameters.guiStyle == Constants.SYSTEM_STYLE) {
 				// Option 1
 				UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-			} else if (GameParameters.guiStyle == Constants.CrossPlatformStyle) {
+			} else if (GameParameters.guiStyle == Constants.CROSS_PLATFORM_STYLE) {
 				// Option 2
 				UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName());
-			} else if (GameParameters.guiStyle == Constants.NimbusStyle) {
+			} else if (GameParameters.guiStyle == Constants.NIMBUS_STYLE) {
 				// Option 3
 			    for (LookAndFeelInfo info: UIManager.getInstalledLookAndFeels()) {
 			        if ("Nimbus".equals(info.getName())) {
@@ -533,7 +533,7 @@ public class Gui {
 		undoCheckerLabels.push(checkerLabel);
 		
 		try {
-			if (GameParameters.gameMode == Constants.AiVsAi) {
+			if (GameParameters.gameMode == Constants.AI_VS_AI) {
 				Thread.sleep(200);
 				frameMainWindow.paint(frameMainWindow.getGraphics());
 			}
@@ -582,7 +582,8 @@ public class Gui {
 	
 	// Gets called after the human player makes a move. It makes a Minimax AI move.
 	public static void aiMove(MiniMaxAi ai){
-		Move aiMove = ai.miniMax(board);
+		// Move aiMove = ai.miniMax(board);
+		Move aiMove = ai.miniMaxAlphaBeta(board);
 		board.makeMove(aiMove.getColumn(), ai.getAiPlayer());
 		game();
 	}
@@ -603,7 +604,7 @@ public class Gui {
 							
 							if (!board.isOverflow()) {
 								boolean isGameOver = game();
-								if (GameParameters.gameMode == Constants.HumanVsAi && !isGameOver) {
+								if (GameParameters.gameMode == Constants.HUMAN_VS_AI && !isGameOver) {
 									aiMove(ai);
 								}
 							}
@@ -666,28 +667,28 @@ public class Gui {
 		
 		int choice = 0;
 		if (board.getWinner() == Constants.P1) {
-			if (GameParameters.gameMode == Constants.HumanVsAi)
+			if (GameParameters.gameMode == Constants.HUMAN_VS_AI)
 				choice = JOptionPane.showConfirmDialog(null,
 						"You win! Start a new game?",
 						"Game Over", JOptionPane.YES_NO_OPTION);
-			else if (GameParameters.gameMode == Constants.HumanVsHuman)
+			else if (GameParameters.gameMode == Constants.HUMAN_VS_HUMAN)
 				choice = JOptionPane.showConfirmDialog(null,
 						"Player 1 wins! Start a new game?",
 						"Game Over", JOptionPane.YES_NO_OPTION);
-			else if (GameParameters.gameMode == Constants.AiVsAi)
+			else if (GameParameters.gameMode == Constants.AI_VS_AI)
 				choice = JOptionPane.showConfirmDialog(null,
 						"Minimax AI 1 wins! Start a new game?",
 						"Game Over", JOptionPane.YES_NO_OPTION);
 		} else if (board.getWinner() == Constants.P2) {
-			if (GameParameters.gameMode == Constants.HumanVsAi)
+			if (GameParameters.gameMode == Constants.HUMAN_VS_AI)
 				choice = JOptionPane.showConfirmDialog(null,
 						"Computer AI wins! Start a new game?",
 						"Game Over", JOptionPane.YES_NO_OPTION);
-			else if (GameParameters.gameMode == Constants.HumanVsHuman)
+			else if (GameParameters.gameMode == Constants.HUMAN_VS_HUMAN)
 				choice = JOptionPane.showConfirmDialog(null,
 						"Player 2 wins! Start a new game?",
 						"Game Over", JOptionPane.YES_NO_OPTION);
-			else if (GameParameters.gameMode == Constants.AiVsAi)
+			else if (GameParameters.gameMode == Constants.AI_VS_AI)
 				choice = JOptionPane.showConfirmDialog(null,
 						"Minimax AI 2 wins! Start a new game?",
 						"Game Over", JOptionPane.YES_NO_OPTION);

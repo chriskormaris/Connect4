@@ -81,24 +81,24 @@ public class SettingsWindow extends JFrame {
 		gui_style_drop_down.addItem("Cross-platform style");
 		gui_style_drop_down.addItem("Nimbus style");
 		
-		if (selectedGuiStyle == Constants.SystemStyle)
-			gui_style_drop_down.setSelectedIndex(Constants.SystemStyle - 1);
-		else if (selectedGuiStyle == Constants.CrossPlatformStyle)
-			gui_style_drop_down.setSelectedIndex(Constants.CrossPlatformStyle - 1);
-		else if (selectedGuiStyle == Constants.NimbusStyle)
-			gui_style_drop_down.setSelectedIndex(Constants.NimbusStyle - 1);
+		if (selectedGuiStyle == Constants.SYSTEM_STYLE)
+			gui_style_drop_down.setSelectedIndex(Constants.SYSTEM_STYLE - 1);
+		else if (selectedGuiStyle == Constants.CROSS_PLATFORM_STYLE)
+			gui_style_drop_down.setSelectedIndex(Constants.CROSS_PLATFORM_STYLE - 1);
+		else if (selectedGuiStyle == Constants.NIMBUS_STYLE)
+			gui_style_drop_down.setSelectedIndex(Constants.NIMBUS_STYLE - 1);
 		
 		game_mode_drop_down = new JComboBox<String>();
 		game_mode_drop_down.addItem("Human Vs Minimax AI");
 		game_mode_drop_down.addItem("Human Vs Human");
 		game_mode_drop_down.addItem("Minimax AI Vs Minimax AI");
 		
-		if (selectedMode == Constants.HumanVsAi)
-			game_mode_drop_down.setSelectedIndex(Constants.HumanVsAi - 1);
-		else if (selectedMode == Constants.HumanVsHuman)
-			game_mode_drop_down.setSelectedIndex(Constants.HumanVsHuman - 1);
-		else if (selectedMode == Constants.AiVsAi)
-			game_mode_drop_down.setSelectedIndex(Constants.AiVsAi - 1);
+		if (selectedMode == Constants.HUMAN_VS_AI)
+			game_mode_drop_down.setSelectedIndex(Constants.HUMAN_VS_AI - 1);
+		else if (selectedMode == Constants.HUMAN_VS_HUMAN)
+			game_mode_drop_down.setSelectedIndex(Constants.HUMAN_VS_HUMAN - 1);
+		else if (selectedMode == Constants.AI_VS_AI)
+			game_mode_drop_down.setSelectedIndex(Constants.AI_VS_AI - 1);
 		
 		max_depth1_drop_down = new JComboBox<Integer>();
 		max_depth1_drop_down.addItem(1);
@@ -107,6 +107,7 @@ public class SettingsWindow extends JFrame {
 		max_depth1_drop_down.addItem(4);
 		max_depth1_drop_down.addItem(5);
 		max_depth1_drop_down.addItem(6);
+		max_depth1_drop_down.addItem(7);
 		
 		max_depth2_drop_down = new JComboBox<Integer>();
 		max_depth2_drop_down.addItem(1);
@@ -115,6 +116,7 @@ public class SettingsWindow extends JFrame {
 		max_depth2_drop_down.addItem(4);
 		max_depth2_drop_down.addItem(5);
 		max_depth2_drop_down.addItem(6);
+		max_depth2_drop_down.addItem(7);
 		
 		max_depth1_drop_down.setSelectedIndex(maxDepth1);
 		max_depth2_drop_down.setSelectedIndex(maxDepth2);
