@@ -4,10 +4,10 @@ package connect4;
 public class GameParameters {
 	
 	/* Default values */
-	public static int guiStyle = Constants.SystemStyle;
-	public static int gameMode = Constants.HumanVsAi;
-	public static int maxDepth1 = 3;
-	public static int maxDepth2 = 3;
+	public static int guiStyle = Constants.SYSTEM_STYLE;
+	public static int gameMode = Constants.HUMAN_VS_AI;
+	public static int maxDepth1 = 5;
+	public static int maxDepth2 = 5;
 	public static int player1Color = Constants.RED;
 	public static int player2Color = Constants.YELLOW;
 	

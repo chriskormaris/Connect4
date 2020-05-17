@@ -9,8 +9,8 @@ import java.util.Scanner;
 
 public class ConsoleMain {
 	
-	static final int numOfColumns = Constants.numOfColumns;
-	static final int inARow = Constants.inARow;
+	static final int numOfColumns = Constants.NUM_OF_COLUMNS;
+	static final int inARow = Constants.IN_A_ROW;
 	
 	public static void main(String[] args) {
 		
