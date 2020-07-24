@@ -271,8 +271,10 @@ public class Gui {
 				try {
 					board.setGameOver(false);
 					setAllButtonsEnabled(true);
-					if (frameMainWindow.getKeyListeners().length == 0)
+					
+					if (frameMainWindow.getKeyListeners().length == 0) {
 						frameMainWindow.addKeyListener(gameKeyListener);
+					}
 					
 					JLabel previousAiCheckerLabel = undoCheckerLabels.pop();
 					JLabel previousHumanCheckerLabel = undoCheckerLabels.pop();
@@ -344,8 +346,10 @@ public class Gui {
 				try {
 					board.setGameOver(false);
 					setAllButtonsEnabled(true);
-					if (frameMainWindow.getKeyListeners().length == 0)
+					
+					if (frameMainWindow.getKeyListeners().length == 0) {
 						frameMainWindow.addKeyListener(gameKeyListener);
+					}
 					
 					JLabel redoAiCheckerLabel = redoCheckerLabels.pop();
 					JLabel redoHumanCheckerLabel = redoCheckerLabels.pop();
