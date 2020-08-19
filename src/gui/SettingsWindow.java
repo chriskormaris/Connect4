@@ -40,7 +40,7 @@ public class SettingsWindow extends JFrame {
 	
 	private EventHandler handler;
 		
-	public static int width = 400;
+	public static int width = 450;
 	public static int height = 320;
 	
 	
@@ -170,19 +170,19 @@ public class SettingsWindow extends JFrame {
 		add(player1_color_drop_down);
 		add(player2_color_drop_down);
 
-		guiStyleLabel.setBounds(25, 25, 175, 20);
-		gameModeLabel.setBounds(25, 55, 175, 20);
-		maxDepth1Label.setBounds(25, 85, 175, 20);
-		maxDepth2Label.setBounds(25, 115, 175, 20);
-		player1ColorLabel.setBounds(25, 145, 175, 20);
-		player2ColorLabel.setBounds(25, 175, 175, 20);
+		guiStyleLabel.setBounds(25, 25, 200, 20);
+		gameModeLabel.setBounds(25, 55, 200, 20);
+		maxDepth1Label.setBounds(25, 85, 200, 20);
+		maxDepth2Label.setBounds(25, 115, 200, 20);
+		player1ColorLabel.setBounds(25, 145, 200, 20);
+		player2ColorLabel.setBounds(25, 175, 200, 20);
 		
-		gui_style_drop_down.setBounds(195, 25, 160, 20);
-		game_mode_drop_down.setBounds(195, 55, 160, 20);
-		max_depth1_drop_down.setBounds(195, 85, 160, 20);
-		max_depth2_drop_down.setBounds(195, 115, 160, 20);
-		player1_color_drop_down.setBounds(195, 145, 160, 20);
-		player2_color_drop_down.setBounds(195, 175, 160, 20);
+		gui_style_drop_down.setBounds(195, 25, 200, 20);
+		game_mode_drop_down.setBounds(195, 55, 200, 20);
+		max_depth1_drop_down.setBounds(195, 85, 200, 20);
+		max_depth2_drop_down.setBounds(195, 115, 200, 20);
+		player1_color_drop_down.setBounds(195, 145, 200, 20);
+		player2_color_drop_down.setBounds(195, 175, 200, 20);
 		
 		apply = new JButton("Apply");
 		cancel = new JButton("Cancel");
