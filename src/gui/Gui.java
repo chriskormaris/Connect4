@@ -184,10 +184,10 @@ public class Gui {
 		layeredGameBoard = new JLayeredPane();
 		layeredGameBoard.setPreferredSize(new Dimension(DEFAULT_WIDTH, DEFAULT_HEIGHT));
 		layeredGameBoard.setBorder(BorderFactory.createTitledBorder("Connect-4"));
-
+		
 		ImageIcon imageBoard = new ImageIcon(ResourceLoader.load("images/Board.png"));
 		JLabel imageBoardLabel = new JLabel(imageBoard);
-
+		
 		imageBoardLabel.setBounds(20, 20, imageBoard.getIconWidth(), imageBoard.getIconHeight());
 		layeredGameBoard.add(imageBoardLabel, 0, 1);
 		
