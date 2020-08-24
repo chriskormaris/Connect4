@@ -3,6 +3,8 @@ package connect4;
 
 public class GameParameters {
 	
+	private GameParameters() { }  // Prevents instantiation.
+
 	/* Default values */
 	public static int guiStyle = Constants.SYSTEM_STYLE;
 	public static int gameMode = Constants.HUMAN_VS_AI;
