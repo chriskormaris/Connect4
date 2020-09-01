@@ -212,12 +212,15 @@ public class SettingsWindow extends JFrame {
 				try {
 					
 					GuiStyle guiStyle = 
-							GuiStyle.valueOf(gui_style_drop_down.getSelectedItem().toString().toUpperCase().replace(" ", "_"));
-					GameMode gameMode = GameMode.valueOf(game_mode_drop_down.getSelectedItem().toString().toUpperCase().replace(" ", "_"));
+						GuiStyle.valueOf(gui_style_drop_down.getSelectedItem().toString().toUpperCase().replace("-", "_").replace(" ", "_"));
+					GameMode gameMode =
+						GameMode.valueOf(game_mode_drop_down.getSelectedItem().toString().toUpperCase().replace(" ", "_"));
 					int maxDepth1 = (int) max_depth1_drop_down.getSelectedItem();
 					int maxDepth2 = (int) max_depth2_drop_down.getSelectedItem();
-					Color player1Color = Color.valueOf(player1_color_drop_down.getSelectedItem().toString().toUpperCase());
-					Color player2Color = Color.valueOf(player2_color_drop_down.getSelectedItem().toString().toUpperCase());
+					Color player1Color = 
+						Color.valueOf(player1_color_drop_down.getSelectedItem().toString().toUpperCase());
+					Color player2Color =
+						Color.valueOf(player2_color_drop_down.getSelectedItem().toString().toUpperCase());
 										
 					if (player1Color == player2Color) {
 						JOptionPane.showMessageDialog(null,
