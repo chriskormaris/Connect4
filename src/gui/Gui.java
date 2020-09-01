@@ -528,7 +528,7 @@ public class Gui {
 	
 	// It places a checker on the board.
 	public static void placeChecker(Color color, int row, int col) {
-		String colorString = String.valueOf(color);
+		String colorString = String.valueOf(color).charAt(0) + String.valueOf(color).toLowerCase().substring(1);
 		int xOffset = 75 * col;
 		int yOffset = 75 * row;
 		ImageIcon checkerIcon = new ImageIcon(ResourceLoader.load("images/" + colorString + ".png"));
