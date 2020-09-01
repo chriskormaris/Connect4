@@ -1,10 +1,13 @@
-package connect4;
+package connect4_tests;
 
 
 import static org.junit.Assert.assertTrue;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import connect4.Board;
+import connect4.Constants;
 
 
 public class BoardTest {
