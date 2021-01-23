@@ -6,9 +6,8 @@ import enumerations.GuiStyle;
 
 public class GameParameters {
 	
-	private GameParameters() { }  // Prevents instantiation.
-
-	/* Default values */
+	private GameParameters() { }  
+	
 	public static GuiStyle guiStyle = GuiStyle.SYSTEM_STYLE;
 	public static GameMode gameMode = GameMode.HUMAN_VS_MINIMAX_AI;
 	public static int maxDepth1 = 5;
