@@ -20,51 +20,7 @@ public class BoardTest {
 		
 	}
 
-//	@Test
-//	public void testBoard() {
-//		fail("Not yet implemented");
-//	}
-//
-//
-//	@Test
-//	public void testGetLastMove() {
-//		fail("Not yet implemented");
-//	}
-//
-//	@Test
-//	public void testGetLastLetterPlayed() {
-//		fail("Not yet implemented");
-//	}
-//
-//	@Test
-//	public void testGetGameBoard() {
-//		fail("Not yet implemented");
-//	}
-//
-//	@Test
-//	public void testGetWinner() {
-//		fail("Not yet implemented");
-//	}
-//
-//	@Test
-//	public void testSetLastMove() {
-//		fail("Not yet implemented");
-//	}
-//
-//	@Test
-//	public void testSetLastLetterPlayed() {
-//		fail("Not yet implemented");
-//	}
-//
-//	@Test
-//	public void testSetGameBoard() {
-//		fail("Not yet implemented");
-//	}
-//
-//	@Test
-//	public void testSetWinner() {
-//		fail("Not yet implemented");
-//	}
+
 
 	@Test
 	public void testMakeMoveInt() {
@@ -79,25 +35,7 @@ public class BoardTest {
 		System.out.println();
 	}
 
-//	@Test
-//	public void testIsValidMoveIntInt() {
-//		fail("Not yet implemented");
-//	}
-//
-//	@Test
-//	public void testIsValidMoveInt() {
-//		fail("Not yet implemented");
-//	}
-//
-//	@Test
-//	public void testCanMove() {
-//		fail("Not yet implemented");
-//	}
-//
-//	@Test
-//	public void testCheckFullColumn() {
-//		fail("Not yet implemented");
-//	}
+
 
 	@Test
 	public void testGetRowPosition() {
@@ -118,39 +56,3 @@ public class BoardTest {
 		System.out.println();
 	}
 
-//	@Test
-//	public void testGetChildren() {
-//		fail("Not yet implemented");
-//	}
-//
-//	@Test
-//	public void testEvaluate() {
-//		fail("Not yet implemented");
-//	}
-//
-//	@Test
-//	public void testCheckWinState() {
-//		fail("Not yet implemented");
-//	}
-//
-//	@Test
-//	public void testCheck3InARow() {
-//		fail("Not yet implemented");
-//	}
-//
-//	@Test
-//	public void testCheck2InARow() {
-//		fail("Not yet implemented");
-//	}
-//
-//	@Test
-//	public void testIsTerminal() {
-//		fail("Not yet implemented");
-//	}
-//
-//	@Test
-//	public void testPrint() {
-//		fail("Not yet implemented");
-//	}
-
-}
