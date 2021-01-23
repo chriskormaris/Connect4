@@ -63,18 +63,17 @@ public class Gui {
     
 	static MiniMaxAi ai;
 
-	// Player 1 symbol: X. Plays first.
-	// Player 2 symbol: O.
+	
 	
 	public static JLabel checkerLabel = null;
 	
-	// These Stack objects are used for the "Undo" and "Redo" functionalities.
+	
 	static Stack<Board> undoBoards = new Stack<Board>();
 	static Stack<JLabel> undoCheckerLabels = new Stack<JLabel>();
 	static Stack<Board> redoBoards = new Stack<Board>();
 	static Stack<JLabel> redoCheckerLabels = new Stack<JLabel>();
 
-	// Menu bars and items
+	
 	static JMenuBar menuBar;
 	static JMenu fileMenu;
 	static JMenuItem newGameItem;
@@ -95,10 +94,10 @@ public class Gui {
 	}
 	
 	
-	// Add the menu bars and items to the window.
+	
 	private static void AddMenus() {
 		
-		// Add the menu bar.
+		
 		menuBar = new JMenuBar();
 		
 		fileMenu = new JMenu("File");
@@ -176,13 +175,13 @@ public class Gui {
 		menuBar.add(helpMenu);
 		
 		frameMainWindow.setJMenuBar(menuBar);
-		// Make the board visible after adding the menus.
+		
 		frameMainWindow.setVisible(true);
 		
 	}
 	
 	
-	// This is the main Connect-4 board.
+	
 	public static JLayeredPane createLayeredBoard() {
 		layeredGameBoard = new JLayeredPane();
 		layeredGameBoard.setPreferredSize(new Dimension(DEFAULT_WIDTH, DEFAULT_HEIGHT));
@@ -269,7 +268,7 @@ public class Gui {
 				}
 			}
 			
-			// This is the undo implementation for "Human Vs AI" mode.
+			
 			else if (GameParameters.gameMode == GameMode.HUMAN_VS_MINIMAX_AI) {
 				try {
 					board.setGameOver(false);
@@ -389,8 +388,7 @@ public class Gui {
 	}
 	
 	
-	// To be called when the game starts for the first time
-	// or a new game starts.
+	
 	public static void createNewGame() {
 		
 		configureGuiStyle();
@@ -426,12 +424,8 @@ public class Gui {
 		
 		frameMainWindow.setFocusable(true);
 		
-		// show window
+		
 		frameMainWindow.pack();
-		// Makes the board visible before adding menus.
-		// frameMainWindow.setVisible(true);
-
-		// Add the turn label.
 		JToolBar tools = new JToolBar();
         tools.setFloatable(false);
         frameMainWindow.add(tools, BorderLayout.PAGE_END);
@@ -492,7 +486,7 @@ public class Gui {
 	}
 	
 	
-	// It centers the window on screen.
+	
 	public static void centerWindow(Window frame, int width, int height) {
 	    Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize();
 	    int x = (int) (dimension.getWidth() - frame.getWidth() - width) / 2;
@@ -501,7 +495,7 @@ public class Gui {
 	}
 	
 	
-	// It finds which player plays next and makes a move on the board.
+	
 	public static void makeMove(int col) {
 		board.setOverflow(false);
 		
@@ -526,7 +520,7 @@ public class Gui {
 	}
 	
 	
-	// It places a checker on the board.
+	
 	public static void placeChecker(Color color, int row, int col) {
 		String colorString = String.valueOf(color).charAt(0) + String.valueOf(color).toLowerCase().substring(1);
 		int xOffset = 75 * col;
@@ -550,7 +544,6 @@ public class Gui {
 	}
 	
 	
-	// Gets called after makeMove(int, col) is called.
 	public static boolean game() {
 		
 		turnMessage.setText("Turn: " + board.getTurn());
@@ -560,12 +553,12 @@ public class Gui {
 		int currentPlayer = board.getLastPlayer();
 		
 		if (currentPlayer == Constants.P1) {
-			// It places a checker in the corresponding [row][col] of the GUI.
+			
 			placeChecker(GameParameters.player1Color, row, col);
 		}
 		
 		if (currentPlayer == Constants.P2) {
-			// It places a checker in the corresponding [row][col] of the GUI.
+			
 			placeChecker(GameParameters.player2Color, row, col);
 		}
 		
@@ -587,7 +580,7 @@ public class Gui {
 	}
 	
 	
-	// Gets called after the human player makes a move. It makes a Minimax AI move.
+	
 	public static void aiMove(MiniMaxAi ai){
 		// Move aiMove = ai.miniMax(board);
 		Move aiMove = ai.miniMaxAlphaBeta(board);
@@ -633,14 +626,10 @@ public class Gui {
 	}
 	
 	
-	/**
-	 * It returns a component to be drawn by main window.
-	 * This function creates the main window components.
-	 * It calls the "actionListener" function, when a click on a button is made.
-	 */
+	
 	public static Component createContentComponents() {
 		
-		// Create a panel to set up the board buttons.
+		
 		panelBoardNumbers = new JPanel();
 		panelBoardNumbers.setLayout(new GridLayout(1, numOfColumns, numOfRows, 4));
 		panelBoardNumbers.setBorder(BorderFactory.createEmptyBorder(2, 22, 2, 22));
@@ -649,15 +638,15 @@ public class Gui {
 			panelBoardNumbers.add(button);
 		}
 		
-		// main Connect-4 board creation
+		
 		layeredGameBoard = createLayeredBoard();
 		
-		// panel creation to store all the elements of the board
+		
 		panelMain = new JPanel();
 		panelMain.setLayout(new BorderLayout());
 		panelMain.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
 
-		// add button and main board components to panelMain
+		
 		panelMain.add(panelBoardNumbers, BorderLayout.NORTH);
 		panelMain.add(layeredGameBoard, BorderLayout.CENTER);
 
@@ -666,9 +655,7 @@ public class Gui {
 	}
 	
 	
-	// It gets called only of the game is over.
-	// We can check if the game is over by calling the method "checkGameOver()"
-	// of the class "Board".
+	
 	public static void gameOver() {
 		board.setGameOver(true);
 		
@@ -705,10 +692,10 @@ public class Gui {
 					"Game Over", JOptionPane.YES_NO_OPTION);
 		}
 		
-		// Disable buttons
+		
 		setAllButtonsEnabled(false);
 
-		// Remove key listener
+		
 		for (KeyListener keyListener: frameMainWindow.getKeyListeners()) {
 			frameMainWindow.removeKeyListener(keyListener);
 		}
@@ -724,19 +711,7 @@ public class Gui {
 	public static void main(String[] args){
 		Gui connect4 = new Gui();
 		
-		// These are the default values.
-		// Feel free to change them, before running.
-		// You can also change them later, from the GUI window.
-		/*
-		GameParameters.guiStyle = Constants.SystemStyle;
-		// GameParameters.gameMode = Constants.HumanVsAi;
- 		// GameParameters.gameMode = Constants.HumanVsHuman;
-		GameParameters.gameMode = Constants.AiVsAi;
-		GameParameters.maxDepth1 = 4;
-		GameParameters.maxDepth2 = 4;
-		GameParameters.player1Color = Constants.RED;
-		GameParameters.player2Color = Constants.YELLOW;
-		*/
+		
 		
 		connect4.createNewGame();
 	}
