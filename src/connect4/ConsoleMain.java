@@ -1,9 +1,9 @@
 package connect4;
 
 
-// exception for the class "Scanner"
+
 import java.util.InputMismatchException;
-// import java.util.Random;
+
 import java.util.Scanner;
 
 
@@ -25,17 +25,13 @@ public class ConsoleMain {
 			}
 		}
 		
-		// We create the AI computer player "O" and the Connect-N board.
-        // The "maxDepth" for the MiniMax algorithm is set to 3.
-		// Feel free to change the values.
-		// The bigger the value of "maxDepth" is, the more difficult the game is. 
+		
 		int XColumnPosition;
 		int maxDepth = 3;
 		MiniMaxAi OPlayer = new MiniMaxAi(maxDepth, Constants.P2);
 		Board connect4Board = new Board();
 
-        // Uncomment this, for "O" to play first
-		// board.setLastLetterPlayed(Board.X);
+       
 
 		System.out.println("Minimax Connect-" + inARow + "!\n");
 		System.out.println("\n*****************************");
@@ -43,13 +39,12 @@ public class ConsoleMain {
 		System.out.println();
 		
     	Scanner in = new Scanner(System.in);
-        // While the game has not finished
+       
 		while(!connect4Board.checkForGameOver()) {
 			switch (connect4Board.getLastPlayer()) {
 			
 					
-                // If "O" played last, then "X" plays now.
-				// "X" is the user-player
+                
 				case Constants.P2:
                     System.out.print("Human 'X' moves.");
                     try {
@@ -69,19 +64,14 @@ public class ConsoleMain {
 					System.out.println();
 					break;
 					
-                // If "X" played last, then "O" plays now.
-				// "O" is the AI computer
+               
 				case Constants.P1:
                     System.out.println("AI 'O' moves.");
                     
-                    // Make MiniMax move.
+                   
 					Move OMove = OPlayer.miniMax(connect4Board);
 					
-					// Make a random move.
-					// Random r = new Random();
-					// int randomNum = r.nextInt(numOfColumns);
-					// connectNBoard.makeMove(randomNum, Constants.O);
-
+				
 					connect4Board.makeMove(OMove.getColumn(), Constants.P2);
 					System.out.println();
 					break;
