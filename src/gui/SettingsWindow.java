@@ -18,9 +18,6 @@ import enumerations.GuiStyle;
 
 public class SettingsWindow extends JFrame {
 	
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 6651737783332653136L;
 	
 	private JLabel guiStyleLabel;
@@ -247,11 +244,11 @@ public class SettingsWindow extends JFrame {
 					System.err.println("ERROR : " + e.getMessage());
 				}
 				
-			}  // else if.
+			}  
 			
-		}  // action performed.
+		}  
 		
-	}  // inner class.
+	} 
 	
 	
-}  // class end.
+}  
