@@ -234,7 +234,7 @@ public class Gui {
 
 		@Override
 		public void keyReleased(KeyEvent e) {
-			// System.out.println("keyReleased = " + KeyEvent.getKeyText(e.getKeyCode()));
+			
 		}
 	};
 	
@@ -343,7 +343,7 @@ public class Gui {
 				}
 			}
 			
-			// This is the redo implementation for "Human Vs AI" mode.
+			
 			else if (GameParameters.gameMode == GameMode.HUMAN_VS_MINIMAX_AI) {
 				try {
 					board.setGameOver(false);
@@ -582,7 +582,7 @@ public class Gui {
 	
 	
 	public static void aiMove(MiniMaxAi ai){
-		// Move aiMove = ai.miniMax(board);
+		
 		Move aiMove = ai.miniMaxAlphaBeta(board);
 		board.makeMove(aiMove.getColumn(), ai.getAiPlayer());
 		game();
