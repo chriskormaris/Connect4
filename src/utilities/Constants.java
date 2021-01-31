@@ -1,4 +1,4 @@
-package connect4;
+package utilities;
 
 
 public class Constants {

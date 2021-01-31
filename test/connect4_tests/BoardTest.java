@@ -7,7 +7,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import connect4.Board;
-import connect4.Constants;
+import utilities.Constants;
 
 
 public class BoardTest {
