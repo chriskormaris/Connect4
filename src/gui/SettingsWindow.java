@@ -10,10 +10,10 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 
-import connect4.GameParameters;
 import enumerations.Color;
 import enumerations.GameMode;
 import enumerations.GuiStyle;
+import utilities.GameParameters;
 
 
 public class SettingsWindow extends JFrame {

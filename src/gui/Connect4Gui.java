@@ -31,21 +31,21 @@ import javax.swing.UIManager;
 import javax.swing.UIManager.LookAndFeelInfo;
 
 import connect4.Board;
-import connect4.GameParameters;
 import connect4.MiniMaxAi;
 import connect4.Move;
 import enumerations.Color;
 import enumerations.GameMode;
 import enumerations.GuiStyle;
 import utilities.Constants;
+import utilities.GameParameters;
 import utilities.ResourceLoader;
 
 
 public class Connect4Gui {
 	
-	static final int numOfRows = Constants.NUM_OF_ROWS;
-	static final int numOfColumns = Constants.NUM_OF_COLUMNS;
-	static final int inARow = Constants.IN_A_ROW;
+	static int NUM_OF_ROWS = Constants.NUM_OF_ROWS;
+	static int NUM_OF_COLUMNS = Constants.NUM_OF_COLUMNS;
+	static int IN_A_ROW = Constants.IN_A_ROW;
 	
 	static Board board;
 	static JFrame frameMainWindow;
@@ -55,8 +55,8 @@ public class Connect4Gui {
 	static JPanel panelBoardNumbers;
 	static JLayeredPane layeredGameBoard;
 	
-	static final int DEFAULT_WIDTH = 570;
-	static final int DEFAULT_HEIGHT = 525;
+	static int DEFAULT_WIDTH = 570;
+	static int DEFAULT_HEIGHT = 525;
 		
 	static JButton[] buttons;
 
@@ -88,8 +88,8 @@ public class Connect4Gui {
 	static JMenuItem aboutItem;
 	
 	public Connect4Gui() {
-		buttons = new JButton[numOfColumns];
-		for (int i=0; i<numOfColumns; i++) {
+		buttons = new JButton[NUM_OF_COLUMNS];
+		for (int i=0; i<NUM_OF_COLUMNS; i++) {
 			buttons[i] = new JButton(i+1+"");
 			buttons[i].setFocusable(false);
 		}
@@ -150,8 +150,8 @@ public class Connect4Gui {
 		howToPlayItem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				JOptionPane.showMessageDialog(null,
-						"Click on the buttons or press 1-" + numOfColumns + " on your keyboard to insert a new checker."
-						+ "\nTo win you must place " + inARow + " checkers in an row, horizontally, vertically or diagonally.",
+						"Click on the buttons or press 1-" + NUM_OF_COLUMNS + " on your keyboard to insert a new checker."
+						+ "\nTo win you must place " + IN_A_ROW + " checkers in an row, horizontally, vertically or diagonally.",
 						"How to Play", JOptionPane.INFORMATION_MESSAGE);
 			}
 		});
@@ -542,7 +542,7 @@ public class Connect4Gui {
 		
 		try {
 			if (GameParameters.gameMode == GameMode.MINIMAX_AI_VS_MINIMAX_AI) {
-				Thread.sleep(200);
+				Thread.sleep(Constants.AI_MOVE_MILLISECONDS);
 				frameMainWindow.paint(frameMainWindow.getGraphics());
 			}
 		} catch (Exception e) {
@@ -643,7 +643,7 @@ public class Connect4Gui {
 		
 		// Create a panel to set up the board buttons.
 		panelBoardNumbers = new JPanel();
-		panelBoardNumbers.setLayout(new GridLayout(1, numOfColumns, numOfRows, 4));
+		panelBoardNumbers.setLayout(new GridLayout(1, NUM_OF_COLUMNS, NUM_OF_ROWS, 4));
 		panelBoardNumbers.setBorder(BorderFactory.createEmptyBorder(2, 22, 2, 22));
 		
 		for (JButton button: buttons) {
