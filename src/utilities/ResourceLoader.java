@@ -1,4 +1,4 @@
-package gui;
+package utilities;
 
 import java.net.URL;
 

@@ -1,10 +1,15 @@
-package connect4;
+package gui;
 
 
 // exception for the class "Scanner"
 import java.util.InputMismatchException;
 // import java.util.Random;
 import java.util.Scanner;
+
+import connect4.Board;
+import connect4.MiniMaxAi;
+import connect4.Move;
+import utilities.Constants;
 
 
 public class ConsoleMain {

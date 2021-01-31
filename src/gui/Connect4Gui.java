@@ -31,16 +31,17 @@ import javax.swing.UIManager;
 import javax.swing.UIManager.LookAndFeelInfo;
 
 import connect4.Board;
-import connect4.Constants;
 import connect4.GameParameters;
 import connect4.MiniMaxAi;
 import connect4.Move;
 import enumerations.Color;
 import enumerations.GameMode;
 import enumerations.GuiStyle;
+import utilities.Constants;
+import utilities.ResourceLoader;
 
 
-public class Gui {
+public class Connect4Gui {
 	
 	static final int numOfRows = Constants.NUM_OF_ROWS;
 	static final int numOfColumns = Constants.NUM_OF_COLUMNS;
@@ -86,7 +87,7 @@ public class Gui {
 	static JMenuItem howToPlayItem;
 	static JMenuItem aboutItem;
 	
-	public Gui() {
+	public Connect4Gui() {
 		buttons = new JButton[numOfColumns];
 		for (int i=0; i<numOfColumns; i++) {
 			buttons[i] = new JButton(i+1+"");
@@ -722,7 +723,7 @@ public class Gui {
 	
 	@SuppressWarnings("static-access")
 	public static void main(String[] args){
-		Gui connect4 = new Gui();
+		Connect4Gui connect4 = new Connect4Gui();
 		
 		// These are the default values.
 		// Feel free to change them, before running.
