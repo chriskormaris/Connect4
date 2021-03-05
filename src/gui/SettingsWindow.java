@@ -43,7 +43,7 @@ public class SettingsWindow extends JFrame {
 	private EventHandler handler;
 		
 	public static int width = 450;
-	public static int height = 320;
+	public static int height = 340;
 	
 	
 	public SettingsWindow() {
@@ -172,19 +172,19 @@ public class SettingsWindow extends JFrame {
 		add(player1_color_drop_down);
 		add(player2_color_drop_down);
 
-		guiStyleLabel.setBounds(25, 25, 200, 20);
-		gameModeLabel.setBounds(25, 55, 200, 20);
-		maxDepth1Label.setBounds(25, 85, 200, 20);
-		maxDepth2Label.setBounds(25, 115, 200, 20);
-		player1ColorLabel.setBounds(25, 145, 200, 20);
-		player2ColorLabel.setBounds(25, 175, 200, 20);
+		guiStyleLabel.setBounds(25, 25, 200, 25);
+		gameModeLabel.setBounds(25, 60, 200, 25);
+		maxDepth1Label.setBounds(25, 95, 200, 25);
+		maxDepth2Label.setBounds(25, 130, 200, 25);
+		player1ColorLabel.setBounds(25, 165, 200, 25);
+		player2ColorLabel.setBounds(25, 200, 200, 25);
 		
-		gui_style_drop_down.setBounds(195, 25, 200, 20);
-		game_mode_drop_down.setBounds(195, 55, 200, 20);
-		max_depth1_drop_down.setBounds(195, 85, 200, 20);
-		max_depth2_drop_down.setBounds(195, 115, 200, 20);
-		player1_color_drop_down.setBounds(195, 145, 200, 20);
-		player2_color_drop_down.setBounds(195, 175, 200, 20);
+		gui_style_drop_down.setBounds(195, 25, 200, 25);
+		game_mode_drop_down.setBounds(195, 60, 200, 25);
+		max_depth1_drop_down.setBounds(195, 95, 200, 25);
+		max_depth2_drop_down.setBounds(195, 130, 200, 25);
+		player1_color_drop_down.setBounds(195, 165, 200, 25);
+		player2_color_drop_down.setBounds(195, 200, 200, 25);
 		
 		apply = new JButton("Apply");
 		cancel = new JButton("Cancel");
@@ -192,9 +192,9 @@ public class SettingsWindow extends JFrame {
 		add(cancel);
 		
 		int distance = 10;
-		apply.setBounds((int) (width / 2) - 110 - (int) (distance / 2), 230, 100, 30);
+		apply.setBounds((int) (width / 2) - 110 - (int) (distance / 2), 250, 100, 30);
 		apply.addActionListener(handler);
-		cancel.setBounds((int) (width / 2) - 10 + (int) (distance / 2), 230, 100, 30);
+		cancel.setBounds((int) (width / 2) - 10 + (int) (distance / 2), 250, 100, 30);
 		cancel.addActionListener(handler);
 	}
 
