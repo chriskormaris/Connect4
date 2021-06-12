@@ -9,7 +9,7 @@ import java.util.Scanner;
 import connect4.Board;
 import connect4.MiniMaxAi;
 import connect4.Move;
-import utilities.Constants;
+import utility.Constants;
 
 
 public class ConsoleMain {
