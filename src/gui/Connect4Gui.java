@@ -33,12 +33,12 @@ import javax.swing.UIManager.LookAndFeelInfo;
 import connect4.Board;
 import connect4.MiniMaxAi;
 import connect4.Move;
-import enumerations.Color;
-import enumerations.GameMode;
-import enumerations.GuiStyle;
-import utilities.Constants;
-import utilities.GameParameters;
-import utilities.ResourceLoader;
+import enumeration.Color;
+import enumeration.GameMode;
+import enumeration.GuiStyle;
+import utility.Constants;
+import utility.GameParameters;
+import utility.ResourceLoader;
 
 
 public class Connect4Gui {

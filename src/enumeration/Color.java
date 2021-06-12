@@ -1,4 +1,4 @@
-package enumerations;
+package enumeration;
 
 public enum Color {
 	RED,
