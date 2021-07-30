@@ -1,19 +1,15 @@
 package gui;
 
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-
-import javax.swing.JButton;
-import javax.swing.JComboBox;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-
 import enumeration.Color;
 import enumeration.GameMode;
 import enumeration.GuiStyle;
 import utility.GameParameters;
+
+import javax.swing.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.Serial;
 
 
 public class SettingsWindow extends JFrame {
@@ -21,27 +17,19 @@ public class SettingsWindow extends JFrame {
 	/**
 	 * 
 	 */
+	@Serial
 	private static final long serialVersionUID = 6651737783332653136L;
+
+	private final JComboBox<String> gui_style_drop_down;
+	private final JComboBox<String> game_mode_drop_down;
+	private final JComboBox<Integer> max_depth1_drop_down;
+	private final JComboBox<Integer> max_depth2_drop_down;
+	private final JComboBox<String> player1_color_drop_down;
+	private final JComboBox<String> player2_color_drop_down;
 	
-	private JLabel guiStyleLabel;
-	private JLabel gameModeLabel;
-	private JLabel maxDepth1Label;
-	private JLabel maxDepth2Label;
-	private JLabel player1ColorLabel;
-	private JLabel player2ColorLabel;
-	
-	private JComboBox<String> gui_style_drop_down;
-	private JComboBox<String> game_mode_drop_down;
-	private JComboBox<Integer> max_depth1_drop_down;
-	private JComboBox<Integer> max_depth2_drop_down;
-	private JComboBox<String> player1_color_drop_down;
-	private JComboBox<String> player2_color_drop_down;
-	
-	private JButton apply;
-	private JButton cancel;
-	
-	private EventHandler handler;
-		
+	private final JButton apply;
+	private final JButton cancel;
+
 	public static int width = 450;
 	public static int height = 340;
 	
@@ -54,8 +42,8 @@ public class SettingsWindow extends JFrame {
 		setSize(width, height);
 		setLocationRelativeTo(null);
 		setResizable(false);
-		
-		handler = new EventHandler();
+
+		EventHandler handler = new EventHandler();
 		
 		GuiStyle selectedGuiStyle = GameParameters.guiStyle;
 		GameMode selectedMode = GameParameters.gameMode;
@@ -63,13 +51,13 @@ public class SettingsWindow extends JFrame {
 		int maxDepth2 = GameParameters.maxDepth2 - 1;
 		Color selectedPlayer1Color = GameParameters.player1Color;
 		Color selectedPlayer2Color = GameParameters.player2Color;
-		
-		guiStyleLabel = new JLabel("GUI style");
-		gameModeLabel = new JLabel("Game mode");
-		maxDepth1Label = new JLabel("AI 1 depth");
-		maxDepth2Label = new JLabel("AI 2 depth (AiVsAi)");
-		player1ColorLabel = new JLabel("Player 1 color");
-		player2ColorLabel = new JLabel("Player 2 color");
+
+		JLabel guiStyleLabel = new JLabel("GUI style");
+		JLabel gameModeLabel = new JLabel("Game mode");
+		JLabel maxDepth1Label = new JLabel("AI 1 depth");
+		JLabel maxDepth2Label = new JLabel("AI 2 depth (AiVsAi)");
+		JLabel player1ColorLabel = new JLabel("Player 1 color");
+		JLabel player2ColorLabel = new JLabel("Player 2 color");
 		
 		add(guiStyleLabel);
 		add(gameModeLabel);
@@ -78,7 +66,7 @@ public class SettingsWindow extends JFrame {
 		add(player1ColorLabel);
 		add(player2ColorLabel);
 		
-		gui_style_drop_down = new JComboBox<String>();
+		gui_style_drop_down = new JComboBox<>();
 		gui_style_drop_down.addItem("System style");
 		gui_style_drop_down.addItem("Cross-platform style");
 		gui_style_drop_down.addItem("Nimbus style");
@@ -90,7 +78,7 @@ public class SettingsWindow extends JFrame {
 		else if (selectedGuiStyle == GuiStyle.NIMBUS_STYLE)
 			gui_style_drop_down.setSelectedIndex(2);
 		
-		game_mode_drop_down = new JComboBox<String>();
+		game_mode_drop_down = new JComboBox<>();
 		game_mode_drop_down.addItem("Human Vs Minimax AI");
 		game_mode_drop_down.addItem("Human Vs Human");
 		game_mode_drop_down.addItem("Minimax AI Vs Minimax AI");
@@ -102,7 +90,7 @@ public class SettingsWindow extends JFrame {
 		else if (selectedMode == GameMode.MINIMAX_AI_VS_MINIMAX_AI)
 			game_mode_drop_down.setSelectedIndex(2);
 		
-		max_depth1_drop_down = new JComboBox<Integer>();
+		max_depth1_drop_down = new JComboBox<>();
 		max_depth1_drop_down.addItem(1);
 		max_depth1_drop_down.addItem(2);
 		max_depth1_drop_down.addItem(3);
@@ -111,7 +99,7 @@ public class SettingsWindow extends JFrame {
 		max_depth1_drop_down.addItem(6);
 		max_depth1_drop_down.addItem(7);
 		
-		max_depth2_drop_down = new JComboBox<Integer>();
+		max_depth2_drop_down = new JComboBox<>();
 		max_depth2_drop_down.addItem(1);
 		max_depth2_drop_down.addItem(2);
 		max_depth2_drop_down.addItem(3);
@@ -123,7 +111,7 @@ public class SettingsWindow extends JFrame {
 		max_depth1_drop_down.setSelectedIndex(maxDepth1);
 		max_depth2_drop_down.setSelectedIndex(maxDepth2);
 		
-		player1_color_drop_down = new JComboBox<String>();
+		player1_color_drop_down = new JComboBox<>();
 		player1_color_drop_down.addItem("Red");
 		player1_color_drop_down.addItem("Yellow");
 		player1_color_drop_down.addItem("Black");
@@ -144,7 +132,7 @@ public class SettingsWindow extends JFrame {
 		else if (selectedPlayer1Color == Color.PURPLE)
 			player1_color_drop_down.setSelectedIndex(5);
 		
-		player2_color_drop_down = new JComboBox<String>();
+		player2_color_drop_down = new JComboBox<>();
 		player2_color_drop_down.addItem("Red");
 		player2_color_drop_down.addItem("Yellow");
 		player2_color_drop_down.addItem("Black");
@@ -192,9 +180,9 @@ public class SettingsWindow extends JFrame {
 		add(cancel);
 		
 		int distance = 10;
-		apply.setBounds((int) (width / 2) - 110 - (int) (distance / 2), 250, 100, 30);
+		apply.setBounds((width / 2) - 110 - (distance / 2), 250, 100, 30);
 		apply.addActionListener(handler);
-		cancel.setBounds((int) (width / 2) - 10 + (int) (distance / 2), 250, 100, 30);
+		cancel.setBounds((width / 2) - 10 + (distance / 2), 250, 100, 30);
 		cancel.addActionListener(handler);
 	}
 

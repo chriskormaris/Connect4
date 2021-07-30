@@ -15,7 +15,7 @@ HOT TO RUN IN ECLIPSE:
 
 3. Copy **res** folder to the Eclipse project root.
 
-4. Right click the project folder on **Project Explorer**. Go to **Properties->Java Build Path->Source**. Click **Add Folder...**. Tick the **res** folder.
+4. Right-click the project folder on **Project Explorer**. Go to **Properties->Java Build Path->Source**. Click **Add Folder...**. Tick the **res** folder.
 
 5. Run **Gui.java**. Another main method exist in the class **ConsoleMain**.
 

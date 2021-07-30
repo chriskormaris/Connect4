@@ -1,35 +1,6 @@
 package gui;
 
 
-import java.awt.BorderLayout;
-import java.awt.Component;
-import java.awt.Dimension;
-import java.awt.GridLayout;
-import java.awt.Toolkit;
-import java.awt.Window;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
-import java.util.Stack;
-
-import javax.swing.BorderFactory;
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JLayeredPane;
-import javax.swing.JMenu;
-import javax.swing.JMenuBar;
-import javax.swing.JMenuItem;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JToolBar;
-import javax.swing.UIManager;
-import javax.swing.UIManager.LookAndFeelInfo;
-
 import connect4.Board;
 import connect4.MiniMaxAi;
 import connect4.Move;
@@ -39,6 +10,15 @@ import enumeration.GuiStyle;
 import utility.Constants;
 import utility.GameParameters;
 import utility.ResourceLoader;
+
+import javax.imageio.ImageIO;
+import javax.swing.*;
+import javax.swing.UIManager.LookAndFeelInfo;
+import java.awt.*;
+import java.awt.event.*;
+import java.awt.image.BufferedImage;
+import java.io.*;
+import java.util.Stack;
 
 
 public class Connect4Gui {
@@ -65,9 +45,7 @@ public class Connect4Gui {
 
 	// Player 1 symbol: X. Plays first.
 	// Player 2 symbol: O.
-	
-	public static JLabel checkerLabel = null;
-	
+
 	// These Stack objects are used for the "Undo" and "Redo" functionalities.
 	static Stack<Board> undoBoards = new Stack<>();
 	static Stack<JLabel> undoCheckerLabels = new Stack<>();
@@ -80,6 +58,10 @@ public class Connect4Gui {
 	static JMenuItem newGameItem;
 	static JMenuItem undoItem;
 	static JMenuItem redoItem;
+	static JMenuItem saveGameItem;
+	static JMenuItem restoreSavedGameItem;
+	static JMenuItem loadNovelPositionItem;
+	static JMenuItem exportToGifItem;
 	static JMenuItem settingsItem;
 	static JMenuItem exitItem;
 	static JMenu helpMenu;
@@ -105,6 +87,10 @@ public class Connect4Gui {
 		newGameItem = new JMenuItem("New Game");
 		undoItem = new JMenuItem("Undo    Ctrl+Z");
 		redoItem = new JMenuItem("Redo    Ctrl+Y");
+		saveGameItem = new JMenuItem("Save Game");
+		restoreSavedGameItem = new JMenuItem("Restore Saved Game");
+		loadNovelPositionItem = new JMenuItem("Load Novel Position");
+		exportToGifItem = new JMenuItem("Export to .gif");
 		settingsItem = new JMenuItem("Settings");
 		exitItem = new JMenuItem("Exit");
 		
@@ -120,7 +106,25 @@ public class Connect4Gui {
 		undoItem.addActionListener(e -> undo());
 		
 		redoItem.addActionListener(e -> redo());
-		
+
+		saveGameItem.addActionListener(e -> {
+			saveGame();
+			System.out.println("Game saved!");
+		});
+
+		restoreSavedGameItem.addActionListener(e -> {
+			restoreSavedGame();
+			System.out.println("Last saved game restored!");
+		});
+
+		loadNovelPositionItem.addActionListener(e -> {
+			LoadNovelPositionWindow lnpw = new LoadNovelPositionWindow();
+			lnpw.setVisible(true);
+			System.out.println("Novel game position loaded!");
+		});
+
+		exportToGifItem.addActionListener(e -> exportToGif());
+
 		settingsItem.addActionListener(e -> {
 			SettingsWindow settings = new SettingsWindow();
 			settings.setVisible(true);
@@ -142,6 +146,10 @@ public class Connect4Gui {
 		fileMenu.add(newGameItem);
 		fileMenu.add(undoItem);
 		fileMenu.add(redoItem);
+		fileMenu.add(saveGameItem);
+		fileMenu.add(restoreSavedGameItem);
+		fileMenu.add(loadNovelPositionItem);
+		fileMenu.add(exportToGifItem);
 		fileMenu.add(settingsItem);
 		fileMenu.add(exitItem);
 		
@@ -156,8 +164,84 @@ public class Connect4Gui {
 		frameMainWindow.setVisible(true);
 		
 	}
-	
-	
+
+	public static void saveGame() {
+		BufferedWriter bw = null;
+		try {
+			bw = new BufferedWriter(new FileWriter("grid.txt"));
+			for (int i=0; i<NUM_OF_ROWS; i++) {
+				for (int j=0; j<NUM_OF_COLUMNS; j++) {
+					if (board.getGameBoard()[i][j] != Constants.EMPTY) {
+						bw.write(i + "" +  j + ":" + board.getGameBoard()[i][j] + "\n");
+					}
+				}
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				bw.flush();
+				bw.close();
+			} catch (IOException|NullPointerException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+
+
+	public static void restoreSavedGame() {
+		BufferedReader br = null;
+		try {
+			br = new BufferedReader(new FileReader("grid.txt"));
+			String line;
+
+			createNewGame();
+
+			while ((line = br.readLine()) != null) {
+				int row = Integer.parseInt(line.charAt(0) + "");
+				int column = Integer.parseInt(line.charAt(1) + "");
+				int player = Integer.parseInt(line.split(":")[1].trim());
+				board.getGameBoard()[row][column] = player;
+				if (player == Constants.P1)
+					placeChecker(GameParameters.player1Color, row, column);
+				else if (player == Constants.P2)
+					placeChecker(GameParameters.player2Color, row, column);
+				board.setTurn(board.getTurn() + 1);
+			}
+			Board.printBoard(board.getGameBoard());
+			turnMessage.setText("Turn: " + board.getTurn());
+		} catch (IOException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				br.close();
+			} catch (IOException|NullPointerException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+
+
+	public static void exportToGif() {
+		String gifName = JOptionPane.showInputDialog("Please type the exported \".gif\" file name:",
+				"simulation.gif");
+
+		BufferedImage bi = new BufferedImage(
+				frameMainWindow.getSize().width, frameMainWindow.getSize().height,
+				BufferedImage.TYPE_INT_ARGB);
+		Graphics g = bi.createGraphics();
+		frameMainWindow.paint(g);
+		g.dispose();
+		try {
+			ImageIO.write(bi, "gif", new File(gifName));
+			System.out.println("Exported .gif file!");
+		} catch (Exception e) {
+			System.err.println("Error exporting .gif file!");
+			System.err.flush();
+		}
+	}
+
+
 	// This is the main Connect-4 board.
 	public static JLayeredPane createLayeredBoard() {
 		layeredGameBoard = new JLayeredPane();
@@ -218,7 +302,7 @@ public class Connect4Gui {
 	
 	private static void undo() {
 		if (!undoBoards.isEmpty()) {
-			// This is the undo implementation for "Human Vs Human" mode.
+			// This is the "undo" implementation for "Human Vs Human" mode.
 			if (GameParameters.gameMode == GameMode.HUMAN_VS_HUMAN) {
 				try {
 					board.setGameOver(false);
@@ -245,7 +329,7 @@ public class Connect4Gui {
 				}
 			}
 			
-			// This is the undo implementation for "Human Vs AI" mode.
+			// This is the "undo" implementation for "Human Vs AI" mode.
 			else if (GameParameters.gameMode == GameMode.HUMAN_VS_MINIMAX_AI) {
 				try {
 					board.setGameOver(false);
@@ -288,7 +372,7 @@ public class Connect4Gui {
 	
 	private static void redo() {
 		if (!redoBoards.isEmpty()) {
-			// This is the redo implementation for "Human Vs Human" mode.
+			// This is the "redo" implementation for "Human Vs Human" mode.
 			if (GameParameters.gameMode == GameMode.HUMAN_VS_HUMAN) {
 				try {
 					board.setGameOver(false);
@@ -320,7 +404,7 @@ public class Connect4Gui {
 				}
 			}
 			
-			// This is the redo implementation for "Human Vs AI" mode.
+			// This is the "redo" implementation for "Human Vs AI" mode.
 			else if (GameParameters.gameMode == GameMode.HUMAN_VS_MINIMAX_AI) {
 				try {
 					board.setGameOver(false);
@@ -694,7 +778,6 @@ public class Connect4Gui {
 	}
 	
 	
-	@SuppressWarnings("static-access")
 	public static void main(String[] args){
 		Connect4Gui connect4 = new Connect4Gui();
 
