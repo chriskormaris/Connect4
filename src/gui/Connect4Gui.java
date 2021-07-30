@@ -49,8 +49,7 @@ public class Connect4Gui {
 	
 	static Board board;
 	static JFrame frameMainWindow;
-	static JFrame frameGameOver;
-	
+
 	static JPanel panelMain;
 	static JPanel panelBoardNumbers;
 	static JLayeredPane layeredGameBoard;
@@ -70,10 +69,10 @@ public class Connect4Gui {
 	public static JLabel checkerLabel = null;
 	
 	// These Stack objects are used for the "Undo" and "Redo" functionalities.
-	static Stack<Board> undoBoards = new Stack<Board>();
-	static Stack<JLabel> undoCheckerLabels = new Stack<JLabel>();
-	static Stack<Board> redoBoards = new Stack<Board>();
-	static Stack<JLabel> redoCheckerLabels = new Stack<JLabel>();
+	static Stack<Board> undoBoards = new Stack<>();
+	static Stack<JLabel> undoCheckerLabels = new Stack<>();
+	static Stack<Board> redoBoards = new Stack<>();
+	static Stack<JLabel> redoCheckerLabels = new Stack<>();
 
 	// Menu bars and items
 	static JMenuBar menuBar;
@@ -116,52 +115,28 @@ public class Connect4Gui {
 		undoItem.setEnabled(false);
 		redoItem.setEnabled(false);
 
-		newGameItem.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				createNewGame();
-			}
+		newGameItem.addActionListener(e -> createNewGame());
+		
+		undoItem.addActionListener(e -> undo());
+		
+		redoItem.addActionListener(e -> redo());
+		
+		settingsItem.addActionListener(e -> {
+			SettingsWindow settings = new SettingsWindow();
+			settings.setVisible(true);
 		});
 		
-		undoItem.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				undo();
-			}
-		});
+		exitItem.addActionListener(e -> System.exit(0));
 		
-		redoItem.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				redo();
-			}
-		});
+		howToPlayItem.addActionListener(e -> JOptionPane.showMessageDialog(null,
+				"Click on the buttons or press 1-" + NUM_OF_COLUMNS + " on your keyboard to insert a new checker."
+				+ "\nTo win you must place " + IN_A_ROW + " checkers in an row, horizontally, vertically or diagonally.",
+				"How to Play", JOptionPane.INFORMATION_MESSAGE));
 		
-		settingsItem.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				SettingsWindow settings = new SettingsWindow();
-				settings.setVisible(true);
-			}
-		});
-		
-		exitItem.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				System.exit(0);
-			}
-		});
-		
-		howToPlayItem.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				JOptionPane.showMessageDialog(null,
-						"Click on the buttons or press 1-" + NUM_OF_COLUMNS + " on your keyboard to insert a new checker."
-						+ "\nTo win you must place " + IN_A_ROW + " checkers in an row, horizontally, vertically or diagonally.",
-						"How to Play", JOptionPane.INFORMATION_MESSAGE);
-			}
-		});
-		
-		aboutItem.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				JLabel label = new JLabel("<html><center>© Created by: Christos Kormaris<br>"
-						+ "Version " + Constants.VERSION + "</center></html>");
-				JOptionPane.showMessageDialog(frameMainWindow, label, "About", JOptionPane.INFORMATION_MESSAGE);
-			}
+		aboutItem.addActionListener(e -> {
+			JLabel label = new JLabel("<html><center>© Created by: Christos Kormaris<br>"
+					+ "Version " + Constants.VERSION + "</center></html>");
+			JOptionPane.showMessageDialog(frameMainWindow, label, "About", JOptionPane.INFORMATION_MESSAGE);
 		});
 
 		fileMenu.add(newGameItem);
@@ -605,19 +580,17 @@ public class Connect4Gui {
 				int column = i;
 				
 				if (button.getActionListeners().length == 0) { 
-					button.addActionListener(new ActionListener() {
-						public void actionPerformed(ActionEvent e) {
-					        undoBoards.push(new Board(board));
-							makeMove(column);
-							
-							if (!board.isOverflow()) {
-								boolean isGameOver = game();
-								if (GameParameters.gameMode == GameMode.HUMAN_VS_MINIMAX_AI && !isGameOver) {
-									aiMove(ai);
-								}
+					button.addActionListener(e -> {
+						undoBoards.push(new Board(board));
+						makeMove(column);
+
+						if (!board.isOverflow()) {
+							boolean isGameOver = game();
+							if (GameParameters.gameMode == GameMode.HUMAN_VS_MINIMAX_AI && !isGameOver) {
+								aiMove(ai);
 							}
-							frameMainWindow.requestFocusInWindow();
 						}
+						frameMainWindow.requestFocusInWindow();
 					});
 				}
 			}
@@ -724,7 +697,7 @@ public class Connect4Gui {
 	@SuppressWarnings("static-access")
 	public static void main(String[] args){
 		Connect4Gui connect4 = new Connect4Gui();
-		
+
 		// These are the default values.
 		// Feel free to change them, before running.
 		// You can also change them later, from the GUI window.
@@ -738,8 +711,8 @@ public class Connect4Gui {
 		GameParameters.player1Color = Constants.RED;
 		GameParameters.player2Color = Constants.YELLOW;
 		*/
-		
-		connect4.createNewGame();
+
+		Connect4Gui.createNewGame();
 	}
 	
 	

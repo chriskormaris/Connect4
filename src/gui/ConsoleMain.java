@@ -2,14 +2,15 @@ package gui;
 
 
 // exception for the class "Scanner"
-import java.util.InputMismatchException;
-// import java.util.Random;
-import java.util.Scanner;
 
 import connect4.Board;
 import connect4.MiniMaxAi;
 import connect4.Move;
 import utility.Constants;
+
+import java.util.InputMismatchException;
+import java.util.Scanner;
+// import java.util.Random;
 
 
 public class ConsoleMain {
@@ -19,14 +20,14 @@ public class ConsoleMain {
 	
 	public static void main(String[] args) {
 		
-		String validNumbers = "";
+		StringBuilder validNumbers = new StringBuilder();
 		for (int i=0; i<numOfColumns; i++) {
 			if (i < numOfColumns-2) {
-				validNumbers += i+1 + ", ";
+				validNumbers.append(i + 1).append(", ");
 			} else if (i == numOfColumns-2) {
-				validNumbers += i+1 + " or ";
+				validNumbers.append(i + 1).append(" or ");
 			} else if (i == numOfColumns-1) {
-				validNumbers += i+1;
+				validNumbers.append(i + 1);
 			}
 		}
 		
