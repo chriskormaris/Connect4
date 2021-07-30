@@ -9,7 +9,6 @@ import utility.GameParameters;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.Serial;
 
 
 public class SettingsWindow extends JFrame {
@@ -17,7 +16,6 @@ public class SettingsWindow extends JFrame {
 	/**
 	 * 
 	 */
-	@Serial
 	private static final long serialVersionUID = 6651737783332653136L;
 
 	private final JComboBox<String> gui_style_drop_down;
