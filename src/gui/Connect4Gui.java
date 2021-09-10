@@ -27,9 +27,11 @@ import javax.swing.JToolBar;
 import javax.swing.UIManager;
 import javax.swing.UIManager.LookAndFeelInfo;
 
+import ai.RandomChoiceAi;
 import connect4.Board;
 import connect4.MiniMaxAi;
 import connect4.Move;
+import enumeration.AiType;
 import enumeration.Color;
 import enumeration.GameMode;
 import enumeration.GuiStyle;
@@ -293,8 +295,8 @@ public class Connect4Gui {
 					
 					if (!board.isOverflow()) {
 						boolean isGameOver = game();
-						if (GameParameters.gameMode == GameMode.HUMAN_VS_MINIMAX_AI && !isGameOver) { 
-							aiMove(ai);
+						if (GameParameters.gameMode == GameMode.HUMAN_VS_AI && !isGameOver) {
+							minimaxAiMove(ai);
 						}
 					}
 					break;
@@ -347,7 +349,7 @@ public class Connect4Gui {
 			}
 			
 			// This is the "undo" implementation for "Human Vs AI" mode.
-			else if (GameParameters.gameMode == GameMode.HUMAN_VS_MINIMAX_AI) {
+			else if (GameParameters.gameMode == GameMode.HUMAN_VS_AI) {
 				try {
 					board.setGameOver(false);
 					setAllButtonsEnabled(true);
@@ -422,7 +424,7 @@ public class Connect4Gui {
 			}
 			
 			// This is the "redo" implementation for "Human Vs AI" mode.
-			else if (GameParameters.gameMode == GameMode.HUMAN_VS_MINIMAX_AI) {
+			else if (GameParameters.gameMode == GameMode.HUMAN_VS_AI) {
 				try {
 					board.setGameOver(false);
 					setAllButtonsEnabled(true);
@@ -472,7 +474,7 @@ public class Connect4Gui {
 		
 		configureGuiStyle();
 		
-		if (GameParameters.gameMode != GameMode.MINIMAX_AI_VS_MINIMAX_AI) {
+		if (GameParameters.gameMode != GameMode.AI_VS_AI) {
 			setAllButtonsEnabled(true);
 		}
 		
@@ -520,21 +522,34 @@ public class Connect4Gui {
 		System.out.println("Turn: " + board.getTurn());
 		Board.printBoard(board.getGameBoard());
 		
-		if (GameParameters.gameMode == GameMode.HUMAN_VS_MINIMAX_AI) {
+		if (GameParameters.gameMode == GameMode.HUMAN_VS_AI) {
 			ai = new MiniMaxAi(GameParameters.maxDepth1, Constants.P2);
-		} else if (GameParameters.gameMode == GameMode.MINIMAX_AI_VS_MINIMAX_AI) {
+		} else if (GameParameters.gameMode == GameMode.AI_VS_AI) {
 			setAllButtonsEnabled(false);
 			
 			// AI VS AI implementation here
-			// Initial maxDepth = 4. We can change this value for difficulty adjustment.
-			MiniMaxAi ai1 = new MiniMaxAi(GameParameters.maxDepth1, Constants.P1);
-			MiniMaxAi ai2 = new MiniMaxAi(GameParameters.maxDepth2, Constants.P2);
-			
-			while (!board.isGameOver()) {
-				aiMove(ai1);
-				
-				if (!board.isGameOver()) {
-					aiMove(ai2);
+			if (GameParameters.aiType == AiType.MINIMAX_AI) {
+				// Initial maxDepth = 5. We can change this value for difficulty adjustment.
+				MiniMaxAi ai1 = new MiniMaxAi(GameParameters.maxDepth1, Constants.P1);
+				MiniMaxAi ai2 = new MiniMaxAi(GameParameters.maxDepth2, Constants.P2);
+
+				while (!board.isGameOver()) {
+					minimaxAiMove(ai1);
+
+					if (!board.isGameOver()) {
+						minimaxAiMove(ai2);
+					}
+				}
+			} else if (GameParameters.aiType == AiType.RANDOM_AI) {
+				RandomChoiceAi ai1 = new RandomChoiceAi(Constants.P1);
+				RandomChoiceAi ai2 = new RandomChoiceAi(Constants.P2);
+
+				while (!board.isGameOver()) {
+					randomAiMove(ai1);
+
+					if (!board.isGameOver()) {
+						randomAiMove(ai2);
+					}
 				}
 			}
 		}
@@ -617,7 +632,7 @@ public class Connect4Gui {
 		undoCheckerLabels.push(checkerLabel);
 		
 		try {
-			if (GameParameters.gameMode == GameMode.MINIMAX_AI_VS_MINIMAX_AI) {
+			if (GameParameters.gameMode == GameMode.AI_VS_AI) {
 				Thread.sleep(Constants.AI_MOVE_MILLISECONDS);
 				frameMainWindow.paint(frameMainWindow.getGraphics());
 			}
@@ -665,9 +680,17 @@ public class Connect4Gui {
 	
 	
 	// Gets called after the human player makes a move. It makes a Minimax AI move.
-	public static void aiMove(MiniMaxAi ai){
+	public static void minimaxAiMove(MiniMaxAi ai){
 		// Move aiMove = ai.miniMax(board);
 		Move aiMove = ai.miniMaxAlphaBeta(board);
+		board.makeMove(aiMove.getColumn(), ai.getAiPlayer());
+		game();
+	}
+
+
+	// Gets called after the human player makes a move. It makes a Minimax AI move.
+	public static void randomAiMove(RandomChoiceAi ai){
+		Move aiMove = ai.randomMove(board);
 		board.makeMove(aiMove.getColumn(), ai.getAiPlayer());
 		game();
 	}
@@ -687,8 +710,8 @@ public class Connect4Gui {
 
 						if (!board.isOverflow()) {
 							boolean isGameOver = game();
-							if (GameParameters.gameMode == GameMode.HUMAN_VS_MINIMAX_AI && !isGameOver) {
-								aiMove(ai);
+							if (GameParameters.gameMode == GameMode.HUMAN_VS_AI && !isGameOver) {
+								minimaxAiMove(ai);
 							}
 						}
 						frameMainWindow.requestFocusInWindow();
@@ -749,7 +772,7 @@ public class Connect4Gui {
 		
 		int choice = 0;
 		if (board.getWinner() == Constants.P1) {
-			if (GameParameters.gameMode == GameMode.HUMAN_VS_MINIMAX_AI)
+			if (GameParameters.gameMode == GameMode.HUMAN_VS_AI)
 				choice = JOptionPane.showConfirmDialog(null,
 						"You win! Start a new game?",
 						"Game Over", JOptionPane.YES_NO_OPTION);
@@ -757,12 +780,12 @@ public class Connect4Gui {
 				choice = JOptionPane.showConfirmDialog(null,
 						"Player 1 wins! Start a new game?",
 						"Game Over", JOptionPane.YES_NO_OPTION);
-			else if (GameParameters.gameMode == GameMode.MINIMAX_AI_VS_MINIMAX_AI)
+			else if (GameParameters.gameMode == GameMode.AI_VS_AI)
 				choice = JOptionPane.showConfirmDialog(null,
 						"Minimax AI 1 wins! Start a new game?",
 						"Game Over", JOptionPane.YES_NO_OPTION);
 		} else if (board.getWinner() == Constants.P2) {
-			if (GameParameters.gameMode == GameMode.HUMAN_VS_MINIMAX_AI)
+			if (GameParameters.gameMode == GameMode.HUMAN_VS_AI)
 				choice = JOptionPane.showConfirmDialog(null,
 						"Computer AI wins! Start a new game?",
 						"Game Over", JOptionPane.YES_NO_OPTION);
@@ -770,7 +793,7 @@ public class Connect4Gui {
 				choice = JOptionPane.showConfirmDialog(null,
 						"Player 2 wins! Start a new game?",
 						"Game Over", JOptionPane.YES_NO_OPTION);
-			else if (GameParameters.gameMode == GameMode.MINIMAX_AI_VS_MINIMAX_AI)
+			else if (GameParameters.gameMode == GameMode.AI_VS_AI)
 				choice = JOptionPane.showConfirmDialog(null,
 						"Minimax AI 2 wins! Start a new game?",
 						"Game Over", JOptionPane.YES_NO_OPTION);

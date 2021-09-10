@@ -1,6 +1,7 @@
 package gui;
 
 
+import enumeration.AiType;
 import enumeration.Color;
 import enumeration.GameMode;
 import enumeration.GuiStyle;
@@ -20,6 +21,7 @@ public class SettingsWindow extends JFrame {
 
 	private final JComboBox<String> gui_style_drop_down;
 	private final JComboBox<String> game_mode_drop_down;
+	private final JComboBox<String> ai_type_drop_down;
 	private final JComboBox<Integer> max_depth1_drop_down;
 	private final JComboBox<Integer> max_depth2_drop_down;
 	private final JComboBox<String> player1_color_drop_down;
@@ -29,7 +31,7 @@ public class SettingsWindow extends JFrame {
 	private final JButton cancel;
 
 	public static int width = 450;
-	public static int height = 340;
+	public static int height = 375;
 	
 	
 	public SettingsWindow() {
@@ -45,6 +47,7 @@ public class SettingsWindow extends JFrame {
 		
 		GuiStyle selectedGuiStyle = GameParameters.guiStyle;
 		GameMode selectedMode = GameParameters.gameMode;
+		AiType selectedAiType = GameParameters.aiType;
 		int maxDepth1 = GameParameters.maxDepth1 - 1;
 		int maxDepth2 = GameParameters.maxDepth2 - 1;
 		Color selectedPlayer1Color = GameParameters.player1Color;
@@ -52,6 +55,7 @@ public class SettingsWindow extends JFrame {
 
 		JLabel guiStyleLabel = new JLabel("GUI style");
 		JLabel gameModeLabel = new JLabel("Game mode");
+		JLabel aiTypeLabel = new JLabel("AI type");
 		JLabel maxDepth1Label = new JLabel("AI 1 depth");
 		JLabel maxDepth2Label = new JLabel("AI 2 depth (AiVsAi)");
 		JLabel player1ColorLabel = new JLabel("Player 1 color");
@@ -59,6 +63,7 @@ public class SettingsWindow extends JFrame {
 		
 		add(guiStyleLabel);
 		add(gameModeLabel);
+		add(aiTypeLabel);
 		add(maxDepth1Label);
 		add(maxDepth2Label);
 		add(player1ColorLabel);
@@ -69,25 +74,37 @@ public class SettingsWindow extends JFrame {
 		gui_style_drop_down.addItem("Cross-platform style");
 		gui_style_drop_down.addItem("Nimbus style");
 		
-		if (selectedGuiStyle == GuiStyle.SYSTEM_STYLE)
+		if (selectedGuiStyle == GuiStyle.SYSTEM_STYLE) {
 			gui_style_drop_down.setSelectedIndex(0);
-		else if (selectedGuiStyle == GuiStyle.CROSS_PLATFORM_STYLE)
+		} else if (selectedGuiStyle == GuiStyle.CROSS_PLATFORM_STYLE) {
 			gui_style_drop_down.setSelectedIndex(1);
-		else if (selectedGuiStyle == GuiStyle.NIMBUS_STYLE)
+		} else if (selectedGuiStyle == GuiStyle.NIMBUS_STYLE) {
 			gui_style_drop_down.setSelectedIndex(2);
+		}
 		
 		game_mode_drop_down = new JComboBox<>();
-		game_mode_drop_down.addItem("Human Vs Minimax AI");
+		game_mode_drop_down.addItem("Human Vs AI");
 		game_mode_drop_down.addItem("Human Vs Human");
-		game_mode_drop_down.addItem("Minimax AI Vs Minimax AI");
+		game_mode_drop_down.addItem("AI Vs AI");
 		
-		if (selectedMode == GameMode.HUMAN_VS_MINIMAX_AI)
+		if (selectedMode == GameMode.HUMAN_VS_AI) {
 			game_mode_drop_down.setSelectedIndex(0);
-		else if (selectedMode == GameMode.HUMAN_VS_HUMAN)
+		} else if (selectedMode == GameMode.HUMAN_VS_HUMAN) {
 			game_mode_drop_down.setSelectedIndex(1);
-		else if (selectedMode == GameMode.MINIMAX_AI_VS_MINIMAX_AI)
+		} else if (selectedMode == GameMode.AI_VS_AI) {
 			game_mode_drop_down.setSelectedIndex(2);
-		
+		}
+
+		ai_type_drop_down = new JComboBox<>();
+		ai_type_drop_down.addItem("Minimax AI");
+		ai_type_drop_down.addItem("Random AI");
+
+		if (selectedAiType == AiType.MINIMAX_AI) {
+			ai_type_drop_down.setSelectedIndex(0);
+		} else if (selectedAiType == AiType.RANDOM_AI) {
+			ai_type_drop_down.setSelectedIndex(1);
+		}
+
 		max_depth1_drop_down = new JComboBox<>();
 		max_depth1_drop_down.addItem(1);
 		max_depth1_drop_down.addItem(2);
@@ -117,18 +134,19 @@ public class SettingsWindow extends JFrame {
 		player1_color_drop_down.addItem("Orange");
 		player1_color_drop_down.addItem("Purple");
 		
-		if (selectedPlayer1Color == Color.RED)
+		if (selectedPlayer1Color == Color.RED) {
 			player1_color_drop_down.setSelectedIndex(0);
-		else if (selectedPlayer1Color == Color.YELLOW)
+		} else if (selectedPlayer1Color == Color.YELLOW) {
 			player1_color_drop_down.setSelectedIndex(1);
-		else if (selectedPlayer1Color == Color.BLACK)
+		} else if (selectedPlayer1Color == Color.BLACK) {
 			player1_color_drop_down.setSelectedIndex(2);
-		else if (selectedPlayer1Color == Color.GREEN)
+		} else if (selectedPlayer1Color == Color.GREEN) {
 			player1_color_drop_down.setSelectedIndex(3);
-		else if (selectedPlayer1Color == Color.ORANGE)
+		} else if (selectedPlayer1Color == Color.ORANGE) {
 			player1_color_drop_down.setSelectedIndex(4);
-		else if (selectedPlayer1Color == Color.PURPLE)
+		} else if (selectedPlayer1Color == Color.PURPLE) {
 			player1_color_drop_down.setSelectedIndex(5);
+		}
 		
 		player2_color_drop_down = new JComboBox<>();
 		player2_color_drop_down.addItem("Red");
@@ -138,21 +156,23 @@ public class SettingsWindow extends JFrame {
 		player2_color_drop_down.addItem("Orange");
 		player2_color_drop_down.addItem("Purple");
 		
-		if (selectedPlayer2Color == Color.RED)
+		if (selectedPlayer2Color == Color.RED) {
 			player2_color_drop_down.setSelectedIndex(0);
-		else if (selectedPlayer2Color == Color.YELLOW)
+		} else if (selectedPlayer2Color == Color.YELLOW) {
 			player2_color_drop_down.setSelectedIndex(1);
-		else if (selectedPlayer2Color == Color.BLACK)
+		} else if (selectedPlayer2Color == Color.BLACK) {
 			player2_color_drop_down.setSelectedIndex(2);
-		else if (selectedPlayer2Color == Color.GREEN)
+		} else if (selectedPlayer2Color == Color.GREEN) {
 			player2_color_drop_down.setSelectedIndex(3);
-		else if (selectedPlayer2Color == Color.ORANGE)
+		} else if (selectedPlayer2Color == Color.ORANGE) {
 			player2_color_drop_down.setSelectedIndex(4);
-		else if (selectedPlayer2Color == Color.PURPLE)
+		} else if (selectedPlayer2Color == Color.PURPLE) {
 			player2_color_drop_down.setSelectedIndex(5);
+		}
 		
 		add(gui_style_drop_down);
 		add(game_mode_drop_down);
+		add(ai_type_drop_down);
 		add(max_depth1_drop_down);
 		add(max_depth2_drop_down);
 		add(player1_color_drop_down);
@@ -160,17 +180,19 @@ public class SettingsWindow extends JFrame {
 
 		guiStyleLabel.setBounds(25, 25, 200, 25);
 		gameModeLabel.setBounds(25, 60, 200, 25);
-		maxDepth1Label.setBounds(25, 95, 200, 25);
-		maxDepth2Label.setBounds(25, 130, 200, 25);
-		player1ColorLabel.setBounds(25, 165, 200, 25);
-		player2ColorLabel.setBounds(25, 200, 200, 25);
+		aiTypeLabel.setBounds(25, 95, 200, 25);
+		maxDepth1Label.setBounds(25, 130, 200, 25);
+		maxDepth2Label.setBounds(25, 165, 200, 25);
+		player1ColorLabel.setBounds(25, 200, 200, 25);
+		player2ColorLabel.setBounds(25, 235, 200, 25);
 		
 		gui_style_drop_down.setBounds(195, 25, 200, 25);
 		game_mode_drop_down.setBounds(195, 60, 200, 25);
-		max_depth1_drop_down.setBounds(195, 95, 200, 25);
-		max_depth2_drop_down.setBounds(195, 130, 200, 25);
-		player1_color_drop_down.setBounds(195, 165, 200, 25);
-		player2_color_drop_down.setBounds(195, 200, 200, 25);
+		ai_type_drop_down.setBounds(195, 95, 200, 25);
+		max_depth1_drop_down.setBounds(195, 130, 200, 25);
+		max_depth2_drop_down.setBounds(195, 165, 200, 25);
+		player1_color_drop_down.setBounds(195, 200, 200, 25);
+		player2_color_drop_down.setBounds(195, 235, 200, 25);
 		
 		apply = new JButton("Apply");
 		cancel = new JButton("Cancel");
@@ -178,9 +200,9 @@ public class SettingsWindow extends JFrame {
 		add(cancel);
 		
 		int distance = 10;
-		apply.setBounds((width / 2) - 110 - (distance / 2), 250, 100, 30);
+		apply.setBounds((width / 2) - 110 - (distance / 2), 285, 100, 30);
 		apply.addActionListener(handler);
-		cancel.setBounds((width / 2) - 10 + (distance / 2), 250, 100, 30);
+		cancel.setBounds((width / 2) - 10 + (distance / 2), 285, 100, 30);
 		cancel.addActionListener(handler);
 	}
 
@@ -201,6 +223,8 @@ public class SettingsWindow extends JFrame {
 						GuiStyle.valueOf(gui_style_drop_down.getSelectedItem().toString().toUpperCase().replace("-", "_").replace(" ", "_"));
 					GameMode gameMode =
 						GameMode.valueOf(game_mode_drop_down.getSelectedItem().toString().toUpperCase().replace(" ", "_"));
+					AiType aiType =
+						AiType.valueOf(ai_type_drop_down.getSelectedItem().toString().toUpperCase().replace(" ", "_"));
 					int maxDepth1 = (int) max_depth1_drop_down.getSelectedItem();
 					int maxDepth2 = (int) max_depth2_drop_down.getSelectedItem();
 					Color player1Color = 
@@ -218,6 +242,7 @@ public class SettingsWindow extends JFrame {
 					// Change game parameters based on settings.
 					GameParameters.guiStyle = guiStyle;
 					GameParameters.gameMode = gameMode;
+					GameParameters.aiType = aiType;
 					GameParameters.maxDepth1 = maxDepth1;
 					GameParameters.maxDepth2 = maxDepth2;
 					GameParameters.player1Color = player1Color;

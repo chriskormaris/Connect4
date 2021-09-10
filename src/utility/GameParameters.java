@@ -1,5 +1,6 @@
 package utility;
 
+import enumeration.AiType;
 import enumeration.Color;
 import enumeration.GameMode;
 import enumeration.GuiStyle;
@@ -10,7 +11,8 @@ public class GameParameters {
 
 	/* Default values */
 	public static GuiStyle guiStyle = GuiStyle.SYSTEM_STYLE;
-	public static GameMode gameMode = GameMode.HUMAN_VS_MINIMAX_AI;
+	public static GameMode gameMode = GameMode.HUMAN_VS_AI;
+	public static AiType aiType = AiType.MINIMAX_AI;
 	public static int maxDepth1 = 5;
 	public static int maxDepth2 = 5;
 	public static Color player1Color = Color.RED;

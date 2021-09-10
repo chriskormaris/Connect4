@@ -193,13 +193,10 @@ public class Board {
 	// The game is in a draw state, if all cells are full
 	// and nobody has won the game.
     public boolean checkForDraw() {
-    	
-    	if (gameOver)
-    		return false;
-    	
-    	for(int row=0; row<numOfRows; row++) {
-			for(int col=0; col<numOfColumns; col++) {
-				if(gameBoard[row][col] == Constants.EMPTY) {
+
+    	for (int row=0; row<numOfRows; row++) {
+			for (int col=0; col<numOfColumns; col++) {
+				if (gameBoard[row][col] == Constants.EMPTY) {
                     return false;
                 }
             }
