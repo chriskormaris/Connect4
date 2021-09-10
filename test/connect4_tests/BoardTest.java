@@ -5,14 +5,15 @@ import connect4.Board;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import utility.Constants;
+import utility.GameParameters;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
 public class BoardTest {
 
-	static final int numOfRows = Constants.NUM_OF_ROWS;
-	static final int numOfColumns = Constants.NUM_OF_COLUMNS;
+	static final int numOfRows = GameParameters.numOfRows;
+	static final int numOfColumns = GameParameters.numOfColumns;
 
 	@BeforeEach
 	public void setUp() {

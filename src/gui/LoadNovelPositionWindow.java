@@ -17,8 +17,8 @@ public class LoadNovelPositionWindow extends JFrame {
 	 */
 	private static final long serialVersionUID = 6651737783332653136L;
 	
-	static final int numOfRows = Constants.NUM_OF_ROWS;
-	static final int numOfColumns = Constants.NUM_OF_COLUMNS;
+	static final int numOfRows = GameParameters.numOfRows;
+	static final int numOfColumns = GameParameters.numOfColumns;
 
 	private final JComboBox<Integer> row_drop_down;
 	private final JComboBox<Integer> column_drop_down;
@@ -116,21 +116,21 @@ public class LoadNovelPositionWindow extends JFrame {
 					player = (player == 0) ? Constants.P1 : Constants.P2;
 					
 
-					if (Connect4Gui.board.getGameBoard()[row][column] == Constants.EMPTY) {
-						Connect4Gui.board.setTurn(Connect4Gui.board.getTurn() + 1);
-						Connect4Gui.turnMessage.setText("Turn: " + Connect4Gui.board.getTurn());
+					if (GUI.board.getGameBoard()[row][column] == Constants.EMPTY) {
+						GUI.board.setTurn(GUI.board.getTurn() + 1);
+						GUI.turnMessage.setText("Turn: " + GUI.board.getTurn());
 					}
 				    
-					Connect4Gui.board.getGameBoard()[row][column] = player;
+					GUI.board.getGameBoard()[row][column] = player;
 					if (player == Constants.P1)
-						Connect4Gui.placeChecker(GameParameters.player1Color, row, column);
+						GUI.placeChecker(GameParameters.player1Color, row, column);
 					else if (player == Constants.P2)
-						Connect4Gui.placeChecker(GameParameters.player2Color, row, column);
+						GUI.placeChecker(GameParameters.player2Color, row, column);
 					
-					Board.printBoard(Connect4Gui.board.getGameBoard());
+					Board.printBoard(GUI.board.getGameBoard());
 					
-					if (Connect4Gui.board.checkForGameOver()) {
-						Connect4Gui.gameOver();
+					if (GUI.board.checkForGameOver()) {
+						GUI.gameOver();
 					}
 					
 					

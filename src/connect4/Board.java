@@ -4,13 +4,14 @@ package connect4;
 import java.util.ArrayList;
 
 import utility.Constants;
+import utility.GameParameters;
 
 
 public class Board {
-	
-	static final int numOfRows = Constants.NUM_OF_ROWS;
-	static final int numOfColumns = Constants.NUM_OF_COLUMNS;
-	static final int inARow = Constants.IN_A_ROW;
+
+	private int numOfRows;
+	private int numOfColumns;
+	private int checkersInARow;
 	
     // Immediate move that led to this board.
     private Move lastMove;
@@ -31,6 +32,10 @@ public class Board {
 	
 	// constructor
 	public Board() {
+		numOfRows = GameParameters.numOfRows;
+		numOfColumns = GameParameters.numOfColumns;
+		checkersInARow = GameParameters.checkersInARow;
+
 		this.lastMove = new Move();
 		this.lastPlayer = Constants.P2;
 		this.winner = Constants.EMPTY;
@@ -48,6 +53,10 @@ public class Board {
 	
 	// copy constructor
 	public Board(Board board) {
+		numOfRows = board.getNumOfRows();
+		numOfColumns = board.getNumOfColumns();
+		checkersInARow = board.getCheckersInARow();
+
 		lastMove = board.getLastMove();
 		lastPlayer = board.getLastPlayer();
 		winner = board.getWinner();
@@ -142,12 +151,12 @@ public class Board {
 		
 		if (checkWinState()) {
 			if (winner == Constants.P1)
-				player1Score = (int) Math.pow(10, (inARow-2));
+				player1Score = (int) Math.pow(10, (checkersInARow -2));
 			else if (winner == Constants.P2)
-				player2Score = (int) Math.pow(10, (inARow-2));
+				player2Score = (int) Math.pow(10, (checkersInARow -2));
 		}
 		
-		for (int i=0; i<inARow-2; i++) {
+		for (int i = 0; i< checkersInARow -2; i++) {
 	        player1Score += countNInARow(i+2, Constants.P1) * Math.pow(10, i);
 	        player2Score += countNInARow(i+2, Constants.P2) * Math.pow(10, i);
 		}
@@ -163,13 +172,13 @@ public class Board {
 	 */
 	public boolean checkWinState() {
 		
-		int times4InARowPlayer1 = countNInARow(inARow, Constants.P1);
+		int times4InARowPlayer1 = countNInARow(checkersInARow, Constants.P1);
 		if (times4InARowPlayer1 > 0) {
 			setWinner(Constants.P1);
 			return true;
 		}
 		
-		int times4InARowPlayer2 = countNInARow(inARow, Constants.P2);
+		int times4InARowPlayer2 = countNInARow(checkersInARow, Constants.P2);
 		if (times4InARowPlayer2 > 0) {
 			setWinner(Constants.P2);
 			return true;
@@ -219,7 +228,7 @@ public class Board {
 		// Check for "inARow" consecutive checkers of the same player or empty tiles in a row, horizontally.
 		for (int i=0; i<numOfRows; i++) {
 			for (int j=0; j<numOfColumns; j++) {
-				if (canMove(i, j+inARow-1)) {
+				if (canMove(i, j+ checkersInARow -1)) {
 					
 					// Check for "N" consecutive checkers of the same player in a row, horizontally.
 					int k = 0;
@@ -228,10 +237,10 @@ public class Board {
 					}
 					// Check for "inARow - N" consecutive checkers of the same player or empty tiles in a row, horizontally.
 					if (k==N) {
-						while (k < inARow && (gameBoard[i][j+k] == player || gameBoard[i][j+k] == Constants.EMPTY)) {
+						while (k < checkersInARow && (gameBoard[i][j+k] == player || gameBoard[i][j+k] == Constants.EMPTY)) {
 							k++;
 						}
-						if (k==inARow) times++;
+						if (k== checkersInARow) times++;
 					}
 					
 				}
@@ -242,7 +251,7 @@ public class Board {
 		// Check for "inARow" consecutive checkers of the same player or empty tiles in a row, vertically.
 		for (int i=0; i<numOfRows; i++) {
 			for (int j=0; j<numOfColumns; j++) {
-				if (canMove(i-inARow+1, j)) {
+				if (canMove(i- checkersInARow +1, j)) {
 					
 					// Check for "N" consecutive checkers of the same player in a row, vertically.
 					int k = 0;
@@ -250,11 +259,11 @@ public class Board {
 						k++;
 					}
 					// Check for "inARow - N" consecutive checkers of the same player or empty tiles in a row, vertically.
-					if (k==inARow) {
-						while (k < inARow && (gameBoard[i-k][j] == player || gameBoard[i-k][j] == Constants.EMPTY)) {
+					if (k== checkersInARow) {
+						while (k < checkersInARow && (gameBoard[i-k][j] == player || gameBoard[i-k][j] == Constants.EMPTY)) {
 							k++;
 						}
-						if (k==inARow) times++;
+						if (k== checkersInARow) times++;
 					}
 					
 				}
@@ -265,7 +274,7 @@ public class Board {
 		// Check for "inARow" consecutive checkers of the same player or empty tiles in a row, in descending diagonal.
 		for (int i=0; i<numOfRows; i++) {
 			for (int j=0; j<numOfColumns; j++) {
-				if (canMove(i+inARow-1, j+inARow-1)) {
+				if (canMove(i+ checkersInARow -1, j+ checkersInARow -1)) {
 					
 					// Check for "N" consecutive checkers of the same player in a row, in descending diagonal.
 					int k = 0;
@@ -273,11 +282,11 @@ public class Board {
 						k++;
 					}
 					// Check for "inARow - N" consecutive checkers of the same player or empty tiles in a row, in descending diagonal.
-					if (k==inARow) {
-						while (k < inARow && (gameBoard[i+k][j+k] == player || gameBoard[i+k][j+k] == Constants.EMPTY)) {
+					if (k== checkersInARow) {
+						while (k < checkersInARow && (gameBoard[i+k][j+k] == player || gameBoard[i+k][j+k] == Constants.EMPTY)) {
 							k++;
 						}
-						if (k==inARow) times++;
+						if (k== checkersInARow) times++;
 					}
 					
 				}
@@ -288,7 +297,7 @@ public class Board {
 		// Check for "inARow" consecutive checkers of the same player or empty tiles in a row, in ascending diagonal.
 		for (int i=0; i<numOfRows; i++) {
 			for (int j=0; j<numOfColumns; j++) {
-				if (canMove(i-inARow+1, j+inARow-1)) {
+				if (canMove(i- checkersInARow +1, j+ checkersInARow -1)) {
 					
 					// Check for "N" consecutive checkers of the same player in a row, in ascending diagonal.
 					int k = 0;
@@ -296,11 +305,11 @@ public class Board {
 						k++;
 					}
 					// Check for "inARow - N" consecutive checkers of the same player or empty tiles in a row, in ascending diagonal.
-					if (k==inARow) {
-						while (k < inARow && (gameBoard[i-k][j+k] == player || gameBoard[i-k][j+k] == Constants.EMPTY)) {
+					if (k== checkersInARow) {
+						while (k < checkersInARow && (gameBoard[i-k][j+k] == player || gameBoard[i-k][j+k] == Constants.EMPTY)) {
 							k++;
 						}
-						if (k==inARow) times++;
+						if (k== checkersInARow) times++;
 					}
 					
 				}
@@ -311,15 +320,23 @@ public class Board {
 				
 	}
 
-	
-    // It prints the board on the console.
-  	public static void printBoard(int[][] gameBoard) {
+	// It prints the board on the console.
+	public static void printBoard(int[][] gameBoard) {
+		if (GameParameters.checkersInARow == 4) {
+			printConnect4Board(gameBoard);
+		} else if (GameParameters.checkersInARow == 5) {
+			printConnect5Board(gameBoard);
+		}
+	}
+
+	// It prints the Connect-4 board on the console.
+  	public static void printConnect4Board(int[][] gameBoard) {
   		
   		System.out.println("| 1 | 2 | 3 | 4 | 5 | 6 | 7 |");
   		System.out.println();
-  		for (int i=0; i<numOfRows; i++) {
-  			for (int j=0; j<numOfColumns; j++) {
-  				if (j != numOfColumns - 1) {
+  		for (int i=0; i<GameParameters.numOfRows; i++) {
+  			for (int j=0; j<GameParameters.numOfColumns; j++) {
+  				if (j != GameParameters.numOfColumns - 1) {
   					if (gameBoard[i][j] != Constants.EMPTY) {
   						System.out.print("| " + gameBoard[i][j] + " ");
   					} else {
@@ -338,11 +355,59 @@ public class Board {
 
   	}
 
+	// It prints the Connect-5 board on the console.
+	public static void printConnect5Board(int[][] gameBoard) {
+
+		System.out.println("| 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 |");
+		System.out.println();
+		for (int i=0; i<GameParameters.numOfRows; i++) {
+			for (int j=0; j<GameParameters.numOfColumns; j++) {
+				if (j != GameParameters.numOfColumns - 1) {
+					if (gameBoard[i][j] != Constants.EMPTY) {
+						System.out.print("| " + gameBoard[i][j] + " ");
+					} else {
+						System.out.print("| " + "-" + " ");
+					}
+				} else {
+					if (gameBoard[i][j] != Constants.EMPTY) {
+						System.out.println("| " + gameBoard[i][j] + " |");
+					} else {
+						System.out.println("| " + "-" + " |");
+					}
+				}
+			}
+		}
+		System.out.println("\n*********************************");
+
+	}
+
+	public int getNumOfRows() {
+		return numOfRows;
+	}
+
+	public void setNumOfRows(int numOfRows) {
+		this.numOfRows = numOfRows;
+	}
+
+	public int getNumOfColumns() {
+		return numOfColumns;
+	}
+
+	public void setNumOfColumns(int numOfColumns) {
+		this.numOfColumns = numOfColumns;
+	}
+
+	public int getCheckersInARow() {
+		return checkersInARow;
+	}
+
+	public void setCheckersInARow(int checkersInARow) {
+		this.checkersInARow = checkersInARow;
+	}
 
 	public Move getLastMove() {
 		return lastMove;
 	}
-
 
 	public void setLastMove(Move lastMove) {
 		this.lastMove.setRow(lastMove.getRow());
@@ -350,21 +415,17 @@ public class Board {
 		this.lastMove.setValue(lastMove.getValue());
 	}
 
-
 	public int getLastPlayer() {
 		return lastPlayer;
 	}
-
 
 	public void setLastPlayer(int lastPlayer) {
 		this.lastPlayer = lastPlayer;
 	}
 
-
 	public int[][] getGameBoard() {
 		return gameBoard;
 	}
-
 
 	public void setGameBoard(int[][] gameBoard) {
 		for(int i=0; i<numOfRows; i++) {
@@ -374,45 +435,36 @@ public class Board {
 		}
 	}
 
-
 	public int getWinner() {
 		return winner;
 	}
-
 
 	public void setWinner(int winner) {
 		this.winner = winner;
 	}
 
-
 	public int getTurn() {
 		return turn;
 	}
-
 
 	public void setTurn(int turn) {
 		this.turn = turn;
 	}
 
-
 	public boolean isGameOver() {
 		return gameOver;
 	}
-
 
 	public void setGameOver(boolean isGameOver) {
 		this.gameOver = isGameOver;
 	}
 
-
 	public boolean isOverflow() {
 		return overflow;
 	}
 
-
 	public void setOverflow(boolean overflow) {
 		this.overflow = overflow;
 	}
-
 
 }

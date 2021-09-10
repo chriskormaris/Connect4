@@ -2,7 +2,6 @@ package ai;
 
 import connect4.Board;
 import connect4.Move;
-import utility.Constants;
 import utility.GameParameters;
 
 import java.util.Random;
@@ -29,7 +28,7 @@ public class RandomChoiceAi {
         }
         int col;
         do {
-            col = r.nextInt(Constants.IN_A_ROW);
+            col = r.nextInt(GameParameters.checkersInARow);
         } while (board.checkFullColumn(col));
 
         int row = board.getEmptyRowPosition(col);

@@ -39,12 +39,15 @@ import utility.Constants;
 import utility.GameParameters;
 import utility.ResourceLoader;
 
+import static utility.Constants.CONNECT_4_BOARD_IMG_PATH;
+import static utility.Constants.CONNECT_5_BOARD_IMG_PATH;
 
-public class Connect4Gui {
+
+public class GUI {
 	
-	static int NUM_OF_ROWS = Constants.NUM_OF_ROWS;
-	static int NUM_OF_COLUMNS = Constants.NUM_OF_COLUMNS;
-	static int IN_A_ROW = Constants.IN_A_ROW;
+	static int NUM_OF_ROWS;
+	static int NUM_OF_COLUMNS;
+	static int IN_A_ROW;
 	
 	static Board board;
 	static JFrame frameMainWindow;
@@ -53,9 +56,12 @@ public class Connect4Gui {
 	static JPanel panelBoardNumbers;
 	static JLayeredPane layeredGameBoard;
 	
-	static int DEFAULT_WIDTH = 570;
-	static int DEFAULT_HEIGHT = 525;
-		
+	static int DEFAULT_CONNECT_4_WIDTH = 570;
+	static int DEFAULT_CONNECT_4_HEIGHT = 525;
+
+	static int DEFAULT_CONNECT_5_WIDTH = 648;
+	static int DEFAULT_CONNECT_5_HEIGHT = 630;
+
 	static JButton[] buttons;
 
     static JLabel turnMessage;
@@ -88,12 +94,8 @@ public class Connect4Gui {
 	static JMenuItem howToPlayItem;
 	static JMenuItem aboutItem;
 	
-	public Connect4Gui() {
-		buttons = new JButton[NUM_OF_COLUMNS];
-		for (int i=0; i<NUM_OF_COLUMNS; i++) {
-			buttons[i] = new JButton(i+1+"");
-			buttons[i].setFocusable(false);
-		}
+	public GUI() {
+
 	}
 	
 	
@@ -267,10 +269,18 @@ public class Connect4Gui {
 	// This is the main Connect-4 board.
 	public static JLayeredPane createLayeredBoard() {
 		layeredGameBoard = new JLayeredPane();
-		layeredGameBoard.setPreferredSize(new Dimension(DEFAULT_WIDTH, DEFAULT_HEIGHT));
-		layeredGameBoard.setBorder(BorderFactory.createTitledBorder("Connect-4"));
-		
-		ImageIcon imageBoard = new ImageIcon(ResourceLoader.load("images/Board.png"));
+
+		ImageIcon imageBoard = null;
+		if (GameParameters.checkersInARow == 4) {
+			layeredGameBoard.setPreferredSize(new Dimension(DEFAULT_CONNECT_4_WIDTH, DEFAULT_CONNECT_4_HEIGHT));
+			layeredGameBoard.setBorder(BorderFactory.createTitledBorder("Connect-4"));
+			imageBoard = new ImageIcon(ResourceLoader.load(CONNECT_4_BOARD_IMG_PATH));
+		} if (GameParameters.checkersInARow == 5) {
+			layeredGameBoard.setPreferredSize(new Dimension(DEFAULT_CONNECT_5_WIDTH, DEFAULT_CONNECT_5_HEIGHT));
+			layeredGameBoard.setBorder(BorderFactory.createTitledBorder("Connect-5"));
+			imageBoard = new ImageIcon(ResourceLoader.load(CONNECT_5_BOARD_IMG_PATH));
+		}
+
 		JLabel imageBoardLabel = new JLabel(imageBoard);
 		
 		imageBoardLabel.setBounds(20, 20, imageBoard.getIconWidth(), imageBoard.getIconHeight());
@@ -291,7 +301,7 @@ public class Connect4Gui {
 			// System.out.println("keyPressed = " + KeyEvent.getKeyText(e.getKeyCode()));
 			String keyText = KeyEvent.getKeyText(e.getKeyCode());
 			
-			for (int i=0; i<Constants.NUM_OF_COLUMNS; i++) {
+			for (int i = 0; i<GameParameters.numOfColumns; i++) {
 				if (keyText.equals(i+1+"")) {
 			        undoBoards.push(new Board(board));
 					makeMove(i);
@@ -478,6 +488,15 @@ public class Connect4Gui {
 	// To be called when the game starts for the first time
 	// or a new game starts.
 	public static void createNewGame() {
+		NUM_OF_ROWS = GameParameters.numOfRows;
+		NUM_OF_COLUMNS = GameParameters.numOfColumns;
+		IN_A_ROW = GameParameters.checkersInARow;
+
+		buttons = new JButton[NUM_OF_COLUMNS];
+		for (int i=0; i<NUM_OF_COLUMNS; i++) {
+			buttons[i] = new JButton(i+1+"");
+			buttons[i].setFocusable(false);
+		}
 		
 		configureGuiStyle();
 		
@@ -494,9 +513,15 @@ public class Connect4Gui {
 		redoCheckerLabels.clear();
 		
 		if (frameMainWindow != null) frameMainWindow.dispose();
-		frameMainWindow = new JFrame("Minimax Connect-4");
-		// make the main window appear on the center
-		centerWindow(frameMainWindow, DEFAULT_WIDTH, DEFAULT_HEIGHT);
+		if (GameParameters.checkersInARow == 4) {
+			frameMainWindow = new JFrame("Minimax Connect-4");
+			// make the main window appear on the center
+			centerWindow(frameMainWindow, DEFAULT_CONNECT_4_WIDTH, DEFAULT_CONNECT_4_HEIGHT);
+		} else if (GameParameters.checkersInARow == 5) {
+			frameMainWindow = new JFrame("Minimax Connect-5");
+			// make the main window appear on the center
+			centerWindow(frameMainWindow, DEFAULT_CONNECT_5_WIDTH, DEFAULT_CONNECT_5_HEIGHT);
+		}
 		Component compMainWindowContents = createContentComponents();
 		frameMainWindow.getContentPane().add(compMainWindowContents, BorderLayout.CENTER);
 		
@@ -651,8 +676,8 @@ public class Connect4Gui {
 			e.printStackTrace();
 		}
 	}
-	
-	
+
+
 	// Gets called after makeMove(int, col) is called.
 	public static boolean game() {
 		
@@ -834,7 +859,7 @@ public class Connect4Gui {
 	
 	
 	public static void main(String[] args){
-		Connect4Gui connect4 = new Connect4Gui();
+		GUI connect4 = new GUI();
 
 		// These are the default values.
 		// Feel free to change them, before running.
@@ -850,7 +875,7 @@ public class Connect4Gui {
 		GameParameters.player2Color = Constants.YELLOW;
 		*/
 
-		Connect4Gui.createNewGame();
+		GUI.createNewGame();
 	}
 	
 	

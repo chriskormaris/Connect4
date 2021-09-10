@@ -17,5 +17,9 @@ public class GameParameters {
 	public static int maxDepth2 = 5;
 	public static Color player1Color = Color.RED;
 	public static Color player2Color = Color.YELLOW;
-	
+
+	public static int numOfRows = 6;
+	public static int numOfColumns = 7;
+	public static int checkersInARow = 4;
+
 }

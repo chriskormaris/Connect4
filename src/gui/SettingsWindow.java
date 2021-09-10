@@ -26,12 +26,13 @@ public class SettingsWindow extends JFrame {
 	private final JComboBox<Integer> max_depth2_drop_down;
 	private final JComboBox<String> player1_color_drop_down;
 	private final JComboBox<String> player2_color_drop_down;
-	
+	private final JComboBox<Integer> checkers_in_a_row_drop_down;
+
 	private final JButton apply;
 	private final JButton cancel;
 
 	public static int width = 450;
-	public static int height = 375;
+	public static int height = 410;
 	
 	
 	public SettingsWindow() {
@@ -52,6 +53,7 @@ public class SettingsWindow extends JFrame {
 		int maxDepth2 = GameParameters.maxDepth2 - 1;
 		Color selectedPlayer1Color = GameParameters.player1Color;
 		Color selectedPlayer2Color = GameParameters.player2Color;
+		int inARow = GameParameters.checkersInARow;
 
 		JLabel guiStyleLabel = new JLabel("GUI style");
 		JLabel gameModeLabel = new JLabel("Game mode");
@@ -60,7 +62,8 @@ public class SettingsWindow extends JFrame {
 		JLabel maxDepth2Label = new JLabel("AI 2 depth (AiVsAi)");
 		JLabel player1ColorLabel = new JLabel("Player 1 color");
 		JLabel player2ColorLabel = new JLabel("Player 2 color");
-		
+		JLabel inARowLabel = new JLabel("Checkers in a Row");
+
 		add(guiStyleLabel);
 		add(gameModeLabel);
 		add(aiTypeLabel);
@@ -68,7 +71,8 @@ public class SettingsWindow extends JFrame {
 		add(maxDepth2Label);
 		add(player1ColorLabel);
 		add(player2ColorLabel);
-		
+		add(inARowLabel);
+
 		gui_style_drop_down = new JComboBox<>();
 		gui_style_drop_down.addItem("System style");
 		gui_style_drop_down.addItem("Cross-platform style");
@@ -169,7 +173,13 @@ public class SettingsWindow extends JFrame {
 		} else if (selectedPlayer2Color == Color.PURPLE) {
 			player2_color_drop_down.setSelectedIndex(5);
 		}
-		
+
+		checkers_in_a_row_drop_down = new JComboBox<>();
+		checkers_in_a_row_drop_down.addItem(4);
+		checkers_in_a_row_drop_down.addItem(5);
+
+		checkers_in_a_row_drop_down.setSelectedIndex(inARow-4);
+
 		add(gui_style_drop_down);
 		add(game_mode_drop_down);
 		add(ai_type_drop_down);
@@ -177,6 +187,7 @@ public class SettingsWindow extends JFrame {
 		add(max_depth2_drop_down);
 		add(player1_color_drop_down);
 		add(player2_color_drop_down);
+		add(checkers_in_a_row_drop_down);
 
 		guiStyleLabel.setBounds(25, 25, 200, 25);
 		gameModeLabel.setBounds(25, 60, 200, 25);
@@ -185,7 +196,8 @@ public class SettingsWindow extends JFrame {
 		maxDepth2Label.setBounds(25, 165, 200, 25);
 		player1ColorLabel.setBounds(25, 200, 200, 25);
 		player2ColorLabel.setBounds(25, 235, 200, 25);
-		
+		inARowLabel.setBounds(25, 270, 200, 25);
+
 		gui_style_drop_down.setBounds(195, 25, 200, 25);
 		game_mode_drop_down.setBounds(195, 60, 200, 25);
 		ai_type_drop_down.setBounds(195, 95, 200, 25);
@@ -193,16 +205,17 @@ public class SettingsWindow extends JFrame {
 		max_depth2_drop_down.setBounds(195, 165, 200, 25);
 		player1_color_drop_down.setBounds(195, 200, 200, 25);
 		player2_color_drop_down.setBounds(195, 235, 200, 25);
-		
+		checkers_in_a_row_drop_down.setBounds(195, 270, 200, 25);
+
 		apply = new JButton("Apply");
 		cancel = new JButton("Cancel");
 		add(apply);
 		add(cancel);
 		
 		int distance = 10;
-		apply.setBounds((width / 2) - 110 - (distance / 2), 285, 100, 30);
+		apply.setBounds((width / 2) - 110 - (distance / 2), 320, 100, 30);
 		apply.addActionListener(handler);
-		cancel.setBounds((width / 2) - 10 + (distance / 2), 285, 100, 30);
+		cancel.setBounds((width / 2) - 10 + (distance / 2), 320, 100, 30);
 		cancel.addActionListener(handler);
 	}
 
@@ -231,7 +244,8 @@ public class SettingsWindow extends JFrame {
 						Color.valueOf(player1_color_drop_down.getSelectedItem().toString().toUpperCase());
 					Color player2Color =
 						Color.valueOf(player2_color_drop_down.getSelectedItem().toString().toUpperCase());
-										
+					int inARow = (int) checkers_in_a_row_drop_down.getSelectedItem();
+
 					if (player1Color == player2Color) {
 						JOptionPane.showMessageDialog(null,
 								"Player 1 and Player 2 cannot have the same color of checkers!",
@@ -247,13 +261,16 @@ public class SettingsWindow extends JFrame {
 					GameParameters.maxDepth2 = maxDepth2;
 					GameParameters.player1Color = player1Color;
 					GameParameters.player2Color = player2Color;
-					
+					GameParameters.numOfRows = (inARow == 4) ? 6 : 7;
+					GameParameters.numOfColumns = (inARow == 4) ? 7 : 8;
+					GameParameters.checkersInARow = inARow;
+
 					JOptionPane.showMessageDialog(null,
 							"Game settings have been changed.\nThe changes will be applied in the next new game.",
 							"Notice", JOptionPane.INFORMATION_MESSAGE);
 					dispose();
 				}
-				
+
 				catch(Exception e) {
 					System.err.println("ERROR : " + e.getMessage());
 				}
