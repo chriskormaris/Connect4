@@ -96,8 +96,9 @@ public class Board {
 	
 	
 	public boolean checkFullColumn(int col) {
-		if (gameBoard[0][col] == Constants.EMPTY)
+		if (gameBoard[0][col] == Constants.EMPTY) {
 			return false;
+		}
 		return true;
 	}
 	
