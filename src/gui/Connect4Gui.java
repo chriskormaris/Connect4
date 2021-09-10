@@ -29,7 +29,7 @@ import javax.swing.UIManager.LookAndFeelInfo;
 
 import ai.RandomChoiceAi;
 import connect4.Board;
-import connect4.MiniMaxAi;
+import ai.MiniMaxAi;
 import connect4.Move;
 import enumeration.AiType;
 import enumeration.Color;
@@ -60,7 +60,8 @@ public class Connect4Gui {
 
     static JLabel turnMessage;
     
-	static MiniMaxAi ai;
+	static MiniMaxAi minimaxAi;
+	static RandomChoiceAi randomAi;
 
 	// Player 1 symbol: X. Plays first.
 	// Player 2 symbol: O.
@@ -199,8 +200,10 @@ public class Connect4Gui {
 			e.printStackTrace();
 		} finally {
 			try {
-				bw.flush();
-				bw.close();
+				if (bw != null) {
+					bw.flush();
+					bw.close();
+				}
 			} catch (IOException|NullPointerException e) {
 				e.printStackTrace();
 			}
@@ -296,7 +299,11 @@ public class Connect4Gui {
 					if (!board.isOverflow()) {
 						boolean isGameOver = game();
 						if (GameParameters.gameMode == GameMode.HUMAN_VS_AI && !isGameOver) {
-							minimaxAiMove(ai);
+							if (GameParameters.aiType == AiType.MINIMAX_AI) {
+								minimaxAiMove(minimaxAi);
+							} else if (GameParameters.aiType == AiType.RANDOM_AI) {
+								randomAiMove(randomAi);
+							}
 						}
 					}
 					break;
@@ -523,7 +530,11 @@ public class Connect4Gui {
 		Board.printBoard(board.getGameBoard());
 		
 		if (GameParameters.gameMode == GameMode.HUMAN_VS_AI) {
-			ai = new MiniMaxAi(GameParameters.maxDepth1, Constants.P2);
+			if (GameParameters.aiType == AiType.MINIMAX_AI) {
+				minimaxAi = new MiniMaxAi(GameParameters.maxDepth1, Constants.P2);
+			} else if (GameParameters.aiType == AiType.RANDOM_AI) {
+				randomAi = new RandomChoiceAi(Constants.P2);
+			}
 		} else if (GameParameters.gameMode == GameMode.AI_VS_AI) {
 			setAllButtonsEnabled(false);
 			
@@ -688,7 +699,7 @@ public class Connect4Gui {
 	}
 
 
-	// Gets called after the human player makes a move. It makes a Minimax AI move.
+	// Gets called after the human player makes a move. It makes a Random AI move.
 	public static void randomAiMove(RandomChoiceAi ai){
 		Move aiMove = ai.randomMove(board);
 		board.makeMove(aiMove.getColumn(), ai.getAiPlayer());
@@ -711,7 +722,11 @@ public class Connect4Gui {
 						if (!board.isOverflow()) {
 							boolean isGameOver = game();
 							if (GameParameters.gameMode == GameMode.HUMAN_VS_AI && !isGameOver) {
-								minimaxAiMove(ai);
+								if (GameParameters.aiType == AiType.MINIMAX_AI) {
+									minimaxAiMove(minimaxAi);
+								} else if (GameParameters.aiType == AiType.RANDOM_AI) {
+									randomAiMove(randomAi);
+								}
 							}
 						}
 						frameMainWindow.requestFocusInWindow();

@@ -4,7 +4,7 @@ package gui;
 // exception for the class "Scanner"
 
 import connect4.Board;
-import connect4.MiniMaxAi;
+import ai.MiniMaxAi;
 import connect4.Move;
 import utility.Constants;
 

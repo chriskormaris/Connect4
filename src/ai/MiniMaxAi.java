@@ -1,9 +1,11 @@
-package connect4;
+package ai;
 
 
 import java.util.ArrayList;
 import java.util.Random;
 
+import connect4.Board;
+import connect4.Move;
 import utility.Constants;
 
 

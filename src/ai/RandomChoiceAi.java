@@ -9,10 +9,10 @@ import java.util.Random;
 
 public class RandomChoiceAi {
 
-    private int aiPlayer;
+    private final int aiPlayer;
 
-    public RandomChoiceAi(int aiLetter) {
-        this.aiPlayer = aiLetter;
+    public RandomChoiceAi(int aiPlayer) {
+        this.aiPlayer = aiPlayer;
     }
 
     public int getAiPlayer() {
@@ -24,7 +24,8 @@ public class RandomChoiceAi {
         Random r = new Random();
 
         if ((board.checkForGameOver())) {
-            return new Move(board.getLastMove().getRow(), board.getLastMove().getColumn(), board.evaluate());
+            Move lastMove = new Move(board.getLastMove().getRow(), board.getLastMove().getColumn(), board.evaluate());
+            return lastMove;
         }
         int col;
         do {
