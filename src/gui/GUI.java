@@ -399,6 +399,7 @@ public class GUI {
 			
 			redoItem.setEnabled(true);
 			redoButton.setEnabled(true);
+			if (GameParameters.guiStyle == GuiStyle.NIMBUS_STYLE) redoButton.setVisible(true);
 
 			System.out.println("Turn: " + board.getTurn());
 			Board.printBoard(board.getGameBoard());
@@ -477,11 +478,13 @@ public class GUI {
 			if (redoBoards.isEmpty()) {
 				redoItem.setEnabled(false);
 				redoButton.setEnabled(false);
+				if (GameParameters.guiStyle == GuiStyle.NIMBUS_STYLE) redoButton.setVisible(false);
 			}
 
 			undoItem.setEnabled(true);
 			undoButton.setEnabled(true);
-			
+			if (GameParameters.guiStyle == GuiStyle.NIMBUS_STYLE) undoButton.setVisible(true);
+
 			System.out.println("Turn: " + board.getTurn());
 			Board.printBoard(board.getGameBoard());
 		}
@@ -559,7 +562,9 @@ public class GUI {
 		JButton resetButton = new JButton("Reset");
 
 		undoButton.setEnabled(false);
+		if (GameParameters.guiStyle == GuiStyle.NIMBUS_STYLE) undoButton.setVisible(false);
 		redoButton.setEnabled(false);
+		if (GameParameters.guiStyle == GuiStyle.NIMBUS_STYLE) redoButton.setVisible(false);
 
 		undoButton.addActionListener(e -> {
 			if (!pause) {
@@ -573,10 +578,13 @@ public class GUI {
 				frameMainWindow.removeKeyListener(frameMainWindow.getKeyListeners()[0]);
 				pause = true;
 				undoButton.setEnabled(false);
+				if (GameParameters.guiStyle == GuiStyle.NIMBUS_STYLE) undoButton.setVisible(false);
 				pauseButton.setEnabled(false);
 				redoButton.setEnabled(false);
+				if (GameParameters.guiStyle == GuiStyle.NIMBUS_STYLE) redoButton.setVisible(false);
 				startButton.setEnabled(true);
 				resetButton.setEnabled(false);
+				if (GameParameters.guiStyle == GuiStyle.NIMBUS_STYLE) resetButton.setVisible(false);
 			}
 		});
 
@@ -595,12 +603,24 @@ public class GUI {
 				}
 
 				pause = false;
-				undoButton.setEnabled(true);
+				if (undoBoards.isEmpty()) {
+					undoButton.setEnabled(false);
+					if (GameParameters.guiStyle == GuiStyle.NIMBUS_STYLE) undoButton.setVisible(false);
+				} else {
+					undoButton.setEnabled(true);
+					if (GameParameters.guiStyle == GuiStyle.NIMBUS_STYLE) undoButton.setVisible(true);
+				}
 				pauseButton.setEnabled(true);
-				if (!redoBoards.isEmpty())
+				if (redoBoards.isEmpty()) {
+					redoButton.setEnabled(false);
+					if (GameParameters.guiStyle == GuiStyle.NIMBUS_STYLE) redoButton.setVisible(false);
+				} else {
 					redoButton.setEnabled(true);
+					if (GameParameters.guiStyle == GuiStyle.NIMBUS_STYLE) redoButton.setVisible(true);
+				}
 				startButton.setEnabled(false);
 				resetButton.setEnabled(true);
+				if (GameParameters.guiStyle == GuiStyle.NIMBUS_STYLE) resetButton.setVisible(true);
 			}
 		});
 
@@ -612,8 +632,10 @@ public class GUI {
 				}
 				pause = false;
 				undoButton.setEnabled(false);
+				if (GameParameters.guiStyle == GuiStyle.NIMBUS_STYLE) undoButton.setVisible(false);
 				pauseButton.setEnabled(true);
 				redoButton.setEnabled(false);
+				if (GameParameters.guiStyle == GuiStyle.NIMBUS_STYLE) redoButton.setVisible(false);
 				startButton.setEnabled(false);
 				createNewGame();
 			}
@@ -795,12 +817,14 @@ public class GUI {
 			gameOver();
 		} else {
 			undoButton.setEnabled(true);
+			if (GameParameters.guiStyle == GuiStyle.NIMBUS_STYLE) undoButton.setVisible(true);
 			undoItem.setEnabled(true);
 		}
 
 		redoBoards.clear();
 		redoCheckerLabels.clear();
 		redoButton.setEnabled(false);
+		if (GameParameters.guiStyle == GuiStyle.NIMBUS_STYLE) redoButton.setVisible(false);
 		redoItem.setEnabled(false);
 
 		return isGameOver;
