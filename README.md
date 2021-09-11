@@ -3,7 +3,7 @@ A Project made for educational purposes while studying in Athens University of E
 
 Video for this project: [here](https://www.youtube.com/watch?v=SxstLdf9LkE)
 
-Programming Languange: Java
+Programming Language: Java
 
 The game known as Connect-4, Score-4, 4-in-a-line or 4-in-a-row. The AI uses the minimax algorithm, with alpha-beta pruning. A graphical interface is included. The user can click on the buttons or press the keys 1-7 to place a checker. To go back a move click on **Undo** option or press **Ctrl+Z**.
 
@@ -22,6 +22,10 @@ HOT TO RUN IN ECLIPSE:
 * A **.jar** executable is included as well. Java 8 and above is required to run. Have fun!!
 
 
-### Screenshot
+### Connect-4 Screenshot
 
-![screenshot](/screenshots/screenshot_windows1.png)
+![screenshot](/screenshots/connect-4_system-style.png)
+
+### Connect-5 Screenshot
+
+![screenshot](/screenshots/connect-5_system-style.png)
