@@ -17,8 +17,8 @@ public class LoadNovelPositionWindow extends JFrame {
 	 */
 	private static final long serialVersionUID = 6651737783332653136L;
 	
-	static final int numOfRows = GameParameters.numOfRows;
-	static final int numOfColumns = GameParameters.numOfColumns;
+	static final int numOfRows = GUI.gameParameters.getNumOfRows();
+	static final int numOfColumns = GUI.gameParameters.getNumOfColumns();
 
 	private final JComboBox<Integer> row_drop_down;
 	private final JComboBox<Integer> column_drop_down;
@@ -123,9 +123,9 @@ public class LoadNovelPositionWindow extends JFrame {
 				    
 					GUI.board.getGameBoard()[row][column] = player;
 					if (player == Constants.P1)
-						GUI.placeChecker(GameParameters.player1Color, row, column);
+						GUI.placeChecker(GUI.gameParameters.getPlayer1Color(), row, column);
 					else if (player == Constants.P2)
-						GUI.placeChecker(GameParameters.player2Color, row, column);
+						GUI.placeChecker(GUI.gameParameters.getPlayer2Color(), row, column);
 					
 					Board.printBoard(GUI.board.getGameBoard());
 					

@@ -7,7 +7,6 @@ import connect4.Board;
 import ai.MiniMaxAi;
 import connect4.Move;
 import utility.Constants;
-import utility.GameParameters;
 
 import java.util.InputMismatchException;
 import java.util.Scanner;
@@ -16,8 +15,8 @@ import java.util.Scanner;
 
 public class ConsoleMain {
 	
-	static final int numOfColumns = GameParameters.numOfColumns;
-	static final int inARow = GameParameters.checkersInARow;
+	static final int numOfColumns = GUI.gameParameters.getNumOfColumns();
+	static final int inARow = GUI.gameParameters.getCheckersInARow();
 	
 	public static void main(String[] args) {
 		

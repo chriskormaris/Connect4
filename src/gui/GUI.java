@@ -43,7 +43,10 @@ import static utility.Constants.*;
 
 
 public class GUI {
-	
+
+	public static GameParameters gameParameters = new GameParameters();
+	public static GameParameters newGameParameters = new GameParameters(gameParameters);
+
 	static int NUM_OF_ROWS;
 	static int NUM_OF_COLUMNS;
 	static int IN_A_ROW;
@@ -222,10 +225,11 @@ public class GUI {
 				int column = Integer.parseInt(line.charAt(1) + "");
 				int player = Integer.parseInt(line.split(":")[1].trim());
 				board.getGameBoard()[row][column] = player;
-				if (player == Constants.P1)
-					placeChecker(GameParameters.player1Color, row, column);
-				else if (player == Constants.P2)
-					placeChecker(GameParameters.player2Color, row, column);
+				if (player == Constants.P1) {
+					placeChecker(gameParameters.getPlayer1Color(), row, column);
+				} else if (player == Constants.P2) {
+					placeChecker(gameParameters.getPlayer2Color(), row, column);
+				}
 				board.setTurn(board.getTurn() + 1);
 			}
 			Board.printBoard(board.getGameBoard());
@@ -269,11 +273,11 @@ public class GUI {
 		layeredGameBoard = new JLayeredPane();
 
 		ImageIcon imageBoard = null;
-		if (GameParameters.checkersInARow == 4) {
+		if (gameParameters.getCheckersInARow() == 4) {
 			layeredGameBoard.setPreferredSize(new Dimension(DEFAULT_CONNECT_4_WIDTH, DEFAULT_CONNECT_4_HEIGHT));
 			layeredGameBoard.setBorder(BorderFactory.createTitledBorder("Connect-4"));
 			imageBoard = new ImageIcon(ResourceLoader.load(CONNECT_4_BOARD_IMG_PATH));
-		} if (GameParameters.checkersInARow == 5) {
+		} if (gameParameters.getCheckersInARow() == 5) {
 			layeredGameBoard.setPreferredSize(new Dimension(DEFAULT_CONNECT_5_WIDTH, DEFAULT_CONNECT_5_HEIGHT));
 			layeredGameBoard.setBorder(BorderFactory.createTitledBorder("Connect-5"));
 			imageBoard = new ImageIcon(ResourceLoader.load(CONNECT_5_BOARD_IMG_PATH));
@@ -299,17 +303,17 @@ public class GUI {
 			// System.out.println("keyPressed = " + KeyEvent.getKeyText(e.getKeyCode()));
 			String keyText = KeyEvent.getKeyText(e.getKeyCode());
 			
-			for (int i = 0; i<GameParameters.numOfColumns; i++) {
+			for (int i = 0; i<gameParameters.getNumOfColumns(); i++) {
 				if (keyText.equals(i+1+"")) {
 			        undoBoards.push(new Board(board));
 					makeMove(i);
 					
 					if (!board.isOverflow()) {
 						boolean isGameOver = game();
-						if (GameParameters.gameMode == GameMode.HUMAN_VS_AI && !isGameOver) {
-							if (GameParameters.aiType == AiType.MINIMAX_AI) {
+						if (gameParameters.getGameMode() == GameMode.HUMAN_VS_AI && !isGameOver) {
+							if (gameParameters.getAiType() == AiType.MINIMAX_AI) {
 								minimaxAiMove(minimaxAi);
-							} else if (GameParameters.aiType == AiType.RANDOM_AI) {
+							} else if (gameParameters.getAiType() == AiType.RANDOM_AI) {
 								randomAiMove(randomAi);
 							}
 						}
@@ -337,7 +341,7 @@ public class GUI {
 	private static void undo() {
 		if (!undoBoards.isEmpty()) {
 			// This is the "undo" implementation for "Human Vs Human" mode.
-			if (GameParameters.gameMode == GameMode.HUMAN_VS_HUMAN) {
+			if (gameParameters.getGameMode() == GameMode.HUMAN_VS_HUMAN) {
 				try {
 					board.setGameOver(false);
 					
@@ -364,7 +368,7 @@ public class GUI {
 			}
 			
 			// This is the "undo" implementation for "Human Vs AI" mode.
-			else if (GameParameters.gameMode == GameMode.HUMAN_VS_AI) {
+			else if (gameParameters.getGameMode() == GameMode.HUMAN_VS_AI) {
 				try {
 					board.setGameOver(false);
 					setAllButtonsEnabled(true);
@@ -399,7 +403,7 @@ public class GUI {
 			
 			redoItem.setEnabled(true);
 			redoButton.setEnabled(true);
-			if (GameParameters.guiStyle == GuiStyle.NIMBUS_STYLE) redoButton.setVisible(true);
+			if (gameParameters.getGuiStyle() == GuiStyle.NIMBUS_STYLE) redoButton.setVisible(true);
 
 			System.out.println("Turn: " + board.getTurn());
 			Board.printBoard(board.getGameBoard());
@@ -410,7 +414,7 @@ public class GUI {
 	private static void redo() {
 		if (!redoBoards.isEmpty()) {
 			// This is the "redo" implementation for "Human Vs Human" mode.
-			if (GameParameters.gameMode == GameMode.HUMAN_VS_HUMAN) {
+			if (gameParameters.getGameMode() == GameMode.HUMAN_VS_HUMAN) {
 				try {
 					board.setGameOver(false);
 					
@@ -442,7 +446,7 @@ public class GUI {
 			}
 			
 			// This is the "redo" implementation for "Human Vs AI" mode.
-			else if (GameParameters.gameMode == GameMode.HUMAN_VS_AI) {
+			else if (gameParameters.getGameMode() == GameMode.HUMAN_VS_AI) {
 				try {
 					board.setGameOver(false);
 					setAllButtonsEnabled(true);
@@ -478,12 +482,12 @@ public class GUI {
 			if (redoBoards.isEmpty()) {
 				redoItem.setEnabled(false);
 				redoButton.setEnabled(false);
-				if (GameParameters.guiStyle == GuiStyle.NIMBUS_STYLE) redoButton.setVisible(false);
+				if (gameParameters.getGuiStyle() == GuiStyle.NIMBUS_STYLE) redoButton.setVisible(false);
 			}
 
 			undoItem.setEnabled(true);
 			undoButton.setEnabled(true);
-			if (GameParameters.guiStyle == GuiStyle.NIMBUS_STYLE) undoButton.setVisible(true);
+			if (gameParameters.getGuiStyle() == GuiStyle.NIMBUS_STYLE) undoButton.setVisible(true);
 
 			System.out.println("Turn: " + board.getTurn());
 			Board.printBoard(board.getGameBoard());
@@ -494,9 +498,11 @@ public class GUI {
 	// To be called when the game starts for the first time
 	// or a new game starts.
 	public static void createNewGame() {
-		NUM_OF_ROWS = GameParameters.numOfRows;
-		NUM_OF_COLUMNS = GameParameters.numOfColumns;
-		IN_A_ROW = GameParameters.checkersInARow;
+		gameParameters = new GameParameters(newGameParameters);
+
+		NUM_OF_ROWS = gameParameters.getNumOfRows();
+		NUM_OF_COLUMNS = gameParameters.getNumOfColumns();
+		IN_A_ROW = gameParameters.getCheckersInARow();
 
 		buttons = new JButton[NUM_OF_COLUMNS];
 		for (int i=0; i<NUM_OF_COLUMNS; i++) {
@@ -506,7 +512,7 @@ public class GUI {
 		
 		configureGuiStyle();
 		
-		if (GameParameters.gameMode != GameMode.AI_VS_AI) {
+		if (gameParameters.getGameMode() != GameMode.AI_VS_AI) {
 			setAllButtonsEnabled(true);
 		}
 		
@@ -519,11 +525,11 @@ public class GUI {
 		redoCheckerLabels.clear();
 		
 		if (frameMainWindow != null) frameMainWindow.dispose();
-		if (GameParameters.checkersInARow == 4) {
+		if (gameParameters.getCheckersInARow() == 4) {
 			frameMainWindow = new JFrame("Minimax Connect-4");
 			// make the main window appear on the center
 			centerWindow(frameMainWindow, DEFAULT_CONNECT_4_WIDTH, DEFAULT_CONNECT_4_HEIGHT);
-		} else if (GameParameters.checkersInARow == 5) {
+		} else if (gameParameters.getCheckersInARow() == 5) {
 			frameMainWindow = new JFrame("Minimax Connect-5");
 			// make the main window appear on the center
 			centerWindow(frameMainWindow, DEFAULT_CONNECT_5_WIDTH, DEFAULT_CONNECT_5_HEIGHT);
@@ -562,9 +568,9 @@ public class GUI {
 		JButton resetButton = new JButton("Reset");
 
 		undoButton.setEnabled(false);
-		if (GameParameters.guiStyle == GuiStyle.NIMBUS_STYLE) undoButton.setVisible(false);
+		if (gameParameters.getGuiStyle() == GuiStyle.NIMBUS_STYLE) undoButton.setVisible(false);
 		redoButton.setEnabled(false);
-		if (GameParameters.guiStyle == GuiStyle.NIMBUS_STYLE) redoButton.setVisible(false);
+		if (gameParameters.getGuiStyle() == GuiStyle.NIMBUS_STYLE) redoButton.setVisible(false);
 
 		undoButton.addActionListener(e -> {
 			if (!pause) {
@@ -578,13 +584,13 @@ public class GUI {
 				frameMainWindow.removeKeyListener(frameMainWindow.getKeyListeners()[0]);
 				pause = true;
 				undoButton.setEnabled(false);
-				if (GameParameters.guiStyle == GuiStyle.NIMBUS_STYLE) undoButton.setVisible(false);
+				if (gameParameters.getGuiStyle() == GuiStyle.NIMBUS_STYLE) undoButton.setVisible(false);
 				pauseButton.setEnabled(false);
 				redoButton.setEnabled(false);
-				if (GameParameters.guiStyle == GuiStyle.NIMBUS_STYLE) redoButton.setVisible(false);
+				if (gameParameters.getGuiStyle() == GuiStyle.NIMBUS_STYLE) redoButton.setVisible(false);
 				startButton.setEnabled(true);
 				resetButton.setEnabled(false);
-				if (GameParameters.guiStyle == GuiStyle.NIMBUS_STYLE) resetButton.setVisible(false);
+				if (gameParameters.getGuiStyle() == GuiStyle.NIMBUS_STYLE) resetButton.setVisible(false);
 			}
 		});
 
@@ -605,22 +611,22 @@ public class GUI {
 				pause = false;
 				if (undoBoards.isEmpty()) {
 					undoButton.setEnabled(false);
-					if (GameParameters.guiStyle == GuiStyle.NIMBUS_STYLE) undoButton.setVisible(false);
+					if (gameParameters.getGuiStyle() == GuiStyle.NIMBUS_STYLE) undoButton.setVisible(false);
 				} else {
 					undoButton.setEnabled(true);
-					if (GameParameters.guiStyle == GuiStyle.NIMBUS_STYLE) undoButton.setVisible(true);
+					if (gameParameters.getGuiStyle() == GuiStyle.NIMBUS_STYLE) undoButton.setVisible(true);
 				}
 				pauseButton.setEnabled(true);
 				if (redoBoards.isEmpty()) {
 					redoButton.setEnabled(false);
-					if (GameParameters.guiStyle == GuiStyle.NIMBUS_STYLE) redoButton.setVisible(false);
+					if (gameParameters.getGuiStyle() == GuiStyle.NIMBUS_STYLE) redoButton.setVisible(false);
 				} else {
 					redoButton.setEnabled(true);
-					if (GameParameters.guiStyle == GuiStyle.NIMBUS_STYLE) redoButton.setVisible(true);
+					if (gameParameters.getGuiStyle() == GuiStyle.NIMBUS_STYLE) redoButton.setVisible(true);
 				}
 				startButton.setEnabled(false);
 				resetButton.setEnabled(true);
-				if (GameParameters.guiStyle == GuiStyle.NIMBUS_STYLE) resetButton.setVisible(true);
+				if (gameParameters.getGuiStyle() == GuiStyle.NIMBUS_STYLE) resetButton.setVisible(true);
 			}
 		});
 
@@ -632,10 +638,10 @@ public class GUI {
 				}
 				pause = false;
 				undoButton.setEnabled(false);
-				if (GameParameters.guiStyle == GuiStyle.NIMBUS_STYLE) undoButton.setVisible(false);
+				if (gameParameters.getGuiStyle() == GuiStyle.NIMBUS_STYLE) undoButton.setVisible(false);
 				pauseButton.setEnabled(true);
 				redoButton.setEnabled(false);
-				if (GameParameters.guiStyle == GuiStyle.NIMBUS_STYLE) redoButton.setVisible(false);
+				if (gameParameters.getGuiStyle() == GuiStyle.NIMBUS_STYLE) redoButton.setVisible(false);
 				startButton.setEnabled(false);
 				createNewGame();
 			}
@@ -666,20 +672,20 @@ public class GUI {
 		System.out.println("Turn: " + board.getTurn());
 		Board.printBoard(board.getGameBoard());
 		
-		if (GameParameters.gameMode == GameMode.HUMAN_VS_AI) {
-			if (GameParameters.aiType == AiType.MINIMAX_AI) {
-				minimaxAi = new MiniMaxAi(GameParameters.maxDepth1, Constants.P2);
-			} else if (GameParameters.aiType == AiType.RANDOM_AI) {
+		if (gameParameters.getGameMode() == GameMode.HUMAN_VS_AI) {
+			if (gameParameters.getAiType() == AiType.MINIMAX_AI) {
+				minimaxAi = new MiniMaxAi(gameParameters.getMaxDepth1(), Constants.P2);
+			} else if (gameParameters.getAiType() == AiType.RANDOM_AI) {
 				randomAi = new RandomChoiceAi(Constants.P2);
 			}
-		} else if (GameParameters.gameMode == GameMode.AI_VS_AI) {
+		} else if (gameParameters.getGameMode() == GameMode.AI_VS_AI) {
 			setAllButtonsEnabled(false);
 			
 			// AI VS AI implementation here
-			if (GameParameters.aiType == AiType.MINIMAX_AI) {
+			if (gameParameters.getAiType() == AiType.MINIMAX_AI) {
 				// Initial maxDepth = 5. We can change this value for difficulty adjustment.
-				MiniMaxAi ai1 = new MiniMaxAi(GameParameters.maxDepth1, Constants.P1);
-				MiniMaxAi ai2 = new MiniMaxAi(GameParameters.maxDepth2, Constants.P2);
+				MiniMaxAi ai1 = new MiniMaxAi(gameParameters.getMaxDepth1(), Constants.P1);
+				MiniMaxAi ai2 = new MiniMaxAi(gameParameters.getMaxDepth2(), Constants.P2);
 
 				while (!board.isGameOver()) {
 					minimaxAiMove(ai1);
@@ -688,7 +694,7 @@ public class GUI {
 						minimaxAiMove(ai2);
 					}
 				}
-			} else if (GameParameters.aiType == AiType.RANDOM_AI) {
+			} else if (gameParameters.getAiType() == AiType.RANDOM_AI) {
 				RandomChoiceAi ai1 = new RandomChoiceAi(Constants.P1);
 				RandomChoiceAi ai2 = new RandomChoiceAi(Constants.P2);
 
@@ -707,13 +713,13 @@ public class GUI {
 	
 	private static void configureGuiStyle() {
 		try {
-			if (GameParameters.guiStyle == GuiStyle.SYSTEM_STYLE) {
+			if (gameParameters.getGuiStyle() == GuiStyle.SYSTEM_STYLE) {
 				// Option 1
 				UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-			} else if (GameParameters.guiStyle == GuiStyle.CROSS_PLATFORM_STYLE) {
+			} else if (gameParameters.getGuiStyle() == GuiStyle.CROSS_PLATFORM_STYLE) {
 				// Option 2
 				UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName());
-			} else if (GameParameters.guiStyle == GuiStyle.NIMBUS_STYLE) {
+			} else if (gameParameters.getGuiStyle() == GuiStyle.NIMBUS_STYLE) {
 				// Option 3
 			    for (LookAndFeelInfo info: UIManager.getInstalledLookAndFeels()) {
 			        if ("Nimbus".equals(info.getName())) {
@@ -780,7 +786,7 @@ public class GUI {
 		undoCheckerLabels.push(checkerLabel);
 		
 		try {
-			if (GameParameters.gameMode == GameMode.AI_VS_AI) {
+			if (gameParameters.getGameMode() == GameMode.AI_VS_AI) {
 				Thread.sleep(Constants.AI_MOVE_MILLISECONDS);
 				frameMainWindow.paint(frameMainWindow.getGraphics());
 			}
@@ -801,12 +807,12 @@ public class GUI {
 		
 		if (currentPlayer == Constants.P1) {
 			// It places a checker in the corresponding [row][col] of the GUI.
-			placeChecker(GameParameters.player1Color, row, col);
+			placeChecker(gameParameters.getPlayer1Color(), row, col);
 		}
 		
 		if (currentPlayer == Constants.P2) {
 			// It places a checker in the corresponding [row][col] of the GUI.
-			placeChecker(GameParameters.player2Color, row, col);
+			placeChecker(gameParameters.getPlayer2Color(), row, col);
 		}
 		
 		System.out.println("Turn: " + board.getTurn());
@@ -817,14 +823,14 @@ public class GUI {
 			gameOver();
 		} else {
 			undoButton.setEnabled(true);
-			if (GameParameters.guiStyle == GuiStyle.NIMBUS_STYLE) undoButton.setVisible(true);
+			if (gameParameters.getGuiStyle() == GuiStyle.NIMBUS_STYLE) undoButton.setVisible(true);
 			undoItem.setEnabled(true);
 		}
 
 		redoBoards.clear();
 		redoCheckerLabels.clear();
 		redoButton.setEnabled(false);
-		if (GameParameters.guiStyle == GuiStyle.NIMBUS_STYLE) redoButton.setVisible(false);
+		if (gameParameters.getGuiStyle() == GuiStyle.NIMBUS_STYLE) redoButton.setVisible(false);
 		redoItem.setEnabled(false);
 
 		return isGameOver;
@@ -862,10 +868,10 @@ public class GUI {
 
 						if (!board.isOverflow()) {
 							boolean isGameOver = game();
-							if (GameParameters.gameMode == GameMode.HUMAN_VS_AI && !isGameOver) {
-								if (GameParameters.aiType == AiType.MINIMAX_AI) {
+							if (gameParameters.getGameMode() == GameMode.HUMAN_VS_AI && !isGameOver) {
+								if (gameParameters.getAiType() == AiType.MINIMAX_AI) {
 									minimaxAiMove(minimaxAi);
-								} else if (GameParameters.aiType == AiType.RANDOM_AI) {
+								} else if (gameParameters.getAiType() == AiType.RANDOM_AI) {
 									randomAiMove(randomAi);
 								}
 							}
@@ -928,28 +934,28 @@ public class GUI {
 		
 		int choice = 0;
 		if (board.getWinner() == Constants.P1) {
-			if (GameParameters.gameMode == GameMode.HUMAN_VS_AI)
+			if (gameParameters.getGameMode() == GameMode.HUMAN_VS_AI)
 				choice = JOptionPane.showConfirmDialog(null,
 						"You win! Start a new game?",
 						"Game Over", JOptionPane.YES_NO_OPTION);
-			else if (GameParameters.gameMode == GameMode.HUMAN_VS_HUMAN)
+			else if (gameParameters.getGameMode() == GameMode.HUMAN_VS_HUMAN)
 				choice = JOptionPane.showConfirmDialog(null,
 						"Player 1 wins! Start a new game?",
 						"Game Over", JOptionPane.YES_NO_OPTION);
-			else if (GameParameters.gameMode == GameMode.AI_VS_AI)
+			else if (gameParameters.getGameMode() == GameMode.AI_VS_AI)
 				choice = JOptionPane.showConfirmDialog(null,
 						"Minimax AI 1 wins! Start a new game?",
 						"Game Over", JOptionPane.YES_NO_OPTION);
 		} else if (board.getWinner() == Constants.P2) {
-			if (GameParameters.gameMode == GameMode.HUMAN_VS_AI)
+			if (gameParameters.getGameMode() == GameMode.HUMAN_VS_AI)
 				choice = JOptionPane.showConfirmDialog(null,
 						"Computer AI wins! Start a new game?",
 						"Game Over", JOptionPane.YES_NO_OPTION);
-			else if (GameParameters.gameMode == GameMode.HUMAN_VS_HUMAN)
+			else if (gameParameters.getGameMode() == GameMode.HUMAN_VS_HUMAN)
 				choice = JOptionPane.showConfirmDialog(null,
 						"Player 2 wins! Start a new game?",
 						"Game Over", JOptionPane.YES_NO_OPTION);
-			else if (GameParameters.gameMode == GameMode.AI_VS_AI)
+			else if (gameParameters.getGameMode() == GameMode.AI_VS_AI)
 				choice = JOptionPane.showConfirmDialog(null,
 						"Minimax AI 2 wins! Start a new game?",
 						"Game Over", JOptionPane.YES_NO_OPTION);
@@ -981,14 +987,14 @@ public class GUI {
 		// Feel free to change them, before running.
 		// You can also change them later, from the GUI window.
 		/*
-		GameParameters.guiStyle = Constants.SystemStyle;
-		// GameParameters.gameMode = Constants.HumanVsAi;
- 		// GameParameters.gameMode = Constants.HumanVsHuman;
-		GameParameters.gameMode = Constants.AiVsAi;
-		GameParameters.maxDepth1 = 4;
-		GameParameters.maxDepth2 = 4;
-		GameParameters.player1Color = Constants.RED;
-		GameParameters.player2Color = Constants.YELLOW;
+		gameParameters.guiStyle = Constants.SystemStyle;
+		// gameParameters.gameMode = Constants.HumanVsAi;
+ 		// gameParameters.gameMode = Constants.HumanVsHuman;
+		gameParameters.gameMode = Constants.AiVsAi;
+		gameParameters.maxDepth1 = 4;
+		gameParameters.maxDepth2 = 4;
+		gameParameters.player1Color = Constants.RED;
+		gameParameters.player2Color = Constants.YELLOW;
 		*/
 
 		GUI.createNewGame();

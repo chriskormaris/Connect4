@@ -46,14 +46,14 @@ public class SettingsWindow extends JFrame {
 
 		EventHandler handler = new EventHandler();
 		
-		GuiStyle selectedGuiStyle = GameParameters.guiStyle;
-		GameMode selectedMode = GameParameters.gameMode;
-		AiType selectedAiType = GameParameters.aiType;
-		int maxDepth1 = GameParameters.maxDepth1 - 1;
-		int maxDepth2 = GameParameters.maxDepth2 - 1;
-		Color selectedPlayer1Color = GameParameters.player1Color;
-		Color selectedPlayer2Color = GameParameters.player2Color;
-		int inARow = GameParameters.checkersInARow;
+		GuiStyle selectedGuiStyle = GUI.gameParameters.getGuiStyle();
+		GameMode selectedMode = GUI.gameParameters.getGameMode();
+		AiType selectedAiType = GUI.gameParameters.getAiType();
+		int maxDepth1 = GUI.gameParameters.getMaxDepth1() - 1;
+		int maxDepth2 = GUI.gameParameters.getMaxDepth2() - 1;
+		Color selectedPlayer1Color = GUI.gameParameters.getPlayer1Color();
+		Color selectedPlayer2Color = GUI.gameParameters.getPlayer2Color();
+		int inARow = GUI.gameParameters.getCheckersInARow();
 
 		JLabel guiStyleLabel = new JLabel("GUI style");
 		JLabel gameModeLabel = new JLabel("Game mode");
@@ -254,16 +254,8 @@ public class SettingsWindow extends JFrame {
 					}
 					
 					// Change game parameters based on settings.
-					GameParameters.guiStyle = guiStyle;
-					GameParameters.gameMode = gameMode;
-					GameParameters.aiType = aiType;
-					GameParameters.maxDepth1 = maxDepth1;
-					GameParameters.maxDepth2 = maxDepth2;
-					GameParameters.player1Color = player1Color;
-					GameParameters.player2Color = player2Color;
-					GameParameters.numOfRows = (inARow == 4) ? 6 : 7;
-					GameParameters.numOfColumns = (inARow == 4) ? 7 : 8;
-					GameParameters.checkersInARow = inARow;
+					GUI.newGameParameters = new GameParameters(guiStyle, gameMode, aiType, maxDepth1, maxDepth2,
+							player1Color, player2Color, (inARow == 4) ? 6 : 7, (inARow == 4) ? 7 : 8, inARow);
 
 					JOptionPane.showMessageDialog(null,
 							"Game settings have been changed.\nThe changes will be applied in the next new game.",

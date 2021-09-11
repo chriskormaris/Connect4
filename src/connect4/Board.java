@@ -3,6 +3,7 @@ package connect4;
 
 import java.util.ArrayList;
 
+import gui.GUI;
 import utility.Constants;
 import utility.GameParameters;
 
@@ -32,9 +33,9 @@ public class Board {
 	
 	// constructor
 	public Board() {
-		numOfRows = GameParameters.numOfRows;
-		numOfColumns = GameParameters.numOfColumns;
-		checkersInARow = GameParameters.checkersInARow;
+		numOfRows = GUI.gameParameters.getNumOfRows();
+		numOfColumns = GUI.gameParameters.getNumOfColumns();
+		checkersInARow = GUI.gameParameters.getCheckersInARow();
 
 		this.lastMove = new Move();
 		this.lastPlayer = Constants.P2;
@@ -322,9 +323,9 @@ public class Board {
 
 	// It prints the board on the console.
 	public static void printBoard(int[][] gameBoard) {
-		if (GameParameters.checkersInARow == 4) {
+		if (GUI.gameParameters.getCheckersInARow() == 4) {
 			printConnect4Board(gameBoard);
-		} else if (GameParameters.checkersInARow == 5) {
+		} else if (GUI.gameParameters.getCheckersInARow() == 5) {
 			printConnect5Board(gameBoard);
 		}
 	}
@@ -334,9 +335,9 @@ public class Board {
   		
   		System.out.println("| 1 | 2 | 3 | 4 | 5 | 6 | 7 |");
   		System.out.println();
-  		for (int i=0; i<GameParameters.numOfRows; i++) {
-  			for (int j=0; j<GameParameters.numOfColumns; j++) {
-  				if (j != GameParameters.numOfColumns - 1) {
+  		for (int i=0; i<GUI.gameParameters.getNumOfRows(); i++) {
+  			for (int j=0; j<GUI.gameParameters.getNumOfColumns(); j++) {
+  				if (j != GUI.gameParameters.getNumOfColumns() - 1) {
   					if (gameBoard[i][j] != Constants.EMPTY) {
   						System.out.print("| " + gameBoard[i][j] + " ");
   					} else {
@@ -360,9 +361,9 @@ public class Board {
 
 		System.out.println("| 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 |");
 		System.out.println();
-		for (int i=0; i<GameParameters.numOfRows; i++) {
-			for (int j=0; j<GameParameters.numOfColumns; j++) {
-				if (j != GameParameters.numOfColumns - 1) {
+		for (int i=0; i<GUI.gameParameters.getNumOfRows(); i++) {
+			for (int j=0; j<GUI.gameParameters.getNumOfColumns(); j++) {
+				if (j != GUI.gameParameters.getNumOfColumns() - 1) {
 					if (gameBoard[i][j] != Constants.EMPTY) {
 						System.out.print("| " + gameBoard[i][j] + " ");
 					} else {
