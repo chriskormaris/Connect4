@@ -234,7 +234,9 @@ public class GUI {
 			e.printStackTrace();
 		} finally {
 			try {
-				br.close();
+				if (br != null) {
+					br.close();
+				}
 			} catch (IOException|NullPointerException e) {
 				e.printStackTrace();
 			}
@@ -949,7 +951,7 @@ public class GUI {
 	
 	
 	public static void main(String[] args){
-		GUI connect4 = new GUI();
+		// GUI connect4 = new GUI();
 
 		// These are the default values.
 		// Feel free to change them, before running.
