@@ -39,8 +39,7 @@ import utility.Constants;
 import utility.GameParameters;
 import utility.ResourceLoader;
 
-import static utility.Constants.CONNECT_4_BOARD_IMG_PATH;
-import static utility.Constants.CONNECT_5_BOARD_IMG_PATH;
+import static utility.Constants.*;
 
 
 public class GUI {
@@ -55,12 +54,6 @@ public class GUI {
 	static JPanel panelMain;
 	static JPanel panelBoardNumbers;
 	static JLayeredPane layeredGameBoard;
-	
-	static int DEFAULT_CONNECT_4_WIDTH = 570;
-	static int DEFAULT_CONNECT_4_HEIGHT = 525;
-
-	static int DEFAULT_CONNECT_5_WIDTH = 648;
-	static int DEFAULT_CONNECT_5_HEIGHT = 630;
 
 	static JButton[] buttons;
 
@@ -93,11 +86,14 @@ public class GUI {
 	static JMenu helpMenu;
 	static JMenuItem howToPlayItem;
 	static JMenuItem aboutItem;
-	
+
+	static JButton undoButton;
+	static JButton redoButton;
+	static boolean pause;
+
 	public GUI() {
 
 	}
-	
 	
 	// Add the menu bars and items to the window.
 	private static void AddMenus() {
@@ -396,9 +392,11 @@ public class GUI {
 
 			if (undoBoards.isEmpty()) {
 				undoItem.setEnabled(false);
+				undoButton.setEnabled(false);
 			}
 			
 			redoItem.setEnabled(true);
+			redoButton.setEnabled(true);
 
 			System.out.println("Turn: " + board.getTurn());
 			Board.printBoard(board.getGameBoard());
@@ -473,11 +471,14 @@ public class GUI {
 					System.err.flush();
 				}
 			}
-			
-			if (redoBoards.isEmpty())
+
+			if (redoBoards.isEmpty()) {
 				redoItem.setEnabled(false);
-			
+				redoButton.setEnabled(false);
+			}
+
 			undoItem.setEnabled(true);
+			undoButton.setEnabled(true);
 			
 			System.out.println("Turn: " + board.getTurn());
 			Board.printBoard(board.getGameBoard());
@@ -548,7 +549,94 @@ public class GUI {
         frameMainWindow.add(tools, BorderLayout.PAGE_END);
         turnMessage = new JLabel("Turn: " + board.getTurn());
         tools.add(turnMessage);
-		
+
+		undoButton = new JButton("<<");
+		JButton pauseButton = new JButton("Pause");
+		JButton startButton = new JButton("Resume");
+		redoButton = new JButton(">>");
+		JButton resetButton = new JButton("Reset");
+
+		undoButton.setEnabled(false);
+		redoButton.setEnabled(false);
+
+		undoButton.addActionListener(e -> {
+			if (!pause) {
+				undo();
+			}
+		});
+
+		pauseButton.addActionListener(e -> {
+			if (!pause) {
+				setAllButtonsEnabled(false);
+				frameMainWindow.removeKeyListener(frameMainWindow.getKeyListeners()[0]);
+				pause = true;
+				undoButton.setEnabled(false);
+				pauseButton.setEnabled(false);
+				redoButton.setEnabled(false);
+				startButton.setEnabled(true);
+				resetButton.setEnabled(false);
+			}
+		});
+
+		redoButton.addActionListener(e -> {
+			if (!pause) {
+				redo();
+			}
+		});
+
+		startButton.addActionListener(e -> {
+			if (pause) {
+				setAllButtonsEnabled(true);
+
+				if (frameMainWindow.getKeyListeners().length == 0) {
+					frameMainWindow.addKeyListener(gameKeyListener);
+				}
+
+				pause = false;
+				undoButton.setEnabled(true);
+				pauseButton.setEnabled(true);
+				if (!redoBoards.isEmpty())
+					redoButton.setEnabled(true);
+				startButton.setEnabled(false);
+				resetButton.setEnabled(true);
+			}
+		});
+
+		resetButton.addActionListener(e -> {
+			if (!pause) {
+				setAllButtonsEnabled(false);
+				for (KeyListener keyListener: frameMainWindow.getKeyListeners()) {
+					frameMainWindow.removeKeyListener(keyListener);
+				}
+				pause = false;
+				undoButton.setEnabled(false);
+				pauseButton.setEnabled(true);
+				redoButton.setEnabled(false);
+				startButton.setEnabled(false);
+				createNewGame();
+			}
+		});
+
+		undoButton.setFocusable(false);
+		pauseButton.setFocusable(false);
+		redoButton.setFocusable(false);
+		startButton.setFocusable(false);
+		resetButton.setFocusable(false);
+
+		startButton.setEnabled(false);
+
+		tools.setLayout(new FlowLayout(FlowLayout.CENTER));
+		tools.add(new JLabel(" "));
+		tools.add(undoButton);
+		tools.add(new JLabel(" "));
+		tools.add(pauseButton);
+		tools.add(new JLabel(" "));
+		tools.add(startButton);
+		tools.add(new JLabel(" "));
+		tools.add(redoButton);
+		tools.add(new JLabel(" "));
+		tools.add(resetButton);
+
 		AddMenus();
 		
 		System.out.println("Turn: " + board.getTurn());
@@ -700,15 +788,17 @@ public class GUI {
 		System.out.println("Turn: " + board.getTurn());
 		Board.printBoard(board.getGameBoard());
 		
-		boolean isGameOver = board.checkForGameOver(); 
+		boolean isGameOver = board.checkForGameOver();
 		if (isGameOver) {
 			gameOver();
+		} else {
+			undoButton.setEnabled(true);
+			undoItem.setEnabled(true);
 		}
-		
-		undoItem.setEnabled(true);
-		
+
 		redoBoards.clear();
 		redoCheckerLabels.clear();
+		redoButton.setEnabled(false);
 		redoItem.setEnabled(false);
 
 		return isGameOver;
