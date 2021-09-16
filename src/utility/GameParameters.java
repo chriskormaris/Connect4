@@ -10,8 +10,8 @@ public class GameParameters {
 	private GuiStyle guiStyle;
 	private GameMode gameMode;
 	private AiType aiType;
-	private int maxDepth1;
-	private int maxDepth2;
+	private int ai1MaxDepth;
+	private int ai2MaxDepth;
 	private Color player1Color;
 	private Color player2Color;
 
@@ -24,8 +24,8 @@ public class GameParameters {
 		guiStyle = GuiStyle.SYSTEM_STYLE;
 		gameMode = GameMode.HUMAN_VS_AI;
 		aiType = AiType.MINIMAX_AI;
-		maxDepth1 = 5;
-		maxDepth2 = 5;
+		ai1MaxDepth = 5;
+		ai2MaxDepth = 5;
 		player1Color = Color.RED;
 		player2Color = Color.YELLOW;
 
@@ -38,8 +38,8 @@ public class GameParameters {
 		this.guiStyle = otherGameParameters.guiStyle;
 		this.gameMode = otherGameParameters.gameMode;
 		this.aiType = otherGameParameters.aiType;
-		this.maxDepth1 = otherGameParameters.maxDepth1;
-		this.maxDepth2 = otherGameParameters.maxDepth2;
+		this.ai1MaxDepth = otherGameParameters.ai1MaxDepth;
+		this.ai2MaxDepth = otherGameParameters.ai2MaxDepth;
 		this.player1Color = otherGameParameters.player1Color;
 		this.player2Color = otherGameParameters.player2Color;
 		this.numOfRows = otherGameParameters.numOfRows;
@@ -47,13 +47,13 @@ public class GameParameters {
 		this.checkersInARow = otherGameParameters.checkersInARow;
 	}
 
-	public GameParameters(GuiStyle guiStyle, GameMode gameMode, AiType aiType, int maxDepth1, int maxDepth2,
+	public GameParameters(GuiStyle guiStyle, GameMode gameMode, AiType aiType, int ai1MaxDepth, int ai2MaxDepth,
 						  Color player1Color, Color player2Color, int numOfRows, int numOfColumns, int checkersInARow) {
 		this.guiStyle = guiStyle;
 		this.gameMode = gameMode;
 		this.aiType = aiType;
-		this.maxDepth1 = maxDepth1;
-		this.maxDepth2 = maxDepth2;
+		this.ai1MaxDepth = ai1MaxDepth;
+		this.ai2MaxDepth = ai2MaxDepth;
 		this.player1Color = player1Color;
 		this.player2Color = player2Color;
 		this.numOfRows = numOfRows;
@@ -85,20 +85,20 @@ public class GameParameters {
 		this.aiType = aiType;
 	}
 
-	public int getMaxDepth1() {
-		return maxDepth1;
+	public int getAi1MaxDepth() {
+		return ai1MaxDepth;
 	}
 
-	public void setMaxDepth1(int maxDepth1) {
-		this.maxDepth1 = maxDepth1;
+	public void setAi1MaxDepth(int ai1MaxDepth) {
+		this.ai1MaxDepth = ai1MaxDepth;
 	}
 
-	public int getMaxDepth2() {
-		return maxDepth2;
+	public int getAi2MaxDepth() {
+		return ai2MaxDepth;
 	}
 
-	public void setMaxDepth2(int maxDepth2) {
-		this.maxDepth2 = maxDepth2;
+	public void setAi2MaxDepth(int ai2MaxDepth) {
+		this.ai2MaxDepth = ai2MaxDepth;
 	}
 
 	public Color getPlayer1Color() {

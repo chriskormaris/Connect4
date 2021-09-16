@@ -27,9 +27,10 @@ import javax.swing.JToolBar;
 import javax.swing.UIManager;
 import javax.swing.UIManager.LookAndFeelInfo;
 
-import ai.RandomChoiceAi;
+import ai.AI;
+import ai.RandomChoiceAI;
 import connect4.Board;
-import ai.MiniMaxAi;
+import ai.MiniMaxAI;
 import connect4.Move;
 import enumeration.AiType;
 import enumeration.Color;
@@ -62,8 +63,8 @@ public class GUI {
 
     static JLabel turnMessage;
     
-	static MiniMaxAi minimaxAi;
-	static RandomChoiceAi randomAi;
+	static AI minimaxAi;
+	static AI randomAi;
 
 	// Player 1 symbol: X. Plays first.
 	// Player 2 symbol: O.
@@ -312,9 +313,9 @@ public class GUI {
 						boolean isGameOver = game();
 						if (gameParameters.getGameMode() == GameMode.HUMAN_VS_AI && !isGameOver) {
 							if (gameParameters.getAiType() == AiType.MINIMAX_AI) {
-								minimaxAiMove(minimaxAi);
+								aiMove(minimaxAi);
 							} else if (gameParameters.getAiType() == AiType.RANDOM_AI) {
-								randomAiMove(randomAi);
+								aiMove(randomAi);
 							}
 						}
 					}
@@ -674,36 +675,30 @@ public class GUI {
 		
 		if (gameParameters.getGameMode() == GameMode.HUMAN_VS_AI) {
 			if (gameParameters.getAiType() == AiType.MINIMAX_AI) {
-				minimaxAi = new MiniMaxAi(gameParameters.getMaxDepth1(), Constants.P2);
+				minimaxAi = new MiniMaxAI(gameParameters.getAi1MaxDepth(), Constants.P2, true);
 			} else if (gameParameters.getAiType() == AiType.RANDOM_AI) {
-				randomAi = new RandomChoiceAi(Constants.P2);
+				randomAi = new RandomChoiceAI(Constants.P2);
 			}
 		} else if (gameParameters.getGameMode() == GameMode.AI_VS_AI) {
 			setAllButtonsEnabled(false);
 			
 			// AI VS AI implementation here
+			AI ai1 = null;
+			AI ai2 = null;
 			if (gameParameters.getAiType() == AiType.MINIMAX_AI) {
 				// Initial maxDepth = 5. We can change this value for difficulty adjustment.
-				MiniMaxAi ai1 = new MiniMaxAi(gameParameters.getMaxDepth1(), Constants.P1);
-				MiniMaxAi ai2 = new MiniMaxAi(gameParameters.getMaxDepth2(), Constants.P2);
-
-				while (!board.isGameOver()) {
-					minimaxAiMove(ai1);
-
-					if (!board.isGameOver()) {
-						minimaxAiMove(ai2);
-					}
-				}
+				ai1 = new MiniMaxAI(gameParameters.getAi1MaxDepth(), Constants.P1, false);
+				ai2 = new MiniMaxAI(gameParameters.getAi2MaxDepth(), Constants.P2, true);
 			} else if (gameParameters.getAiType() == AiType.RANDOM_AI) {
-				RandomChoiceAi ai1 = new RandomChoiceAi(Constants.P1);
-				RandomChoiceAi ai2 = new RandomChoiceAi(Constants.P2);
+				ai1 = new RandomChoiceAI(Constants.P1);
+				ai2 = new RandomChoiceAI(Constants.P2);
+			}
 
-				while (!board.isGameOver()) {
-					randomAiMove(ai1);
+			while (!board.isGameOver()) {
+				aiMove(ai1);
 
-					if (!board.isGameOver()) {
-						randomAiMove(ai2);
-					}
+				if (!board.isGameOver()) {
+					aiMove(ai2);
 				}
 			}
 		}
@@ -837,22 +832,13 @@ public class GUI {
 	}
 	
 	
-	// Gets called after the human player makes a move. It makes a Minimax AI move.
-	public static void minimaxAiMove(MiniMaxAi ai){
-		// Move aiMove = ai.miniMax(board);
-		Move aiMove = ai.miniMaxAlphaBeta(board);
+	// Gets called after the human player makes a move. It makes a Minimax or Random AI move.
+	public static void aiMove(AI ai){
+		Move aiMove = ai.getNextMove(board);
 		board.makeMove(aiMove.getColumn(), ai.getAiPlayer());
 		game();
 	}
 
-
-	// Gets called after the human player makes a move. It makes a Random AI move.
-	public static void randomAiMove(RandomChoiceAi ai){
-		Move aiMove = ai.randomMove(board);
-		board.makeMove(aiMove.getColumn(), ai.getAiPlayer());
-		game();
-	}
-	
 	
 	public static void setAllButtonsEnabled(boolean b) {
 		if (b) {
@@ -870,9 +856,9 @@ public class GUI {
 							boolean isGameOver = game();
 							if (gameParameters.getGameMode() == GameMode.HUMAN_VS_AI && !isGameOver) {
 								if (gameParameters.getAiType() == AiType.MINIMAX_AI) {
-									minimaxAiMove(minimaxAi);
+									aiMove(minimaxAi);
 								} else if (gameParameters.getAiType() == AiType.RANDOM_AI) {
-									randomAiMove(randomAi);
+									aiMove(randomAi);
 								}
 							}
 						}

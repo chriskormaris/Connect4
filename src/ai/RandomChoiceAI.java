@@ -3,24 +3,18 @@ package ai;
 import connect4.Board;
 import connect4.Move;
 import gui.GUI;
-import utility.GameParameters;
 
 import java.util.Random;
 
-public class RandomChoiceAi {
+public class RandomChoiceAI extends AI {
 
-    private final int aiPlayer;
-
-    public RandomChoiceAi(int aiPlayer) {
-        this.aiPlayer = aiPlayer;
-    }
-
-    public int getAiPlayer() {
-        return aiPlayer;
+    public RandomChoiceAI(int aiPlayer) {
+        super(aiPlayer);
     }
 
     // Initiates the random move
-    public Move randomMove(Board board) {
+    @Override
+    public Move getNextMove(Board board) {
         Random r = new Random();
 
         if ((board.checkForGameOver())) {
@@ -34,7 +28,7 @@ public class RandomChoiceAi {
 
         int row = board.getEmptyRowPosition(col);
 
-        return new Move(row, col, aiPlayer);
+        return new Move(row, col, getAiPlayer());
     }
 
 }

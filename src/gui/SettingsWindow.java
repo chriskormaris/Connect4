@@ -49,8 +49,8 @@ public class SettingsWindow extends JFrame {
 		GuiStyle selectedGuiStyle = GUI.gameParameters.getGuiStyle();
 		GameMode selectedMode = GUI.gameParameters.getGameMode();
 		AiType selectedAiType = GUI.gameParameters.getAiType();
-		int maxDepth1 = GUI.gameParameters.getMaxDepth1() - 1;
-		int maxDepth2 = GUI.gameParameters.getMaxDepth2() - 1;
+		int maxDepth1 = GUI.gameParameters.getAi1MaxDepth() - 1;
+		int maxDepth2 = GUI.gameParameters.getAi2MaxDepth() - 1;
 		Color selectedPlayer1Color = GUI.gameParameters.getPlayer1Color();
 		Color selectedPlayer2Color = GUI.gameParameters.getPlayer2Color();
 		int inARow = GUI.gameParameters.getCheckersInARow();

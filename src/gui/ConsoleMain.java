@@ -4,7 +4,7 @@ package gui;
 // exception for the class "Scanner"
 
 import connect4.Board;
-import ai.MiniMaxAi;
+import ai.MiniMaxAI;
 import connect4.Move;
 import utility.Constants;
 
@@ -37,7 +37,7 @@ public class ConsoleMain {
 		// The bigger the value of "maxDepth" is, the more difficult the game is. 
 		int XColumnPosition;
 		int maxDepth = 3;
-		MiniMaxAi OPlayer = new MiniMaxAi(maxDepth, Constants.P2);
+		MiniMaxAI OPlayer = new MiniMaxAI(maxDepth, Constants.P2, true);
 		Board connect4Board = new Board();
 
         // Uncomment this, for "O" to play first
