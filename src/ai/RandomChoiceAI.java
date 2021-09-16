@@ -2,11 +2,17 @@ package ai;
 
 import connect4.Board;
 import connect4.Move;
+import gui.ConsoleMain;
 import gui.GUI;
+import utility.Constants;
 
 import java.util.Random;
 
 public class RandomChoiceAI extends AI {
+
+    public RandomChoiceAI() {
+        super(Constants.P2);
+    }
 
     public RandomChoiceAI(int aiPlayer) {
         super(aiPlayer);
