@@ -12,15 +12,11 @@ public class RandomChoiceAI extends AI {
         super(aiPlayer);
     }
 
-    // Initiates the random move
+    // Initiates the random move.
     @Override
     public Move getNextMove(Board board) {
         Random r = new Random();
 
-        if ((board.checkForGameOver())) {
-            Move lastMove = new Move(board.getLastMove().getRow(), board.getLastMove().getColumn(), board.evaluate());
-            return lastMove;
-        }
         int col;
         do {
             col = r.nextInt(GUI.gameParameters.getCheckersInARow());
