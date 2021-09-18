@@ -1,0 +1,3 @@
+Manifest-Version: 2.5.2
+Main-Class: gui.GUI
+
