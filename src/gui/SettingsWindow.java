@@ -18,7 +18,8 @@ public class SettingsWindow extends JFrame {
      *
      */
     private static final long serialVersionUID = 6651737783332653136L;
-
+    public static int width = 450;
+    public static int height = 410;
     private final JComboBox<String> gui_style_drop_down;
     private final JComboBox<String> game_mode_drop_down;
     private final JComboBox<String> ai_type_drop_down;
@@ -27,12 +28,8 @@ public class SettingsWindow extends JFrame {
     private final JComboBox<String> player1_color_drop_down;
     private final JComboBox<String> player2_color_drop_down;
     private final JComboBox<Integer> checkers_in_a_row_drop_down;
-
     private final JButton apply;
     private final JButton cancel;
-
-    public static int width = 450;
-    public static int height = 410;
 
 
     public SettingsWindow() {

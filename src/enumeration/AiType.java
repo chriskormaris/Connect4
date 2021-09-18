@@ -1,6 +1,6 @@
 package enumeration;
 
 public enum AiType {
-	MINIMAX_AI,
-	RANDOM_AI
+    MINIMAX_AI,
+    RANDOM_AI
 }
