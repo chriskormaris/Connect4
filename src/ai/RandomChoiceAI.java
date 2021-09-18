@@ -2,7 +2,6 @@ package ai;
 
 import connect4.Board;
 import connect4.Move;
-import gui.ConsoleMain;
 import gui.GUI;
 import utility.Constants;
 
