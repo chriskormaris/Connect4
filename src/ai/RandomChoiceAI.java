@@ -25,7 +25,7 @@ public class RandomChoiceAI extends AI {
 
         int col;
         do {
-            col = r.nextInt(GUI.gameParameters.getCheckersInARow());
+            col = r.nextInt(GUI.gameParameters.getNumOfColumns());
         } while (board.checkFullColumn(col));
 
         int row = board.getEmptyRowPosition(col);
