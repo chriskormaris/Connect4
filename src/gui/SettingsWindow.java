@@ -14,10 +14,6 @@ import java.awt.event.ActionListener;
 
 public class SettingsWindow extends JFrame {
 
-    /**
-     *
-     */
-    private static final long serialVersionUID = 6651737783332653136L;
     public static int width = 450;
     public static int height = 410;
     private final JComboBox<String> gui_style_drop_down;
