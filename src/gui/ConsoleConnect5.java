@@ -13,16 +13,11 @@ import java.util.Scanner;
 
 public class ConsoleConnect5 {
 
-    private static final int checkersInARow = 5;
-
     public static void main(String[] args) {
 
-        int numOfRows = 7;
-        int numOfColumns = 8;
-
-        GUI.gameParameters.setCheckersInARow(checkersInARow);
-        GUI.gameParameters.setNumOfRows(numOfRows);
-        GUI.gameParameters.setNumOfColumns(numOfColumns);
+        int numOfRows = Constants.CONNECT_5_NUM_OF_ROWS;
+        int numOfColumns = Constants.CONNECT_5_NUM_OF_COLUMNS;
+        int checkersInARow = Constants.CONNECT_5_CHECKERS_IN_A_ROW;
 
         StringBuilder validNumbers = new StringBuilder();
         for (int i = 0; i < numOfColumns; i++) {
@@ -40,8 +35,8 @@ public class ConsoleConnect5 {
         // Feel free to change the values.
         // The bigger the value of "maxDepth" is, the more difficult the game is.
         int XColumnPosition;
-        AI ai = new MiniMaxAI(GUI.gameParameters.getAi1MaxDepth(), Constants.P2, true);
-        Board connect5Board = new Board();
+        AI ai = new MiniMaxAI(5, Constants.P2, true);
+        Board connect5Board = new Board(numOfRows, numOfColumns, checkersInARow);
 
         // Uncomment this, for "O" to play first
         // board.setLastLetterPlayed(Board.X);
@@ -108,7 +103,6 @@ public class ConsoleConnect5 {
         }
 
         System.out.println("Game over.");
-
     }
 
 }

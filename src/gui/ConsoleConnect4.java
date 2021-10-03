@@ -13,16 +13,11 @@ import java.util.Scanner;
 
 public class ConsoleConnect4 {
 
-    private static final int checkersInARow = 4;
-
     public static void main(String[] args) {
 
-        int numOfRows = 6;
-        int numOfColumns = 7;
-
-        GUI.gameParameters.setCheckersInARow(checkersInARow);
-        GUI.gameParameters.setNumOfRows(numOfRows);
-        GUI.gameParameters.setNumOfColumns(numOfColumns);
+        // int numOfRows = Constants.DEFAULT_CONNECT_4_NUM_OF_ROWS;
+        int numOfColumns = Constants.CONNECT_4_NUM_OF_COLUMNS;
+        int checkersInARow = Constants.CONNECT_4_CHECKERS_IN_A_ROW;
 
         StringBuilder validNumbers = new StringBuilder();
         for (int i = 0; i < numOfColumns; i++) {
@@ -40,13 +35,13 @@ public class ConsoleConnect4 {
         // Feel free to change the values.
         // The bigger the value of "maxDepth" is, the more difficult the game is.
         int XColumnPosition;
-        AI ai = new MiniMaxAI(GUI.gameParameters.getAi1MaxDepth(), Constants.P2, true);
+        AI ai = new MiniMaxAI(5, Constants.P2, true);
         Board connect4Board = new Board();
 
         // Uncomment this, for "O" to play first
         // board.setLastLetterPlayed(Board.X);
 
-        System.out.println("Minimax Connect-" + ConsoleConnect4.checkersInARow + "!\n");
+        System.out.println("Minimax Connect-" + checkersInARow + "!\n");
         System.out.println("\n*****************************");
         Board.printBoard(connect4Board.getGameBoard());
         System.out.println();
@@ -55,7 +50,6 @@ public class ConsoleConnect4 {
         // While the game has not finished
         while (!connect4Board.checkForGameOver()) {
             switch (connect4Board.getLastPlayer()) {
-
 
                 // If "O" played last, then "X" plays now.
                 // "X" is the user-player
@@ -109,7 +103,6 @@ public class ConsoleConnect4 {
         }
 
         System.out.println("Game over.");
-
     }
 
 }

@@ -29,9 +29,9 @@ public class GameParameters {
         player1Color = Color.RED;
         player2Color = Color.YELLOW;
 
-        numOfRows = 6;
-        numOfColumns = 7;
-        checkersInARow = 4;
+        numOfRows = Constants.CONNECT_4_NUM_OF_ROWS;
+        numOfColumns = Constants.CONNECT_4_NUM_OF_COLUMNS;
+        checkersInARow = Constants.CONNECT_4_CHECKERS_IN_A_ROW;
     }
 
     public GameParameters(GameParameters otherGameParameters) {

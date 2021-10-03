@@ -50,7 +50,7 @@ public class GUI {
 
     static int NUM_OF_ROWS;
     static int NUM_OF_COLUMNS;
-    static int IN_A_ROW;
+    static int CHECKERS_IN_A_ROW;
 
     static Board board;
     static JFrame frameMainWindow;
@@ -156,7 +156,7 @@ public class GUI {
 
         howToPlayItem.addActionListener(e -> JOptionPane.showMessageDialog(null,
                 "Click on the buttons or press 1-" + NUM_OF_COLUMNS + " on your keyboard to insert a new checker."
-                        + "\nTo win you must place " + IN_A_ROW + " checkers in an row, horizontally, vertically or diagonally.",
+                        + "\nTo win you must place " + CHECKERS_IN_A_ROW + " checkers in an row, horizontally, vertically or diagonally.",
                 "How to Play", JOptionPane.INFORMATION_MESSAGE));
 
         aboutItem.addActionListener(e -> {
@@ -274,12 +274,11 @@ public class GUI {
         layeredGameBoard = new JLayeredPane();
 
         ImageIcon imageBoard = null;
-        if (gameParameters.getCheckersInARow() == 4) {
+        if (gameParameters.getCheckersInARow() == CONNECT_4_CHECKERS_IN_A_ROW) {
             layeredGameBoard.setPreferredSize(new Dimension(DEFAULT_CONNECT_4_WIDTH, DEFAULT_CONNECT_4_HEIGHT));
             layeredGameBoard.setBorder(BorderFactory.createTitledBorder("Connect-4"));
             imageBoard = new ImageIcon(ResourceLoader.load(CONNECT_4_BOARD_IMG_PATH));
-        }
-        if (gameParameters.getCheckersInARow() == 5) {
+        } else if (gameParameters.getCheckersInARow() == CONNECT_5_CHECKERS_IN_A_ROW) {
             layeredGameBoard.setPreferredSize(new Dimension(DEFAULT_CONNECT_5_WIDTH, DEFAULT_CONNECT_5_HEIGHT));
             layeredGameBoard.setBorder(BorderFactory.createTitledBorder("Connect-5"));
             imageBoard = new ImageIcon(ResourceLoader.load(CONNECT_5_BOARD_IMG_PATH));
@@ -497,7 +496,7 @@ public class GUI {
 
         NUM_OF_ROWS = gameParameters.getNumOfRows();
         NUM_OF_COLUMNS = gameParameters.getNumOfColumns();
-        IN_A_ROW = gameParameters.getCheckersInARow();
+        CHECKERS_IN_A_ROW = gameParameters.getCheckersInARow();
 
         buttons = new JButton[NUM_OF_COLUMNS];
         for (int i = 0; i < NUM_OF_COLUMNS; i++) {
@@ -511,7 +510,7 @@ public class GUI {
             setAllButtonsEnabled(true);
         }
 
-        board = new Board();
+        board = new Board(gameParameters.getNumOfRows(), gameParameters.getNumOfColumns(), gameParameters.getCheckersInARow());
 
         undoBoards.clear();
         undoCheckerLabels.clear();
@@ -520,11 +519,11 @@ public class GUI {
         redoCheckerLabels.clear();
 
         if (frameMainWindow != null) frameMainWindow.dispose();
-        if (gameParameters.getCheckersInARow() == 4) {
+        if (gameParameters.getCheckersInARow() == CONNECT_4_CHECKERS_IN_A_ROW) {
             frameMainWindow = new JFrame("Minimax Connect-4");
             // make the main window appear on the center
             centerWindow(frameMainWindow, DEFAULT_CONNECT_4_WIDTH, DEFAULT_CONNECT_4_HEIGHT);
-        } else if (gameParameters.getCheckersInARow() == 5) {
+        } else if (gameParameters.getCheckersInARow() == CONNECT_5_CHECKERS_IN_A_ROW) {
             frameMainWindow = new JFrame("Minimax Connect-5");
             // make the main window appear on the center
             centerWindow(frameMainWindow, DEFAULT_CONNECT_5_WIDTH, DEFAULT_CONNECT_5_HEIGHT);
@@ -782,7 +781,6 @@ public class GUI {
 
     // Gets called after makeMove(int, col) is called.
     public static boolean game() {
-
         turnMessage.setText("Turn: " + board.getTurn());
 
         int row = board.getLastMove().getRow();

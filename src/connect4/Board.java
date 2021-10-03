@@ -3,40 +3,45 @@ package connect4;
 
 import java.util.ArrayList;
 
-import gui.GUI;
 import utility.Constants;
-import utility.GameParameters;
 
 
 public class Board {
 
     private final int[][] gameBoard;
+
     private int numOfRows;
     private int numOfColumns;
     private int checkersInARow;
+
     // Immediate move that led to this board.
     private Move lastMove;
+
     // A variable to store the symbol of the player who played last,
     // leading to the current board state.
     private int lastPlayer;
+
     private int winner;
     private boolean overflow;
-
     private boolean gameOver;
-
     private int turn;
 
 
-    // constructor
+    // Default constructor
     public Board() {
-        numOfRows = GUI.gameParameters.getNumOfRows();
-        numOfColumns = GUI.gameParameters.getNumOfColumns();
-        checkersInARow = GUI.gameParameters.getCheckersInARow();
+        this(Constants.CONNECT_4_NUM_OF_ROWS, Constants.CONNECT_4_NUM_OF_COLUMNS,
+                Constants.CONNECT_4_CHECKERS_IN_A_ROW);
+    }
+
+    public Board(int numOfRows, int numOfColumns, int checkersInARow) {
+        this.numOfRows = numOfRows;
+        this.numOfColumns = numOfColumns;
+        this.checkersInARow = checkersInARow;
 
         this.lastMove = new Move();
         this.lastPlayer = Constants.P2;
         this.winner = Constants.EMPTY;
-        this.gameBoard = new int[7][8];
+        this.gameBoard = new int[numOfRows][numOfColumns];
         this.overflow = false;
         this.gameOver = false;
         this.turn = 0;
@@ -74,9 +79,9 @@ public class Board {
 
     // It prints the board on the console.
     public static void printBoard(int[][] gameBoard) {
-        if (GUI.gameParameters.getCheckersInARow() == 4) {
+        if (gameBoard.length == Constants.CONNECT_4_NUM_OF_ROWS) {
             printConnect4Board(gameBoard);
-        } else if (GUI.gameParameters.getCheckersInARow() == 5) {
+        } else if (gameBoard.length == Constants.CONNECT_5_NUM_OF_ROWS) {
             printConnect5Board(gameBoard);
         }
     }
@@ -86,9 +91,9 @@ public class Board {
 
         System.out.println("| 1 | 2 | 3 | 4 | 5 | 6 | 7 |");
         System.out.println();
-        for (int i = 0; i < GUI.gameParameters.getNumOfRows(); i++) {
-            for (int j = 0; j < GUI.gameParameters.getNumOfColumns(); j++) {
-                if (j != GUI.gameParameters.getNumOfColumns() - 1) {
+        for (int i = 0; i < Constants.CONNECT_4_NUM_OF_ROWS; i++) {
+            for (int j = 0; j < Constants.CONNECT_4_NUM_OF_COLUMNS; j++) {
+                if (j != Constants.CONNECT_4_NUM_OF_COLUMNS - 1) {
                     if (gameBoard[i][j] != Constants.EMPTY) {
                         System.out.print("| " + gameBoard[i][j] + " ");
                     } else {
@@ -104,7 +109,6 @@ public class Board {
             }
         }
         System.out.println("\n*****************************");
-
     }
 
     // It prints the Connect-5 board on the console.
@@ -112,9 +116,9 @@ public class Board {
 
         System.out.println("| 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 |");
         System.out.println();
-        for (int i = 0; i < GUI.gameParameters.getNumOfRows(); i++) {
-            for (int j = 0; j < GUI.gameParameters.getNumOfColumns(); j++) {
-                if (j != GUI.gameParameters.getNumOfColumns() - 1) {
+        for (int i = 0; i < Constants.CONNECT_5_NUM_OF_ROWS; i++) {
+            for (int j = 0; j < Constants.CONNECT_5_NUM_OF_COLUMNS; j++) {
+                if (j != Constants.CONNECT_5_NUM_OF_COLUMNS - 1) {
                     if (gameBoard[i][j] != Constants.EMPTY) {
                         System.out.print("| " + gameBoard[i][j] + " ");
                     } else {
@@ -130,7 +134,6 @@ public class Board {
             }
         }
         System.out.println("\n*********************************");
-
     }
 
     // Makes a move based on the given column.
