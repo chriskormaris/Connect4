@@ -1,10 +1,4 @@
 package com.chriskormaris.connect4.api.ai;
-/*
- * Athens 2021
- *
- * Created on : 2021-09-16
- * Author     : Christos Kormaris
- */
 
 import com.chriskormaris.connect4.api.connect4.Board;
 import com.chriskormaris.connect4.api.connect4.Move;

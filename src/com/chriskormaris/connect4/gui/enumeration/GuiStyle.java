@@ -1,4 +1,4 @@
-package com.chriskormaris.connect4.api.enumeration;
+package com.chriskormaris.connect4.gui.enumeration;
 
 public enum GuiStyle {
     SYSTEM_STYLE,

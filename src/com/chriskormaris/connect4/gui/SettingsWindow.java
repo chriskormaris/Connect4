@@ -2,9 +2,9 @@ package com.chriskormaris.connect4.gui;
 
 
 import com.chriskormaris.connect4.api.enumeration.AiType;
-import com.chriskormaris.connect4.api.enumeration.Color;
+import com.chriskormaris.connect4.gui.enumeration.Color;
 import com.chriskormaris.connect4.api.enumeration.GameMode;
-import com.chriskormaris.connect4.api.enumeration.GuiStyle;
+import com.chriskormaris.connect4.gui.enumeration.GuiStyle;
 import com.chriskormaris.connect4.gui.utility.GameParameters;
 
 import javax.swing.*;
