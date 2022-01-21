@@ -1,12 +1,11 @@
 package connect4_tests;
 
 
-import connect4.Board;
-import gui.GUI;
+import com.chriskormaris.connect4.api.connect4.Board;
+import com.chriskormaris.connect4.api.utility.Constants;
+import com.chriskormaris.connect4.gui.GUI;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import utility.Constants;
-import utility.GameParameters;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 

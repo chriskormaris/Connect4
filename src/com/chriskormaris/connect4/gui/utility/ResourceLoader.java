@@ -1,4 +1,4 @@
-package utility;
+package com.chriskormaris.connect4.gui.utility;
 
 import java.net.URL;
 

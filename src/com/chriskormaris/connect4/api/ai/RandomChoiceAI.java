@@ -1,9 +1,9 @@
-package ai;
+package com.chriskormaris.connect4.api.ai;
 
-import connect4.Board;
-import connect4.Move;
-import gui.GUI;
-import utility.Constants;
+import com.chriskormaris.connect4.api.connect4.Board;
+import com.chriskormaris.connect4.api.connect4.Move;
+import com.chriskormaris.connect4.api.utility.Constants;
+import com.chriskormaris.connect4.gui.GUI;
 
 import java.util.Random;
 

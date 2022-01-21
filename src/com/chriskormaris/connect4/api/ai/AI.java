@@ -1,4 +1,4 @@
-package ai;
+package com.chriskormaris.connect4.api.ai;
 /*
  * Athens 2021
  *
@@ -6,8 +6,8 @@ package ai;
  * Author     : Christos Kormaris
  */
 
-import connect4.Board;
-import connect4.Move;
+import com.chriskormaris.connect4.api.connect4.Board;
+import com.chriskormaris.connect4.api.connect4.Move;
 
 public abstract class AI {
 

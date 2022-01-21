@@ -1,17 +1,17 @@
-package gui;
+package com.chriskormaris.connect4.console;
 
 
-import ai.AI;
-import connect4.Board;
-import ai.MiniMaxAI;
-import connect4.Move;
-import utility.Constants;
+import com.chriskormaris.connect4.api.ai.AI;
+import com.chriskormaris.connect4.api.ai.MiniMaxAI;
+import com.chriskormaris.connect4.api.connect4.Board;
+import com.chriskormaris.connect4.api.connect4.Move;
+import com.chriskormaris.connect4.api.utility.Constants;
 
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
 
-public class ConsoleConnect4 {
+public class Connect4 {
 
     public static void main(String[] args) {
 

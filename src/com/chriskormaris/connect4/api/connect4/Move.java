@@ -1,4 +1,4 @@
-package connect4;
+package com.chriskormaris.connect4.api.connect4;
 
 
 public class Move {

@@ -1,6 +1,22 @@
-package gui;
+package com.chriskormaris.connect4.gui;
 
 
+import com.chriskormaris.connect4.api.ai.AI;
+import com.chriskormaris.connect4.api.ai.MiniMaxAI;
+import com.chriskormaris.connect4.api.ai.RandomChoiceAI;
+import com.chriskormaris.connect4.api.connect4.Board;
+import com.chriskormaris.connect4.api.connect4.Move;
+import com.chriskormaris.connect4.api.enumeration.AiType;
+import com.chriskormaris.connect4.api.enumeration.Color;
+import com.chriskormaris.connect4.api.enumeration.GameMode;
+import com.chriskormaris.connect4.api.enumeration.GuiStyle;
+import com.chriskormaris.connect4.api.utility.Constants;
+import com.chriskormaris.connect4.gui.utility.GameParameters;
+import com.chriskormaris.connect4.gui.utility.ResourceLoader;
+
+import javax.imageio.ImageIO;
+import javax.swing.*;
+import javax.swing.UIManager.LookAndFeelInfo;
 import java.awt.*;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -8,39 +24,23 @@ import java.awt.event.KeyListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.Stack;
 
-import javax.imageio.ImageIO;
-import javax.swing.BorderFactory;
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JLayeredPane;
-import javax.swing.JMenu;
-import javax.swing.JMenuBar;
-import javax.swing.JMenuItem;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JToolBar;
-import javax.swing.UIManager;
-import javax.swing.UIManager.LookAndFeelInfo;
-
-import ai.AI;
-import ai.RandomChoiceAI;
-import connect4.Board;
-import ai.MiniMaxAI;
-import connect4.Move;
-import enumeration.AiType;
-import enumeration.Color;
-import enumeration.GameMode;
-import enumeration.GuiStyle;
-import utility.Constants;
-import utility.GameParameters;
-import utility.ResourceLoader;
-
-import static utility.Constants.*;
+import static com.chriskormaris.connect4.api.utility.Constants.CONNECT_4_CHECKERS_IN_A_ROW;
+import static com.chriskormaris.connect4.api.utility.Constants.CONNECT_5_CHECKERS_IN_A_ROW;
+import static com.chriskormaris.connect4.gui.utility.GuiConstants.CONNECT_4_BOARD_IMG_PATH;
+import static com.chriskormaris.connect4.gui.utility.GuiConstants.CONNECT_5_BOARD_IMG_PATH;
+import static com.chriskormaris.connect4.gui.utility.GuiConstants.DEFAULT_CONNECT_4_HEIGHT;
+import static com.chriskormaris.connect4.gui.utility.GuiConstants.DEFAULT_CONNECT_4_WIDTH;
+import static com.chriskormaris.connect4.gui.utility.GuiConstants.DEFAULT_CONNECT_5_HEIGHT;
+import static com.chriskormaris.connect4.gui.utility.GuiConstants.DEFAULT_CONNECT_5_WIDTH;
+import static com.chriskormaris.connect4.gui.utility.GuiConstants.VERSION;
 
 
 public class GUI {
@@ -161,7 +161,7 @@ public class GUI {
 
         aboutItem.addActionListener(e -> {
             JLabel label = new JLabel("<html><center>© Created by: Christos Kormaris<br>"
-                    + "Version " + Constants.VERSION + "</center></html>");
+                    + "Version " + VERSION + "</center></html>");
             JOptionPane.showMessageDialog(frameMainWindow, label, "About", JOptionPane.INFORMATION_MESSAGE);
         });
 

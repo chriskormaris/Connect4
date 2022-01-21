@@ -1,9 +1,8 @@
-package gui;
+package com.chriskormaris.connect4.gui;
 
 
-import connect4.Board;
-import utility.Constants;
-import utility.GameParameters;
+import com.chriskormaris.connect4.api.connect4.Board;
+import com.chriskormaris.connect4.api.utility.Constants;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
