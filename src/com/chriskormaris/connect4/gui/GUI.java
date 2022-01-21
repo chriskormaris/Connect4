@@ -968,7 +968,4 @@ public class GUI {
         GUI.createNewGame();
     }
 
-
-
-
 }
