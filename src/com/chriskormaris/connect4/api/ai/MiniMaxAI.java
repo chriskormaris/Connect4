@@ -3,7 +3,7 @@ package com.chriskormaris.connect4.api.ai;
 
 import com.chriskormaris.connect4.api.connect4.Board;
 import com.chriskormaris.connect4.api.connect4.Move;
-import com.chriskormaris.connect4.api.utility.Constants;
+import com.chriskormaris.connect4.api.util.Constants;
 
 import java.util.ArrayList;
 import java.util.Random;

@@ -9,11 +9,11 @@ import com.chriskormaris.connect4.api.connect4.Board;
 import com.chriskormaris.connect4.api.connect4.Move;
 import com.chriskormaris.connect4.api.enumeration.AiType;
 import com.chriskormaris.connect4.api.enumeration.GameMode;
-import com.chriskormaris.connect4.api.utility.Constants;
+import com.chriskormaris.connect4.api.util.Constants;
 import com.chriskormaris.connect4.gui.enumeration.Color;
 import com.chriskormaris.connect4.gui.enumeration.GuiStyle;
-import com.chriskormaris.connect4.gui.utility.GameParameters;
-import com.chriskormaris.connect4.gui.utility.ResourceLoader;
+import com.chriskormaris.connect4.gui.util.GameParameters;
+import com.chriskormaris.connect4.gui.util.ResourceLoader;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -33,15 +33,15 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Stack;
 
-import static com.chriskormaris.connect4.api.utility.Constants.CONNECT_4_CHECKERS_IN_A_ROW;
-import static com.chriskormaris.connect4.api.utility.Constants.CONNECT_5_CHECKERS_IN_A_ROW;
-import static com.chriskormaris.connect4.gui.utility.GuiConstants.CONNECT_4_BOARD_IMG_PATH;
-import static com.chriskormaris.connect4.gui.utility.GuiConstants.CONNECT_5_BOARD_IMG_PATH;
-import static com.chriskormaris.connect4.gui.utility.GuiConstants.DEFAULT_CONNECT_4_HEIGHT;
-import static com.chriskormaris.connect4.gui.utility.GuiConstants.DEFAULT_CONNECT_4_WIDTH;
-import static com.chriskormaris.connect4.gui.utility.GuiConstants.DEFAULT_CONNECT_5_HEIGHT;
-import static com.chriskormaris.connect4.gui.utility.GuiConstants.DEFAULT_CONNECT_5_WIDTH;
-import static com.chriskormaris.connect4.gui.utility.GuiConstants.VERSION;
+import static com.chriskormaris.connect4.api.util.Constants.CONNECT_4_CHECKERS_IN_A_ROW;
+import static com.chriskormaris.connect4.api.util.Constants.CONNECT_5_CHECKERS_IN_A_ROW;
+import static com.chriskormaris.connect4.gui.util.GuiConstants.CONNECT_4_BOARD_IMG_PATH;
+import static com.chriskormaris.connect4.gui.util.GuiConstants.CONNECT_5_BOARD_IMG_PATH;
+import static com.chriskormaris.connect4.gui.util.GuiConstants.DEFAULT_CONNECT_4_HEIGHT;
+import static com.chriskormaris.connect4.gui.util.GuiConstants.DEFAULT_CONNECT_4_WIDTH;
+import static com.chriskormaris.connect4.gui.util.GuiConstants.DEFAULT_CONNECT_5_HEIGHT;
+import static com.chriskormaris.connect4.gui.util.GuiConstants.DEFAULT_CONNECT_5_WIDTH;
+import static com.chriskormaris.connect4.gui.util.GuiConstants.VERSION;
 
 
 public class GUI {

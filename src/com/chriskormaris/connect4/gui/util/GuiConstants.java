@@ -1,4 +1,4 @@
-package com.chriskormaris.connect4.gui.utility;
+package com.chriskormaris.connect4.gui.util;
 
 
 public class GuiConstants {

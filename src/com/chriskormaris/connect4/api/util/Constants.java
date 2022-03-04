@@ -1,4 +1,4 @@
-package com.chriskormaris.connect4.api.utility;
+package com.chriskormaris.connect4.api.util;
 
 
 public class Constants {

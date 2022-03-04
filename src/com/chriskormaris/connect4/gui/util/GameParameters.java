@@ -1,10 +1,10 @@
-package com.chriskormaris.connect4.gui.utility;
+package com.chriskormaris.connect4.gui.util;
 
 import com.chriskormaris.connect4.api.enumeration.AiType;
-import com.chriskormaris.connect4.gui.enumeration.Color;
 import com.chriskormaris.connect4.api.enumeration.GameMode;
+import com.chriskormaris.connect4.api.util.Constants;
+import com.chriskormaris.connect4.gui.enumeration.Color;
 import com.chriskormaris.connect4.gui.enumeration.GuiStyle;
-import com.chriskormaris.connect4.api.utility.Constants;
 
 public class GameParameters {
 
@@ -30,8 +30,8 @@ public class GameParameters {
         player1Color = Color.RED;
         player2Color = Color.YELLOW;
 
-        numOfRows = com.chriskormaris.connect4.api.utility.Constants.CONNECT_4_NUM_OF_ROWS;
-        numOfColumns = com.chriskormaris.connect4.api.utility.Constants.CONNECT_4_NUM_OF_COLUMNS;
+        numOfRows = Constants.CONNECT_4_NUM_OF_ROWS;
+        numOfColumns = Constants.CONNECT_4_NUM_OF_COLUMNS;
         checkersInARow = Constants.CONNECT_4_CHECKERS_IN_A_ROW;
     }
 

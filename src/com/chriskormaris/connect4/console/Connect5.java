@@ -5,7 +5,7 @@ import com.chriskormaris.connect4.api.ai.AI;
 import com.chriskormaris.connect4.api.ai.MiniMaxAlphaBetaPruningAI;
 import com.chriskormaris.connect4.api.connect4.Board;
 import com.chriskormaris.connect4.api.connect4.Move;
-import com.chriskormaris.connect4.api.utility.Constants;
+import com.chriskormaris.connect4.api.util.Constants;
 
 import java.util.InputMismatchException;
 import java.util.Scanner;

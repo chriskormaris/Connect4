@@ -1,7 +1,7 @@
 package com.chriskormaris.connect4.api.connect4;
 
 
-import com.chriskormaris.connect4.api.utility.Constants;
+import com.chriskormaris.connect4.api.util.Constants;
 
 import java.util.ArrayList;
 

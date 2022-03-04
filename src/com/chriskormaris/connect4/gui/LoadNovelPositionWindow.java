@@ -2,7 +2,7 @@ package com.chriskormaris.connect4.gui;
 
 
 import com.chriskormaris.connect4.api.connect4.Board;
-import com.chriskormaris.connect4.api.utility.Constants;
+import com.chriskormaris.connect4.api.util.Constants;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
