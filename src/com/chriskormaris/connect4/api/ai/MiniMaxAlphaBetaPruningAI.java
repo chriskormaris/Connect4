@@ -9,17 +9,17 @@ import java.util.ArrayList;
 import java.util.Random;
 
 
-public class MiniMaxAI extends AI {
+public class MiniMaxAlphaBetaPruningAI extends AI {
 
     // Variable that holds the maximum depth the MiniMaxAi algorithm will reach for this player.
     private int maxDepth;
 
-    public MiniMaxAI() {
+    public MiniMaxAlphaBetaPruningAI() {
         super(Constants.P2);
         maxDepth = 2;
     }
 
-    public MiniMaxAI(int maxDepth, int aiPlayer) {
+    public MiniMaxAlphaBetaPruningAI(int maxDepth, int aiPlayer) {
         super(aiPlayer);
         this.maxDepth = maxDepth;
     }
@@ -36,16 +36,16 @@ public class MiniMaxAI extends AI {
     public Move getNextMove(Board board) {
         // If P1 plays then it wants to MAXimize the heuristics value.
         if (getAiPlayer() == Constants.P1) {
-            return max(new Board(board), 0);
+            return maxAlphaBeta(new Board(board), 0, Double.MAX_VALUE, Double.MIN_VALUE);
         }
         // If P2 plays then it wants to MINimize the heuristics value.
         else {
-            return min(new Board(board), 0);
+            return minAlphaBeta(new Board(board), 0, Double.MIN_VALUE, Double.MAX_VALUE);
         }
     }
 
-    // The max and min functions are called interchangeably, one after another until a max depth is reached
-    private Move max(Board board, int depth) {
+    // The max and min functions are called interchangeably, one after another until a max depth is reached.
+    private Move maxAlphaBeta(Board board, int depth, double a, double b) {
         Random r = new Random();
 
         /* If MAX is called on a state that is terminal or after a maximum depth is reached,
@@ -58,12 +58,12 @@ public class MiniMaxAI extends AI {
         ArrayList<Board> children = new ArrayList<Board>(board.getChildren(Constants.P1));
         Move maxMove = new Move(Integer.MIN_VALUE);
         for (Board child : children) {
-            // And for each child min is called, on a lower depth
-            Move move = min(child, depth + 1);
-            // The child-move with the greatest value is selected and returned by max
+            // And for each child min is called, on a lower depth.
+            Move move = minAlphaBeta(child, depth + 1, a, b);
+            // The child-move with the greatest value is selected and returned by max.
             if (move.getValue() >= maxMove.getValue()) {
                 if ((move.getValue() == maxMove.getValue())) {
-                    // If the heuristic has the same value then we randomly choose one of the two moves
+                    // If the heuristic has the same value, then we randomly choose one of the two moves.
                     if (r.nextInt(2) == 0) {
                         maxMove.setRow(child.getLastMove().getRow());
                         maxMove.setColumn(child.getLastMove().getColumn());
@@ -75,12 +75,21 @@ public class MiniMaxAI extends AI {
                     maxMove.setValue(move.getValue());
                 }
             }
+
+            // Beta pruning.
+            if (maxMove.getValue() >= b) {
+                // System.out.println("Beta pruning: " + b);
+                return maxMove;
+            }
+
+            // Update the a of the current max node.
+            a = (a > maxMove.getValue()) ? a : maxMove.getValue();
         }
         return maxMove;
     }
 
     // Min works similarly to max.
-    private Move min(Board board, int depth) {
+    private Move minAlphaBeta(Board board, int depth, double a, double b) {
         Random r = new Random();
 
         if ((board.checkForGameOver()) || (depth == maxDepth)) {
@@ -89,7 +98,7 @@ public class MiniMaxAI extends AI {
         ArrayList<Board> children = new ArrayList<Board>(board.getChildren(Constants.P2));
         Move minMove = new Move(Integer.MAX_VALUE);
         for (Board child : children) {
-            Move move = max(child, depth + 1);
+            Move move = maxAlphaBeta(child, depth + 1, a, b);
             if (move.getValue() <= minMove.getValue()) {
                 if ((move.getValue() == minMove.getValue())) {
                     if (r.nextInt(2) == 0) {
@@ -103,6 +112,15 @@ public class MiniMaxAI extends AI {
                     minMove.setValue(move.getValue());
                 }
             }
+
+            // Alpha pruning
+            if (minMove.getValue() <= a) {
+                // System.out.println("Alpha pruning: " + a);
+                return minMove;
+            }
+
+            // Update the b of the current min node.
+            b = (b < minMove.getValue()) ? b : minMove.getValue();
         }
         return minMove;
     }

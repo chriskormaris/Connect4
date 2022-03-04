@@ -3,14 +3,15 @@ package com.chriskormaris.connect4.gui;
 
 import com.chriskormaris.connect4.api.ai.AI;
 import com.chriskormaris.connect4.api.ai.MiniMaxAI;
+import com.chriskormaris.connect4.api.ai.MiniMaxAlphaBetaPruningAI;
 import com.chriskormaris.connect4.api.ai.RandomChoiceAI;
 import com.chriskormaris.connect4.api.connect4.Board;
 import com.chriskormaris.connect4.api.connect4.Move;
 import com.chriskormaris.connect4.api.enumeration.AiType;
-import com.chriskormaris.connect4.gui.enumeration.Color;
 import com.chriskormaris.connect4.api.enumeration.GameMode;
-import com.chriskormaris.connect4.gui.enumeration.GuiStyle;
 import com.chriskormaris.connect4.api.utility.Constants;
+import com.chriskormaris.connect4.gui.enumeration.Color;
+import com.chriskormaris.connect4.gui.enumeration.GuiStyle;
 import com.chriskormaris.connect4.gui.utility.GameParameters;
 import com.chriskormaris.connect4.gui.utility.ResourceLoader;
 
@@ -63,8 +64,7 @@ public class GUI {
 
     static JLabel turnMessage;
 
-    static AI minimaxAi;
-    static AI randomAi;
+    static AI ai;
 
     // Player 1 symbol: X. Plays first.
     // Player 2 symbol: O.
@@ -464,11 +464,7 @@ public class GUI {
                     if (!board.isOverflow()) {
                         boolean isGameOver = game();
                         if (gameParameters.getGameMode() == GameMode.HUMAN_VS_AI && !isGameOver) {
-                            if (gameParameters.getAiType() == AiType.MINIMAX_AI) {
-                                aiMove(minimaxAi);
-                            } else if (gameParameters.getAiType() == AiType.RANDOM_AI) {
-                                aiMove(randomAi);
-                            }
+                            aiMove(ai);
                         }
                     }
                     break;
@@ -668,34 +664,36 @@ public class GUI {
 
         if (gameParameters.getGameMode() == GameMode.HUMAN_VS_AI) {
             if (gameParameters.getAiType() == AiType.MINIMAX_AI) {
-                minimaxAi = new MiniMaxAI(gameParameters.getAi1MaxDepth(), Constants.P2, true);
+                ai = new MiniMaxAlphaBetaPruningAI(gameParameters.getAi1MaxDepth(), Constants.P2);
             } else if (gameParameters.getAiType() == AiType.RANDOM_AI) {
-                randomAi = new RandomChoiceAI(Constants.P2);
+                ai = new RandomChoiceAI(Constants.P2);
             }
         } else if (gameParameters.getGameMode() == GameMode.AI_VS_AI) {
             setAllButtonsEnabled(false);
-
-            // AI VS AI implementation here
-            AI ai1 = null;
-            AI ai2 = null;
-            if (gameParameters.getAiType() == AiType.MINIMAX_AI) {
-                // Initial maxDepth = 5. We can change this value for difficulty adjustment.
-                ai1 = new MiniMaxAI(gameParameters.getAi1MaxDepth(), Constants.P1, false);
-                ai2 = new MiniMaxAI(gameParameters.getAi2MaxDepth(), Constants.P2, true);
-            } else if (gameParameters.getAiType() == AiType.RANDOM_AI) {
-                ai1 = new RandomChoiceAI(Constants.P1);
-                ai2 = new RandomChoiceAI(Constants.P2);
-            }
-
-            while (!board.isGameOver()) {
-                aiMove(ai1);
-
-                if (!board.isGameOver()) {
-                    aiMove(ai2);
-                }
-            }
+            playAiVsAi();
         }
 
+    }
+
+    public static void playAiVsAi() {
+        AI ai1;
+        AI ai2;
+        if (gameParameters.getAiType() == AiType.MINIMAX_AI) {
+            // Initial maxDepth = 5. We can change this value for difficulty adjustment.
+            ai1 = new MiniMaxAI(gameParameters.getAi1MaxDepth(), Constants.P1);
+            ai2 = new MiniMaxAlphaBetaPruningAI(gameParameters.getAi2MaxDepth(), Constants.P2);
+        } else {
+            ai1 = new RandomChoiceAI(Constants.P1);
+            ai2 = new RandomChoiceAI(Constants.P2);
+        }
+
+        while (!board.isGameOver()) {
+            aiMove(ai1);
+
+            if (!board.isGameOver()) {
+                aiMove(ai2);
+            }
+        }
     }
 
     private static void configureGuiStyle() {
@@ -840,11 +838,7 @@ public class GUI {
                         if (!board.isOverflow()) {
                             boolean isGameOver = game();
                             if (gameParameters.getGameMode() == GameMode.HUMAN_VS_AI && !isGameOver) {
-                                if (gameParameters.getAiType() == AiType.MINIMAX_AI) {
-                                    aiMove(minimaxAi);
-                                } else if (gameParameters.getAiType() == AiType.RANDOM_AI) {
-                                    aiMove(randomAi);
-                                }
+                                aiMove(ai);
                             }
                         }
                         frameMainWindow.requestFocusInWindow();
