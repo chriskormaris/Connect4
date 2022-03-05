@@ -677,11 +677,13 @@ public class GUI {
         AI ai1;
         AI ai2;
         if (gameParameters.getAi1Type() == AiType.MINIMAX_AI) {
-            // Initial maxDepth = 5. We can change this value for difficulty adjustment.
             ai1 = new MiniMaxAI(gameParameters.getAi1MaxDepth(), Constants.P1);
-            ai2 = new MiniMaxAlphaBetaPruningAI(gameParameters.getAi2MaxDepth(), Constants.P2);
         } else {
             ai1 = new RandomChoiceAI(Constants.P1);
+        }
+        if (gameParameters.getAi2Type() == AiType.MINIMAX_AI) {
+            ai2 = new MiniMaxAlphaBetaPruningAI(gameParameters.getAi2MaxDepth(), Constants.P2);
+        } else {
             ai2 = new RandomChoiceAI(Constants.P2);
         }
 
