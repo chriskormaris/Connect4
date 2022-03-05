@@ -10,9 +10,13 @@ public class GameParameters {
 
     private GuiStyle guiStyle;
     private GameMode gameMode;
-    private AiType aiType;
+
+    private AiType ai1Type;
+    private AiType ai2Type;
+
     private int ai1MaxDepth;
     private int ai2MaxDepth;
+
     private Color player1Color;
     private Color player2Color;
 
@@ -24,9 +28,13 @@ public class GameParameters {
     public GameParameters() {
         guiStyle = GuiStyle.SYSTEM_STYLE;
         gameMode = GameMode.HUMAN_VS_AI;
-        aiType = AiType.MINIMAX_AI;
+
+        ai1Type = AiType.MINIMAX_AI;
+        ai2Type = AiType.MINIMAX_AI;
+
         ai1MaxDepth = 5;
         ai2MaxDepth = 5;
+
         player1Color = Color.RED;
         player2Color = Color.YELLOW;
 
@@ -36,23 +44,26 @@ public class GameParameters {
     }
 
     public GameParameters(GameParameters otherGameParameters) {
-        this.guiStyle = otherGameParameters.guiStyle;
-        this.gameMode = otherGameParameters.gameMode;
-        this.aiType = otherGameParameters.aiType;
-        this.ai1MaxDepth = otherGameParameters.ai1MaxDepth;
-        this.ai2MaxDepth = otherGameParameters.ai2MaxDepth;
-        this.player1Color = otherGameParameters.player1Color;
-        this.player2Color = otherGameParameters.player2Color;
-        this.numOfRows = otherGameParameters.numOfRows;
-        this.numOfColumns = otherGameParameters.numOfColumns;
-        this.checkersInARow = otherGameParameters.checkersInARow;
+        this.guiStyle = otherGameParameters.getGuiStyle();
+        this.gameMode = otherGameParameters.getGameMode();
+        this.ai1Type = otherGameParameters.getAi1Type();
+        this.ai2Type = otherGameParameters.getAi2Type();
+        this.ai1MaxDepth = otherGameParameters.getAi1MaxDepth();
+        this.ai2MaxDepth = otherGameParameters.getAi2MaxDepth();
+        this.player1Color = otherGameParameters.getPlayer1Color();
+        this.player2Color = otherGameParameters.getPlayer2Color();
+        this.numOfRows = otherGameParameters.getNumOfRows();
+        this.numOfColumns = otherGameParameters.getNumOfColumns();
+        this.checkersInARow = otherGameParameters.getCheckersInARow();
     }
 
-    public GameParameters(GuiStyle guiStyle, GameMode gameMode, AiType aiType, int ai1MaxDepth, int ai2MaxDepth,
-                          Color player1Color, Color player2Color, int numOfRows, int numOfColumns, int checkersInARow) {
+    public GameParameters(GuiStyle guiStyle, GameMode gameMode, AiType ai1Type, AiType ai2Type,
+                          int ai1MaxDepth, int ai2MaxDepth, Color player1Color, Color player2Color,
+                          int numOfRows, int numOfColumns, int checkersInARow) {
         this.guiStyle = guiStyle;
         this.gameMode = gameMode;
-        this.aiType = aiType;
+        this.ai1Type = ai1Type;
+        this.ai2Type = ai2Type;
         this.ai1MaxDepth = ai1MaxDepth;
         this.ai2MaxDepth = ai2MaxDepth;
         this.player1Color = player1Color;
@@ -78,12 +89,20 @@ public class GameParameters {
         this.gameMode = gameMode;
     }
 
-    public AiType getAiType() {
-        return aiType;
+    public AiType getAi1Type() {
+        return ai1Type;
     }
 
-    public void setAiType(AiType aiType) {
-        this.aiType = aiType;
+    public void setAi1Type(AiType ai1Type) {
+        this.ai1Type = ai1Type;
+    }
+
+    public AiType getAi2Type() {
+        return ai2Type;
+    }
+
+    public void setAi2Type(AiType ai1Type) {
+        this.ai2Type = ai2Type;
     }
 
     public int getAi1MaxDepth() {

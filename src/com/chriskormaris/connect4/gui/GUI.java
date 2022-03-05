@@ -101,7 +101,6 @@ public class GUI {
 
     // Add the menu bars and items to the window.
     private static void AddMenus() {
-
         // Add the menu bar.
         menuBar = new JMenuBar();
 
@@ -154,7 +153,7 @@ public class GUI {
 
         exitItem.addActionListener(e -> System.exit(0));
 
-        howToPlayItem.addActionListener(e -> JOptionPane.showMessageDialog(null,
+        howToPlayItem.addActionListener(e -> JOptionPane.showMessageDialog(panelMain,
                 "Click on the buttons or press 1-" + NUM_OF_COLUMNS + " on your keyboard to insert a new checker."
                         + "\nTo win you must place " + CHECKERS_IN_A_ROW + " checkers in an row, horizontally, vertically or diagonally.",
                 "How to Play", JOptionPane.INFORMATION_MESSAGE));
@@ -162,7 +161,7 @@ public class GUI {
         aboutItem.addActionListener(e -> {
             JLabel label = new JLabel("<html><center>© Created by: Christos Kormaris<br>"
                     + "Version " + VERSION + "</center></html>");
-            JOptionPane.showMessageDialog(frameMainWindow, label, "About", JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(panelMain, label, "About", JOptionPane.INFORMATION_MESSAGE);
         });
 
         fileMenu.add(newGameItem);
@@ -184,7 +183,6 @@ public class GUI {
         frameMainWindow.setJMenuBar(menuBar);
         // Make the board visible after adding the menus.
         frameMainWindow.setVisible(true);
-
     }
 
     public static void saveGame() {
@@ -663,9 +661,9 @@ public class GUI {
         Board.printBoard(board.getGameBoard());
 
         if (gameParameters.getGameMode() == GameMode.HUMAN_VS_AI) {
-            if (gameParameters.getAiType() == AiType.MINIMAX_AI) {
+            if (gameParameters.getAi1Type() == AiType.MINIMAX_AI) {
                 ai = new MiniMaxAlphaBetaPruningAI(gameParameters.getAi1MaxDepth(), Constants.P2);
-            } else if (gameParameters.getAiType() == AiType.RANDOM_AI) {
+            } else if (gameParameters.getAi1Type() == AiType.RANDOM_AI) {
                 ai = new RandomChoiceAI(Constants.P2);
             }
         } else if (gameParameters.getGameMode() == GameMode.AI_VS_AI) {
@@ -678,7 +676,7 @@ public class GUI {
     public static void playAiVsAi() {
         AI ai1;
         AI ai2;
-        if (gameParameters.getAiType() == AiType.MINIMAX_AI) {
+        if (gameParameters.getAi1Type() == AiType.MINIMAX_AI) {
             // Initial maxDepth = 5. We can change this value for difficulty adjustment.
             ai1 = new MiniMaxAI(gameParameters.getAi1MaxDepth(), Constants.P1);
             ai2 = new MiniMaxAlphaBetaPruningAI(gameParameters.getAi2MaxDepth(), Constants.P2);

@@ -15,10 +15,12 @@ import java.awt.event.ActionListener;
 public class SettingsWindow extends JFrame {
 
     public static int width = 450;
-    public static int height = 410;
+    public static int height = 450;
+
     private final JComboBox<String> gui_style_drop_down;
     private final JComboBox<String> game_mode_drop_down;
-    private final JComboBox<String> ai_type_drop_down;
+    private final JComboBox<String> ai1_type_drop_down;
+    private final JComboBox<String> ai2_type_drop_down;
     private final JComboBox<Integer> max_depth1_drop_down;
     private final JComboBox<Integer> max_depth2_drop_down;
     private final JComboBox<String> player1_color_drop_down;
@@ -41,30 +43,33 @@ public class SettingsWindow extends JFrame {
 
         GuiStyle selectedGuiStyle = GUI.gameParameters.getGuiStyle();
         GameMode selectedMode = GUI.gameParameters.getGameMode();
-        AiType selectedAiType = GUI.gameParameters.getAiType();
+        AiType selectedAi1Type = GUI.gameParameters.getAi1Type();
+        AiType selectedAi2Type = GUI.gameParameters.getAi2Type();
         int maxDepth1 = GUI.gameParameters.getAi1MaxDepth() - 1;
         int maxDepth2 = GUI.gameParameters.getAi2MaxDepth() - 1;
         Color selectedPlayer1Color = GUI.gameParameters.getPlayer1Color();
         Color selectedPlayer2Color = GUI.gameParameters.getPlayer2Color();
-        int inARow = GUI.gameParameters.getCheckersInARow();
+        int checkersInARow = GUI.gameParameters.getCheckersInARow();
 
         JLabel guiStyleLabel = new JLabel("GUI style");
         JLabel gameModeLabel = new JLabel("Game mode");
-        JLabel aiTypeLabel = new JLabel("AI type");
+        JLabel ai1TypeLabel = new JLabel("AI 1 type");
+        JLabel ai2TypeLabel = new JLabel("AI 2 type (AiVsAi)");
         JLabel maxDepth1Label = new JLabel("AI 1 depth");
         JLabel maxDepth2Label = new JLabel("AI 2 depth (AiVsAi)");
         JLabel player1ColorLabel = new JLabel("Player 1 color");
         JLabel player2ColorLabel = new JLabel("Player 2 color");
-        JLabel inARowLabel = new JLabel("Checkers in a Row");
+        JLabel checkersInARowLabel = new JLabel("Checkers in a Row");
 
         add(guiStyleLabel);
         add(gameModeLabel);
-        add(aiTypeLabel);
+        add(ai1TypeLabel);
+        add(ai2TypeLabel);
         add(maxDepth1Label);
         add(maxDepth2Label);
         add(player1ColorLabel);
         add(player2ColorLabel);
-        add(inARowLabel);
+        add(checkersInARowLabel);
 
         gui_style_drop_down = new JComboBox<>();
         gui_style_drop_down.addItem("System style");
@@ -92,14 +97,24 @@ public class SettingsWindow extends JFrame {
             game_mode_drop_down.setSelectedIndex(2);
         }
 
-        ai_type_drop_down = new JComboBox<>();
-        ai_type_drop_down.addItem("Minimax AI");
-        ai_type_drop_down.addItem("Random AI");
+        ai1_type_drop_down = new JComboBox<>();
+        ai1_type_drop_down.addItem("Minimax AI");
+        ai1_type_drop_down.addItem("Random AI");
 
-        if (selectedAiType == AiType.MINIMAX_AI) {
-            ai_type_drop_down.setSelectedIndex(0);
-        } else if (selectedAiType == AiType.RANDOM_AI) {
-            ai_type_drop_down.setSelectedIndex(1);
+        if (selectedAi1Type == AiType.MINIMAX_AI) {
+            ai1_type_drop_down.setSelectedIndex(0);
+        } else if (selectedAi1Type == AiType.RANDOM_AI) {
+            ai1_type_drop_down.setSelectedIndex(1);
+        }
+
+        ai2_type_drop_down = new JComboBox<>();
+        ai2_type_drop_down.addItem("Minimax AI");
+        ai2_type_drop_down.addItem("Random AI");
+
+        if (selectedAi2Type == AiType.MINIMAX_AI) {
+            ai2_type_drop_down.setSelectedIndex(0);
+        } else if (selectedAi2Type == AiType.RANDOM_AI) {
+            ai2_type_drop_down.setSelectedIndex(1);
         }
 
         max_depth1_drop_down = new JComboBox<>();
@@ -171,11 +186,12 @@ public class SettingsWindow extends JFrame {
         checkers_in_a_row_drop_down.addItem(4);
         checkers_in_a_row_drop_down.addItem(5);
 
-        checkers_in_a_row_drop_down.setSelectedIndex(inARow - 4);
+        checkers_in_a_row_drop_down.setSelectedIndex(checkersInARow - 4);
 
         add(gui_style_drop_down);
         add(game_mode_drop_down);
-        add(ai_type_drop_down);
+        add(ai1_type_drop_down);
+        add(ai2_type_drop_down);
         add(max_depth1_drop_down);
         add(max_depth2_drop_down);
         add(player1_color_drop_down);
@@ -184,21 +200,23 @@ public class SettingsWindow extends JFrame {
 
         guiStyleLabel.setBounds(25, 25, 200, 25);
         gameModeLabel.setBounds(25, 60, 200, 25);
-        aiTypeLabel.setBounds(25, 95, 200, 25);
-        maxDepth1Label.setBounds(25, 130, 200, 25);
-        maxDepth2Label.setBounds(25, 165, 200, 25);
-        player1ColorLabel.setBounds(25, 200, 200, 25);
-        player2ColorLabel.setBounds(25, 235, 200, 25);
-        inARowLabel.setBounds(25, 270, 200, 25);
+        ai1TypeLabel.setBounds(25, 95, 200, 25);
+        ai2TypeLabel.setBounds(25, 130, 200, 25);
+        maxDepth1Label.setBounds(25, 165, 200, 25);
+        maxDepth2Label.setBounds(25, 200, 200, 25);
+        player1ColorLabel.setBounds(25, 235, 200, 25);
+        player2ColorLabel.setBounds(25, 270, 200, 25);
+        checkersInARowLabel.setBounds(25, 305, 200, 25);
 
         gui_style_drop_down.setBounds(195, 25, 200, 25);
         game_mode_drop_down.setBounds(195, 60, 200, 25);
-        ai_type_drop_down.setBounds(195, 95, 200, 25);
-        max_depth1_drop_down.setBounds(195, 130, 200, 25);
-        max_depth2_drop_down.setBounds(195, 165, 200, 25);
-        player1_color_drop_down.setBounds(195, 200, 200, 25);
-        player2_color_drop_down.setBounds(195, 235, 200, 25);
-        checkers_in_a_row_drop_down.setBounds(195, 270, 200, 25);
+        ai1_type_drop_down.setBounds(195, 95, 200, 25);
+        ai2_type_drop_down.setBounds(195, 130, 200, 25);
+        max_depth1_drop_down.setBounds(195, 165, 200, 25);
+        max_depth2_drop_down.setBounds(195, 200, 200, 25);
+        player1_color_drop_down.setBounds(195, 235, 200, 25);
+        player2_color_drop_down.setBounds(195, 270, 200, 25);
+        checkers_in_a_row_drop_down.setBounds(195, 305, 200, 25);
 
         apply = new JButton("Apply");
         cancel = new JButton("Cancel");
@@ -206,9 +224,9 @@ public class SettingsWindow extends JFrame {
         add(cancel);
 
         int distance = 10;
-        apply.setBounds((width / 2) - 110 - (distance / 2), 320, 100, 30);
+        apply.setBounds((width / 2) - 110 - (distance / 2), 355, 100, 30);
         apply.addActionListener(handler);
-        cancel.setBounds((width / 2) - 10 + (distance / 2), 320, 100, 30);
+        cancel.setBounds((width / 2) - 10 + (distance / 2), 355, 100, 30);
         cancel.addActionListener(handler);
     }
 
@@ -217,24 +235,23 @@ public class SettingsWindow extends JFrame {
 
         @Override
         public void actionPerformed(ActionEvent ev) {
-
             if (ev.getSource() == cancel) {
                 dispose();
             } else if (ev.getSource() == apply) {
                 try {
 
-                    GuiStyle guiStyle =
-                            GuiStyle.valueOf(gui_style_drop_down.getSelectedItem().toString().toUpperCase().replace("-", "_").replace(" ", "_"));
-                    GameMode gameMode =
-                            GameMode.valueOf(game_mode_drop_down.getSelectedItem().toString().toUpperCase().replace(" ", "_"));
-                    AiType aiType =
-                            AiType.valueOf(ai_type_drop_down.getSelectedItem().toString().toUpperCase().replace(" ", "_"));
+                    GuiStyle guiStyle = GuiStyle.valueOf(gui_style_drop_down.getSelectedItem().toString().toUpperCase()
+                            .replace("-", "_").replace(" ", "_"));
+                    GameMode gameMode = GameMode.valueOf(game_mode_drop_down.getSelectedItem().toString().toUpperCase()
+                            .replace(" ", "_"));
+                    AiType ai1Type = AiType.valueOf(ai1_type_drop_down.getSelectedItem().toString().toUpperCase()
+                            .replace(" ", "_"));
+                    AiType ai2Type = AiType.valueOf(ai2_type_drop_down.getSelectedItem().toString().toUpperCase()
+                            .replace(" ", "_"));
                     int maxDepth1 = (int) max_depth1_drop_down.getSelectedItem();
                     int maxDepth2 = (int) max_depth2_drop_down.getSelectedItem();
-                    Color player1Color =
-                            Color.valueOf(player1_color_drop_down.getSelectedItem().toString().toUpperCase());
-                    Color player2Color =
-                            Color.valueOf(player2_color_drop_down.getSelectedItem().toString().toUpperCase());
+                    Color player1Color = Color.valueOf(player1_color_drop_down.getSelectedItem().toString().toUpperCase());
+                    Color player2Color = Color.valueOf(player2_color_drop_down.getSelectedItem().toString().toUpperCase());
                     int checkersInARow = (int) checkers_in_a_row_drop_down.getSelectedItem();
                     int numOfRows = (checkersInARow == 4) ? 6 : 7;
                     int numOfColumns = (checkersInARow == 4) ? 7 : 8;
@@ -247,10 +264,10 @@ public class SettingsWindow extends JFrame {
                     }
 
                     // Change game parameters based on settings.
-                    GUI.newGameParameters = new GameParameters(guiStyle, gameMode, aiType, maxDepth1, maxDepth2,
+                    GUI.newGameParameters = new GameParameters(guiStyle, gameMode, ai1Type, ai2Type, maxDepth1, maxDepth2,
                             player1Color, player2Color, numOfRows, numOfColumns, checkersInARow);
 
-                    JOptionPane.showMessageDialog(null,
+                    JOptionPane.showMessageDialog(GUI.panelMain,
                             "Game settings have been changed.\nThe changes will be applied in the next new game.",
                             "Notice", JOptionPane.INFORMATION_MESSAGE);
                     dispose();

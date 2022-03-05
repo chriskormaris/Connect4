@@ -3,7 +3,7 @@ package com.chriskormaris.connect4.gui.util;
 
 public class GuiConstants {
 
-    public static final String VERSION = "2.6.0";
+    public static final String VERSION = "2.7.0";
 
     public static final String CONNECT_4_BOARD_IMG_PATH = "images/Board4.png";
     public static final String CONNECT_5_BOARD_IMG_PATH = "images/Board5.png";
