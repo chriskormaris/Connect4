@@ -192,16 +192,18 @@ public class Board {
      * +10 for each 3 pieces in a row by Player 1, -10 for each 3 pieces in a row by Player 2.
      * ..
      * +10^i for each (i+2) pieces in a row by Player 1, -10^i for each (i+2) pieces in a row by Player 2.
-     * +10^(inARow-2) if "inARow" pieces in a row by Player 1 exist, -10^(inARow-2) if "inARow" pieces in a row by Player 2 exist. */
+     * +10^(checkersInARow-2) if "checkersInARow" pieces in a row by Player 1 exist,
+     * -10^(checkersInARow-2) if "checkersInARow" pieces in a row by Player 2 exist. */
     public int evaluate() {
         int player1Score = 0;
         int player2Score = 0;
 
         if (checkWinState()) {
-            if (winner == Constants.P1)
+            if (winner == Constants.P1) {
                 player1Score = (int) Math.pow(10, (checkersInARow - 2));
-            else if (winner == Constants.P2)
+            } else if (winner == Constants.P2) {
                 player2Score = (int) Math.pow(10, (checkersInARow - 2));
+            }
         }
 
         for (int i = 0; i < checkersInARow - 2; i++) {
@@ -218,7 +220,6 @@ public class Board {
      * It checks whether somebody has won the game.
      */
     public boolean checkWinState() {
-
         int times4InARowPlayer1 = countNInARow(checkersInARow, Constants.P1);
         if (times4InARowPlayer1 > 0) {
             setWinner(Constants.P1);
@@ -248,7 +249,6 @@ public class Board {
     // The game is in a draw state, if all cells are full
     // and nobody has won the game.
     public boolean checkForDraw() {
-
         for (int row = 0; row < numOfRows; row++) {
             for (int col = 0; col < numOfColumns; col++) {
                 if (gameBoard[row][col] == Constants.EMPTY) {
@@ -261,107 +261,94 @@ public class Board {
     }
 
     // It returns the frequency of "N" checkers in a row,
-    // for the given player, with "inARow - N" adjacent checkers
+    // for the given player, with "checkersInARow - N" adjacent checkers
     // of the same player or empty tiles.
     // The aim is to search for checkers in a row,
-    // with a potential to form a Connect-"inARow".
+    // with a potential to form a Connect-"checkersInARow".
     public int countNInARow(int N, int player) {
-
         int times = 0;
 
-        // Check for "inARow" consecutive checkers of the same player or empty tiles in a row, horizontally.
+        // Check for "checkersInARow" consecutive checkers of the same player or empty tiles in a row, horizontally.
         for (int i = 0; i < numOfRows; i++) {
             for (int j = 0; j < numOfColumns; j++) {
                 if (canMove(i, j + checkersInARow - 1)) {
-
                     // Check for "N" consecutive checkers of the same player in a row, horizontally.
                     int k = 0;
                     while (k < N && gameBoard[i][j + k] == player) {
                         k++;
                     }
-                    // Check for "inARow - N" consecutive checkers of the same player or empty tiles in a row, horizontally.
+                    // Check for "checkersInARow - N" consecutive checkers of the same player or empty tiles in a row, horizontally.
                     if (k == N) {
                         while (k < checkersInARow && (gameBoard[i][j + k] == player || gameBoard[i][j + k] == Constants.EMPTY)) {
                             k++;
                         }
                         if (k == checkersInARow) times++;
                     }
-
                 }
             }
         }
 
-
-        // Check for "inARow" consecutive checkers of the same player or empty tiles in a row, vertically.
+        // Check for "checkersInARow" consecutive checkers of the same player or empty tiles in a row, vertically.
         for (int i = 0; i < numOfRows; i++) {
             for (int j = 0; j < numOfColumns; j++) {
                 if (canMove(i - checkersInARow + 1, j)) {
-
                     // Check for "N" consecutive checkers of the same player in a row, vertically.
                     int k = 0;
                     while (k < N && gameBoard[i - k][j] == player) {
                         k++;
                     }
-                    // Check for "inARow - N" consecutive checkers of the same player or empty tiles in a row, vertically.
+                    // Check for "checkersInARow - N" consecutive checkers of the same player or empty tiles in a row, vertically.
                     if (k == checkersInARow) {
                         while (k < checkersInARow && (gameBoard[i - k][j] == player || gameBoard[i - k][j] == Constants.EMPTY)) {
                             k++;
                         }
                         if (k == checkersInARow) times++;
                     }
-
                 }
             }
         }
 
-
-        // Check for "inARow" consecutive checkers of the same player or empty tiles in a row, in descending diagonal.
+        // Check for "checkersInARow" consecutive checkers of the same player or empty tiles in a row, in descending diagonal.
         for (int i = 0; i < numOfRows; i++) {
             for (int j = 0; j < numOfColumns; j++) {
                 if (canMove(i + checkersInARow - 1, j + checkersInARow - 1)) {
-
                     // Check for "N" consecutive checkers of the same player in a row, in descending diagonal.
                     int k = 0;
                     while (k < N && gameBoard[i + k][j + k] == player) {
                         k++;
                     }
-                    // Check for "inARow - N" consecutive checkers of the same player or empty tiles in a row, in descending diagonal.
+                    // Check for "checkersInARow - N" consecutive checkers of the same player or empty tiles in a row, in descending diagonal.
                     if (k == checkersInARow) {
                         while (k < checkersInARow && (gameBoard[i + k][j + k] == player || gameBoard[i + k][j + k] == Constants.EMPTY)) {
                             k++;
                         }
                         if (k == checkersInARow) times++;
                     }
-
                 }
             }
         }
 
-
-        // Check for "inARow" consecutive checkers of the same player or empty tiles in a row, in ascending diagonal.
+        // Check for "checkersInARow" consecutive checkers of the same player or empty tiles in a row, in ascending diagonal.
         for (int i = 0; i < numOfRows; i++) {
             for (int j = 0; j < numOfColumns; j++) {
                 if (canMove(i - checkersInARow + 1, j + checkersInARow - 1)) {
-
                     // Check for "N" consecutive checkers of the same player in a row, in ascending diagonal.
                     int k = 0;
                     while (k < N && gameBoard[i - k][j + k] == player) {
                         k++;
                     }
-                    // Check for "inARow - N" consecutive checkers of the same player or empty tiles in a row, in ascending diagonal.
+                    // Check for "checkersInARow - N" consecutive checkers of the same player or empty tiles in a row, in ascending diagonal.
                     if (k == checkersInARow) {
                         while (k < checkersInARow && (gameBoard[i - k][j + k] == player || gameBoard[i - k][j + k] == Constants.EMPTY)) {
                             k++;
                         }
                         if (k == checkersInARow) times++;
                     }
-
                 }
             }
         }
 
         return times;
-
     }
 
     public int getNumOfRows() {
