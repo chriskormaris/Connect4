@@ -2,8 +2,8 @@ package com.chriskormaris.connect4.gui;
 
 
 import com.chriskormaris.connect4.api.ai.AI;
-import com.chriskormaris.connect4.api.ai.MiniMaxAI;
-import com.chriskormaris.connect4.api.ai.MiniMaxAlphaBetaPruningAI;
+import com.chriskormaris.connect4.api.ai.MinimaxAI;
+import com.chriskormaris.connect4.api.ai.MinimaxAlphaBetaPruningAI;
 import com.chriskormaris.connect4.api.ai.RandomChoiceAI;
 import com.chriskormaris.connect4.api.connect4.Board;
 import com.chriskormaris.connect4.api.connect4.Move;
@@ -662,7 +662,7 @@ public class GUI {
 
         if (gameParameters.getGameMode() == GameMode.HUMAN_VS_AI) {
             if (gameParameters.getAi1Type() == AiType.MINIMAX_AI) {
-                ai = new MiniMaxAlphaBetaPruningAI(gameParameters.getAi1MaxDepth(), Constants.P2);
+                ai = new MinimaxAlphaBetaPruningAI(gameParameters.getAi1MaxDepth(), Constants.P2);
             } else if (gameParameters.getAi1Type() == AiType.RANDOM_AI) {
                 ai = new RandomChoiceAI(Constants.P2);
             }
@@ -677,12 +677,12 @@ public class GUI {
         AI ai1;
         AI ai2;
         if (gameParameters.getAi1Type() == AiType.MINIMAX_AI) {
-            ai1 = new MiniMaxAI(gameParameters.getAi1MaxDepth(), Constants.P1);
+            ai1 = new MinimaxAI(gameParameters.getAi1MaxDepth(), Constants.P1);
         } else {
             ai1 = new RandomChoiceAI(Constants.P1);
         }
         if (gameParameters.getAi2Type() == AiType.MINIMAX_AI) {
-            ai2 = new MiniMaxAlphaBetaPruningAI(gameParameters.getAi2MaxDepth(), Constants.P2);
+            ai2 = new MinimaxAlphaBetaPruningAI(gameParameters.getAi2MaxDepth(), Constants.P2);
         } else {
             ai2 = new RandomChoiceAI(Constants.P2);
         }

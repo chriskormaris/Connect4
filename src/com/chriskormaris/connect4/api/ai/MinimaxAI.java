@@ -9,17 +9,17 @@ import java.util.ArrayList;
 import java.util.Random;
 
 
-public class MiniMaxAI extends AI {
+public class MinimaxAI extends AI {
 
-    // Variable that holds the maximum depth the MiniMaxAi algorithm will reach for this player.
+    // Variable that holds the maximum depth the MinimaxAi algorithm will reach for this player.
     private int maxDepth;
 
-    public MiniMaxAI() {
+    public MinimaxAI() {
         super(Constants.P2);
         maxDepth = 2;
     }
 
-    public MiniMaxAI(int maxDepth, int aiPlayer) {
+    public MinimaxAI(int maxDepth, int aiPlayer) {
         super(aiPlayer);
         this.maxDepth = maxDepth;
     }

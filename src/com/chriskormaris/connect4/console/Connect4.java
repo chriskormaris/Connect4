@@ -2,7 +2,7 @@ package com.chriskormaris.connect4.console;
 
 
 import com.chriskormaris.connect4.api.ai.AI;
-import com.chriskormaris.connect4.api.ai.MiniMaxAlphaBetaPruningAI;
+import com.chriskormaris.connect4.api.ai.MinimaxAlphaBetaPruningAI;
 import com.chriskormaris.connect4.api.connect4.Board;
 import com.chriskormaris.connect4.api.connect4.Move;
 import com.chriskormaris.connect4.api.util.Constants;
@@ -31,11 +31,11 @@ public class Connect4 {
         }
 
         // We create the AI computer player "O" and the Connect-N board.
-        // The "maxDepth" for the MiniMax algorithm is set to 3.
+        // The "maxDepth" for the Minimax algorithm is set to 3.
         // Feel free to change the values.
         // The bigger the value of "maxDepth" is, the more difficult the game is.
         int XColumnPosition;
-        AI ai = new MiniMaxAlphaBetaPruningAI(5, Constants.P2);
+        AI ai = new MinimaxAlphaBetaPruningAI(5, Constants.P2);
         Board connect4Board = new Board();
 
         // Uncomment this, for "O" to play first
@@ -77,7 +77,7 @@ public class Connect4 {
                 case Constants.P1:
                     System.out.println("AI player moves.");
 
-                    // Make MiniMax move.
+                    // Make Minimax move.
                     Move aiMove = ai.getNextMove(connect4Board);
 
                     connect4Board.makeMove(aiMove.getColumn(), Constants.P2);
