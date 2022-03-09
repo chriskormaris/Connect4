@@ -1,4 +1,4 @@
-package com.chriskormaris.connect4.api.connect4;
+package com.chriskormaris.connect4.api.board;
 
 
 import com.chriskormaris.connect4.api.util.Constants;
@@ -15,7 +15,7 @@ public class Board {
     private int checkersInARow;
 
     // Immediate move that led to this board.
-    private com.chriskormaris.connect4.api.connect4.Move lastMove;
+    private com.chriskormaris.connect4.api.board.Move lastMove;
 
     // A variable to store the symbol of the player who played last,
     // leading to the current board state.
@@ -38,7 +38,7 @@ public class Board {
         this.numOfColumns = numOfColumns;
         this.checkersInARow = checkersInARow;
 
-        this.lastMove = new com.chriskormaris.connect4.api.connect4.Move();
+        this.lastMove = new com.chriskormaris.connect4.api.board.Move();
         this.lastPlayer = Constants.P2;
         this.winner = Constants.EMPTY;
         this.gameBoard = new int[numOfRows][numOfColumns];
@@ -142,7 +142,7 @@ public class Board {
         try {
             // The variable "lastMove" must be changed before the variable
             // "gameBoard[][]" because of the function "getRowPosition(col)".
-            this.lastMove = new com.chriskormaris.connect4.api.connect4.Move(getEmptyRowPosition(col), col);
+            this.lastMove = new com.chriskormaris.connect4.api.board.Move(getEmptyRowPosition(col), col);
             this.lastPlayer = player;
             this.gameBoard[getEmptyRowPosition(col)][col] = player;
             this.turn++;
@@ -375,7 +375,7 @@ public class Board {
         this.checkersInARow = checkersInARow;
     }
 
-    public com.chriskormaris.connect4.api.connect4.Move getLastMove() {
+    public com.chriskormaris.connect4.api.board.Move getLastMove() {
         return lastMove;
     }
 

@@ -3,8 +3,8 @@ package com.chriskormaris.connect4.console;
 
 import com.chriskormaris.connect4.api.ai.AI;
 import com.chriskormaris.connect4.api.ai.MinimaxAlphaBetaPruningAI;
-import com.chriskormaris.connect4.api.connect4.Board;
-import com.chriskormaris.connect4.api.connect4.Move;
+import com.chriskormaris.connect4.api.board.Board;
+import com.chriskormaris.connect4.api.board.Move;
 import com.chriskormaris.connect4.api.util.Constants;
 
 import java.util.InputMismatchException;

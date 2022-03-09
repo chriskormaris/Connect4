@@ -1,7 +1,7 @@
 package connect4_tests;
 
 
-import com.chriskormaris.connect4.api.connect4.Board;
+import com.chriskormaris.connect4.api.board.Board;
 import com.chriskormaris.connect4.api.util.Constants;
 import com.chriskormaris.connect4.gui.GUI;
 import org.junit.Before;

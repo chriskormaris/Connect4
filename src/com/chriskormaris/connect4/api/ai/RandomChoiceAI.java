@@ -1,7 +1,7 @@
 package com.chriskormaris.connect4.api.ai;
 
-import com.chriskormaris.connect4.api.connect4.Board;
-import com.chriskormaris.connect4.api.connect4.Move;
+import com.chriskormaris.connect4.api.board.Board;
+import com.chriskormaris.connect4.api.board.Move;
 import com.chriskormaris.connect4.api.util.Constants;
 import com.chriskormaris.connect4.gui.GUI;
 

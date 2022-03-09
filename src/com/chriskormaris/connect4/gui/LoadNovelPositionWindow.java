@@ -1,7 +1,7 @@
 package com.chriskormaris.connect4.gui;
 
 
-import com.chriskormaris.connect4.api.connect4.Board;
+import com.chriskormaris.connect4.api.board.Board;
 import com.chriskormaris.connect4.api.util.Constants;
 
 import javax.swing.*;
