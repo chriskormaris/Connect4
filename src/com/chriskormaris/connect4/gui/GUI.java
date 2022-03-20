@@ -443,7 +443,9 @@ public class GUI {
             System.out.println("Turn: " + board.getTurn());
             Board.printBoard(board.getGameBoard());
         }
-    }    public static KeyListener gameKeyListener = new KeyListener() {
+    }
+
+    public static KeyListener gameKeyListener = new KeyListener() {
         @Override
         public void keyTyped(KeyEvent e) {
 
