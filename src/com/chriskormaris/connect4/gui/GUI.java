@@ -35,13 +35,15 @@ import java.util.Stack;
 
 import static com.chriskormaris.connect4.api.util.Constants.CONNECT_4_CHECKERS_IN_A_ROW;
 import static com.chriskormaris.connect4.api.util.Constants.CONNECT_5_CHECKERS_IN_A_ROW;
-import static com.chriskormaris.connect4.gui.GuiConstants.CONNECT_4_BOARD_IMG_PATH;
-import static com.chriskormaris.connect4.gui.GuiConstants.CONNECT_5_BOARD_IMG_PATH;
-import static com.chriskormaris.connect4.gui.GuiConstants.DEFAULT_CONNECT_4_HEIGHT;
-import static com.chriskormaris.connect4.gui.GuiConstants.DEFAULT_CONNECT_4_WIDTH;
-import static com.chriskormaris.connect4.gui.GuiConstants.DEFAULT_CONNECT_5_HEIGHT;
-import static com.chriskormaris.connect4.gui.GuiConstants.DEFAULT_CONNECT_5_WIDTH;
-import static com.chriskormaris.connect4.gui.GuiConstants.VERSION;
+import static com.chriskormaris.connect4.gui.util.GuiConstants.CONNECT_4_BOARD_IMG_PATH;
+import static com.chriskormaris.connect4.gui.util.GuiConstants.CONNECT_4_TITLE;
+import static com.chriskormaris.connect4.gui.util.GuiConstants.CONNECT_5_BOARD_IMG_PATH;
+import static com.chriskormaris.connect4.gui.util.GuiConstants.CONNECT_5_TITLE;
+import static com.chriskormaris.connect4.gui.util.GuiConstants.DEFAULT_CONNECT_4_HEIGHT;
+import static com.chriskormaris.connect4.gui.util.GuiConstants.DEFAULT_CONNECT_4_WIDTH;
+import static com.chriskormaris.connect4.gui.util.GuiConstants.DEFAULT_CONNECT_5_HEIGHT;
+import static com.chriskormaris.connect4.gui.util.GuiConstants.DEFAULT_CONNECT_5_WIDTH;
+import static com.chriskormaris.connect4.gui.util.GuiConstants.VERSION;
 
 
 public class GUI {
@@ -274,11 +276,11 @@ public class GUI {
         ImageIcon imageBoard = null;
         if (gameParameters.getCheckersInARow() == CONNECT_4_CHECKERS_IN_A_ROW) {
             layeredGameBoard.setPreferredSize(new Dimension(DEFAULT_CONNECT_4_WIDTH, DEFAULT_CONNECT_4_HEIGHT));
-            layeredGameBoard.setBorder(BorderFactory.createTitledBorder("Connect-4"));
+            layeredGameBoard.setBorder(BorderFactory.createTitledBorder(CONNECT_4_TITLE));
             imageBoard = new ImageIcon(ResourceLoader.load(CONNECT_4_BOARD_IMG_PATH));
         } else if (gameParameters.getCheckersInARow() == CONNECT_5_CHECKERS_IN_A_ROW) {
             layeredGameBoard.setPreferredSize(new Dimension(DEFAULT_CONNECT_5_WIDTH, DEFAULT_CONNECT_5_HEIGHT));
-            layeredGameBoard.setBorder(BorderFactory.createTitledBorder("Connect-5"));
+            layeredGameBoard.setBorder(BorderFactory.createTitledBorder(CONNECT_5_TITLE));
             imageBoard = new ImageIcon(ResourceLoader.load(CONNECT_5_BOARD_IMG_PATH));
         }
 
