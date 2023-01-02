@@ -13,13 +13,13 @@ import static org.junit.Assert.assertEquals;
 
 public class BoardTest {
 
-    static final int numOfRows = GUI.gameParameters.getNumOfRows();
-    static final int numOfColumns = GUI.gameParameters.getNumOfColumns();
+	static final int numOfRows = GUI.gameParameters.getNumOfRows();
+	static final int numOfColumns = GUI.gameParameters.getNumOfColumns();
 
-    @Before
-    public void setUp() {
+	@Before
+	public void setUp() {
 
-    }
+	}
 
     /*
 	@Test
@@ -69,18 +69,18 @@ public class BoardTest {
 	}
 	*/
 
-    @Test
-    public void testMakeMoveInt() {
-        Board b = new Board();
+	@Test
+	public void testMakeMoveInt() {
+		Board b = new Board();
 
-        b.makeMove(0, Constants.P1);
-        Board.printBoard(b.getGameBoard());
+		b.makeMove(0, Constants.P1);
+		Board.printBoard(b.getGameBoard());
 
-        assertEquals("The board was not updated correctly.", Constants.P1, b.getGameBoard()[5][0]);
-        assertEquals("The last player symbol played is not correct.", Constants.P1, b.getLastPlayer());
-        System.out.println("*****************************");
-        System.out.println();
-    }
+		assertEquals("The board was not updated correctly.", Constants.P1, b.getGameBoard()[5][0]);
+		assertEquals("The last player symbol played is not correct.", Constants.P1, b.getLastPlayer());
+		System.out.println("*****************************");
+		System.out.println();
+	}
 
     /*
 	@Test
@@ -104,24 +104,24 @@ public class BoardTest {
 	}
 	*/
 
-    @Test
-    public void testGetRowPosition() {
-        Board b = new Board();
+	@Test
+	public void testGetRowPosition() {
+		Board b = new Board();
 
-        int[][] gameBoard = new int[numOfRows][numOfColumns];
-        for (int col = 0; col < numOfColumns; col++) {
-            gameBoard[5][col] = Constants.P1;
-        }
-        b.setGameBoard(gameBoard);
-        Board.printBoard(b.getGameBoard());
+		int[][] gameBoard = new int[numOfRows][numOfColumns];
+		for (int col = 0; col < numOfColumns; col++) {
+			gameBoard[5][col] = Constants.P1;
+		}
+		b.setGameBoard(gameBoard);
+		Board.printBoard(b.getGameBoard());
 
-        for (int col = 0; col < numOfColumns; col++) {
-            int row = b.getEmptyRowPosition(col);
-            assertEquals("The row result is not the expected one.", 4, row);
-        }
-        System.out.println("*****************************");
-        System.out.println();
-    }
+		for (int col = 0; col < numOfColumns; col++) {
+			int row = b.getEmptyRowPosition(col);
+			assertEquals("The row result is not the expected one.", 4, row);
+		}
+		System.out.println("*****************************");
+		System.out.println();
+	}
 
     /*
 	@Test
