@@ -29,3 +29,7 @@ HOT TO RUN IN ECLIPSE:
 ### Connect-5 Screenshot
 
 ![screenshot](/screenshots/connect-5_system-style.png)
+
+### Citation
+The GUI of the Java Swing application was based on this GitHub repository:
+- https://github.com/0xadada/smart-connect-four
