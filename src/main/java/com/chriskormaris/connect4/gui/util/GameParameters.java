@@ -57,9 +57,19 @@ public class GameParameters {
 		this.checkersInARow = otherGameParameters.getCheckersInARow();
 	}
 
-	public GameParameters(GuiStyle guiStyle, GameMode gameMode, AiType ai1Type, AiType ai2Type,
-	                      int ai1MaxDepth, int ai2MaxDepth, Color player1Color, Color player2Color,
-	                      int numOfRows, int numOfColumns, int checkersInARow) {
+	public GameParameters(
+			GuiStyle guiStyle,
+			GameMode gameMode,
+			AiType ai1Type,
+			AiType ai2Type,
+			int ai1MaxDepth,
+			int ai2MaxDepth,
+			Color player1Color,
+			Color player2Color,
+			int numOfRows,
+			int numOfColumns,
+			int checkersInARow
+	) {
 		this.guiStyle = guiStyle;
 		this.gameMode = gameMode;
 		this.ai1Type = ai1Type;
@@ -101,7 +111,7 @@ public class GameParameters {
 		return ai2Type;
 	}
 
-	public void setAi2Type(AiType ai1Type) {
+	public void setAi2Type(AiType ai2Type) {
 		this.ai2Type = ai2Type;
 	}
 

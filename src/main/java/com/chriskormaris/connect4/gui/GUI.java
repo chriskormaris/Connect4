@@ -198,16 +198,16 @@ public class GUI {
 					}
 				}
 			}
-		} catch (IOException e) {
-			e.printStackTrace();
+		} catch (IOException ex) {
+			ex.printStackTrace();
 		} finally {
 			try {
 				if (bw != null) {
 					bw.flush();
 					bw.close();
 				}
-			} catch (IOException | NullPointerException e) {
-				e.printStackTrace();
+			} catch (IOException | NullPointerException ex) {
+				ex.printStackTrace();
 			}
 		}
 	}
@@ -235,15 +235,15 @@ public class GUI {
 			}
 			Board.printBoard(board.getGameBoard());
 			turnMessage.setText("Turn: " + board.getTurn());
-		} catch (IOException e) {
-			e.printStackTrace();
+		} catch (IOException ex) {
+			ex.printStackTrace();
 		} finally {
 			try {
 				if (br != null) {
 					br.close();
 				}
-			} catch (IOException | NullPointerException e) {
-				e.printStackTrace();
+			} catch (IOException | NullPointerException ex) {
+				ex.printStackTrace();
 			}
 		}
 	}
@@ -262,7 +262,7 @@ public class GUI {
 		try {
 			ImageIO.write(bi, "gif", new File(gifName));
 			System.out.println("Exported .gif file!");
-		} catch (Exception e) {
+		} catch (Exception ex) {
 			System.err.println("Error exporting .gif file!");
 			System.err.flush();
 		}
@@ -776,8 +776,8 @@ public class GUI {
 				Thread.sleep(Constants.AI_MOVE_MILLISECONDS);
 				frameMainWindow.paint(frameMainWindow.getGraphics());
 			}
-		} catch (Exception e) {
-			e.printStackTrace();
+		} catch (Exception ex) {
+			ex.printStackTrace();
 		}
 	}
 

@@ -60,10 +60,10 @@ public class Connect4 {
 							System.out.print("\nGive column (1-" + numOfColumns + "): ");
 							XColumnPosition = in.nextInt();
 						} while (connect4Board.checkFullColumn(XColumnPosition - 1));
-					} catch (ArrayIndexOutOfBoundsException e) {
+					} catch (ArrayIndexOutOfBoundsException ex) {
 						System.err.println("\nValid numbers are: " + validNumbers + ".\n");
 						break;
-					} catch (InputMismatchException e) {
+					} catch (InputMismatchException ex) {
 						System.err.println("\nInput an integer number.");
 						System.err.println("\nValid numbers are: " + validNumbers + ".\n");
 						break;

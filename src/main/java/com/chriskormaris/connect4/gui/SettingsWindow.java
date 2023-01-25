@@ -241,7 +241,8 @@ public class SettingsWindow extends JFrame {
 				try {
 
 					GuiStyle guiStyle = GuiStyle.valueOf(gui_style_drop_down.getSelectedItem().toString().toUpperCase()
-							.replace("-", "_").replace(" ", "_"));
+							.replace("-", "_")
+							.replace(" ", "_"));
 					GameMode gameMode = GameMode.valueOf(game_mode_drop_down.getSelectedItem().toString().toUpperCase()
 							.replace(" ", "_"));
 					AiType ai1Type = AiType.valueOf(ai1_type_drop_down.getSelectedItem().toString().toUpperCase()
@@ -250,29 +251,50 @@ public class SettingsWindow extends JFrame {
 							.replace(" ", "_"));
 					int maxDepth1 = (int) max_depth1_drop_down.getSelectedItem();
 					int maxDepth2 = (int) max_depth2_drop_down.getSelectedItem();
-					Color player1Color = Color.valueOf(player1_color_drop_down.getSelectedItem().toString().toUpperCase());
-					Color player2Color = Color.valueOf(player2_color_drop_down.getSelectedItem().toString().toUpperCase());
+					Color player1Color = Color.valueOf(
+							player1_color_drop_down.getSelectedItem().toString().toUpperCase()
+					);
+					Color player2Color = Color.valueOf(
+							player2_color_drop_down.getSelectedItem().toString().toUpperCase()
+					);
 					int checkersInARow = (int) checkers_in_a_row_drop_down.getSelectedItem();
 					int numOfRows = (checkersInARow == 4) ? 6 : 7;
 					int numOfColumns = (checkersInARow == 4) ? 7 : 8;
 
 					if (player1Color == player2Color) {
-						JOptionPane.showMessageDialog(null,
+						JOptionPane.showMessageDialog(
+								null,
 								"Player 1 and Player 2 cannot have the same color of checkers!",
-								"ERROR", JOptionPane.ERROR_MESSAGE);
+								"ERROR",
+								JOptionPane.ERROR_MESSAGE
+						);
 						return;
 					}
 
 					// Change game parameters based on settings.
-					GUI.newGameParameters = new GameParameters(guiStyle, gameMode, ai1Type, ai2Type, maxDepth1, maxDepth2,
-							player1Color, player2Color, numOfRows, numOfColumns, checkersInARow);
+					GUI.newGameParameters = new GameParameters(
+							guiStyle,
+							gameMode,
+							ai1Type,
+							ai2Type,
+							maxDepth1,
+							maxDepth2,
+							player1Color,
+							player2Color,
+							numOfRows,
+							numOfColumns,
+							checkersInARow
+					);
 
-					JOptionPane.showMessageDialog(GUI.panelMain,
-							"Game settings have been changed.\nThe changes will be applied in the next new game.",
-							"Notice", JOptionPane.INFORMATION_MESSAGE);
+					JOptionPane.showMessageDialog(
+							GUI.panelMain,
+							"Game settings have been changed.\n" +
+									"The changes will be applied in the next new game.",
+							"Notice", JOptionPane.INFORMATION_MESSAGE
+					);
 					dispose();
-				} catch (Exception e) {
-					System.err.println("ERROR : " + e.getMessage());
+				} catch (Exception ex) {
+					System.err.println("ERROR : " + ex.getMessage());
 				}
 
 			}  // else if.

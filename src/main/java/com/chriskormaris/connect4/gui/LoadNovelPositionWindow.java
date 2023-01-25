@@ -127,8 +127,8 @@ public class LoadNovelPositionWindow extends JFrame {
 
 					JOptionPane.showMessageDialog(null, "Novel position loaded.", "Notice", JOptionPane.INFORMATION_MESSAGE);
 					dispose();
-				} catch (Exception e) {
-					System.err.println("ERROR : " + e.getMessage());
+				} catch (Exception ex) {
+					System.err.println("ERROR : " + ex.getMessage());
 				}
 
 			}  // else if.

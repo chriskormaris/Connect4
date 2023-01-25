@@ -146,7 +146,7 @@ public class Board {
 			this.lastPlayer = player;
 			this.gameBoard[getEmptyRowPosition(col)][col] = player;
 			this.turn++;
-		} catch (ArrayIndexOutOfBoundsException e) {
+		} catch (ArrayIndexOutOfBoundsException ex) {
 			System.err.println("Column " + (col + 1) + " is full!");
 			setOverflow(true);
 		}
