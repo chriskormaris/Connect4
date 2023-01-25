@@ -290,7 +290,8 @@ public class SettingsWindow extends JFrame {
 							GUI.panelMain,
 							"Game settings have been changed.\n" +
 									"The changes will be applied in the next new game.",
-							"Notice", JOptionPane.INFORMATION_MESSAGE
+							"Notice",
+							JOptionPane.INFORMATION_MESSAGE
 					);
 					dispose();
 				} catch (Exception ex) {
