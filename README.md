@@ -1,5 +1,6 @@
 # Connect-4
 A Project made for educational purposes while studying in Athens University of Economics & Business.
+The Minimax AI algorithm was based on code from the labs of the university.
 
 Video for this project:
 - https://www.youtube.com/watch?v=SxstLdf9LkE
@@ -37,5 +38,5 @@ Java 8 and above is required to run. Have fun!!
 ![screenshot](/screenshots/connect-5_system-style.png)
 
 ### Citation
-The GUI of the Java Swing application was based on this GitHub repository:
+The GUI of the Java Swing application was inspired from this GitHub repository:
 - https://github.com/0xadada/smart-connect-four
