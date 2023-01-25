@@ -4,20 +4,19 @@ package connect4_tests;
 import com.chriskormaris.connect4.api.board.Board;
 import com.chriskormaris.connect4.api.util.Constants;
 import com.chriskormaris.connect4.gui.GUI;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 
-import static org.junit.Assert.assertEquals;
-// import static org.junit.Assert.fail;
-
+import static org.junit.jupiter.api.Assertions.assertEquals;
+// import static org.junit.jupiter.api.Assertions.fail;
 
 public class BoardTest {
 
-	static final int numOfRows = GUI.gameParameters.getNumOfRows();
-	static final int numOfColumns = GUI.gameParameters.getNumOfColumns();
+	static final int NUM_OF_ROWS = GUI.gameParameters.getNumOfRows();
+	static final int NUM_OF_COLUMNS = GUI.gameParameters.getNumOfColumns();
 
-	@Before
-	public void setUp() {
+	@BeforeAll
+	public static void setUp() {
 
 	}
 
@@ -71,13 +70,13 @@ public class BoardTest {
 
 	@Test
 	public void testMakeMoveInt() {
-		Board b = new Board();
+		Board board = new Board();
 
-		b.makeMove(0, Constants.P1);
-		Board.printBoard(b.getGameBoard());
+		board.makeMove(0, Constants.P1);
+		Board.printBoard(board.getGameBoard());
 
-		assertEquals("The board was not updated correctly.", Constants.P1, b.getGameBoard()[5][0]);
-		assertEquals("The last player symbol played is not correct.", Constants.P1, b.getLastPlayer());
+		assertEquals(Constants.P1, board.getGameBoard()[5][0], "The board was not updated correctly.");
+		assertEquals(Constants.P1, board.getLastPlayer(), "The last player symbol played is not correct.");
 		System.out.println("*****************************");
 		System.out.println();
 	}
@@ -106,18 +105,18 @@ public class BoardTest {
 
 	@Test
 	public void testGetRowPosition() {
-		Board b = new Board();
+		Board board = new Board();
 
-		int[][] gameBoard = new int[numOfRows][numOfColumns];
-		for (int col = 0; col < numOfColumns; col++) {
+		int[][] gameBoard = new int[NUM_OF_ROWS][NUM_OF_COLUMNS];
+		for (int col = 0; col < NUM_OF_COLUMNS; col++) {
 			gameBoard[5][col] = Constants.P1;
 		}
-		b.setGameBoard(gameBoard);
-		Board.printBoard(b.getGameBoard());
+		board.setGameBoard(gameBoard);
+		Board.printBoard(board.getGameBoard());
 
-		for (int col = 0; col < numOfColumns; col++) {
-			int row = b.getEmptyRowPosition(col);
-			assertEquals("The row result is not the expected one.", 4, row);
+		for (int col = 0; col < NUM_OF_COLUMNS; col++) {
+			int row = board.getEmptyRowPosition(col);
+			assertEquals(4, row, "The row result is not the expected one.");
 		}
 		System.out.println("*****************************");
 		System.out.println();
