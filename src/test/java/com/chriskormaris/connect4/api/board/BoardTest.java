@@ -1,7 +1,6 @@
-package connect4_tests;
+package com.chriskormaris.connect4.api.board;
 
 
-import com.chriskormaris.connect4.api.board.Board;
 import com.chriskormaris.connect4.api.util.Constants;
 import com.chriskormaris.connect4.gui.GUI;
 import org.junit.jupiter.api.BeforeAll;
