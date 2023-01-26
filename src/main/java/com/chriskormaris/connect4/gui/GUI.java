@@ -947,7 +947,7 @@ public class GUI {
 	}
 
 	public static void main(String[] args) {
-		// GUI connect4 = new GUI();
+		// GUI gui = new GUI();
 
 		// These are the default values.
 		// Feel free to change them, before running.
