@@ -14,16 +14,11 @@ The user can click on the buttons or press the keys 1-7 to place a checker.
 To go back a move click on `Undo` option or press `Ctrl+Z`.
 To redo a move click on `Redo` option or press `Ctrl+Y`.
 
-### HOT TO RUN IN ECLIPSE
+### HOT TO RUN
 
-1. Create a new Eclipse Java project.
-2. Copy all `.java` files located in `src` folder of the repository to the src folder of the Eclipse project.
-3. Copy `res` folder to the Eclipse project root.
-4. Right-click the project folder on `Project Explorer`.
-   Go to `Properties->Java Build Path->Source`.
-   Click `Add Folder...`. Tick the `res` folder.
-5. Run the class `GUI`.
-You can also run the application just from the console, with the classes `Connect4` and `Connect5`.
+Run the class `GUI`, which exists in the package `com.chriskormaris.connect4.gui`.
+You can also run the application in the console, from the classes `Connect4` and `Connect5`,
+which exist in the package `com.chriskormaris.connect4.console`.
 
 A `.jar` executable is included as well.
 Java 8 and above is required to run. Have fun!!
