@@ -254,8 +254,10 @@ public class GUI {
 				"simulation.gif");
 
 		BufferedImage bi = new BufferedImage(
-				frameMainWindow.getSize().width, frameMainWindow.getSize().height,
-				BufferedImage.TYPE_INT_ARGB);
+				frameMainWindow.getSize().width,
+				frameMainWindow.getSize().height,
+				BufferedImage.TYPE_INT_ARGB
+		);
 		Graphics g = bi.createGraphics();
 		frameMainWindow.paint(g);
 		g.dispose();
