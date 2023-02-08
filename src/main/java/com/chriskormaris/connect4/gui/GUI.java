@@ -102,7 +102,7 @@ public class GUI {
 	}
 
 	// Add the menu bars and items to the window.
-	private static void AddMenus() {
+	private static void addMenus() {
 		// Add the menu bar.
 		menuBar = new JMenuBar();
 
@@ -661,7 +661,7 @@ public class GUI {
 		tools.add(new JLabel(" "));
 		tools.add(resetButton);
 
-		AddMenus();
+		addMenus();
 
 		System.out.println("Turn: " + board.getTurn());
 		Board.printBoard(board.getGameBoard());
@@ -965,7 +965,7 @@ public class GUI {
 		gameParameters.player2Color = Constants.YELLOW;
 		*/
 
-		GUI.createNewGame();
+		createNewGame();
 	}
 
 }
