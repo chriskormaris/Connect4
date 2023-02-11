@@ -194,7 +194,7 @@ public class GUI {
 			for (int i = 0; i < NUM_OF_ROWS; i++) {
 				for (int j = 0; j < NUM_OF_COLUMNS; j++) {
 					if (board.getGameBoard()[i][j] != Constants.EMPTY) {
-						bw.write(i + "" + j + ":" + board.getGameBoard()[i][j] + "\n");
+						bw.write(i + String.valueOf(j) + ":" + board.getGameBoard()[i][j] + "\n");
 					}
 				}
 			}
@@ -222,8 +222,8 @@ public class GUI {
 			createNewGame();
 
 			while ((line = br.readLine()) != null) {
-				int row = Integer.parseInt(line.charAt(0) + "");
-				int column = Integer.parseInt(line.charAt(1) + "");
+				int row = Integer.parseInt(String.valueOf(line.charAt(0)));
+				int column = Integer.parseInt(String.valueOf(line.charAt(1)));
 				int player = Integer.parseInt(line.split(":")[1].trim());
 				board.getGameBoard()[row][column] = player;
 				if (player == Constants.P1) {
@@ -452,7 +452,7 @@ public class GUI {
 	public static KeyListener gameKeyListener = new KeyListener() {
 		@Override
 		public void keyTyped(KeyEvent e) {
-
+			// System.out.println("keyTyped = " + KeyEvent.getKeyText(e.getKeyCode()));
 		}
 
 		@Override
@@ -461,7 +461,7 @@ public class GUI {
 			String keyText = KeyEvent.getKeyText(e.getKeyCode());
 
 			for (int i = 0; i < gameParameters.getNumOfColumns(); i++) {
-				if (keyText.equals(i + 1 + "")) {
+				if (keyText.equals(String.valueOf(i + 1))) {
 					undoBoards.push(new Board(board));
 					makeMove(i);
 
@@ -500,7 +500,7 @@ public class GUI {
 
 		buttons = new JButton[NUM_OF_COLUMNS];
 		for (int i = 0; i < NUM_OF_COLUMNS; i++) {
-			buttons[i] = new JButton(i + 1 + "");
+			buttons[i] = new JButton(String.valueOf(i + 1));
 			buttons[i].setFocusable(false);
 		}
 
