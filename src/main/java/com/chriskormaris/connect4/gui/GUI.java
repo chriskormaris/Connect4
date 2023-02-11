@@ -449,7 +449,7 @@ public class GUI {
 		}
 	}
 
-	public static KeyListener gameKeyListener = new KeyListener() {
+	private static final KeyListener gameKeyListener = new KeyListener() {
 		@Override
 		public void keyTyped(KeyEvent e) {
 			// System.out.println("keyTyped = " + KeyEvent.getKeyText(e.getKeyCode()));
