@@ -185,6 +185,8 @@ public class GUI {
 		frameMainWindow.setJMenuBar(menuBar);
 		// Make the board visible after adding the menus.
 		frameMainWindow.setVisible(true);
+		frameMainWindow.addKeyListener(gameKeyListener);
+		frameMainWindow.addKeyListener(undoRedoKeyListener);
 	}
 
 	public static void saveGame() {
@@ -303,10 +305,6 @@ public class GUI {
 
 					setAllButtonsEnabled(true);
 
-					if (frameMainWindow.getKeyListeners().length == 0) {
-						frameMainWindow.addKeyListener(gameKeyListener);
-					}
-
 					JLabel previousCheckerLabel = undoCheckerLabels.pop();
 
 					redoBoards.push(new Board(board));
@@ -328,10 +326,6 @@ public class GUI {
 				try {
 					board.setGameOver(false);
 					setAllButtonsEnabled(true);
-
-					if (frameMainWindow.getKeyListeners().length == 0) {
-						frameMainWindow.addKeyListener(gameKeyListener);
-					}
 
 					JLabel previousAiCheckerLabel = undoCheckerLabels.pop();
 					JLabel previousHumanCheckerLabel = undoCheckerLabels.pop();
@@ -375,10 +369,6 @@ public class GUI {
 
 					setAllButtonsEnabled(true);
 
-					if (frameMainWindow.getKeyListeners().length == 0) {
-						frameMainWindow.addKeyListener(gameKeyListener);
-					}
-
 					JLabel redoCheckerLabel = redoCheckerLabels.pop();
 
 					undoBoards.push(new Board(board));
@@ -405,10 +395,6 @@ public class GUI {
 				try {
 					board.setGameOver(false);
 					setAllButtonsEnabled(true);
-
-					if (frameMainWindow.getKeyListeners().length == 0) {
-						frameMainWindow.addKeyListener(gameKeyListener);
-					}
 
 					JLabel redoAiCheckerLabel = redoCheckerLabels.pop();
 					JLabel redoHumanCheckerLabel = redoCheckerLabels.pop();
@@ -458,22 +444,41 @@ public class GUI {
 		@Override
 		public void keyPressed(KeyEvent e) {
 			// System.out.println("keyPressed = " + KeyEvent.getKeyText(e.getKeyCode()));
-			String keyText = KeyEvent.getKeyText(e.getKeyCode());
+			if (!board.checkForGameOver()) {
+				String keyText = KeyEvent.getKeyText(e.getKeyCode());
 
-			for (int i = 0; i < gameParameters.getNumOfColumns(); i++) {
-				if (keyText.equals(String.valueOf(i + 1))) {
-					undoBoards.push(new Board(board));
-					makeMove(i);
+				for (int i = 0; i < gameParameters.getNumOfColumns(); i++) {
+					if (keyText.equals(String.valueOf(i + 1))) {
+						undoBoards.push(new Board(board));
+						makeMove(i);
 
-					if (!board.isOverflow()) {
-						boolean isGameOver = game();
-						if (gameParameters.getGameMode() == GameMode.HUMAN_VS_AI && !isGameOver) {
-							aiMove(ai);
+						if (!board.isOverflow()) {
+							boolean isGameOver = game();
+							if (gameParameters.getGameMode() == GameMode.HUMAN_VS_AI && !isGameOver) {
+								aiMove(ai);
+							}
 						}
+						break;
 					}
-					break;
 				}
 			}
+		}
+
+		@Override
+		public void keyReleased(KeyEvent e) {
+			// System.out.println("keyReleased = " + KeyEvent.getKeyText(e.getKeyCode()));
+		}
+	};
+
+	private static final KeyListener undoRedoKeyListener = new KeyListener() {
+		@Override
+		public void keyTyped(KeyEvent e) {
+			// System.out.println("keyTyped = " + KeyEvent.getKeyText(e.getKeyCode()));
+		}
+
+		@Override
+		public void keyPressed(KeyEvent e) {
+			// System.out.println("keyPressed = " + KeyEvent.getKeyText(e.getKeyCode()));
 			if (((e.getModifiersEx() & KeyEvent.CTRL_DOWN_MASK) != 0) &&
 					(e.getKeyCode() == KeyEvent.VK_Z)) {
 				undo();
@@ -537,10 +542,6 @@ public class GUI {
 			}
 		});
 
-		if (frameMainWindow.getKeyListeners().length == 0) {
-			frameMainWindow.addKeyListener(gameKeyListener);
-		}
-
 		frameMainWindow.setFocusable(true);
 
 		// show window
@@ -575,7 +576,7 @@ public class GUI {
 		pauseButton.addActionListener(e -> {
 			if (!pause) {
 				setAllButtonsEnabled(false);
-				frameMainWindow.removeKeyListener(frameMainWindow.getKeyListeners()[0]);
+				frameMainWindow.removeKeyListener(gameKeyListener);
 				pause = true;
 				undoButton.setEnabled(false);
 				if (gameParameters.getGuiStyle() == GuiStyle.NIMBUS_STYLE) undoButton.setVisible(false);
@@ -598,9 +599,7 @@ public class GUI {
 			if (pause) {
 				setAllButtonsEnabled(true);
 
-				if (frameMainWindow.getKeyListeners().length == 0) {
-					frameMainWindow.addKeyListener(gameKeyListener);
-				}
+				frameMainWindow.addKeyListener(gameKeyListener);
 
 				pause = false;
 				if (undoBoards.isEmpty()) {
@@ -627,9 +626,7 @@ public class GUI {
 		resetButton.addActionListener(e -> {
 			if (!pause) {
 				setAllButtonsEnabled(false);
-				for (KeyListener keyListener : frameMainWindow.getKeyListeners()) {
-					frameMainWindow.removeKeyListener(keyListener);
-				}
+				frameMainWindow.removeKeyListener(gameKeyListener);
 				pause = false;
 				undoButton.setEnabled(false);
 				if (gameParameters.getGuiStyle() == GuiStyle.NIMBUS_STYLE) undoButton.setVisible(false);
@@ -676,7 +673,6 @@ public class GUI {
 			setAllButtonsEnabled(false);
 			playAiVsAi();
 		}
-
 	}
 
 	public static void playAiVsAi() {
@@ -937,15 +933,9 @@ public class GUI {
 		// Disable buttons
 		setAllButtonsEnabled(false);
 
-		// Remove key listener
-		for (KeyListener keyListener : frameMainWindow.getKeyListeners()) {
-			frameMainWindow.removeKeyListener(keyListener);
-		}
-
 		if (choice == JOptionPane.YES_OPTION) {
 			createNewGame();
 		}
-
 	}
 
 	public static void main(String[] args) {
