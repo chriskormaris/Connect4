@@ -479,11 +479,9 @@ public class GUI {
 		@Override
 		public void keyPressed(KeyEvent e) {
 			// System.out.println("keyPressed = " + KeyEvent.getKeyText(e.getKeyCode()));
-			if (((e.getModifiersEx() & KeyEvent.CTRL_DOWN_MASK) != 0) &&
-					(e.getKeyCode() == KeyEvent.VK_Z)) {
+			if ((e.getModifiersEx() & KeyEvent.CTRL_DOWN_MASK) != 0 && e.getKeyCode() == KeyEvent.VK_Z) {
 				undo();
-			} else if (((e.getModifiersEx() & KeyEvent.CTRL_DOWN_MASK) != 0) &&
-					(e.getKeyCode() == KeyEvent.VK_Y)) {
+			} else if ((e.getModifiersEx() & KeyEvent.CTRL_DOWN_MASK) != 0 && e.getKeyCode() == KeyEvent.VK_Y) {
 				redo();
 			}
 		}
