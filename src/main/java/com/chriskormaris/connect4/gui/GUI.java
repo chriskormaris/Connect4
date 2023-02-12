@@ -155,14 +155,19 @@ public class GUI {
 
 		exitItem.addActionListener(e -> System.exit(0));
 
-		howToPlayItem.addActionListener(e -> JOptionPane.showMessageDialog(panelMain,
+		howToPlayItem.addActionListener(e -> JOptionPane.showMessageDialog(
+				panelMain,
 				"Click on the buttons or press 1-" + NUM_OF_COLUMNS + " on your keyboard to insert a new checker."
 						+ "\nTo win you must place " + CHECKERS_IN_A_ROW + " checkers in an row, horizontally, vertically or diagonally.",
-				"How to Play", JOptionPane.INFORMATION_MESSAGE));
+				"How to Play",
+				JOptionPane.INFORMATION_MESSAGE
+		));
 
 		aboutItem.addActionListener(e -> {
-			JLabel label = new JLabel("<html><center>© Created by: Christos Kormaris<br>"
-					+ "Version " + VERSION + "</center></html>");
+			JLabel label = new JLabel(
+					"<html><center>© Created by: Christos Kormaris<br>"
+					+ "Version " + VERSION + "</center></html>"
+			);
 			JOptionPane.showMessageDialog(panelMain, label, "About", JOptionPane.INFORMATION_MESSAGE);
 		});
 
