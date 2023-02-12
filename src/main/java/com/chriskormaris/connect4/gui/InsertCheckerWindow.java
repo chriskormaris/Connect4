@@ -9,19 +9,19 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 
-public class LoadNovelPositionWindow extends JFrame {
+public class InsertCheckerWindow extends JFrame {
 
 	static final int numOfRows = GUI.gameParameters.getNumOfRows();
 	static final int numOfColumns = GUI.gameParameters.getNumOfColumns();
-	/**
-	 *
-	 */
-	private static final long serialVersionUID = 6651737783332653136L;
+
 	public static int width = 400;
 	public static int height = 220;
+
 	public static int row = numOfRows - 1;
 	public static int column = 0;
+
 	public static int player = Constants.P1;
+
 	private final JComboBox<Integer> row_drop_down;
 	private final JComboBox<Integer> column_drop_down;
 	private final JComboBox<String> player_drop_down;
@@ -29,8 +29,8 @@ public class LoadNovelPositionWindow extends JFrame {
 	private final JButton cancel;
 
 
-	public LoadNovelPositionWindow() {
-		super("Load Novel Position");
+	public InsertCheckerWindow() {
+		super("Insert Checker");
 
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setLayout(null);

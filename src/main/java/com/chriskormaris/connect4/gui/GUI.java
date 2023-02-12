@@ -85,7 +85,7 @@ public class GUI {
 	static JMenuItem redoItem;
 	static JMenuItem saveGameItem;
 	static JMenuItem restoreSavedGameItem;
-	static JMenuItem loadNovelPositionItem;
+	static JMenuItem insertCheckerItem;
 	static JMenuItem exportToGifItem;
 	static JMenuItem settingsItem;
 	static JMenuItem exitItem;
@@ -112,7 +112,7 @@ public class GUI {
 		redoItem = new JMenuItem("Redo    Ctrl+Y");
 		saveGameItem = new JMenuItem("Save Game");
 		restoreSavedGameItem = new JMenuItem("Restore Saved Game");
-		loadNovelPositionItem = new JMenuItem("Load Novel Position");
+		insertCheckerItem = new JMenuItem("Insert Checker");
 		exportToGifItem = new JMenuItem("Export to .gif");
 		settingsItem = new JMenuItem("Settings");
 		exitItem = new JMenuItem("Exit");
@@ -140,10 +140,10 @@ public class GUI {
 			System.out.println("Last saved game restored!");
 		});
 
-		loadNovelPositionItem.addActionListener(e -> {
-			LoadNovelPositionWindow lnpw = new LoadNovelPositionWindow();
-			lnpw.setVisible(true);
-			System.out.println("Novel game position loaded!");
+		insertCheckerItem.addActionListener(e -> {
+			InsertCheckerWindow insertCheckerWindow = new InsertCheckerWindow();
+			insertCheckerWindow.setVisible(true);
+			System.out.println("Checker inserted!");
 		});
 
 		exportToGifItem.addActionListener(e -> exportToGif());
@@ -176,7 +176,7 @@ public class GUI {
 		fileMenu.add(redoItem);
 		fileMenu.add(saveGameItem);
 		fileMenu.add(restoreSavedGameItem);
-		fileMenu.add(loadNovelPositionItem);
+		fileMenu.add(insertCheckerItem);
 		fileMenu.add(exportToGifItem);
 		fileMenu.add(settingsItem);
 		fileMenu.add(exitItem);
