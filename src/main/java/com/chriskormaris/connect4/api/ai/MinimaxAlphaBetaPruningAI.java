@@ -9,27 +9,14 @@ import java.util.ArrayList;
 import java.util.Random;
 
 
-public class MinimaxAlphaBetaPruningAI extends AI {
-
-	// Variable that holds the maximum depth the MinimaxAi algorithm will reach for this player.
-	private int maxDepth;
+public class MinimaxAlphaBetaPruningAI extends MinimaxAI {
 
 	public MinimaxAlphaBetaPruningAI() {
-		super(Constants.P2);
-		maxDepth = 2;
+		super(2, Constants.P2);
 	}
 
 	public MinimaxAlphaBetaPruningAI(int maxDepth, int aiPlayer) {
-		super(aiPlayer);
-		this.maxDepth = maxDepth;
-	}
-
-	public int getMaxDepth() {
-		return maxDepth;
-	}
-
-	public void setMaxDepth(int maxDepth) {
-		this.maxDepth = maxDepth;
+		super(maxDepth, aiPlayer);
 	}
 
 	@Override
@@ -51,7 +38,7 @@ public class MinimaxAlphaBetaPruningAI extends AI {
 		/* If MAX is called on a state that is terminal or after a maximum depth is reached,
 		 * then a heuristic is calculated on the state and the move returned.
 		 */
-		if ((board.checkForGameOver()) || (depth == maxDepth)) {
+		if ((board.checkForGameOver()) || (depth == super.getMaxDepth())) {
 			return new Move(board.getLastMove().getRow(), board.getLastMove().getColumn(), board.evaluate());
 		}
 		// The children-moves of the state are calculated
@@ -92,7 +79,7 @@ public class MinimaxAlphaBetaPruningAI extends AI {
 	private Move minAlphaBeta(Board board, int depth, double a, double b) {
 		Random r = new Random();
 
-		if ((board.checkForGameOver()) || (depth == maxDepth)) {
+		if ((board.checkForGameOver()) || (depth == super.getMaxDepth())) {
 			return new Move(board.getLastMove().getRow(), board.getLastMove().getColumn(), board.evaluate());
 		}
 		ArrayList<Board> children = new ArrayList<>(board.getChildren(Constants.P2));
