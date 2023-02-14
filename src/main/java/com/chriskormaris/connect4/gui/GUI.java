@@ -970,14 +970,14 @@ public class GUI {
 		// Feel free to change them, before running.
 		// You can also change them later, from the GUI window.
 		/*
-		gameParameters.setGuiStyle(Constants.SystemStyle);
-		// gameParameters.setGameMode(Constants.HumanVsAi);
- 		// gameParameters.setGameMode(Constants.HumanVsHuman);
-		gameParameters.setGameMode(Constants.AiVsAi);
-		gameParameters.setMaxDepth1(4);
-		gameParameters.setMaxDepth2(4);
-		gameParameters.setPlayer1Color(Constants.RED);
-		gameParameters.setPlayer2Color(Constants.YELLOW);
+		gameParameters.setGuiStyle(GuiStyle.SYSTEM_STYLE);
+		gameParameters.setGameMode(GameMode.HUMAN_VS_AI);
+ 		gameParameters.setGameMode(GameMode.HUMAN_VS_HUMAN);
+		gameParameters.setGameMode(GameMode.AI_VS_AI);
+		gameParameters.setAi1MaxDepth(4);
+		gameParameters.setAi1MaxDepth(4);
+		gameParameters.setPlayer1Color(Color.RED);
+		gameParameters.setPlayer2Color(Color.YELLOW);
 		*/
 
 		createNewGame();
