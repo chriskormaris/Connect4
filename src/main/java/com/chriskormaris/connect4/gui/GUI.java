@@ -966,10 +966,10 @@ public class GUI {
 	}
 
 	public static void main(String[] args) {
-		// These are the default values.
-		// Feel free to change them, before running.
-		// You can also change them later, from the GUI window.
+		// Here, you can change the game parameters, before running the application.
+		// You can also change them later, from the Settings window.
 		/*
+		gameParameters = new GameParameters();
 		gameParameters.setGuiStyle(GuiStyle.SYSTEM_STYLE);
 		gameParameters.setGameMode(GameMode.HUMAN_VS_AI);
  		gameParameters.setGameMode(GameMode.HUMAN_VS_HUMAN);
