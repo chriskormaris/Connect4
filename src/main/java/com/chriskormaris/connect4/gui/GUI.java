@@ -684,12 +684,13 @@ public class GUI {
 
 	public static void playAiVsAi() {
 		AI ai1;
-		AI ai2;
 		if (gameParameters.getAi1Type() == AiType.MINIMAX_AI) {
 			ai1 = new MinimaxAI(gameParameters.getAi1MaxDepth(), Constants.P1);
 		} else {
 			ai1 = new RandomChoiceAI(Constants.P1);
 		}
+
+		AI ai2;
 		if (gameParameters.getAi2Type() == AiType.MINIMAX_AI) {
 			ai2 = new MinimaxAlphaBetaPruningAI(gameParameters.getAi2MaxDepth(), Constants.P2);
 		} else {
