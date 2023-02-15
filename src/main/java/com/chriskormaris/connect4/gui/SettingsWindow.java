@@ -14,9 +14,6 @@ import java.awt.event.ActionListener;
 
 public class SettingsWindow extends JFrame {
 
-	public static int width = 450;
-	public static int height = 450;
-
 	private final JComboBox<String> gui_style_drop_down;
 	private final JComboBox<String> game_mode_drop_down;
 	private final JComboBox<String> ai1_type_drop_down;
@@ -35,6 +32,8 @@ public class SettingsWindow extends JFrame {
 
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setLayout(null);
+		int width = 450;
+		int height = 450;
 		setSize(width, height);
 		setLocationRelativeTo(null);
 		setResizable(false);

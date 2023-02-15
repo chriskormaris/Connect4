@@ -11,16 +11,13 @@ import java.awt.event.ActionListener;
 
 public class InsertCheckerWindow extends JFrame {
 
-	static final int numOfRows = GUI.gameParameters.getNumOfRows();
-	static final int numOfColumns = GUI.gameParameters.getNumOfColumns();
+	private static final int numOfRows = GUI.gameParameters.getNumOfRows();
+	private static final int numOfColumns = GUI.gameParameters.getNumOfColumns();
 
-	public static int width = 400;
-	public static int height = 220;
+	public int row;
+	public int column;
 
-	public static int row = numOfRows - 1;
-	public static int column = 0;
-
-	public static int player = Constants.P1;
+	public int player;
 
 	private final JComboBox<Integer> row_drop_down;
 	private final JComboBox<Integer> column_drop_down;
@@ -32,8 +29,14 @@ public class InsertCheckerWindow extends JFrame {
 	public InsertCheckerWindow() {
 		super("Insert Checker");
 
+		row = numOfRows - 1;
+		column = 0;
+		player = Constants.P1;
+
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setLayout(null);
+		int width = 400;
+		int height = 220;
 		setSize(width, height);
 		setLocationRelativeTo(null);
 		setResizable(false);
@@ -94,7 +97,6 @@ public class InsertCheckerWindow extends JFrame {
 
 		@Override
 		public void actionPerformed(ActionEvent ev) {
-
 			if (ev.getSource() == cancel) {
 				dispose();
 			} else if (ev.getSource() == apply) {
@@ -113,10 +115,11 @@ public class InsertCheckerWindow extends JFrame {
 					}
 
 					GUI.board.getGameBoard()[row][column] = player;
-					if (player == Constants.P1)
+					if (player == Constants.P1) {
 						GUI.placeChecker(GUI.gameParameters.getPlayer1Color(), row, column);
-					else if (player == Constants.P2)
+					} else if (player == Constants.P2) {
 						GUI.placeChecker(GUI.gameParameters.getPlayer2Color(), row, column);
+					}
 
 					Board.printBoard(GUI.board.getGameBoard());
 
@@ -125,7 +128,12 @@ public class InsertCheckerWindow extends JFrame {
 					}
 
 
-					JOptionPane.showMessageDialog(null, "Novel position loaded.", "Notice", JOptionPane.INFORMATION_MESSAGE);
+					JOptionPane.showMessageDialog(
+							null,
+							"Checker has been inserted into the board.",
+							"Notice",
+							JOptionPane.INFORMATION_MESSAGE
+					);
 					dispose();
 				} catch (Exception ex) {
 					System.err.println("ERROR : " + ex.getMessage());

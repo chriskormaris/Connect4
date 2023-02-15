@@ -4,11 +4,15 @@ package com.chriskormaris.connect4.api.ai;
 import com.chriskormaris.connect4.api.board.Board;
 import com.chriskormaris.connect4.api.board.Move;
 import com.chriskormaris.connect4.api.util.Constants;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.ArrayList;
 import java.util.Random;
 
 
+@Getter
+@Setter
 public class MinimaxAI extends AI {
 
 	// Variable that holds the maximum depth the MinimaxAi algorithm will reach for this player.
@@ -21,14 +25,6 @@ public class MinimaxAI extends AI {
 
 	public MinimaxAI(int maxDepth, int aiPlayer) {
 		super(aiPlayer);
-		this.maxDepth = maxDepth;
-	}
-
-	public int getMaxDepth() {
-		return maxDepth;
-	}
-
-	public void setMaxDepth(int maxDepth) {
 		this.maxDepth = maxDepth;
 	}
 

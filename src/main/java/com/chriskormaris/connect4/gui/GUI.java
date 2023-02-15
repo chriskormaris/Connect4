@@ -14,6 +14,8 @@ import com.chriskormaris.connect4.gui.enumeration.Color;
 import com.chriskormaris.connect4.gui.enumeration.GuiStyle;
 import com.chriskormaris.connect4.gui.util.GameParameters;
 import com.chriskormaris.connect4.gui.util.ResourceLoader;
+import lombok.AccessLevel;
+import lombok.RequiredArgsConstructor;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -46,6 +48,7 @@ import static com.chriskormaris.connect4.gui.util.GuiConstants.DEFAULT_CONNECT_5
 import static com.chriskormaris.connect4.gui.util.GuiConstants.VERSION;
 
 
+@RequiredArgsConstructor(access = AccessLevel.PRIVATE)
 public class GUI {
 
 	public static GameParameters gameParameters;
@@ -351,7 +354,7 @@ public class GUI {
 		aboutItem.addActionListener(e -> {
 			JLabel label = new JLabel(
 					"<html><center>© Created by: Christos Kormaris<br>"
-					+ "Version " + VERSION + "</center></html>"
+							+ "Version " + VERSION + "</center></html>"
 			);
 			JOptionPane.showMessageDialog(panelMain, label, "About", JOptionPane.INFORMATION_MESSAGE);
 		});

@@ -2,7 +2,6 @@ package com.chriskormaris.connect4.api.board;
 
 
 import com.chriskormaris.connect4.api.util.Constants;
-import com.chriskormaris.connect4.gui.GUI;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
@@ -11,8 +10,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class BoardTest {
 
-	static final int NUM_OF_ROWS = GUI.gameParameters.getNumOfRows();
-	static final int NUM_OF_COLUMNS = GUI.gameParameters.getNumOfColumns();
+	private static final int NUM_OF_ROWS = Constants.CONNECT_4_NUM_OF_ROWS;
+	private static final int NUM_OF_COLUMNS = Constants.CONNECT_4_NUM_OF_COLUMNS;
 
 	@BeforeAll
 	public static void setUp() {

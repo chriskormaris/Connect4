@@ -2,20 +2,24 @@ package com.chriskormaris.connect4.api.board;
 
 
 import com.chriskormaris.connect4.api.util.Constants;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.ArrayList;
 
 
+@Getter
+@Setter
 public class Board {
 
-	private final int[][] gameBoard;
+	private int[][] gameBoard;
 
 	private int numOfRows;
 	private int numOfColumns;
 	private int checkersInARow;
 
 	// Immediate move that led to this board.
-	private com.chriskormaris.connect4.api.board.Move lastMove;
+	private Move lastMove;
 
 	// A variable to store the symbol of the player who played last,
 	// leading to the current board state.
@@ -29,8 +33,11 @@ public class Board {
 
 	// Default constructor
 	public Board() {
-		this(Constants.CONNECT_4_NUM_OF_ROWS, Constants.CONNECT_4_NUM_OF_COLUMNS,
-				Constants.CONNECT_4_CHECKERS_IN_A_ROW);
+		this(
+				Constants.CONNECT_4_NUM_OF_ROWS,
+				Constants.CONNECT_4_NUM_OF_COLUMNS,
+				Constants.CONNECT_4_CHECKERS_IN_A_ROW
+		);
 	}
 
 	public Board(int numOfRows, int numOfColumns, int checkersInARow) {
@@ -38,7 +45,7 @@ public class Board {
 		this.numOfColumns = numOfColumns;
 		this.checkersInARow = checkersInARow;
 
-		this.lastMove = new com.chriskormaris.connect4.api.board.Move();
+		this.lastMove = new Move();
 		this.lastPlayer = Constants.P2;
 		this.winner = Constants.EMPTY;
 		this.gameBoard = new int[numOfRows][numOfColumns];
@@ -88,7 +95,6 @@ public class Board {
 
 	// It prints the Connect-4 board on the console.
 	public static void printConnect4Board(int[][] gameBoard) {
-
 		System.out.println("| 1 | 2 | 3 | 4 | 5 | 6 | 7 |");
 		System.out.println();
 		for (int i = 0; i < Constants.CONNECT_4_NUM_OF_ROWS; i++) {
@@ -113,7 +119,6 @@ public class Board {
 
 	// It prints the Connect-5 board on the console.
 	public static void printConnect5Board(int[][] gameBoard) {
-
 		System.out.println("| 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 |");
 		System.out.println();
 		for (int i = 0; i < Constants.CONNECT_5_NUM_OF_ROWS; i++) {
@@ -142,7 +147,7 @@ public class Board {
 		try {
 			// The variable "lastMove" must be changed before the variable
 			// "gameBoard[][]" because of the function "getRowPosition(col)".
-			this.lastMove = new com.chriskormaris.connect4.api.board.Move(getEmptyRowPosition(col), col);
+			this.lastMove = new Move(getEmptyRowPosition(col), col);
 			this.lastPlayer = player;
 			this.gameBoard[getEmptyRowPosition(col)][col] = player;
 			this.turn++;
@@ -277,9 +282,11 @@ public class Board {
 					while (k < N && gameBoard[i][j + k] == player) {
 						k++;
 					}
-					// Check for "checkersInARow - N" consecutive checkers of the same player or empty tiles in a row, horizontally.
+					// Check for "checkersInARow - N" consecutive checkers of the same player
+					// or empty tiles in a row, horizontally.
 					if (k == N) {
-						while (k < checkersInARow && (gameBoard[i][j + k] == player || gameBoard[i][j + k] == Constants.EMPTY)) {
+						while (k < checkersInARow
+								&& (gameBoard[i][j + k] == player || gameBoard[i][j + k] == Constants.EMPTY)) {
 							k++;
 						}
 						if (k == checkersInARow) times++;
@@ -299,7 +306,8 @@ public class Board {
 					}
 					// Check for "checkersInARow - N" consecutive checkers of the same player or empty tiles in a row, vertically.
 					if (k == checkersInARow) {
-						while (k < checkersInARow && (gameBoard[i - k][j] == player || gameBoard[i - k][j] == Constants.EMPTY)) {
+						while (k < checkersInARow
+								&& (gameBoard[i - k][j] == player || gameBoard[i - k][j] == Constants.EMPTY)) {
 							k++;
 						}
 						if (k == checkersInARow) times++;
@@ -308,7 +316,8 @@ public class Board {
 			}
 		}
 
-		// Check for "checkersInARow" consecutive checkers of the same player or empty tiles in a row, in descending diagonal.
+		// Check for "checkersInARow" consecutive checkers of the same player or empty tiles in a row,
+		// in descending diagonal.
 		for (int i = 0; i < numOfRows; i++) {
 			for (int j = 0; j < numOfColumns; j++) {
 				if (canMove(i + checkersInARow - 1, j + checkersInARow - 1)) {
@@ -317,9 +326,11 @@ public class Board {
 					while (k < N && gameBoard[i + k][j + k] == player) {
 						k++;
 					}
-					// Check for "checkersInARow - N" consecutive checkers of the same player or empty tiles in a row, in descending diagonal.
+					// Check for "checkersInARow - N" consecutive checkers of the same player
+					// or empty tiles in a row, in descending diagonal.
 					if (k == checkersInARow) {
-						while (k < checkersInARow && (gameBoard[i + k][j + k] == player || gameBoard[i + k][j + k] == Constants.EMPTY)) {
+						while (k < checkersInARow
+								&& (gameBoard[i + k][j + k] == player || gameBoard[i + k][j + k] == Constants.EMPTY)) {
 							k++;
 						}
 						if (k == checkersInARow) times++;
@@ -328,7 +339,8 @@ public class Board {
 			}
 		}
 
-		// Check for "checkersInARow" consecutive checkers of the same player or empty tiles in a row, in ascending diagonal.
+		// Check for "checkersInARow" consecutive checkers of the same player
+		// or empty tiles in a row, in ascending diagonal.
 		for (int i = 0; i < numOfRows; i++) {
 			for (int j = 0; j < numOfColumns; j++) {
 				if (canMove(i - checkersInARow + 1, j + checkersInARow - 1)) {
@@ -337,9 +349,11 @@ public class Board {
 					while (k < N && gameBoard[i - k][j + k] == player) {
 						k++;
 					}
-					// Check for "checkersInARow - N" consecutive checkers of the same player or empty tiles in a row, in ascending diagonal.
+					// Check for "checkersInARow - N" consecutive checkers of the same player
+					// or empty tiles in a row, in ascending diagonal.
 					if (k == checkersInARow) {
-						while (k < checkersInARow && (gameBoard[i - k][j + k] == player || gameBoard[i - k][j + k] == Constants.EMPTY)) {
+						while (k < checkersInARow
+								&& (gameBoard[i - k][j + k] == player || gameBoard[i - k][j + k] == Constants.EMPTY)) {
 							k++;
 						}
 						if (k == checkersInARow) times++;
@@ -349,90 +363,6 @@ public class Board {
 		}
 
 		return times;
-	}
-
-	public int getNumOfRows() {
-		return numOfRows;
-	}
-
-	public void setNumOfRows(int numOfRows) {
-		this.numOfRows = numOfRows;
-	}
-
-	public int getNumOfColumns() {
-		return numOfColumns;
-	}
-
-	public void setNumOfColumns(int numOfColumns) {
-		this.numOfColumns = numOfColumns;
-	}
-
-	public int getCheckersInARow() {
-		return checkersInARow;
-	}
-
-	public void setCheckersInARow(int checkersInARow) {
-		this.checkersInARow = checkersInARow;
-	}
-
-	public com.chriskormaris.connect4.api.board.Move getLastMove() {
-		return lastMove;
-	}
-
-	public void setLastMove(Move lastMove) {
-		this.lastMove.setRow(lastMove.getRow());
-		this.lastMove.setColumn(lastMove.getColumn());
-		this.lastMove.setValue(lastMove.getValue());
-	}
-
-	public int getLastPlayer() {
-		return lastPlayer;
-	}
-
-	public void setLastPlayer(int lastPlayer) {
-		this.lastPlayer = lastPlayer;
-	}
-
-	public int[][] getGameBoard() {
-		return gameBoard;
-	}
-
-	public void setGameBoard(int[][] gameBoard) {
-		for (int i = 0; i < numOfRows; i++) {
-			if (numOfColumns >= 0) System.arraycopy(gameBoard[i], 0, this.gameBoard[i], 0, numOfColumns);
-		}
-	}
-
-	public int getWinner() {
-		return winner;
-	}
-
-	public void setWinner(int winner) {
-		this.winner = winner;
-	}
-
-	public int getTurn() {
-		return turn;
-	}
-
-	public void setTurn(int turn) {
-		this.turn = turn;
-	}
-
-	public boolean isGameOver() {
-		return gameOver;
-	}
-
-	public void setGameOver(boolean isGameOver) {
-		this.gameOver = isGameOver;
-	}
-
-	public boolean isOverflow() {
-		return overflow;
-	}
-
-	public void setOverflow(boolean overflow) {
-		this.overflow = overflow;
 	}
 
 }

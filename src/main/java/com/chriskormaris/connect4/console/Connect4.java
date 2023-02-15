@@ -25,7 +25,7 @@ public class Connect4 {
 				validNumbers.append(i + 1).append(", ");
 			} else if (i == numOfColumns - 2) {
 				validNumbers.append(i + 1).append(" or ");
-			} else if (i == numOfColumns - 1) {
+			} else {
 				validNumbers.append(i + 1);
 			}
 		}
