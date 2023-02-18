@@ -459,9 +459,7 @@ public class GUI {
 
 	// This is the main Connect-4 board.
 	public static JLayeredPane initializeLayeredBoard() {
-		if (layeredGameBoard == null) {
-			layeredGameBoard = new JLayeredPane();
-		}
+		layeredGameBoard = new JLayeredPane();
 
 		ImageIcon imageBoard = null;
 		if (gameParameters.getCheckersInARow() == CONNECT_4_CHECKERS_IN_A_ROW) {
@@ -608,21 +606,20 @@ public class GUI {
 	}
 
 	private static void updateLayeredBoard() {
-		for (Component component: layeredGameBoard.getComponentsInLayer(0)) {
-			layeredGameBoard.remove(component);
+		Component[] components = layeredGameBoard.getComponentsInLayer(0);
+		for (int i = 0; i < components.length; i++) {
+			// Leave out the last component, which is the board ImageIcon.
+			if (i < components.length - 1) {
+				layeredGameBoard.remove(components[i]);
+			}
 		}
-		initializeLayeredBoard();
 		for (int row = 0; row < NUM_OF_ROWS; row++) {
 			for (int col = 0; col < NUM_OF_COLUMNS; col++) {
-				Color color;
 				if (board.getGameBoard()[row][col] == Constants.P1) {
-					color = gameParameters.getPlayer1Color();
+					placeChecker(gameParameters.getPlayer1Color(), row, col);
 				} else if (board.getGameBoard()[row][col] == Constants.P2) {
-					color = gameParameters.getPlayer2Color();
-				} else {
-					continue;
+					placeChecker(gameParameters.getPlayer2Color(), row, col);
 				}
-				placeChecker(color, row, col);
 			}
 		}
 	}
