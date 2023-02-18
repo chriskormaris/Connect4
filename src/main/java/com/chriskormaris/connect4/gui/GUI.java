@@ -58,6 +58,7 @@ public class GUI {
 	private static int NUM_OF_COLUMNS;
 	private static int CHECKERS_IN_A_ROW;
 
+
 	public static Board board;
 
 	private static JFrame frameMainWindow;
@@ -77,9 +78,7 @@ public class GUI {
 
 	// These Stack objects are used for the "Undo" and "Redo" functionalities.
 	private static Stack<Board> undoBoards;
-	private static Stack<JLabel> undoCheckerLabels;
 	private static Stack<Board> redoBoards;
-	private static Stack<JLabel> redoCheckerLabels;
 
 	private static JMenuItem undoItem;
 	private static JMenuItem redoItem;
@@ -121,20 +120,12 @@ public class GUI {
 		if (undoBoards == null) {
 			undoBoards = new Stack<>();
 		}
-		if (undoCheckerLabels == null) {
-			undoCheckerLabels = new Stack<>();
-		}
 		if (redoBoards == null) {
 			redoBoards = new Stack<>();
 		}
-		if (redoCheckerLabels == null) {
-			redoCheckerLabels = new Stack<>();
-		}
 
 		undoBoards.clear();
-		undoCheckerLabels.clear();
 		redoBoards.clear();
-		redoCheckerLabels.clear();
 
 		if (frameMainWindow != null) frameMainWindow.dispose();
 		if (gameParameters.getCheckersInARow() == CONNECT_4_CHECKERS_IN_A_ROW) {
@@ -467,8 +458,10 @@ public class GUI {
 
 
 	// This is the main Connect-4 board.
-	public static JLayeredPane createLayeredBoard() {
-		layeredGameBoard = new JLayeredPane();
+	public static JLayeredPane initializeLayeredBoard() {
+		if (layeredGameBoard == null) {
+			layeredGameBoard = new JLayeredPane();
+		}
 
 		ImageIcon imageBoard = null;
 		if (gameParameters.getCheckersInARow() == CONNECT_4_CHECKERS_IN_A_ROW) {
@@ -498,13 +491,11 @@ public class GUI {
 
 					setAllButtonsEnabled(true);
 
-					JLabel previousCheckerLabel = undoCheckerLabels.pop();
-
 					redoBoards.push(new Board(board));
-					redoCheckerLabels.push(previousCheckerLabel);
 
 					board = undoBoards.pop();
-					layeredGameBoard.remove(previousCheckerLabel);
+
+					updateLayeredBoard();
 
 					turnMessage.setText("Turn: " + board.getTurn());
 					frameMainWindow.paint(frameMainWindow.getGraphics());
@@ -520,16 +511,11 @@ public class GUI {
 					board.setGameOver(false);
 					setAllButtonsEnabled(true);
 
-					JLabel previousAiCheckerLabel = undoCheckerLabels.pop();
-					JLabel previousHumanCheckerLabel = undoCheckerLabels.pop();
-
 					redoBoards.push(new Board(board));
-					redoCheckerLabels.push(previousAiCheckerLabel);
-					redoCheckerLabels.push(previousHumanCheckerLabel);
 
 					board = undoBoards.pop();
-					layeredGameBoard.remove(previousAiCheckerLabel);
-					layeredGameBoard.remove(previousHumanCheckerLabel);
+
+					updateLayeredBoard();
 
 					turnMessage.setText("Turn: " + board.getTurn());
 					frameMainWindow.paint(frameMainWindow.getGraphics());
@@ -562,13 +548,11 @@ public class GUI {
 
 					setAllButtonsEnabled(true);
 
-					JLabel redoCheckerLabel = redoCheckerLabels.pop();
-
 					undoBoards.push(new Board(board));
-					undoCheckerLabels.push(redoCheckerLabel);
 
 					board = new Board(redoBoards.pop());
-					layeredGameBoard.add(redoCheckerLabel, 0, 0);
+
+					updateLayeredBoard();
 
 					turnMessage.setText("Turn: " + board.getTurn());
 					frameMainWindow.paint(frameMainWindow.getGraphics());
@@ -589,16 +573,11 @@ public class GUI {
 					board.setGameOver(false);
 					setAllButtonsEnabled(true);
 
-					JLabel redoAiCheckerLabel = redoCheckerLabels.pop();
-					JLabel redoHumanCheckerLabel = redoCheckerLabels.pop();
-
 					undoBoards.push(new Board(board));
-					undoCheckerLabels.push(redoAiCheckerLabel);
-					undoCheckerLabels.push(redoHumanCheckerLabel);
 
 					board = new Board(redoBoards.pop());
-					layeredGameBoard.add(redoAiCheckerLabel, 0, 0);
-					layeredGameBoard.add(redoHumanCheckerLabel, 0, 0);
+
+					updateLayeredBoard();
 
 					turnMessage.setText("Turn: " + board.getTurn());
 					frameMainWindow.paint(frameMainWindow.getGraphics());
@@ -625,6 +604,26 @@ public class GUI {
 
 			System.out.println("Turn: " + board.getTurn());
 			Board.printBoard(board.getGameBoard());
+		}
+	}
+
+	private static void updateLayeredBoard() {
+		for (Component component: layeredGameBoard.getComponentsInLayer(0)) {
+			layeredGameBoard.remove(component);
+		}
+		initializeLayeredBoard();
+		for (int row = 0; row < NUM_OF_ROWS; row++) {
+			for (int col = 0; col < NUM_OF_COLUMNS; col++) {
+				Color color;
+				if (board.getGameBoard()[row][col] == Constants.P1) {
+					color = gameParameters.getPlayer1Color();
+				} else if (board.getGameBoard()[row][col] == Constants.P2) {
+					color = gameParameters.getPlayer2Color();
+				} else {
+					continue;
+				}
+				placeChecker(color, row, col);
+			}
 		}
 	}
 
@@ -778,8 +777,6 @@ public class GUI {
 		checkerLabel.setBounds(27 + xOffset, 27 + yOffset, checkerIcon.getIconWidth(), checkerIcon.getIconHeight());
 		layeredGameBoard.add(checkerLabel, 0, 0);
 
-		undoCheckerLabels.push(checkerLabel);
-
 		try {
 			if (gameParameters.getGameMode() == GameMode.AI_VS_AI) {
 				Thread.sleep(Constants.AI_MOVE_MILLISECONDS);
@@ -821,7 +818,6 @@ public class GUI {
 		}
 
 		redoBoards.clear();
-		redoCheckerLabels.clear();
 		redoButton.setEnabled(false);
 		if (gameParameters.getGuiStyle() == GuiStyle.NIMBUS_STYLE) redoButton.setVisible(false);
 		redoItem.setEnabled(false);
@@ -886,7 +882,7 @@ public class GUI {
 		}
 
 		// main Connect-4 board creation
-		layeredGameBoard = createLayeredBoard();
+		layeredGameBoard = initializeLayeredBoard();
 
 		// panel creation to store all the elements of the board
 		panelMain = new JPanel();
