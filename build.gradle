@@ -3,6 +3,8 @@ plugins {
     id 'io.freefair.lombok' version '6.6.1'
 }
 
+group 'com.chriskormaris'
+
 java {
     sourceCompatibility JavaVersion.VERSION_1_8
     targetCompatibility JavaVersion.VERSION_1_8
