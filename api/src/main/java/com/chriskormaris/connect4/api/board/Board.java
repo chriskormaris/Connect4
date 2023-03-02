@@ -84,13 +84,32 @@ public class Board {
 		}
 	}
 
-	// It prints the board on the console.
-	public static void printBoard(int[][] gameBoard) {
-		if (gameBoard.length == Constants.CONNECT_4_NUM_OF_ROWS) {
-			printConnect4Board(gameBoard);
-		} else if (gameBoard.length == Constants.CONNECT_5_NUM_OF_ROWS) {
-			printConnect5Board(gameBoard);
+	@Override
+	public String toString() {
+		StringBuilder output = new StringBuilder();
+		output.append("| 1 | 2 | 3 | 4 | 5 | 6 | 7 ");
+		if (numOfRows == Constants.CONNECT_4_NUM_OF_ROWS) {
+			output.append("|\n");
+		} else if (numOfRows == Constants.CONNECT_5_NUM_OF_ROWS) {
+			output.append("| 8 |\n");
 		}
+		System.out.println();
+		for (int i = 0; i < numOfRows; i++) {
+			for (int j = 0; j < numOfColumns; j++) {
+				char symbol = '-';
+				if (gameBoard[i][j] == Constants.P1) {
+					symbol = 'X';
+				} else if (gameBoard[i][j] == Constants.P2) {
+					symbol = 'O';
+				}
+				output.append("| ").append(symbol).append(" ");
+				if (j == numOfColumns - 1) {
+					output.append("|\n");
+				}
+			}
+		}
+		output.append("\n*****************************\n");
+		return output.toString();
 	}
 
 	// It prints the Connect-4 board on the console.
@@ -99,18 +118,15 @@ public class Board {
 		System.out.println();
 		for (int i = 0; i < Constants.CONNECT_4_NUM_OF_ROWS; i++) {
 			for (int j = 0; j < Constants.CONNECT_4_NUM_OF_COLUMNS; j++) {
-				if (j != Constants.CONNECT_4_NUM_OF_COLUMNS - 1) {
-					if (gameBoard[i][j] != Constants.EMPTY) {
-						System.out.print("| " + gameBoard[i][j] + " ");
-					} else {
-						System.out.print("| " + "-" + " ");
-					}
-				} else {
-					if (gameBoard[i][j] != Constants.EMPTY) {
-						System.out.println("| " + gameBoard[i][j] + " |");
-					} else {
-						System.out.println("| " + "-" + " |");
-					}
+				char symbol = '-';
+				if (gameBoard[i][j] == Constants.P1) {
+					symbol = 'X';
+				} else if (gameBoard[i][j] == Constants.P2) {
+					symbol = 'O';
+				}
+				System.out.print("| " + symbol + " ");
+				if (j == Constants.CONNECT_4_NUM_OF_COLUMNS - 1) {
+					System.out.println("|");
 				}
 			}
 		}
@@ -123,18 +139,15 @@ public class Board {
 		System.out.println();
 		for (int i = 0; i < Constants.CONNECT_5_NUM_OF_ROWS; i++) {
 			for (int j = 0; j < Constants.CONNECT_5_NUM_OF_COLUMNS; j++) {
-				if (j != Constants.CONNECT_5_NUM_OF_COLUMNS - 1) {
-					if (gameBoard[i][j] != Constants.EMPTY) {
-						System.out.print("| " + gameBoard[i][j] + " ");
-					} else {
-						System.out.print("| " + "-" + " ");
-					}
-				} else {
-					if (gameBoard[i][j] != Constants.EMPTY) {
-						System.out.println("| " + gameBoard[i][j] + " |");
-					} else {
-						System.out.println("| " + "-" + " |");
-					}
+				char symbol = '-';
+				if (gameBoard[i][j] == Constants.P1) {
+					symbol = 'X';
+				} else if (gameBoard[i][j] == Constants.P2) {
+					symbol = 'O';
+				}
+				System.out.print("| " + symbol + " ");
+				if (j == Constants.CONNECT_5_NUM_OF_COLUMNS - 1) {
+					System.out.println("|");
 				}
 			}
 		}

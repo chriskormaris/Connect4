@@ -265,7 +265,7 @@ public class GUI {
 		addMenus();
 
 		System.out.println("Turn: " + board.getTurn());
-		Board.printBoard(board.getGameBoard());
+		System.out.println(board);
 
 		if (gameParameters.getGameMode() == GameMode.HUMAN_VS_AI) {
 			if (gameParameters.getAi1Type() == AiType.MINIMAX_AI) {
@@ -320,9 +320,8 @@ public class GUI {
 		});
 
 		insertCheckerItem.addActionListener(e -> {
-			InsertCheckerWindow insertCheckerWindow = new InsertCheckerWindow();
+			InsertCheckerWindow insertCheckerWindow = new InsertCheckerWindow(frameMainWindow, board, gameParameters);
 			insertCheckerWindow.setVisible(true);
-			System.out.println("Checker inserted!");
 		});
 
 		exportToGifItem.addActionListener(e -> exportToGif());
@@ -419,7 +418,7 @@ public class GUI {
 				}
 				board.setTurn(board.getTurn() + 1);
 			}
-			Board.printBoard(board.getGameBoard());
+			System.out.println(board);
 			turnMessage.setText("Turn: " + board.getTurn());
 		} catch (IOException ex) {
 			ex.printStackTrace();
@@ -533,7 +532,7 @@ public class GUI {
 			if (gameParameters.getGuiStyle() == GuiStyle.NIMBUS_STYLE) redoButton.setVisible(true);
 
 			System.out.println("Turn: " + board.getTurn());
-			Board.printBoard(board.getGameBoard());
+			System.out.println(board);
 		}
 	}
 
@@ -601,7 +600,7 @@ public class GUI {
 			if (gameParameters.getGuiStyle() == GuiStyle.NIMBUS_STYLE) undoButton.setVisible(true);
 
 			System.out.println("Turn: " + board.getTurn());
-			Board.printBoard(board.getGameBoard());
+			System.out.println(board);
 		}
 	}
 
@@ -803,7 +802,7 @@ public class GUI {
 		}
 
 		System.out.println("Turn: " + board.getTurn());
-		Board.printBoard(board.getGameBoard());
+		System.out.println(board);
 
 		boolean isGameOver = board.checkForGameOver();
 		if (isGameOver) {
@@ -904,21 +903,21 @@ public class GUI {
 		if (board.getWinner() == Constants.P1) {
 			if (gameParameters.getGameMode() == GameMode.HUMAN_VS_AI)
 				choice = JOptionPane.showConfirmDialog(
-						null,
+						frameMainWindow,
 						"You win! Start a new game?",
 						"Game Over",
 						JOptionPane.YES_NO_OPTION
 				);
 			else if (gameParameters.getGameMode() == GameMode.HUMAN_VS_HUMAN)
 				choice = JOptionPane.showConfirmDialog(
-						null,
+						frameMainWindow,
 						"Player 1 wins! Start a new game?",
 						"Game Over",
 						JOptionPane.YES_NO_OPTION
 				);
 			else if (gameParameters.getGameMode() == GameMode.AI_VS_AI)
 				choice = JOptionPane.showConfirmDialog(
-						null,
+						frameMainWindow,
 						"Minimax AI 1 wins! Start a new game?",
 						"Game Over",
 						JOptionPane.YES_NO_OPTION
@@ -926,28 +925,28 @@ public class GUI {
 		} else if (board.getWinner() == Constants.P2) {
 			if (gameParameters.getGameMode() == GameMode.HUMAN_VS_AI)
 				choice = JOptionPane.showConfirmDialog(
-						null,
+						frameMainWindow,
 						"Computer AI wins! Start a new game?",
 						"Game Over",
 						JOptionPane.YES_NO_OPTION
 				);
 			else if (gameParameters.getGameMode() == GameMode.HUMAN_VS_HUMAN)
 				choice = JOptionPane.showConfirmDialog(
-						null,
+						frameMainWindow,
 						"Player 2 wins! Start a new game?",
 						"Game Over",
 						JOptionPane.YES_NO_OPTION
 				);
 			else if (gameParameters.getGameMode() == GameMode.AI_VS_AI)
 				choice = JOptionPane.showConfirmDialog(
-						null,
+						frameMainWindow,
 						"Minimax AI 2 wins! Start a new game?",
 						"Game Over",
 						JOptionPane.YES_NO_OPTION
 				);
 		} else if (board.checkForDraw()) {
 			choice = JOptionPane.showConfirmDialog(
-					null,
+					frameMainWindow,
 					"It's a draw! Start a new game?",
 					"Game Over",
 					JOptionPane.YES_NO_OPTION

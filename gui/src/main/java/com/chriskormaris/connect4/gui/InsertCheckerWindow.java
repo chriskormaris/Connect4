@@ -3,16 +3,15 @@ package com.chriskormaris.connect4.gui;
 
 import com.chriskormaris.connect4.api.board.Board;
 import com.chriskormaris.connect4.api.util.Constants;
+import com.chriskormaris.connect4.gui.util.GameParameters;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 
 public class InsertCheckerWindow extends JFrame {
-
-	private static final int numOfRows = GUI.gameParameters.getNumOfRows();
-	private static final int numOfColumns = GUI.gameParameters.getNumOfColumns();
 
 	public int row;
 	public int column;
@@ -25,9 +24,19 @@ public class InsertCheckerWindow extends JFrame {
 	private final JButton apply;
 	private final JButton cancel;
 
+	private final Component parentComponent;
+	private final Board board;
+	private final GameParameters gameParameters;
 
-	public InsertCheckerWindow() {
+	public InsertCheckerWindow(Component parentComponent, Board board, GameParameters gameParameters) {
 		super("Insert Checker");
+
+		this.parentComponent = parentComponent;
+		this.board = board;
+		this.gameParameters = gameParameters;
+
+		int numOfRows = gameParameters.getNumOfRows();
+		int numOfColumns = gameParameters.getNumOfColumns();
 
 		row = numOfRows - 1;
 		column = 0;
@@ -38,7 +47,7 @@ public class InsertCheckerWindow extends JFrame {
 		int width = 400;
 		int height = 220;
 		setSize(width, height);
-		setLocationRelativeTo(null);
+		setLocationRelativeTo(parentComponent);
 		setResizable(false);
 
 		EventHandler handler = new EventHandler();
@@ -108,28 +117,27 @@ public class InsertCheckerWindow extends JFrame {
 
 					player = (player == 0) ? Constants.P1 : Constants.P2;
 
-
-					if (GUI.board.getGameBoard()[row][column] == Constants.EMPTY) {
-						GUI.board.setTurn(GUI.board.getTurn() + 1);
-						GUI.turnMessage.setText("Turn: " + GUI.board.getTurn());
+					if (board.getGameBoard()[row][column] == Constants.EMPTY) {
+						board.setTurn(board.getTurn() + 1);
+						GUI.turnMessage.setText("Turn: " + board.getTurn());
 					}
 
-					GUI.board.getGameBoard()[row][column] = player;
+					board.getGameBoard()[row][column] = player;
 					if (player == Constants.P1) {
-						GUI.placeChecker(GUI.gameParameters.getPlayer1Color(), row, column);
+						GUI.placeChecker(gameParameters.getPlayer1Color(), row, column);
 					} else if (player == Constants.P2) {
-						GUI.placeChecker(GUI.gameParameters.getPlayer2Color(), row, column);
+						GUI.placeChecker(gameParameters.getPlayer2Color(), row, column);
 					}
+					System.out.println("Checker inserted!");
 
-					Board.printBoard(GUI.board.getGameBoard());
+					System.out.println(board);
 
-					if (GUI.board.checkForGameOver()) {
+					if (board.checkForGameOver()) {
 						GUI.gameOver();
 					}
 
-
 					JOptionPane.showMessageDialog(
-							null,
+							parentComponent,
 							"Checker has been inserted into the board.",
 							"Notice",
 							JOptionPane.INFORMATION_MESSAGE

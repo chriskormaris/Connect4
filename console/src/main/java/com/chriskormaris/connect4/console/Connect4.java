@@ -43,17 +43,17 @@ public class Connect4 {
 
 		System.out.println("Minimax Connect-" + checkersInARow + "!\n");
 		System.out.println("\n*****************************");
-		Board.printBoard(connect4Board.getGameBoard());
+		System.out.println(connect4Board);
 		System.out.println();
 
 		Scanner in = new Scanner(System.in);
 		// While the game has not finished
 		while (!connect4Board.checkForGameOver()) {
-			switch (connect4Board.getLastPlayer()) {
+			int currentPlayer = connect4Board.getLastPlayer() == Constants.P2 ? Constants.P1 : Constants.P2;
+			switch (currentPlayer) {
 
-				// If "O" played last, then "X" plays now.
-				// "X" is the user-player
-				case Constants.P2:
+				// "X" is the human-player.
+				case Constants.P1:
 					System.out.print("Human player moves.");
 					try {
 						do {
@@ -72,9 +72,8 @@ public class Connect4 {
 					System.out.println();
 					break;
 
-				// If "X" played last, then "O" plays now.
-				// "O" is the AI computer
-				case Constants.P1:
+				// "O" is the computer AI.
+				case Constants.P2:
 					System.out.println("AI player moves.");
 
 					// Make Minimax move.
@@ -88,7 +87,7 @@ public class Connect4 {
 					break;
 			}
 			System.out.println("Turn: " + connect4Board.getTurn());
-			Board.printBoard(connect4Board.getGameBoard());
+			System.out.println(connect4Board);
 		}
 		in.close();
 

@@ -43,17 +43,17 @@ public class Connect5 {
 
 		System.out.println("Minimax Connect-" + checkersInARow + "!\n");
 		System.out.println("\n*****************************");
-		Board.printBoard(connect5Board.getGameBoard());
+		System.out.println(connect5Board);
 		System.out.println();
 
 		Scanner in = new Scanner(System.in);
 		// While the game has not finished
 		while (!connect5Board.checkForGameOver()) {
-			switch (connect5Board.getLastPlayer()) {
+			int nextPlayer = connect5Board.getLastPlayer() == Constants.P2 ? Constants.P1 : Constants.P2;
+			switch (nextPlayer) {
 
-				// If "O" played last, then "X" plays now.
-				// "X" is the user-player
-				case Constants.P2:
+				// "X" is player 1.
+				case Constants.P1:
 					System.out.print("Human player moves.");
 					try {
 						do {
@@ -72,9 +72,8 @@ public class Connect5 {
 					System.out.println();
 					break;
 
-				// If "X" played last, then "O" plays now.
-				// "O" is the AI computer
-				case Constants.P1:
+				// "O" is player 2.
+				case Constants.P2:
 					System.out.println("AI player moves.");
 
 					// Make Minimax move.
@@ -88,7 +87,7 @@ public class Connect5 {
 					break;
 			}
 			System.out.println("Turn: " + connect5Board.getTurn());
-			Board.printBoard(connect5Board.getGameBoard());
+			System.out.println(connect5Board);
 		}
 		in.close();
 
