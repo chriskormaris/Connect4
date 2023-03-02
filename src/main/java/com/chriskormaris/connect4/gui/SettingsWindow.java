@@ -8,6 +8,7 @@ import com.chriskormaris.connect4.gui.enumeration.GuiStyle;
 import com.chriskormaris.connect4.gui.util.GameParameters;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -26,9 +27,14 @@ public class SettingsWindow extends JFrame {
 	private final JButton apply;
 	private final JButton cancel;
 
+	private final Component parentComponent;
+	private final GameParameters newGameParameters;
 
-	public SettingsWindow() {
+	public SettingsWindow(Component parentComponent, GameParameters gameParameters, GameParameters newGameParameters) {
 		super("Settings");
+
+		this.parentComponent = parentComponent;
+		this.newGameParameters = newGameParameters;
 
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setLayout(null);
@@ -40,15 +46,15 @@ public class SettingsWindow extends JFrame {
 
 		EventHandler handler = new EventHandler();
 
-		GuiStyle selectedGuiStyle = GUI.gameParameters.getGuiStyle();
-		GameMode selectedMode = GUI.gameParameters.getGameMode();
-		AiType selectedAi1Type = GUI.gameParameters.getAi1Type();
-		AiType selectedAi2Type = GUI.gameParameters.getAi2Type();
-		int maxDepth1 = GUI.gameParameters.getAi1MaxDepth() - 1;
-		int maxDepth2 = GUI.gameParameters.getAi2MaxDepth() - 1;
-		Color selectedPlayer1Color = GUI.gameParameters.getPlayer1Color();
-		Color selectedPlayer2Color = GUI.gameParameters.getPlayer2Color();
-		int checkersInARow = GUI.gameParameters.getCheckersInARow();
+		GuiStyle selectedGuiStyle = gameParameters.getGuiStyle();
+		GameMode selectedMode = gameParameters.getGameMode();
+		AiType selectedAi1Type = gameParameters.getAi1Type();
+		AiType selectedAi2Type = gameParameters.getAi2Type();
+		int maxDepth1 = gameParameters.getAi1MaxDepth() - 1;
+		int maxDepth2 = gameParameters.getAi2MaxDepth() - 1;
+		Color selectedPlayer1Color = gameParameters.getPlayer1Color();
+		Color selectedPlayer2Color = gameParameters.getPlayer2Color();
+		int checkersInARow = gameParameters.getCheckersInARow();
 
 		JLabel guiStyleLabel = new JLabel("GUI style");
 		JLabel gameModeLabel = new JLabel("Game mode");
@@ -248,8 +254,8 @@ public class SettingsWindow extends JFrame {
 							.replace(" ", "_"));
 					AiType ai2Type = AiType.valueOf(ai2_type_drop_down.getSelectedItem().toString().toUpperCase()
 							.replace(" ", "_"));
-					int maxDepth1 = (int) max_depth1_drop_down.getSelectedItem();
-					int maxDepth2 = (int) max_depth2_drop_down.getSelectedItem();
+					int ai1MaxDepth = (int) max_depth1_drop_down.getSelectedItem();
+					int ai2MaxDepth = (int) max_depth2_drop_down.getSelectedItem();
 					Color player1Color = Color.valueOf(
 							player1_color_drop_down.getSelectedItem().toString().toUpperCase()
 					);
@@ -262,7 +268,7 @@ public class SettingsWindow extends JFrame {
 
 					if (player1Color == player2Color) {
 						JOptionPane.showMessageDialog(
-								null,
+								parentComponent,
 								"Player 1 and Player 2 cannot have the same color of checkers!",
 								"ERROR",
 								JOptionPane.ERROR_MESSAGE
@@ -271,22 +277,20 @@ public class SettingsWindow extends JFrame {
 					}
 
 					// Change game parameters based on settings.
-					GUI.newGameParameters = new GameParameters(
-							guiStyle,
-							gameMode,
-							ai1Type,
-							ai2Type,
-							maxDepth1,
-							maxDepth2,
-							player1Color,
-							player2Color,
-							numOfRows,
-							numOfColumns,
-							checkersInARow
-					);
+					newGameParameters.setGuiStyle(guiStyle);
+					newGameParameters.setGameMode(gameMode);
+					newGameParameters.setAi1Type(ai1Type);
+					newGameParameters.setAi2Type(ai2Type);
+					newGameParameters.setAi1MaxDepth(ai1MaxDepth);
+					newGameParameters.setAi2MaxDepth(ai2MaxDepth);
+					newGameParameters.setPlayer1Color(player1Color);
+					newGameParameters.setPlayer2Color(player2Color);
+					newGameParameters.setNumOfRows(numOfRows);
+					newGameParameters.setNumOfColumns(numOfColumns);
+					newGameParameters.setCheckersInARow(checkersInARow);
 
 					JOptionPane.showMessageDialog(
-							GUI.panelMain,
+							parentComponent,
 							"Game settings have been changed.\n" +
 									"The changes will be applied in the next new game.",
 							"Notice",

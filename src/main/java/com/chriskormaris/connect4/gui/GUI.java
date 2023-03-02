@@ -328,7 +328,7 @@ public class GUI {
 		exportToGifItem.addActionListener(e -> exportToGif());
 
 		settingsItem.addActionListener(e -> {
-			SettingsWindow settings = new SettingsWindow();
+			SettingsWindow settings = new SettingsWindow(panelMain, gameParameters, newGameParameters);
 			settings.setVisible(true);
 		});
 
