@@ -15,15 +15,15 @@ import java.awt.event.ActionListener;
 
 public class SettingsWindow extends JFrame {
 
-	private final JComboBox<String> gui_style_drop_down;
-	private final JComboBox<String> game_mode_drop_down;
-	private final JComboBox<String> ai1_type_drop_down;
-	private final JComboBox<String> ai2_type_drop_down;
-	private final JComboBox<Integer> max_depth1_drop_down;
-	private final JComboBox<Integer> max_depth2_drop_down;
-	private final JComboBox<String> player1_color_drop_down;
-	private final JComboBox<String> player2_color_drop_down;
-	private final JComboBox<Integer> checkers_in_a_row_drop_down;
+	private final JComboBox<String> guiStyleDropDown;
+	private final JComboBox<String> gameModeDropDown;
+	private final JComboBox<String> ai1TypeDropDown;
+	private final JComboBox<String> ai2TypeDropDown;
+	private final JComboBox<Integer> ai1MaxDepthDropDown;
+	private final JComboBox<Integer> ai2MaxDepthDropDown;
+	private final JComboBox<String> player1ColorDropDown;
+	private final JComboBox<String> player2ColorDropDown;
+	private final JComboBox<Integer> checkersInARowDropDown;
 
 	private final JButton apply;
 	private final JButton cancel;
@@ -77,132 +77,132 @@ public class SettingsWindow extends JFrame {
 		add(player2ColorLabel);
 		add(checkersInARowLabel);
 
-		gui_style_drop_down = new JComboBox<>();
-		gui_style_drop_down.addItem("System style");
-		gui_style_drop_down.addItem("Cross-platform style");
-		gui_style_drop_down.addItem("Nimbus style");
+		guiStyleDropDown = new JComboBox<>();
+		guiStyleDropDown.addItem("System style");
+		guiStyleDropDown.addItem("Cross-platform style");
+		guiStyleDropDown.addItem("Nimbus style");
 
 		if (selectedGuiStyle == GuiStyle.SYSTEM_STYLE) {
-			gui_style_drop_down.setSelectedIndex(0);
+			guiStyleDropDown.setSelectedIndex(0);
 		} else if (selectedGuiStyle == GuiStyle.CROSS_PLATFORM_STYLE) {
-			gui_style_drop_down.setSelectedIndex(1);
+			guiStyleDropDown.setSelectedIndex(1);
 		} else if (selectedGuiStyle == GuiStyle.NIMBUS_STYLE) {
-			gui_style_drop_down.setSelectedIndex(2);
+			guiStyleDropDown.setSelectedIndex(2);
 		}
 
-		game_mode_drop_down = new JComboBox<>();
-		game_mode_drop_down.addItem("Human Vs AI");
-		game_mode_drop_down.addItem("Human Vs Human");
-		game_mode_drop_down.addItem("AI Vs AI");
+		gameModeDropDown = new JComboBox<>();
+		gameModeDropDown.addItem("Human Vs AI");
+		gameModeDropDown.addItem("Human Vs Human");
+		gameModeDropDown.addItem("AI Vs AI");
 
 		if (selectedMode == GameMode.HUMAN_VS_AI) {
-			game_mode_drop_down.setSelectedIndex(0);
+			gameModeDropDown.setSelectedIndex(0);
 		} else if (selectedMode == GameMode.HUMAN_VS_HUMAN) {
-			game_mode_drop_down.setSelectedIndex(1);
+			gameModeDropDown.setSelectedIndex(1);
 		} else if (selectedMode == GameMode.AI_VS_AI) {
-			game_mode_drop_down.setSelectedIndex(2);
+			gameModeDropDown.setSelectedIndex(2);
 		}
 
-		ai1_type_drop_down = new JComboBox<>();
-		ai1_type_drop_down.addItem("Minimax AI");
-		ai1_type_drop_down.addItem("Random AI");
+		ai1TypeDropDown = new JComboBox<>();
+		ai1TypeDropDown.addItem("Minimax AI");
+		ai1TypeDropDown.addItem("Random AI");
 
 		if (selectedAi1Type == AiType.MINIMAX_AI) {
-			ai1_type_drop_down.setSelectedIndex(0);
+			ai1TypeDropDown.setSelectedIndex(0);
 		} else if (selectedAi1Type == AiType.RANDOM_AI) {
-			ai1_type_drop_down.setSelectedIndex(1);
+			ai1TypeDropDown.setSelectedIndex(1);
 		}
 
-		ai2_type_drop_down = new JComboBox<>();
-		ai2_type_drop_down.addItem("Minimax AI");
-		ai2_type_drop_down.addItem("Random AI");
+		ai2TypeDropDown = new JComboBox<>();
+		ai2TypeDropDown.addItem("Minimax AI");
+		ai2TypeDropDown.addItem("Random AI");
 
 		if (selectedAi2Type == AiType.MINIMAX_AI) {
-			ai2_type_drop_down.setSelectedIndex(0);
+			ai2TypeDropDown.setSelectedIndex(0);
 		} else if (selectedAi2Type == AiType.RANDOM_AI) {
-			ai2_type_drop_down.setSelectedIndex(1);
+			ai2TypeDropDown.setSelectedIndex(1);
 		}
 
-		max_depth1_drop_down = new JComboBox<>();
-		max_depth1_drop_down.addItem(1);
-		max_depth1_drop_down.addItem(2);
-		max_depth1_drop_down.addItem(3);
-		max_depth1_drop_down.addItem(4);
-		max_depth1_drop_down.addItem(5);
-		max_depth1_drop_down.addItem(6);
-		max_depth1_drop_down.addItem(7);
+		ai1MaxDepthDropDown = new JComboBox<>();
+		ai1MaxDepthDropDown.addItem(1);
+		ai1MaxDepthDropDown.addItem(2);
+		ai1MaxDepthDropDown.addItem(3);
+		ai1MaxDepthDropDown.addItem(4);
+		ai1MaxDepthDropDown.addItem(5);
+		ai1MaxDepthDropDown.addItem(6);
+		ai1MaxDepthDropDown.addItem(7);
 
-		max_depth2_drop_down = new JComboBox<>();
-		max_depth2_drop_down.addItem(1);
-		max_depth2_drop_down.addItem(2);
-		max_depth2_drop_down.addItem(3);
-		max_depth2_drop_down.addItem(4);
-		max_depth2_drop_down.addItem(5);
-		max_depth2_drop_down.addItem(6);
-		max_depth2_drop_down.addItem(7);
+		ai2MaxDepthDropDown = new JComboBox<>();
+		ai2MaxDepthDropDown.addItem(1);
+		ai2MaxDepthDropDown.addItem(2);
+		ai2MaxDepthDropDown.addItem(3);
+		ai2MaxDepthDropDown.addItem(4);
+		ai2MaxDepthDropDown.addItem(5);
+		ai2MaxDepthDropDown.addItem(6);
+		ai2MaxDepthDropDown.addItem(7);
 
-		max_depth1_drop_down.setSelectedIndex(maxDepth1);
-		max_depth2_drop_down.setSelectedIndex(maxDepth2);
+		ai1MaxDepthDropDown.setSelectedIndex(maxDepth1);
+		ai2MaxDepthDropDown.setSelectedIndex(maxDepth2);
 
-		player1_color_drop_down = new JComboBox<>();
-		player1_color_drop_down.addItem("Red");
-		player1_color_drop_down.addItem("Yellow");
-		player1_color_drop_down.addItem("Black");
-		player1_color_drop_down.addItem("Green");
-		player1_color_drop_down.addItem("Orange");
-		player1_color_drop_down.addItem("Purple");
+		player1ColorDropDown = new JComboBox<>();
+		player1ColorDropDown.addItem("Red");
+		player1ColorDropDown.addItem("Yellow");
+		player1ColorDropDown.addItem("Black");
+		player1ColorDropDown.addItem("Green");
+		player1ColorDropDown.addItem("Orange");
+		player1ColorDropDown.addItem("Purple");
 
 		if (selectedPlayer1Color == Color.RED) {
-			player1_color_drop_down.setSelectedIndex(0);
+			player1ColorDropDown.setSelectedIndex(0);
 		} else if (selectedPlayer1Color == Color.YELLOW) {
-			player1_color_drop_down.setSelectedIndex(1);
+			player1ColorDropDown.setSelectedIndex(1);
 		} else if (selectedPlayer1Color == Color.BLACK) {
-			player1_color_drop_down.setSelectedIndex(2);
+			player1ColorDropDown.setSelectedIndex(2);
 		} else if (selectedPlayer1Color == Color.GREEN) {
-			player1_color_drop_down.setSelectedIndex(3);
+			player1ColorDropDown.setSelectedIndex(3);
 		} else if (selectedPlayer1Color == Color.ORANGE) {
-			player1_color_drop_down.setSelectedIndex(4);
+			player1ColorDropDown.setSelectedIndex(4);
 		} else if (selectedPlayer1Color == Color.PURPLE) {
-			player1_color_drop_down.setSelectedIndex(5);
+			player1ColorDropDown.setSelectedIndex(5);
 		}
 
-		player2_color_drop_down = new JComboBox<>();
-		player2_color_drop_down.addItem("Red");
-		player2_color_drop_down.addItem("Yellow");
-		player2_color_drop_down.addItem("Black");
-		player2_color_drop_down.addItem("Green");
-		player2_color_drop_down.addItem("Orange");
-		player2_color_drop_down.addItem("Purple");
+		player2ColorDropDown = new JComboBox<>();
+		player2ColorDropDown.addItem("Red");
+		player2ColorDropDown.addItem("Yellow");
+		player2ColorDropDown.addItem("Black");
+		player2ColorDropDown.addItem("Green");
+		player2ColorDropDown.addItem("Orange");
+		player2ColorDropDown.addItem("Purple");
 
 		if (selectedPlayer2Color == Color.RED) {
-			player2_color_drop_down.setSelectedIndex(0);
+			player2ColorDropDown.setSelectedIndex(0);
 		} else if (selectedPlayer2Color == Color.YELLOW) {
-			player2_color_drop_down.setSelectedIndex(1);
+			player2ColorDropDown.setSelectedIndex(1);
 		} else if (selectedPlayer2Color == Color.BLACK) {
-			player2_color_drop_down.setSelectedIndex(2);
+			player2ColorDropDown.setSelectedIndex(2);
 		} else if (selectedPlayer2Color == Color.GREEN) {
-			player2_color_drop_down.setSelectedIndex(3);
+			player2ColorDropDown.setSelectedIndex(3);
 		} else if (selectedPlayer2Color == Color.ORANGE) {
-			player2_color_drop_down.setSelectedIndex(4);
+			player2ColorDropDown.setSelectedIndex(4);
 		} else if (selectedPlayer2Color == Color.PURPLE) {
-			player2_color_drop_down.setSelectedIndex(5);
+			player2ColorDropDown.setSelectedIndex(5);
 		}
 
-		checkers_in_a_row_drop_down = new JComboBox<>();
-		checkers_in_a_row_drop_down.addItem(4);
-		checkers_in_a_row_drop_down.addItem(5);
+		checkersInARowDropDown = new JComboBox<>();
+		checkersInARowDropDown.addItem(4);
+		checkersInARowDropDown.addItem(5);
 
-		checkers_in_a_row_drop_down.setSelectedIndex(checkersInARow - 4);
+		checkersInARowDropDown.setSelectedIndex(checkersInARow - 4);
 
-		add(gui_style_drop_down);
-		add(game_mode_drop_down);
-		add(ai1_type_drop_down);
-		add(ai2_type_drop_down);
-		add(max_depth1_drop_down);
-		add(max_depth2_drop_down);
-		add(player1_color_drop_down);
-		add(player2_color_drop_down);
-		add(checkers_in_a_row_drop_down);
+		add(guiStyleDropDown);
+		add(gameModeDropDown);
+		add(ai1TypeDropDown);
+		add(ai2TypeDropDown);
+		add(ai1MaxDepthDropDown);
+		add(ai2MaxDepthDropDown);
+		add(player1ColorDropDown);
+		add(player2ColorDropDown);
+		add(checkersInARowDropDown);
 
 		guiStyleLabel.setBounds(25, 25, 200, 25);
 		gameModeLabel.setBounds(25, 60, 200, 25);
@@ -214,15 +214,15 @@ public class SettingsWindow extends JFrame {
 		player2ColorLabel.setBounds(25, 270, 200, 25);
 		checkersInARowLabel.setBounds(25, 305, 200, 25);
 
-		gui_style_drop_down.setBounds(195, 25, 200, 25);
-		game_mode_drop_down.setBounds(195, 60, 200, 25);
-		ai1_type_drop_down.setBounds(195, 95, 200, 25);
-		ai2_type_drop_down.setBounds(195, 130, 200, 25);
-		max_depth1_drop_down.setBounds(195, 165, 200, 25);
-		max_depth2_drop_down.setBounds(195, 200, 200, 25);
-		player1_color_drop_down.setBounds(195, 235, 200, 25);
-		player2_color_drop_down.setBounds(195, 270, 200, 25);
-		checkers_in_a_row_drop_down.setBounds(195, 305, 200, 25);
+		guiStyleDropDown.setBounds(195, 25, 200, 25);
+		gameModeDropDown.setBounds(195, 60, 200, 25);
+		ai1TypeDropDown.setBounds(195, 95, 200, 25);
+		ai2TypeDropDown.setBounds(195, 130, 200, 25);
+		ai1MaxDepthDropDown.setBounds(195, 165, 200, 25);
+		ai2MaxDepthDropDown.setBounds(195, 200, 200, 25);
+		player1ColorDropDown.setBounds(195, 235, 200, 25);
+		player2ColorDropDown.setBounds(195, 270, 200, 25);
+		checkersInARowDropDown.setBounds(195, 305, 200, 25);
 
 		apply = new JButton("Apply");
 		cancel = new JButton("Cancel");
@@ -246,24 +246,24 @@ public class SettingsWindow extends JFrame {
 			} else if (ev.getSource() == apply) {
 				try {
 
-					GuiStyle guiStyle = GuiStyle.valueOf(gui_style_drop_down.getSelectedItem().toString().toUpperCase()
+					GuiStyle guiStyle = GuiStyle.valueOf(guiStyleDropDown.getSelectedItem().toString().toUpperCase()
 							.replace("-", "_")
 							.replace(" ", "_"));
-					GameMode gameMode = GameMode.valueOf(game_mode_drop_down.getSelectedItem().toString().toUpperCase()
+					GameMode gameMode = GameMode.valueOf(gameModeDropDown.getSelectedItem().toString().toUpperCase()
 							.replace(" ", "_"));
-					AiType ai1Type = AiType.valueOf(ai1_type_drop_down.getSelectedItem().toString().toUpperCase()
+					AiType ai1Type = AiType.valueOf(ai1TypeDropDown.getSelectedItem().toString().toUpperCase()
 							.replace(" ", "_"));
-					AiType ai2Type = AiType.valueOf(ai2_type_drop_down.getSelectedItem().toString().toUpperCase()
+					AiType ai2Type = AiType.valueOf(ai2TypeDropDown.getSelectedItem().toString().toUpperCase()
 							.replace(" ", "_"));
-					int ai1MaxDepth = (int) max_depth1_drop_down.getSelectedItem();
-					int ai2MaxDepth = (int) max_depth2_drop_down.getSelectedItem();
+					int ai1MaxDepth = (int) ai1MaxDepthDropDown.getSelectedItem();
+					int ai2MaxDepth = (int) ai2MaxDepthDropDown.getSelectedItem();
 					Color player1Color = Color.valueOf(
-							player1_color_drop_down.getSelectedItem().toString().toUpperCase()
+							player1ColorDropDown.getSelectedItem().toString().toUpperCase()
 					);
 					Color player2Color = Color.valueOf(
-							player2_color_drop_down.getSelectedItem().toString().toUpperCase()
+							player2ColorDropDown.getSelectedItem().toString().toUpperCase()
 					);
-					int checkersInARow = (int) checkers_in_a_row_drop_down.getSelectedItem();
+					int checkersInARow = (int) checkersInARowDropDown.getSelectedItem();
 					int numOfRows = (checkersInARow == 4) ? 6 : 7;
 					int numOfColumns = (checkersInARow == 4) ? 7 : 8;
 
