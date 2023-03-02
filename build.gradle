@@ -1,28 +1,8 @@
 plugins {
     id 'java'
-    id 'io.freefair.lombok' version '6.6.1'
 }
-
-group 'com.chriskormaris'
 
 java {
     sourceCompatibility JavaVersion.VERSION_1_8
     targetCompatibility JavaVersion.VERSION_1_8
-}
-
-repositories {
-    mavenCentral()
-}
-
-ext {
-    junit_version = '5.8.1'
-}
-
-dependencies {
-    testImplementation "org.junit.jupiter:junit-jupiter-api:${junit_version}"
-    testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:${junit_version}"
-}
-
-test {
-    useJUnitPlatform()
 }
