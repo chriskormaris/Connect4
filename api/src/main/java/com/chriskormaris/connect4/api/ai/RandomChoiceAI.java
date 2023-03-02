@@ -3,18 +3,21 @@ package com.chriskormaris.connect4.api.ai;
 import com.chriskormaris.connect4.api.board.Board;
 import com.chriskormaris.connect4.api.board.Move;
 import com.chriskormaris.connect4.api.util.Constants;
-import com.chriskormaris.connect4.gui.GUI;
 
 import java.util.Random;
 
 public class RandomChoiceAI extends AI {
 
+	private final int numOfColumns;
+
 	public RandomChoiceAI() {
 		super(Constants.P2);
+		this.numOfColumns = Constants.CONNECT_4_NUM_OF_COLUMNS;
 	}
 
-	public RandomChoiceAI(int aiPlayer) {
+	public RandomChoiceAI(int aiPlayer, int numOfColumns) {
 		super(aiPlayer);
+		this.numOfColumns = numOfColumns;
 	}
 
 	// Initiates the random move.
@@ -24,7 +27,7 @@ public class RandomChoiceAI extends AI {
 
 		int col;
 		do {
-			col = r.nextInt(GUI.gameParameters.getNumOfColumns());
+			col = r.nextInt(this.numOfColumns);
 		} while (board.checkFullColumn(col));
 
 		int row = board.getEmptyRowPosition(col);
