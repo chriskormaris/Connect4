@@ -2,7 +2,5 @@ rootProject.name = 'Connect4'
 
 include 'api'
 include 'gui'
-include 'api'
-include 'gui'
 include 'console'
 
