@@ -24,6 +24,7 @@ public class SettingsWindow extends JFrame {
 	private final JComboBox<String> player1_color_drop_down;
 	private final JComboBox<String> player2_color_drop_down;
 	private final JComboBox<Integer> checkers_in_a_row_drop_down;
+
 	private final JButton apply;
 	private final JButton cancel;
 
