@@ -61,8 +61,8 @@ public class SettingsWindow extends JFrame {
 		JLabel gameModeLabel = new JLabel("Game mode");
 		JLabel ai1TypeLabel = new JLabel("AI 1 type");
 		JLabel ai2TypeLabel = new JLabel("AI 2 type (AiVsAi)");
-		JLabel maxDepth1Label = new JLabel("AI 1 depth");
-		JLabel maxDepth2Label = new JLabel("AI 2 depth (AiVsAi)");
+		JLabel ai1MaxDepthLabel = new JLabel("AI 1 depth");
+		JLabel ai2MaxDepthLabel = new JLabel("AI 2 depth (AiVsAi)");
 		JLabel player1ColorLabel = new JLabel("Player 1 color");
 		JLabel player2ColorLabel = new JLabel("Player 2 color");
 		JLabel checkersInARowLabel = new JLabel("Checkers in a Row");
@@ -71,8 +71,8 @@ public class SettingsWindow extends JFrame {
 		add(gameModeLabel);
 		add(ai1TypeLabel);
 		add(ai2TypeLabel);
-		add(maxDepth1Label);
-		add(maxDepth2Label);
+		add(ai1MaxDepthLabel);
+		add(ai2MaxDepthLabel);
 		add(player1ColorLabel);
 		add(player2ColorLabel);
 		add(checkersInARowLabel);
@@ -208,8 +208,8 @@ public class SettingsWindow extends JFrame {
 		gameModeLabel.setBounds(25, 60, 200, 25);
 		ai1TypeLabel.setBounds(25, 95, 200, 25);
 		ai2TypeLabel.setBounds(25, 130, 200, 25);
-		maxDepth1Label.setBounds(25, 165, 200, 25);
-		maxDepth2Label.setBounds(25, 200, 200, 25);
+		ai1MaxDepthLabel.setBounds(25, 165, 200, 25);
+		ai2MaxDepthLabel.setBounds(25, 200, 200, 25);
 		player1ColorLabel.setBounds(25, 235, 200, 25);
 		player2ColorLabel.setBounds(25, 270, 200, 25);
 		checkersInARowLabel.setBounds(25, 305, 200, 25);
@@ -245,7 +245,6 @@ public class SettingsWindow extends JFrame {
 				dispose();
 			} else if (ev.getSource() == apply) {
 				try {
-
 					GuiStyle guiStyle = GuiStyle.valueOf(guiStyleDropDown.getSelectedItem().toString().toUpperCase()
 							.replace("-", "_")
 							.replace(" ", "_"));
