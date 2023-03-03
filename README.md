@@ -32,6 +32,6 @@ Java 8 and above is required to run. Have fun!!
 #### Connect-5
 ![screenshot](/screenshots/connect-5_system-style.png)
 
-### Citation
+### References
 The GUI of the Java Swing application was inspired from this GitHub repository:
 - https://github.com/0xadada/smart-connect-four
