@@ -6,7 +6,6 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-// import static org.junit.jupiter.api.Assertions.fail;
 
 public class BoardTest {
 
@@ -71,7 +70,7 @@ public class BoardTest {
 		Board board = new Board();
 
 		board.makeMove(0, Constants.P1);
-		Board.printBoard(board.getGameBoard());
+		System.out.println(board);
 
 		assertEquals(Constants.P1, board.getGameBoard()[5][0], "The board was not updated correctly.");
 		assertEquals(Constants.P1, board.getLastPlayer(), "The last player symbol played is not correct.");
@@ -110,7 +109,7 @@ public class BoardTest {
 			gameBoard[5][col] = Constants.P1;
 		}
 		board.setGameBoard(gameBoard);
-		Board.printBoard(board.getGameBoard());
+		System.out.println(board);
 
 		for (int col = 0; col < NUM_OF_COLUMNS; col++) {
 			int row = board.getEmptyRowPosition(col);

@@ -626,12 +626,10 @@ public class GUI {
 	private static final KeyListener gameKeyListener = new KeyListener() {
 		@Override
 		public void keyTyped(KeyEvent e) {
-			// System.out.println("keyTyped = " + KeyEvent.getKeyText(e.getKeyCode()));
 		}
 
 		@Override
 		public void keyPressed(KeyEvent e) {
-			// System.out.println("keyPressed = " + KeyEvent.getKeyText(e.getKeyCode()));
 			if (!board.checkForGameOver()) {
 				String keyText = KeyEvent.getKeyText(e.getKeyCode());
 
@@ -654,19 +652,16 @@ public class GUI {
 
 		@Override
 		public void keyReleased(KeyEvent e) {
-			// System.out.println("keyReleased = " + KeyEvent.getKeyText(e.getKeyCode()));
 		}
 	};
 
 	private static final KeyListener undoRedoKeyListener = new KeyListener() {
 		@Override
 		public void keyTyped(KeyEvent e) {
-			// System.out.println("keyTyped = " + KeyEvent.getKeyText(e.getKeyCode()));
 		}
 
 		@Override
 		public void keyPressed(KeyEvent e) {
-			// System.out.println("keyPressed = " + KeyEvent.getKeyText(e.getKeyCode()));
 			if ((e.getModifiersEx() & KeyEvent.CTRL_DOWN_MASK) != 0 && e.getKeyCode() == KeyEvent.VK_Z) {
 				undo();
 			} else if ((e.getModifiersEx() & KeyEvent.CTRL_DOWN_MASK) != 0 && e.getKeyCode() == KeyEvent.VK_Y) {
@@ -676,7 +671,6 @@ public class GUI {
 
 		@Override
 		public void keyReleased(KeyEvent e) {
-			// System.out.println("keyReleased = " + KeyEvent.getKeyText(e.getKeyCode()));
 		}
 	};
 

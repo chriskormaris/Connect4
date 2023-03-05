@@ -14,8 +14,6 @@ import java.util.Scanner;
 public class Connect4 {
 
 	public static void main(String[] args) {
-
-		// int numOfRows = Constants.DEFAULT_CONNECT_4_NUM_OF_ROWS;
 		int numOfColumns = Constants.CONNECT_4_NUM_OF_COLUMNS;
 		int checkersInARow = Constants.CONNECT_4_CHECKERS_IN_A_ROW;
 
@@ -37,9 +35,6 @@ public class Connect4 {
 		int XColumnPosition;
 		AI ai = new MinimaxAlphaBetaPruningAI(5, Constants.P2);
 		Board connect4Board = new Board();
-
-		// Uncomment this, for "O" to play first
-		// board.setLastLetterPlayed(Board.X);
 
 		System.out.println("Minimax Connect-" + checkersInARow + "!\n");
 		System.out.println("\n*****************************");

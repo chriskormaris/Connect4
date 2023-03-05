@@ -87,13 +87,11 @@ public class Board {
 	@Override
 	public String toString() {
 		StringBuilder output = new StringBuilder();
-		output.append("| 1 | 2 | 3 | 4 | 5 | 6 | 7 ");
-		if (numOfRows == Constants.CONNECT_4_NUM_OF_ROWS) {
-			output.append("|\n");
-		} else if (numOfRows == Constants.CONNECT_5_NUM_OF_ROWS) {
-			output.append("| 8 |\n");
+		output.append("|");
+		for (int j = 1; j <= numOfColumns; j++) {
+			output.append(" ").append(j).append(" |");
 		}
-		System.out.println();
+		output.append("\n\n");
 		for (int i = 0; i < numOfRows; i++) {
 			for (int j = 0; j < numOfColumns; j++) {
 				char symbol = '-';
@@ -108,50 +106,12 @@ public class Board {
 				}
 			}
 		}
-		output.append("\n*****************************\n");
+		if (numOfColumns == Constants.CONNECT_4_NUM_OF_COLUMNS) {
+			output.append("\n*****************************\n");
+		} else if (numOfColumns == Constants.CONNECT_5_NUM_OF_COLUMNS) {
+			output.append("\n*********************************\n");
+		}
 		return output.toString();
-	}
-
-	// It prints the Connect-4 board on the console.
-	public static void printConnect4Board(int[][] gameBoard) {
-		System.out.println("| 1 | 2 | 3 | 4 | 5 | 6 | 7 |");
-		System.out.println();
-		for (int i = 0; i < Constants.CONNECT_4_NUM_OF_ROWS; i++) {
-			for (int j = 0; j < Constants.CONNECT_4_NUM_OF_COLUMNS; j++) {
-				char symbol = '-';
-				if (gameBoard[i][j] == Constants.P1) {
-					symbol = 'X';
-				} else if (gameBoard[i][j] == Constants.P2) {
-					symbol = 'O';
-				}
-				System.out.print("| " + symbol + " ");
-				if (j == Constants.CONNECT_4_NUM_OF_COLUMNS - 1) {
-					System.out.println("|");
-				}
-			}
-		}
-		System.out.println("\n*****************************");
-	}
-
-	// It prints the Connect-5 board on the console.
-	public static void printConnect5Board(int[][] gameBoard) {
-		System.out.println("| 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 |");
-		System.out.println();
-		for (int i = 0; i < Constants.CONNECT_5_NUM_OF_ROWS; i++) {
-			for (int j = 0; j < Constants.CONNECT_5_NUM_OF_COLUMNS; j++) {
-				char symbol = '-';
-				if (gameBoard[i][j] == Constants.P1) {
-					symbol = 'X';
-				} else if (gameBoard[i][j] == Constants.P2) {
-					symbol = 'O';
-				}
-				System.out.print("| " + symbol + " ");
-				if (j == Constants.CONNECT_5_NUM_OF_COLUMNS - 1) {
-					System.out.println("|");
-				}
-			}
-		}
-		System.out.println("\n*********************************");
 	}
 
 	// Makes a move based on the given column.

@@ -65,7 +65,6 @@ public class MinimaxAlphaBetaPruningAI extends MinimaxAI {
 
 			// Beta pruning.
 			if (maxMove.getValue() >= b) {
-				// System.out.println("Beta pruning: " + b);
 				return maxMove;
 			}
 
@@ -102,7 +101,6 @@ public class MinimaxAlphaBetaPruningAI extends MinimaxAI {
 
 			// Alpha pruning
 			if (minMove.getValue() <= a) {
-				// System.out.println("Alpha pruning: " + a);
 				return minMove;
 			}
 
