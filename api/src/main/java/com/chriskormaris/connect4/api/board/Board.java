@@ -84,36 +84,6 @@ public class Board {
 		}
 	}
 
-	@Override
-	public String toString() {
-		StringBuilder output = new StringBuilder();
-		output.append("|");
-		for (int j = 1; j <= numOfColumns; j++) {
-			output.append(" ").append(j).append(" |");
-		}
-		output.append("\n\n");
-		for (int i = 0; i < numOfRows; i++) {
-			for (int j = 0; j < numOfColumns; j++) {
-				char symbol = '-';
-				if (gameBoard[i][j] == Constants.P1) {
-					symbol = 'X';
-				} else if (gameBoard[i][j] == Constants.P2) {
-					symbol = 'O';
-				}
-				output.append("| ").append(symbol).append(" ");
-				if (j == numOfColumns - 1) {
-					output.append("|\n");
-				}
-			}
-		}
-		if (numOfColumns == Constants.CONNECT_4_NUM_OF_COLUMNS) {
-			output.append("\n*****************************\n");
-		} else if (numOfColumns == Constants.CONNECT_5_NUM_OF_COLUMNS) {
-			output.append("\n*********************************\n");
-		}
-		return output.toString();
-	}
-
 	// Makes a move based on the given column.
 	// It finds automatically in which row the checker should be inserted.
 	public void makeMove(int col, int player) {
@@ -336,6 +306,36 @@ public class Board {
 		}
 
 		return times;
+	}
+
+	@Override
+	public String toString() {
+		StringBuilder output = new StringBuilder();
+		output.append("|");
+		for (int j = 1; j <= numOfColumns; j++) {
+			output.append(" ").append(j).append(" |");
+		}
+		output.append("\n\n");
+		for (int i = 0; i < numOfRows; i++) {
+			for (int j = 0; j < numOfColumns; j++) {
+				char symbol = '-';
+				if (gameBoard[i][j] == Constants.P1) {
+					symbol = 'X';
+				} else if (gameBoard[i][j] == Constants.P2) {
+					symbol = 'O';
+				}
+				output.append("| ").append(symbol).append(" ");
+				if (j == numOfColumns - 1) {
+					output.append("|\n");
+				}
+			}
+		}
+		if (numOfColumns == Constants.CONNECT_4_NUM_OF_COLUMNS) {
+			output.append("\n*****************************\n");
+		} else if (numOfColumns == Constants.CONNECT_5_NUM_OF_COLUMNS) {
+			output.append("\n*********************************\n");
+		}
+		return output.toString();
 	}
 
 }
