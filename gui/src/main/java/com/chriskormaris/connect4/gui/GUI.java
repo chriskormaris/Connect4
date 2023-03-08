@@ -268,14 +268,18 @@ public class GUI {
 		System.out.println(board);
 
 		if (gameParameters.getGameMode() == GameMode.HUMAN_VS_AI) {
-			if (gameParameters.getAi1Type() == AiType.MINIMAX_AI) {
-				ai = new MinimaxAlphaBetaPruningAI(gameParameters.getAi1MaxDepth(), Constants.P2);
-			} else if (gameParameters.getAi1Type() == AiType.RANDOM_AI) {
-				ai = new RandomChoiceAI(Constants.P2, gameParameters.getNumOfColumns());
-			}
+			initializeAi();
 		} else if (gameParameters.getGameMode() == GameMode.AI_VS_AI) {
 			setAllButtonsEnabled(false);
 			playAiVsAi();
+		}
+	}
+
+	private static void initializeAi() {
+		if (gameParameters.getAi1Type() == AiType.MINIMAX_AI) {
+			ai = new MinimaxAlphaBetaPruningAI(gameParameters.getAi1MaxDepth(), Constants.P2);
+		} else if (gameParameters.getAi1Type() == AiType.RANDOM_AI) {
+			ai = new RandomChoiceAI(Constants.P2, gameParameters.getNumOfColumns());
 		}
 	}
 
@@ -677,7 +681,7 @@ public class GUI {
 	public static void playAiVsAi() {
 		AI ai1;
 		if (gameParameters.getAi1Type() == AiType.MINIMAX_AI) {
-			ai1 = new MinimaxAI(gameParameters.getAi1MaxDepth(), Constants.P1);
+			ai1 = new MinimaxAlphaBetaPruningAI(gameParameters.getAi1MaxDepth(), Constants.P1);
 		} else {
 			ai1 = new RandomChoiceAI(Constants.P1, gameParameters.getNumOfColumns());
 		}
