@@ -11,6 +11,7 @@ import com.chriskormaris.connect4.api.enumeration.GameMode;
 import com.chriskormaris.connect4.api.util.Constants;
 import com.chriskormaris.connect4.gui.enumeration.Color;
 import com.chriskormaris.connect4.gui.enumeration.GuiStyle;
+import com.chriskormaris.connect4.gui.settings.SettingsWindow;
 import com.chriskormaris.connect4.gui.util.GameParameters;
 import com.chriskormaris.connect4.gui.util.GuiConstants;
 import com.chriskormaris.connect4.gui.util.ResourceLoader;
