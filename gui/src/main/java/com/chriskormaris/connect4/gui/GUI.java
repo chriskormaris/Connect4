@@ -337,12 +337,7 @@ public class GUI extends JFrame {
 		});
 
 		insertCheckerItem.addActionListener(e -> {
-			InsertCheckerWindow insertCheckerWindow = new InsertCheckerWindow(
-					this,
-					board,
-					gameParameters,
-					this
-			);
+			InsertCheckerWindow insertCheckerWindow = new InsertCheckerWindow(this);
 			insertCheckerWindow.setVisible(true);
 		});
 
