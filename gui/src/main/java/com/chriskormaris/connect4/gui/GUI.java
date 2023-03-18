@@ -103,29 +103,29 @@ public class GUI extends JFrame {
 			setAllButtonsEnabled(true);
 		}
 
-		this.dispose();
+		super.dispose();
 		centerWindow(DEFAULT_CONNECT_4_WIDTH, DEFAULT_CONNECT_4_HEIGHT);
 
 		Component compMainWindowContents = createContentComponents();
-		this.getContentPane().add(compMainWindowContents, BorderLayout.CENTER);
+		super.getContentPane().add(compMainWindowContents, BorderLayout.CENTER);
 
-		this.addWindowListener(new WindowAdapter() {
+		super.addWindowListener(new WindowAdapter() {
 			public void windowClosing(WindowEvent e) {
 				System.exit(0);
 			}
 		});
 
-		this.setFocusable(true);
+		super.setFocusable(true);
 
 		// show window
-		this.pack();
+		super.pack();
 		// Makes the board visible before adding menus.
-		// this.setVisible(true);
+		// super.setVisible(true);
 
 		// Add the turn label.
 		tools = new JToolBar();
 		tools.setFloatable(false);
-		this.add(tools, BorderLayout.PAGE_END);
+		super.add(tools, BorderLayout.PAGE_END);
 		turnMessage = new JLabel("Turn: " + board.getTurn());
 		tools.add(turnMessage);
 
@@ -149,7 +149,7 @@ public class GUI extends JFrame {
 		pauseButton.addActionListener(e -> {
 			if (!pause) {
 				setAllButtonsEnabled(false);
-				this.removeKeyListener(gameKeyListener);
+				super.removeKeyListener(gameKeyListener);
 				pause = true;
 				undoButton.setEnabled(false);
 				if (gameParameters.getGuiStyle() == GuiStyle.NIMBUS_STYLE) undoButton.setVisible(false);
@@ -172,7 +172,7 @@ public class GUI extends JFrame {
 			if (pause) {
 				setAllButtonsEnabled(true);
 
-				this.addKeyListener(gameKeyListener);
+				super.addKeyListener(gameKeyListener);
 
 				pause = false;
 				if (undoBoards.isEmpty()) {
@@ -199,7 +199,7 @@ public class GUI extends JFrame {
 		resetButton.addActionListener(e -> {
 			if (!pause) {
 				setAllButtonsEnabled(false);
-				this.removeKeyListener(gameKeyListener);
+				super.removeKeyListener(gameKeyListener);
 				pause = false;
 				undoButton.setEnabled(false);
 				if (gameParameters.getGuiStyle() == GuiStyle.NIMBUS_STYLE) undoButton.setVisible(false);
@@ -240,26 +240,26 @@ public class GUI extends JFrame {
 		gameParameters = new GameParameters(newGameParameters);
 
 		if (gameParameters.getCheckersInARow() == CONNECT_4_CHECKERS_IN_A_ROW) {
-			this.setTitle(CONNECT_4_TITLE);
+			super.setTitle(CONNECT_4_TITLE);
 		} else if (gameParameters.getCheckersInARow() == CONNECT_5_CHECKERS_IN_A_ROW) {
-			this.setTitle(CONNECT_5_TITLE);
+			super.setTitle(CONNECT_5_TITLE);
 		}
 
 		restoreDefaultValues();
 
-		this.getContentPane().removeAll();
+		super.getContentPane().removeAll();
 
 		Component compMainWindowContents = createContentComponents();
-		this.getContentPane().add(compMainWindowContents, BorderLayout.CENTER);
+		super.getContentPane().add(compMainWindowContents, BorderLayout.CENTER);
 
-		this.add(tools, BorderLayout.PAGE_END);
+		super.add(tools, BorderLayout.PAGE_END);
 
 		configureGuiStyle();
 
-		this.getContentPane().revalidate();
-		this.getContentPane().repaint();
-		paint(getGraphics());
-		repaint();
+		super.getContentPane().revalidate();
+		super.getContentPane().repaint();
+		super.paint(getGraphics());
+		super.repaint();
 
 		System.out.println("Turn: " + board.getTurn());
 		System.out.println(board);
@@ -383,11 +383,11 @@ public class GUI extends JFrame {
 		menuBar.add(fileMenu);
 		menuBar.add(helpMenu);
 
-		this.setJMenuBar(menuBar);
+		super.setJMenuBar(menuBar);
 		// Make the board visible after adding the menus.
-		this.setVisible(true);
-		this.addKeyListener(gameKeyListener);
-		this.addKeyListener(undoRedoKeyListener);
+		super.setVisible(true);
+		super.addKeyListener(gameKeyListener);
+		super.addKeyListener(undoRedoKeyListener);
 	}
 
 	public void saveGame() {
@@ -453,19 +453,21 @@ public class GUI extends JFrame {
 
 
 	public void exportToGif() {
-		String gifName = JOptionPane.showInputDialog("Please type the exported \".gif\" file name:",
-				"simulation.gif");
+		String gifName = JOptionPane.showInputDialog(
+				"Please type the exported \".gif\" file name:",
+				"simulation.gif"
+		);
 
-		BufferedImage bi = new BufferedImage(
-				this.getSize().width,
-				this.getSize().height,
+		BufferedImage bufferedImage = new BufferedImage(
+				super.getSize().width,
+				super.getSize().height,
 				BufferedImage.TYPE_INT_ARGB
 		);
-		Graphics g = bi.createGraphics();
-		this.paint(g);
-		g.dispose();
+		Graphics graphics = bufferedImage.createGraphics();
+		super.paint(graphics);
+		graphics.dispose();
 		try {
-			ImageIO.write(bi, "gif", new File(gifName));
+			ImageIO.write(bufferedImage, "gif", new File(gifName));
 			System.out.println("Exported .gif file!");
 		} catch (Exception ex) {
 			System.err.println("Error exporting .gif file!");
@@ -482,11 +484,11 @@ public class GUI extends JFrame {
 		if (gameParameters.getCheckersInARow() == CONNECT_4_CHECKERS_IN_A_ROW) {
 			layeredGameBoard.setBorder(BorderFactory.createTitledBorder(CONNECT_4_TITLE));
 			imageBoard = new ImageIcon(ResourceLoader.load(CONNECT_4_BOARD_IMG_PATH));
-			this.setSize(new Dimension(DEFAULT_CONNECT_4_WIDTH, DEFAULT_CONNECT_4_HEIGHT));
+			super.setSize(new Dimension(DEFAULT_CONNECT_4_WIDTH, DEFAULT_CONNECT_4_HEIGHT));
 		} else if (gameParameters.getCheckersInARow() == CONNECT_5_CHECKERS_IN_A_ROW) {
 			layeredGameBoard.setBorder(BorderFactory.createTitledBorder(CONNECT_5_TITLE));
 			imageBoard = new ImageIcon(ResourceLoader.load(CONNECT_5_BOARD_IMG_PATH));
-			this.setSize(new Dimension(DEFAULT_CONNECT_5_WIDTH, DEFAULT_CONNECT_5_HEIGHT));
+			super.setSize(new Dimension(DEFAULT_CONNECT_5_WIDTH, DEFAULT_CONNECT_5_HEIGHT));
 		}
 
 		JLabel imageBoardLabel = new JLabel(imageBoard);
@@ -513,7 +515,7 @@ public class GUI extends JFrame {
 					updateLayeredBoard();
 
 					turnMessage.setText("Turn: " + board.getTurn());
-					this.paint(this.getGraphics());
+					super.paint(super.getGraphics());
 				} catch (ArrayIndexOutOfBoundsException ex) {
 					System.err.println("No move has been made yet!");
 					System.err.flush();
@@ -533,7 +535,7 @@ public class GUI extends JFrame {
 					updateLayeredBoard();
 
 					turnMessage.setText("Turn: " + board.getTurn());
-					this.paint(this.getGraphics());
+					super.paint(super.getGraphics());
 				} catch (NullPointerException | ArrayIndexOutOfBoundsException ex) {
 					System.err.println("No move has been made yet!");
 					System.err.flush();
@@ -570,7 +572,7 @@ public class GUI extends JFrame {
 					updateLayeredBoard();
 
 					turnMessage.setText("Turn: " + board.getTurn());
-					this.paint(this.getGraphics());
+					super.paint(super.getGraphics());
 
 					boolean isGameOver = board.checkForGameOver();
 					if (isGameOver) {
@@ -595,7 +597,7 @@ public class GUI extends JFrame {
 					updateLayeredBoard();
 
 					turnMessage.setText("Turn: " + board.getTurn());
-					this.paint(this.getGraphics());
+					super.paint(super.getGraphics());
 
 					boolean isGameOver = board.checkForGameOver();
 					if (isGameOver) {
@@ -745,9 +747,9 @@ public class GUI extends JFrame {
 	// It centers the window on screen.
 	public void centerWindow(int width, int height) {
 		Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize();
-		int x = (int) (dimension.getWidth() - this.getWidth() - width) / 2;
-		int y = (int) (dimension.getHeight() - this.getHeight() - height) / 2;
-		this.setLocation(x, y);
+		int x = (int) (dimension.getWidth() - super.getWidth() - width) / 2;
+		int y = (int) (dimension.getHeight() - super.getHeight() - height) / 2;
+		super.setLocation(x, y);
 	}
 
 	// It finds which player plays next and makes a move on the board.
@@ -788,7 +790,7 @@ public class GUI extends JFrame {
 		try {
 			if (gameParameters.getGameMode() == GameMode.AI_VS_AI) {
 				Thread.sleep(Constants.AI_MOVE_MILLISECONDS);
-				this.paint(this.getGraphics());
+				super.paint(super.getGraphics());
 			}
 		} catch (Exception ex) {
 			ex.printStackTrace();
@@ -858,7 +860,7 @@ public class GUI extends JFrame {
 								aiMove(ai);
 							}
 						}
-						this.requestFocusInWindow();
+						super.requestFocusInWindow();
 					});
 				}
 			}
@@ -901,7 +903,7 @@ public class GUI extends JFrame {
 		panelMain.add(panelBoardNumbers, BorderLayout.NORTH);
 		panelMain.add(layeredGameBoard, BorderLayout.CENTER);
 
-		this.setResizable(false);
+		super.setResizable(false);
 		return panelMain;
 	}
 
