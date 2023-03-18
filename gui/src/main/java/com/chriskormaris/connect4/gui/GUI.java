@@ -978,15 +978,15 @@ public class GUI extends JFrame {
 		// Here, you can change the game parameters, before running the application.
 		// You can also change them later, from the Settings window.
 		/*
-		gui.gameParameters = new GameParameters();
-		gui.gameParameters.setGuiStyle(GuiStyle.SYSTEM_STYLE);
-		gui.gameParameters.setGameMode(GameMode.HUMAN_VS_AI);
- 		gui.gameParameters.setGameMode(GameMode.HUMAN_VS_HUMAN);
-		gui.gameParameters.setGameMode(GameMode.AI_VS_AI);
-		gui.gameParameters.setAi1MaxDepth(4);
-		gui.gameParameters.setAi1MaxDepth(4);
-		gui.gameParameters.setPlayer1Color(Color.RED);
-		gui.gameParameters.setPlayer2Color(Color.YELLOW);
+		gui.newGameParameters = new GameParameters();
+		gui.newGameParameters.setGuiStyle(GuiStyle.SYSTEM_STYLE);
+		gui.newGameParameters.setGameMode(GameMode.HUMAN_VS_AI);
+ 		gui.newGameParameters.setGameMode(GameMode.HUMAN_VS_HUMAN);
+		gui.newGameParameters.setGameMode(GameMode.AI_VS_AI);
+		gui.newGameParameters.setAi1MaxDepth(4);
+		gui.newGameParameters.setAi1MaxDepth(4);
+		gui.newGameParameters.setPlayer1Color(Color.RED);
+		gui.newGameParameters.setPlayer2Color(Color.YELLOW);
 		*/
 
 		gui.startNewGame();
