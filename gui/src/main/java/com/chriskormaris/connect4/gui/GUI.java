@@ -2,7 +2,6 @@ package com.chriskormaris.connect4.gui;
 
 
 import com.chriskormaris.connect4.api.ai.AI;
-import com.chriskormaris.connect4.api.ai.MinimaxAI;
 import com.chriskormaris.connect4.api.ai.MinimaxAlphaBetaPruningAI;
 import com.chriskormaris.connect4.api.ai.RandomChoiceAI;
 import com.chriskormaris.connect4.api.board.Board;
@@ -13,9 +12,8 @@ import com.chriskormaris.connect4.api.util.Constants;
 import com.chriskormaris.connect4.gui.enumeration.Color;
 import com.chriskormaris.connect4.gui.enumeration.GuiStyle;
 import com.chriskormaris.connect4.gui.util.GameParameters;
+import com.chriskormaris.connect4.gui.util.GuiConstants;
 import com.chriskormaris.connect4.gui.util.ResourceLoader;
-import lombok.AccessLevel;
-import lombok.RequiredArgsConstructor;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -45,66 +43,55 @@ import static com.chriskormaris.connect4.gui.util.GuiConstants.DEFAULT_CONNECT_4
 import static com.chriskormaris.connect4.gui.util.GuiConstants.DEFAULT_CONNECT_4_WIDTH;
 import static com.chriskormaris.connect4.gui.util.GuiConstants.DEFAULT_CONNECT_5_HEIGHT;
 import static com.chriskormaris.connect4.gui.util.GuiConstants.DEFAULT_CONNECT_5_WIDTH;
-import static com.chriskormaris.connect4.gui.util.GuiConstants.VERSION;
 
 
-@RequiredArgsConstructor(access = AccessLevel.PRIVATE)
-public class GUI {
+public class GUI extends JFrame {
 
-	public static GameParameters gameParameters;
-	public static GameParameters newGameParameters;
-
-	private static int NUM_OF_ROWS;
-	private static int NUM_OF_COLUMNS;
-	private static int CHECKERS_IN_A_ROW;
+	GameParameters gameParameters;
+	GameParameters newGameParameters;
 
 
-	public static Board board;
+	Board board;
 
-	private static JFrame frameMainWindow;
 
-	public static JPanel panelMain;
+	JPanel panelMain;
 
-	private static JLayeredPane layeredGameBoard;
+	JLayeredPane layeredGameBoard;
 
-	private static JButton[] buttons;
+	JButton[] buttons;
 
-	public static JLabel turnMessage;
+	JLabel turnMessage;
 
-	private static AI ai;
+	AI ai;
 
 	// Player 1 symbol: X. Plays first.
 	// Player 2 symbol: O.
 
 	// These Stack objects are used for the "Undo" and "Redo" functionalities.
-	private static Stack<Board> undoBoards;
-	private static Stack<Board> redoBoards;
+	Stack<Board> undoBoards;
+	Stack<Board> redoBoards;
 
-	private static JMenuItem undoItem;
-	private static JMenuItem redoItem;
+	JMenuItem undoItem;
+	JMenuItem redoItem;
 
-	private static JButton undoButton;
-	private static JButton redoButton;
-	private static boolean pause;
+	JToolBar tools;
+	JButton undoButton;
+	JButton redoButton;
+	boolean pause;
 
-	// To be called when the game starts for the first time
-	// or a new game starts.
-	public static void createNewGame() {
-		if (gameParameters == null) {
-			gameParameters = new GameParameters();
-		}
-		if (newGameParameters == null) {
-			newGameParameters = new GameParameters(gameParameters);
-		} else {
-			gameParameters = new GameParameters(newGameParameters);
-		}
+	public GUI() {
+		super(CONNECT_4_TITLE);
 
-		NUM_OF_ROWS = gameParameters.getNumOfRows();
-		NUM_OF_COLUMNS = gameParameters.getNumOfColumns();
-		CHECKERS_IN_A_ROW = gameParameters.getCheckersInARow();
+		newGameParameters = new GameParameters();
+		gameParameters = new GameParameters(newGameParameters);
 
-		buttons = new JButton[NUM_OF_COLUMNS];
-		for (int i = 0; i < NUM_OF_COLUMNS; i++) {
+		board = new Board();
+
+		undoBoards = new Stack<>();
+		redoBoards = new Stack<>();
+
+		buttons = new JButton[board.getNumOfColumns()];
+		for (int i = 0; i < board.getNumOfColumns(); i++) {
 			buttons[i] = new JButton(String.valueOf(i + 1));
 			buttons[i].setFocusable(false);
 		}
@@ -115,48 +102,29 @@ public class GUI {
 			setAllButtonsEnabled(true);
 		}
 
-		board = new Board(gameParameters.getNumOfRows(), gameParameters.getNumOfColumns(), gameParameters.getCheckersInARow());
+		this.dispose();
+		centerWindow(DEFAULT_CONNECT_4_WIDTH, DEFAULT_CONNECT_4_HEIGHT);
 
-		if (undoBoards == null) {
-			undoBoards = new Stack<>();
-		}
-		if (redoBoards == null) {
-			redoBoards = new Stack<>();
-		}
-
-		undoBoards.clear();
-		redoBoards.clear();
-
-		if (frameMainWindow != null) frameMainWindow.dispose();
-		if (gameParameters.getCheckersInARow() == CONNECT_4_CHECKERS_IN_A_ROW) {
-			frameMainWindow = new JFrame("Minimax Connect-4");
-			// make the main window appear on the center
-			centerWindow(frameMainWindow, DEFAULT_CONNECT_4_WIDTH, DEFAULT_CONNECT_4_HEIGHT);
-		} else if (gameParameters.getCheckersInARow() == CONNECT_5_CHECKERS_IN_A_ROW) {
-			frameMainWindow = new JFrame("Minimax Connect-5");
-			// make the main window appear on the center
-			centerWindow(frameMainWindow, DEFAULT_CONNECT_5_WIDTH, DEFAULT_CONNECT_5_HEIGHT);
-		}
 		Component compMainWindowContents = createContentComponents();
-		frameMainWindow.getContentPane().add(compMainWindowContents, BorderLayout.CENTER);
+		this.getContentPane().add(compMainWindowContents, BorderLayout.CENTER);
 
-		frameMainWindow.addWindowListener(new WindowAdapter() {
+		this.addWindowListener(new WindowAdapter() {
 			public void windowClosing(WindowEvent e) {
 				System.exit(0);
 			}
 		});
 
-		frameMainWindow.setFocusable(true);
+		this.setFocusable(true);
 
 		// show window
-		frameMainWindow.pack();
+		this.pack();
 		// Makes the board visible before adding menus.
-		// frameMainWindow.setVisible(true);
+		// this.setVisible(true);
 
 		// Add the turn label.
-		JToolBar tools = new JToolBar();
+		tools = new JToolBar();
 		tools.setFloatable(false);
-		frameMainWindow.add(tools, BorderLayout.PAGE_END);
+		this.add(tools, BorderLayout.PAGE_END);
 		turnMessage = new JLabel("Turn: " + board.getTurn());
 		tools.add(turnMessage);
 
@@ -180,7 +148,7 @@ public class GUI {
 		pauseButton.addActionListener(e -> {
 			if (!pause) {
 				setAllButtonsEnabled(false);
-				frameMainWindow.removeKeyListener(gameKeyListener);
+				this.removeKeyListener(gameKeyListener);
 				pause = true;
 				undoButton.setEnabled(false);
 				if (gameParameters.getGuiStyle() == GuiStyle.NIMBUS_STYLE) undoButton.setVisible(false);
@@ -203,7 +171,7 @@ public class GUI {
 			if (pause) {
 				setAllButtonsEnabled(true);
 
-				frameMainWindow.addKeyListener(gameKeyListener);
+				this.addKeyListener(gameKeyListener);
 
 				pause = false;
 				if (undoBoards.isEmpty()) {
@@ -230,7 +198,7 @@ public class GUI {
 		resetButton.addActionListener(e -> {
 			if (!pause) {
 				setAllButtonsEnabled(false);
-				frameMainWindow.removeKeyListener(gameKeyListener);
+				this.removeKeyListener(gameKeyListener);
 				pause = false;
 				undoButton.setEnabled(false);
 				if (gameParameters.getGuiStyle() == GuiStyle.NIMBUS_STYLE) undoButton.setVisible(false);
@@ -238,7 +206,7 @@ public class GUI {
 				redoButton.setEnabled(false);
 				if (gameParameters.getGuiStyle() == GuiStyle.NIMBUS_STYLE) redoButton.setVisible(false);
 				startButton.setEnabled(false);
-				createNewGame();
+				startNewGame();
 			}
 		});
 
@@ -263,6 +231,34 @@ public class GUI {
 		tools.add(resetButton);
 
 		addMenus();
+	}
+
+	// To be called when the game starts for the first time
+	// or a new game starts.
+	public void startNewGame() {
+		gameParameters = new GameParameters(newGameParameters);
+
+		if (gameParameters.getCheckersInARow() == CONNECT_4_CHECKERS_IN_A_ROW) {
+			this.setTitle(CONNECT_4_TITLE);
+		} else if (gameParameters.getCheckersInARow() == CONNECT_5_CHECKERS_IN_A_ROW) {
+			this.setTitle(CONNECT_5_TITLE);
+		}
+
+		restoreDefaultValues();
+
+		this.getContentPane().removeAll();
+
+		Component compMainWindowContents = createContentComponents();
+		this.getContentPane().add(compMainWindowContents, BorderLayout.CENTER);
+
+		this.add(tools, BorderLayout.PAGE_END);
+
+		configureGuiStyle();
+
+		this.getContentPane().revalidate();
+		this.getContentPane().repaint();
+		paint(getGraphics());
+		repaint();
 
 		System.out.println("Turn: " + board.getTurn());
 		System.out.println(board);
@@ -275,7 +271,24 @@ public class GUI {
 		}
 	}
 
-	private static void initializeAi() {
+	private void restoreDefaultValues() {
+		board = new Board(
+				gameParameters.getNumOfRows(),
+				gameParameters.getNumOfColumns(),
+				gameParameters.getCheckersInARow()
+		);
+
+		buttons = new JButton[board.getNumOfColumns()];
+		for (int i = 0; i < board.getNumOfColumns(); i++) {
+			buttons[i] = new JButton(String.valueOf(i + 1));
+			buttons[i].setFocusable(false);
+		}
+
+		undoBoards.clear();
+		redoBoards.clear();
+	}
+
+	private void initializeAi() {
 		if (gameParameters.getAi1Type() == AiType.MINIMAX_AI) {
 			ai = new MinimaxAlphaBetaPruningAI(gameParameters.getAi1MaxDepth(), Constants.P2);
 		} else if (gameParameters.getAi1Type() == AiType.RANDOM_AI) {
@@ -284,7 +297,7 @@ public class GUI {
 	}
 
 	// Add the menu bars and items to the window.
-	private static void addMenus() {
+	private void addMenus() {
 		// Add the menu bar.
 		// Menu bars and items
 		JMenuBar menuBar = new JMenuBar();
@@ -307,7 +320,7 @@ public class GUI {
 		undoItem.setEnabled(false);
 		redoItem.setEnabled(false);
 
-		newGameItem.addActionListener(e -> createNewGame());
+		newGameItem.addActionListener(e -> startNewGame());
 
 		undoItem.addActionListener(e -> undo());
 
@@ -324,23 +337,28 @@ public class GUI {
 		});
 
 		insertCheckerItem.addActionListener(e -> {
-			InsertCheckerWindow insertCheckerWindow = new InsertCheckerWindow(frameMainWindow, board, gameParameters);
+			InsertCheckerWindow insertCheckerWindow = new InsertCheckerWindow(
+					this,
+					board,
+					gameParameters,
+					this
+			);
 			insertCheckerWindow.setVisible(true);
 		});
 
 		exportToGifItem.addActionListener(e -> exportToGif());
 
 		settingsItem.addActionListener(e -> {
-			SettingsWindow settings = new SettingsWindow(panelMain, gameParameters, newGameParameters);
+			SettingsWindow settings = new SettingsWindow(this, gameParameters, newGameParameters);
 			settings.setVisible(true);
 		});
 
 		exitItem.addActionListener(e -> System.exit(0));
 
 		howToPlayItem.addActionListener(e -> JOptionPane.showMessageDialog(
-				panelMain,
-				"Click on the buttons or press 1-" + NUM_OF_COLUMNS + " on your keyboard to insert a new checker."
-						+ "\nTo win you must place " + CHECKERS_IN_A_ROW + " checkers in an row, horizontally, vertically or diagonally.",
+				this,
+				"Click on the buttons or press 1-" + board.getNumOfColumns() + " on your keyboard to insert a new checker."
+						+ "\nTo win you must place " + board.getCheckersInARow() + " checkers in an row, horizontally, vertically or diagonally.",
 				"How to Play",
 				JOptionPane.INFORMATION_MESSAGE
 		));
@@ -348,9 +366,9 @@ public class GUI {
 		aboutItem.addActionListener(e -> {
 			JLabel label = new JLabel(
 					"<html><center>© Created by: Christos Kormaris<br>"
-							+ "Version " + VERSION + "</center></html>"
+							+ "Version " + GuiConstants.VERSION + "</center></html>"
 			);
-			JOptionPane.showMessageDialog(panelMain, label, "About", JOptionPane.INFORMATION_MESSAGE);
+			JOptionPane.showMessageDialog(this, label, "About", JOptionPane.INFORMATION_MESSAGE);
 		});
 
 		fileMenu.add(newGameItem);
@@ -369,19 +387,19 @@ public class GUI {
 		menuBar.add(fileMenu);
 		menuBar.add(helpMenu);
 
-		frameMainWindow.setJMenuBar(menuBar);
+		this.setJMenuBar(menuBar);
 		// Make the board visible after adding the menus.
-		frameMainWindow.setVisible(true);
-		frameMainWindow.addKeyListener(gameKeyListener);
-		frameMainWindow.addKeyListener(undoRedoKeyListener);
+		this.setVisible(true);
+		this.addKeyListener(gameKeyListener);
+		this.addKeyListener(undoRedoKeyListener);
 	}
 
-	public static void saveGame() {
+	public void saveGame() {
 		BufferedWriter bw = null;
 		try {
 			bw = new BufferedWriter(new FileWriter("grid.txt"));
-			for (int i = 0; i < NUM_OF_ROWS; i++) {
-				for (int j = 0; j < NUM_OF_COLUMNS; j++) {
+			for (int i = 0; i < board.getNumOfRows(); i++) {
+				for (int j = 0; j < board.getNumOfColumns(); j++) {
 					if (board.getGameBoard()[i][j] != Constants.EMPTY) {
 						bw.write(i + String.valueOf(j) + ":" + board.getGameBoard()[i][j] + "\n");
 					}
@@ -402,13 +420,13 @@ public class GUI {
 	}
 
 
-	public static void restoreSavedGame() {
+	public void restoreSavedGame() {
 		BufferedReader br = null;
 		try {
 			br = new BufferedReader(new FileReader("grid.txt"));
 			String line;
 
-			createNewGame();
+			startNewGame();
 
 			while ((line = br.readLine()) != null) {
 				int row = Integer.parseInt(String.valueOf(line.charAt(0)));
@@ -438,17 +456,17 @@ public class GUI {
 	}
 
 
-	public static void exportToGif() {
+	public void exportToGif() {
 		String gifName = JOptionPane.showInputDialog("Please type the exported \".gif\" file name:",
 				"simulation.gif");
 
 		BufferedImage bi = new BufferedImage(
-				frameMainWindow.getSize().width,
-				frameMainWindow.getSize().height,
+				this.getSize().width,
+				this.getSize().height,
 				BufferedImage.TYPE_INT_ARGB
 		);
 		Graphics g = bi.createGraphics();
-		frameMainWindow.paint(g);
+		this.paint(g);
 		g.dispose();
 		try {
 			ImageIO.write(bi, "gif", new File(gifName));
@@ -461,18 +479,18 @@ public class GUI {
 
 
 	// This is the main Connect-4 board.
-	public static JLayeredPane initializeLayeredBoard() {
+	public JLayeredPane initializeLayeredBoard() {
 		layeredGameBoard = new JLayeredPane();
 
 		ImageIcon imageBoard = null;
 		if (gameParameters.getCheckersInARow() == CONNECT_4_CHECKERS_IN_A_ROW) {
-			layeredGameBoard.setPreferredSize(new Dimension(DEFAULT_CONNECT_4_WIDTH, DEFAULT_CONNECT_4_HEIGHT));
 			layeredGameBoard.setBorder(BorderFactory.createTitledBorder(CONNECT_4_TITLE));
 			imageBoard = new ImageIcon(ResourceLoader.load(CONNECT_4_BOARD_IMG_PATH));
+			this.setSize(new Dimension(DEFAULT_CONNECT_4_WIDTH, DEFAULT_CONNECT_4_HEIGHT));
 		} else if (gameParameters.getCheckersInARow() == CONNECT_5_CHECKERS_IN_A_ROW) {
-			layeredGameBoard.setPreferredSize(new Dimension(DEFAULT_CONNECT_5_WIDTH, DEFAULT_CONNECT_5_HEIGHT));
 			layeredGameBoard.setBorder(BorderFactory.createTitledBorder(CONNECT_5_TITLE));
 			imageBoard = new ImageIcon(ResourceLoader.load(CONNECT_5_BOARD_IMG_PATH));
+			this.setSize(new Dimension(DEFAULT_CONNECT_5_WIDTH, DEFAULT_CONNECT_5_HEIGHT));
 		}
 
 		JLabel imageBoardLabel = new JLabel(imageBoard);
@@ -483,7 +501,7 @@ public class GUI {
 		return layeredGameBoard;
 	}
 
-	private static void undo() {
+	private void undo() {
 		if (!undoBoards.isEmpty()) {
 			// This is the "undo" implementation for "Human Vs Human" mode.
 			if (gameParameters.getGameMode() == GameMode.HUMAN_VS_HUMAN) {
@@ -499,7 +517,7 @@ public class GUI {
 					updateLayeredBoard();
 
 					turnMessage.setText("Turn: " + board.getTurn());
-					frameMainWindow.paint(frameMainWindow.getGraphics());
+					this.paint(this.getGraphics());
 				} catch (ArrayIndexOutOfBoundsException ex) {
 					System.err.println("No move has been made yet!");
 					System.err.flush();
@@ -519,7 +537,7 @@ public class GUI {
 					updateLayeredBoard();
 
 					turnMessage.setText("Turn: " + board.getTurn());
-					frameMainWindow.paint(frameMainWindow.getGraphics());
+					this.paint(this.getGraphics());
 				} catch (NullPointerException | ArrayIndexOutOfBoundsException ex) {
 					System.err.println("No move has been made yet!");
 					System.err.flush();
@@ -540,7 +558,7 @@ public class GUI {
 		}
 	}
 
-	private static void redo() {
+	private void redo() {
 		if (!redoBoards.isEmpty()) {
 			// This is the "redo" implementation for "Human Vs Human" mode.
 			if (gameParameters.getGameMode() == GameMode.HUMAN_VS_HUMAN) {
@@ -556,7 +574,7 @@ public class GUI {
 					updateLayeredBoard();
 
 					turnMessage.setText("Turn: " + board.getTurn());
-					frameMainWindow.paint(frameMainWindow.getGraphics());
+					this.paint(this.getGraphics());
 
 					boolean isGameOver = board.checkForGameOver();
 					if (isGameOver) {
@@ -581,7 +599,7 @@ public class GUI {
 					updateLayeredBoard();
 
 					turnMessage.setText("Turn: " + board.getTurn());
-					frameMainWindow.paint(frameMainWindow.getGraphics());
+					this.paint(this.getGraphics());
 
 					boolean isGameOver = board.checkForGameOver();
 					if (isGameOver) {
@@ -608,7 +626,7 @@ public class GUI {
 		}
 	}
 
-	private static void updateLayeredBoard() {
+	private void updateLayeredBoard() {
 		Component[] components = layeredGameBoard.getComponentsInLayer(0);
 		for (int i = 0; i < components.length; i++) {
 			// Leave out the last component, which is the board ImageIcon.
@@ -616,8 +634,8 @@ public class GUI {
 				layeredGameBoard.remove(components[i]);
 			}
 		}
-		for (int row = 0; row < NUM_OF_ROWS; row++) {
-			for (int col = 0; col < NUM_OF_COLUMNS; col++) {
+		for (int row = 0; row < board.getNumOfRows(); row++) {
+			for (int col = 0; col < board.getNumOfColumns(); col++) {
 				if (board.getGameBoard()[row][col] == Constants.P1) {
 					placeChecker(gameParameters.getPlayer1Color(), row, col);
 				} else if (board.getGameBoard()[row][col] == Constants.P2) {
@@ -627,7 +645,7 @@ public class GUI {
 		}
 	}
 
-	private static final KeyListener gameKeyListener = new KeyListener() {
+	private final KeyListener gameKeyListener = new KeyListener() {
 		@Override
 		public void keyTyped(KeyEvent e) {
 		}
@@ -659,7 +677,7 @@ public class GUI {
 		}
 	};
 
-	private static final KeyListener undoRedoKeyListener = new KeyListener() {
+	private final KeyListener undoRedoKeyListener = new KeyListener() {
 		@Override
 		public void keyTyped(KeyEvent e) {
 		}
@@ -678,7 +696,7 @@ public class GUI {
 		}
 	};
 
-	public static void playAiVsAi() {
+	public void playAiVsAi() {
 		AI ai1;
 		if (gameParameters.getAi1Type() == AiType.MINIMAX_AI) {
 			ai1 = new MinimaxAlphaBetaPruningAI(gameParameters.getAi1MaxDepth(), Constants.P1);
@@ -702,7 +720,7 @@ public class GUI {
 		}
 	}
 
-	private static void configureGuiStyle() {
+	private void configureGuiStyle() {
 		try {
 			if (gameParameters.getGuiStyle() == GuiStyle.SYSTEM_STYLE) {
 				// Option 1
@@ -719,25 +737,25 @@ public class GUI {
 					}
 				}
 			}
-		} catch (Exception e1) {
+		} catch (Exception ex1) {
 			try {
 				UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-			} catch (Exception e2) {
-				e2.printStackTrace();
+			} catch (Exception ex2) {
+				ex2.printStackTrace();
 			}
 		}
 	}
 
 	// It centers the window on screen.
-	public static void centerWindow(Window frame, int width, int height) {
+	public void centerWindow(int width, int height) {
 		Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize();
-		int x = (int) (dimension.getWidth() - frame.getWidth() - width) / 2;
-		int y = (int) (dimension.getHeight() - frame.getHeight() - height) / 2;
-		frame.setLocation(x, y);
+		int x = (int) (dimension.getWidth() - this.getWidth() - width) / 2;
+		int y = (int) (dimension.getHeight() - this.getHeight() - height) / 2;
+		this.setLocation(x, y);
 	}
 
 	// It finds which player plays next and makes a move on the board.
-	public static void makeMove(int col) {
+	public void makeMove(int col) {
 		board.setOverflow(false);
 
 		int previousRow = board.getLastMove().getRow();
@@ -761,7 +779,7 @@ public class GUI {
 	}
 
 	// It places a checker on the board.
-	public static void placeChecker(Color color, int row, int col) {
+	public void placeChecker(Color color, int row, int col) {
 		String colorString = String.valueOf(color).charAt(0) + String.valueOf(color).toLowerCase().substring(1);
 		int xOffset = 75 * col;
 		int yOffset = 75 * row;
@@ -774,7 +792,7 @@ public class GUI {
 		try {
 			if (gameParameters.getGameMode() == GameMode.AI_VS_AI) {
 				Thread.sleep(Constants.AI_MOVE_MILLISECONDS);
-				frameMainWindow.paint(frameMainWindow.getGraphics());
+				this.paint(this.getGraphics());
 			}
 		} catch (Exception ex) {
 			ex.printStackTrace();
@@ -782,7 +800,7 @@ public class GUI {
 	}
 
 	// Gets called after makeMove(int, col) is called.
-	public static boolean game() {
+	public boolean game() {
 		turnMessage.setText("Turn: " + board.getTurn());
 
 		int row = board.getLastMove().getRow();
@@ -820,13 +838,13 @@ public class GUI {
 	}
 
 	// Gets called after the human player makes a move. It makes a Minimax or Random AI move.
-	public static void aiMove(AI ai) {
+	public void aiMove(AI ai) {
 		Move aiMove = ai.getNextMove(board);
 		board.makeMove(aiMove.getColumn(), ai.getAiPlayer());
 		game();
 	}
 
-	public static void setAllButtonsEnabled(boolean b) {
+	public void setAllButtonsEnabled(boolean b) {
 		if (b) {
 
 			for (int i = 0; i < buttons.length; i++) {
@@ -844,7 +862,7 @@ public class GUI {
 								aiMove(ai);
 							}
 						}
-						frameMainWindow.requestFocusInWindow();
+						this.requestFocusInWindow();
 					});
 				}
 			}
@@ -865,10 +883,10 @@ public class GUI {
 	 * This function creates the main window components.
 	 * It calls the "actionListener" function, when a click on a button is made.
 	 */
-	public static Component createContentComponents() {
+	public Component createContentComponents() {
 		// Create a panel to set up the board buttons.
 		JPanel panelBoardNumbers = new JPanel();
-		panelBoardNumbers.setLayout(new GridLayout(1, NUM_OF_COLUMNS, NUM_OF_ROWS, 4));
+		panelBoardNumbers.setLayout(new GridLayout(1, board.getNumOfColumns(), board.getNumOfRows(), 4));
 		panelBoardNumbers.setBorder(BorderFactory.createEmptyBorder(2, 22, 2, 22));
 
 		for (JButton button : buttons) {
@@ -887,35 +905,35 @@ public class GUI {
 		panelMain.add(panelBoardNumbers, BorderLayout.NORTH);
 		panelMain.add(layeredGameBoard, BorderLayout.CENTER);
 
-		frameMainWindow.setResizable(false);
+		this.setResizable(false);
 		return panelMain;
 	}
 
 	// It gets called only of the game is over.
 	// We can check if the game is over by calling the method "checkGameOver()"
 	// of the class "Board".
-	public static void gameOver() {
+	public void gameOver() {
 		board.setGameOver(true);
 
 		int choice = 0;
 		if (board.getWinner() == Constants.P1) {
 			if (gameParameters.getGameMode() == GameMode.HUMAN_VS_AI)
 				choice = JOptionPane.showConfirmDialog(
-						frameMainWindow,
+						this,
 						"You win! Start a new game?",
 						"Game Over",
 						JOptionPane.YES_NO_OPTION
 				);
 			else if (gameParameters.getGameMode() == GameMode.HUMAN_VS_HUMAN)
 				choice = JOptionPane.showConfirmDialog(
-						frameMainWindow,
+						this,
 						"Player 1 wins! Start a new game?",
 						"Game Over",
 						JOptionPane.YES_NO_OPTION
 				);
 			else if (gameParameters.getGameMode() == GameMode.AI_VS_AI)
 				choice = JOptionPane.showConfirmDialog(
-						frameMainWindow,
+						this,
 						"Minimax AI 1 wins! Start a new game?",
 						"Game Over",
 						JOptionPane.YES_NO_OPTION
@@ -923,28 +941,28 @@ public class GUI {
 		} else if (board.getWinner() == Constants.P2) {
 			if (gameParameters.getGameMode() == GameMode.HUMAN_VS_AI)
 				choice = JOptionPane.showConfirmDialog(
-						frameMainWindow,
+						this,
 						"Computer AI wins! Start a new game?",
 						"Game Over",
 						JOptionPane.YES_NO_OPTION
 				);
 			else if (gameParameters.getGameMode() == GameMode.HUMAN_VS_HUMAN)
 				choice = JOptionPane.showConfirmDialog(
-						frameMainWindow,
+						this,
 						"Player 2 wins! Start a new game?",
 						"Game Over",
 						JOptionPane.YES_NO_OPTION
 				);
 			else if (gameParameters.getGameMode() == GameMode.AI_VS_AI)
 				choice = JOptionPane.showConfirmDialog(
-						frameMainWindow,
+						this,
 						"Minimax AI 2 wins! Start a new game?",
 						"Game Over",
 						JOptionPane.YES_NO_OPTION
 				);
 		} else if (board.checkForDraw()) {
 			choice = JOptionPane.showConfirmDialog(
-					frameMainWindow,
+					this,
 					"It's a draw! Start a new game?",
 					"Game Over",
 					JOptionPane.YES_NO_OPTION
@@ -955,26 +973,28 @@ public class GUI {
 		setAllButtonsEnabled(false);
 
 		if (choice == JOptionPane.YES_OPTION) {
-			createNewGame();
+			startNewGame();
 		}
 	}
 
 	public static void main(String[] args) {
+		GUI gui = new GUI();
+
 		// Here, you can change the game parameters, before running the application.
 		// You can also change them later, from the Settings window.
 		/*
-		gameParameters = new GameParameters();
-		gameParameters.setGuiStyle(GuiStyle.SYSTEM_STYLE);
-		gameParameters.setGameMode(GameMode.HUMAN_VS_AI);
- 		gameParameters.setGameMode(GameMode.HUMAN_VS_HUMAN);
-		gameParameters.setGameMode(GameMode.AI_VS_AI);
-		gameParameters.setAi1MaxDepth(4);
-		gameParameters.setAi1MaxDepth(4);
-		gameParameters.setPlayer1Color(Color.RED);
-		gameParameters.setPlayer2Color(Color.YELLOW);
+		gui.gameParameters = new GameParameters();
+		gui.gameParameters.setGuiStyle(GuiStyle.SYSTEM_STYLE);
+		gui.gameParameters.setGameMode(GameMode.HUMAN_VS_AI);
+ 		gui.gameParameters.setGameMode(GameMode.HUMAN_VS_HUMAN);
+		gui.gameParameters.setGameMode(GameMode.AI_VS_AI);
+		gui.gameParameters.setAi1MaxDepth(4);
+		gui.gameParameters.setAi1MaxDepth(4);
+		gui.gameParameters.setPlayer1Color(Color.RED);
+		gui.gameParameters.setPlayer2Color(Color.YELLOW);
 		*/
 
-		createNewGame();
+		gui.startNewGame();
 	}
 
 }

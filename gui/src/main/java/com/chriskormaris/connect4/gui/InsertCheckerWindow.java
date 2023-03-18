@@ -27,13 +27,15 @@ public class InsertCheckerWindow extends JFrame {
 	private final Component parentComponent;
 	private final Board board;
 	private final GameParameters gameParameters;
+	private final GUI gui;
 
-	public InsertCheckerWindow(Component parentComponent, Board board, GameParameters gameParameters) {
+	public InsertCheckerWindow(Component parentComponent, Board board, GameParameters gameParameters, GUI gui) {
 		super("Insert Checker");
 
 		this.parentComponent = parentComponent;
 		this.board = board;
 		this.gameParameters = gameParameters;
+		this.gui = gui;
 
 		int numOfRows = gameParameters.getNumOfRows();
 		int numOfColumns = gameParameters.getNumOfColumns();
@@ -119,21 +121,21 @@ public class InsertCheckerWindow extends JFrame {
 
 					if (board.getGameBoard()[row][column] == Constants.EMPTY) {
 						board.setTurn(board.getTurn() + 1);
-						GUI.turnMessage.setText("Turn: " + board.getTurn());
+						gui.turnMessage.setText("Turn: " + board.getTurn());
 					}
 
 					board.getGameBoard()[row][column] = player;
 					if (player == Constants.P1) {
-						GUI.placeChecker(gameParameters.getPlayer1Color(), row, column);
+						gui.placeChecker(gameParameters.getPlayer1Color(), row, column);
 					} else if (player == Constants.P2) {
-						GUI.placeChecker(gameParameters.getPlayer2Color(), row, column);
+						gui.placeChecker(gameParameters.getPlayer2Color(), row, column);
 					}
 					System.out.println("Checker inserted!");
 
 					System.out.println(board);
 
 					if (board.checkForGameOver()) {
-						GUI.gameOver();
+						gui.gameOver();
 					}
 
 					JOptionPane.showMessageDialog(
