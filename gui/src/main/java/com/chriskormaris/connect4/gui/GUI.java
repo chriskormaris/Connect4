@@ -77,11 +77,62 @@ public class GUI extends JFrame {
 
 	JToolBar tools;
 	JButton undoButton;
+	JButton pauseButton;
+	JButton startButton;
 	JButton redoButton;
+	JButton resetButton;
+
 	boolean pause;
 
+	private final KeyListener gameKeyListener = new KeyListener() {
+		@Override
+		public void keyTyped(KeyEvent e) {
+		}
+
+		@Override
+		public void keyPressed(KeyEvent e) {
+			if (!board.checkForGameOver()) {
+				String keyText = KeyEvent.getKeyText(e.getKeyCode());
+
+				for (int i = 0; i < gameParameters.getNumOfColumns(); i++) {
+					if (keyText.equals(String.valueOf(i + 1))) {
+						buttonClick(i);
+						break;
+					}
+				}
+			}
+		}
+
+		@Override
+		public void keyReleased(KeyEvent e) {
+		}
+	};
+
+	private final KeyListener undoRedoKeyListener = new KeyListener() {
+		@Override
+		public void keyTyped(KeyEvent e) {
+		}
+
+		@Override
+		public void keyPressed(KeyEvent e) {
+			if ((e.getModifiersEx() & KeyEvent.CTRL_DOWN_MASK) != 0 && e.getKeyCode() == KeyEvent.VK_Z) {
+				undo();
+			} else if ((e.getModifiersEx() & KeyEvent.CTRL_DOWN_MASK) != 0 && e.getKeyCode() == KeyEvent.VK_Y) {
+				redo();
+			}
+		}
+
+		@Override
+		public void keyReleased(KeyEvent e) {
+		}
+	};
+
 	public GUI() {
-		super(CONNECT_4_TITLE);
+		this(GuiConstants.CONNECT_4_TITLE);
+	}
+
+	public GUI(String title) {
+		super(title);
 
 		newGameParameters = new GameParameters();
 		gameParameters = new GameParameters(newGameParameters);
@@ -98,10 +149,6 @@ public class GUI extends JFrame {
 		}
 
 		configureGuiStyle();
-
-		if (gameParameters.getGameMode() != GameMode.AI_VS_AI) {
-			setAllButtonsEnabled(true);
-		}
 
 		super.dispose();
 		centerWindow(DEFAULT_CONNECT_4_WIDTH, DEFAULT_CONNECT_4_HEIGHT);
@@ -122,23 +169,19 @@ public class GUI extends JFrame {
 		// Makes the board visible before adding menus.
 		// super.setVisible(true);
 
-		// Add the turn label.
-		tools = new JToolBar();
-		tools.setFloatable(false);
-		super.add(tools, BorderLayout.PAGE_END);
-		turnMessage = new JLabel("Turn: " + board.getTurn());
-		tools.add(turnMessage);
-
 		undoButton = new JButton("<<");
-		JButton pauseButton = new JButton("Pause");
-		JButton startButton = new JButton("Resume");
+		pauseButton = new JButton("Pause");
+		startButton = new JButton("Resume");
 		redoButton = new JButton(">>");
-		JButton resetButton = new JButton("Reset");
+		resetButton = new JButton("Reset");
 
 		undoButton.setEnabled(false);
-		if (gameParameters.getGuiStyle() == GuiStyle.NIMBUS_STYLE) undoButton.setVisible(false);
 		redoButton.setEnabled(false);
-		if (gameParameters.getGuiStyle() == GuiStyle.NIMBUS_STYLE) redoButton.setVisible(false);
+
+		if (gameParameters.getGuiStyle() == GuiStyle.SYSTEM_STYLE) {
+			undoButton.setVisible(false);
+			redoButton.setVisible(false);
+		}
 
 		undoButton.addActionListener(e -> {
 			if (!pause) {
@@ -152,13 +195,18 @@ public class GUI extends JFrame {
 				super.removeKeyListener(gameKeyListener);
 				pause = true;
 				undoButton.setEnabled(false);
-				if (gameParameters.getGuiStyle() == GuiStyle.NIMBUS_STYLE) undoButton.setVisible(false);
 				pauseButton.setEnabled(false);
-				redoButton.setEnabled(false);
-				if (gameParameters.getGuiStyle() == GuiStyle.NIMBUS_STYLE) redoButton.setVisible(false);
 				startButton.setEnabled(true);
+				redoButton.setEnabled(false);
 				resetButton.setEnabled(false);
-				if (gameParameters.getGuiStyle() == GuiStyle.NIMBUS_STYLE) resetButton.setVisible(false);
+
+				if (gameParameters.getGuiStyle() == GuiStyle.SYSTEM_STYLE) {
+					undoButton.setVisible(false);
+					pauseButton.setVisible(false);
+					startButton.setVisible(true);
+					redoButton.setVisible(false);
+					resetButton.setVisible(false);
+				}
 			}
 		});
 
@@ -177,22 +225,34 @@ public class GUI extends JFrame {
 				pause = false;
 				if (undoBoards.isEmpty()) {
 					undoButton.setEnabled(false);
-					if (gameParameters.getGuiStyle() == GuiStyle.NIMBUS_STYLE) undoButton.setVisible(false);
+					if (gameParameters.getGuiStyle() == GuiStyle.SYSTEM_STYLE) {
+						undoButton.setVisible(false);
+					}
 				} else {
 					undoButton.setEnabled(true);
-					if (gameParameters.getGuiStyle() == GuiStyle.NIMBUS_STYLE) undoButton.setVisible(true);
+					if (gameParameters.getGuiStyle() == GuiStyle.SYSTEM_STYLE) {
+						undoButton.setVisible(true);
+					}
 				}
-				pauseButton.setEnabled(true);
 				if (redoBoards.isEmpty()) {
 					redoButton.setEnabled(false);
-					if (gameParameters.getGuiStyle() == GuiStyle.NIMBUS_STYLE) redoButton.setVisible(false);
+					if (gameParameters.getGuiStyle() == GuiStyle.SYSTEM_STYLE) {
+						redoButton.setVisible(false);
+					}
 				} else {
 					redoButton.setEnabled(true);
-					if (gameParameters.getGuiStyle() == GuiStyle.NIMBUS_STYLE) redoButton.setVisible(true);
+					if (gameParameters.getGuiStyle() == GuiStyle.SYSTEM_STYLE) {
+						redoButton.setVisible(true);
+					}
 				}
+				pauseButton.setEnabled(true);
 				startButton.setEnabled(false);
 				resetButton.setEnabled(true);
-				if (gameParameters.getGuiStyle() == GuiStyle.NIMBUS_STYLE) resetButton.setVisible(true);
+				if (gameParameters.getGuiStyle() == GuiStyle.SYSTEM_STYLE) {
+					pauseButton.setVisible(true);
+					startButton.setVisible(false);
+					resetButton.setVisible(true);
+				}
 			}
 		});
 
@@ -202,10 +262,14 @@ public class GUI extends JFrame {
 				super.removeKeyListener(gameKeyListener);
 				pause = false;
 				undoButton.setEnabled(false);
-				if (gameParameters.getGuiStyle() == GuiStyle.NIMBUS_STYLE) undoButton.setVisible(false);
+				if (gameParameters.getGuiStyle() == GuiStyle.SYSTEM_STYLE) {
+					undoButton.setVisible(false);
+				}
 				pauseButton.setEnabled(true);
 				redoButton.setEnabled(false);
-				if (gameParameters.getGuiStyle() == GuiStyle.NIMBUS_STYLE) redoButton.setVisible(false);
+				if (gameParameters.getGuiStyle() == GuiStyle.SYSTEM_STYLE) {
+					redoButton.setVisible(false);
+				}
 				startButton.setEnabled(false);
 				startNewGame();
 			}
@@ -219,7 +283,14 @@ public class GUI extends JFrame {
 
 		startButton.setEnabled(false);
 
+		tools = new JToolBar();
+		tools.setFloatable(false);
+		super.add(tools, BorderLayout.PAGE_END);
+
+		turnMessage = new JLabel("Turn: " + board.getTurn());
+
 		tools.setLayout(new FlowLayout(FlowLayout.CENTER));
+		tools.add(turnMessage);
 		tools.add(new JLabel(" "));
 		tools.add(undoButton);
 		tools.add(new JLabel(" "));
@@ -234,8 +305,7 @@ public class GUI extends JFrame {
 		addMenus();
 	}
 
-	// To be called when the game starts for the first time
-	// or a new game starts.
+	// To be called when the game starts for the first time, or a new game starts.
 	public void startNewGame() {
 		gameParameters = new GameParameters(newGameParameters);
 
@@ -245,20 +315,21 @@ public class GUI extends JFrame {
 			super.setTitle(CONNECT_5_TITLE);
 		}
 
-		restoreDefaultValues();
-
 		super.getContentPane().removeAll();
+
+		configureGuiStyle();
+
+		restoreDefaultValues();
 
 		Component compMainWindowContents = createContentComponents();
 		super.getContentPane().add(compMainWindowContents, BorderLayout.CENTER);
 
 		super.add(tools, BorderLayout.PAGE_END);
-
-		configureGuiStyle();
+		turnMessage.setText("Turn: " + board.getTurn());
 
 		super.getContentPane().revalidate();
 		super.getContentPane().repaint();
-		super.paint(getGraphics());
+		super.revalidate();
 		super.repaint();
 
 		System.out.println("Turn: " + board.getTurn());
@@ -285,8 +356,24 @@ public class GUI extends JFrame {
 			buttons[i].setFocusable(false);
 		}
 
+		if (gameParameters.getGameMode() != GameMode.AI_VS_AI) {
+			setAllButtonsEnabled(true);
+		}
+
 		undoBoards.clear();
 		redoBoards.clear();
+
+		pauseButton.setVisible(true);
+		if (gameParameters.getGuiStyle() != GuiStyle.SYSTEM_STYLE) {
+			undoButton.setVisible(true);
+			startButton.setVisible(true);
+			redoButton.setVisible(true);
+		} else {
+			undoButton.setVisible(false);
+			startButton.setVisible(false);
+			redoButton.setVisible(false);
+		}
+		resetButton.setVisible(true);
 	}
 
 	private void initializeAi() {
@@ -386,6 +473,7 @@ public class GUI extends JFrame {
 		super.setJMenuBar(menuBar);
 		// Make the board visible after adding the menus.
 		super.setVisible(true);
+
 		super.addKeyListener(gameKeyListener);
 		super.addKeyListener(undoRedoKeyListener);
 	}
@@ -545,11 +633,16 @@ public class GUI extends JFrame {
 			if (undoBoards.isEmpty()) {
 				undoItem.setEnabled(false);
 				undoButton.setEnabled(false);
+				if (gameParameters.getGuiStyle() == GuiStyle.SYSTEM_STYLE) {
+					undoButton.setVisible(false);
+				}
 			}
 
 			redoItem.setEnabled(true);
 			redoButton.setEnabled(true);
-			if (gameParameters.getGuiStyle() == GuiStyle.NIMBUS_STYLE) redoButton.setVisible(true);
+			if (gameParameters.getGuiStyle() == GuiStyle.SYSTEM_STYLE) {
+				redoButton.setVisible(true);
+			}
 
 			System.out.println("Turn: " + board.getTurn());
 			System.out.println(board);
@@ -612,12 +705,16 @@ public class GUI extends JFrame {
 			if (redoBoards.isEmpty()) {
 				redoItem.setEnabled(false);
 				redoButton.setEnabled(false);
-				if (gameParameters.getGuiStyle() == GuiStyle.NIMBUS_STYLE) redoButton.setVisible(false);
+				if (gameParameters.getGuiStyle() == GuiStyle.SYSTEM_STYLE) {
+					redoButton.setVisible(false);
+				}
 			}
 
 			undoItem.setEnabled(true);
 			undoButton.setEnabled(true);
-			if (gameParameters.getGuiStyle() == GuiStyle.NIMBUS_STYLE) undoButton.setVisible(true);
+			if (gameParameters.getGuiStyle() == GuiStyle.SYSTEM_STYLE) {
+				undoButton.setVisible(true);
+			}
 
 			System.out.println("Turn: " + board.getTurn());
 			System.out.println(board);
@@ -632,67 +729,16 @@ public class GUI extends JFrame {
 				layeredGameBoard.remove(components[i]);
 			}
 		}
-		for (int row = 0; row < board.getNumOfRows(); row++) {
-			for (int col = 0; col < board.getNumOfColumns(); col++) {
-				if (board.getGameBoard()[row][col] == Constants.P1) {
-					placeChecker(gameParameters.getPlayer1Color(), row, col);
-				} else if (board.getGameBoard()[row][col] == Constants.P2) {
-					placeChecker(gameParameters.getPlayer2Color(), row, col);
+		for (int i = 0; i < board.getNumOfRows(); i++) {
+			for (int j = 0; j < board.getNumOfColumns(); j++) {
+				if (board.getGameBoard()[i][j] == Constants.P1) {
+					placeChecker(gameParameters.getPlayer1Color(), i, j);
+				} else if (board.getGameBoard()[i][j] == Constants.P2) {
+					placeChecker(gameParameters.getPlayer2Color(), i, j);
 				}
 			}
 		}
 	}
-
-	private final KeyListener gameKeyListener = new KeyListener() {
-		@Override
-		public void keyTyped(KeyEvent e) {
-		}
-
-		@Override
-		public void keyPressed(KeyEvent e) {
-			if (!board.checkForGameOver()) {
-				String keyText = KeyEvent.getKeyText(e.getKeyCode());
-
-				for (int i = 0; i < gameParameters.getNumOfColumns(); i++) {
-					if (keyText.equals(String.valueOf(i + 1))) {
-						undoBoards.push(new Board(board));
-						makeMove(i);
-
-						if (!board.isOverflow()) {
-							boolean isGameOver = game();
-							if (gameParameters.getGameMode() == GameMode.HUMAN_VS_AI && !isGameOver) {
-								aiMove(ai);
-							}
-						}
-						break;
-					}
-				}
-			}
-		}
-
-		@Override
-		public void keyReleased(KeyEvent e) {
-		}
-	};
-
-	private final KeyListener undoRedoKeyListener = new KeyListener() {
-		@Override
-		public void keyTyped(KeyEvent e) {
-		}
-
-		@Override
-		public void keyPressed(KeyEvent e) {
-			if ((e.getModifiersEx() & KeyEvent.CTRL_DOWN_MASK) != 0 && e.getKeyCode() == KeyEvent.VK_Z) {
-				undo();
-			} else if ((e.getModifiersEx() & KeyEvent.CTRL_DOWN_MASK) != 0 && e.getKeyCode() == KeyEvent.VK_Y) {
-				redo();
-			}
-		}
-
-		@Override
-		public void keyReleased(KeyEvent e) {
-		}
-	};
 
 	public void playAiVsAi() {
 		AI ai1;
@@ -720,12 +766,12 @@ public class GUI extends JFrame {
 
 	private void configureGuiStyle() {
 		try {
-			if (gameParameters.getGuiStyle() == GuiStyle.SYSTEM_STYLE) {
+			if (gameParameters.getGuiStyle() == GuiStyle.CROSS_PLATFORM_STYLE) {
 				// Option 1
-				UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-			} else if (gameParameters.getGuiStyle() == GuiStyle.CROSS_PLATFORM_STYLE) {
-				// Option 2
 				UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName());
+			} else if (gameParameters.getGuiStyle() == GuiStyle.SYSTEM_STYLE) {
+				// Option 2
+				UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 			} else if (gameParameters.getGuiStyle() == GuiStyle.NIMBUS_STYLE) {
 				// Option 3
 				for (LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
@@ -823,13 +869,17 @@ public class GUI extends JFrame {
 			gameOver();
 		} else {
 			undoButton.setEnabled(true);
-			if (gameParameters.getGuiStyle() == GuiStyle.NIMBUS_STYLE) undoButton.setVisible(true);
+			if (gameParameters.getGuiStyle() == GuiStyle.SYSTEM_STYLE) {
+				undoButton.setVisible(true);
+			}
 			undoItem.setEnabled(true);
 		}
 
 		redoBoards.clear();
 		redoButton.setEnabled(false);
-		if (gameParameters.getGuiStyle() == GuiStyle.NIMBUS_STYLE) redoButton.setVisible(false);
+		if (gameParameters.getGuiStyle() == GuiStyle.SYSTEM_STYLE) {
+			redoButton.setVisible(false);
+		}
 		redoItem.setEnabled(false);
 
 		return isGameOver;
@@ -842,38 +892,38 @@ public class GUI extends JFrame {
 		game();
 	}
 
-	public void setAllButtonsEnabled(boolean b) {
-		if (b) {
-
+	public void setAllButtonsEnabled(boolean enabled) {
+		if (enabled) {
 			for (int i = 0; i < buttons.length; i++) {
 				JButton button = buttons[i];
 				int column = i;
 
 				if (button.getActionListeners().length == 0) {
-					button.addActionListener(e -> {
-						undoBoards.push(new Board(board));
-						makeMove(column);
-
-						if (!board.isOverflow()) {
-							boolean isGameOver = game();
-							if (gameParameters.getGameMode() == GameMode.HUMAN_VS_AI && !isGameOver) {
-								aiMove(ai);
-							}
-						}
-						super.requestFocusInWindow();
-					});
+					button.addActionListener(e -> buttonClick(column));
 				}
 			}
-
 		} else {
-
 			for (JButton button : buttons) {
 				for (ActionListener actionListener : button.getActionListeners()) {
 					button.removeActionListener(actionListener);
 				}
 			}
-
 		}
+	}
+
+	private void buttonClick(int column) {
+		System.out.println("adding to column: " + column);
+
+		undoBoards.push(new Board(board));
+		makeMove(column);
+
+		if (!board.isOverflow()) {
+			boolean isGameOver = game();
+			if (gameParameters.getGameMode() == GameMode.HUMAN_VS_AI && !isGameOver) {
+				aiMove(ai);
+			}
+		}
+		super.requestFocusInWindow();
 	}
 
 	/**

@@ -33,25 +33,23 @@ public class Board {
 
 	// Default constructor
 	public Board() {
-		this(
-				Constants.CONNECT_4_NUM_OF_ROWS,
-				Constants.CONNECT_4_NUM_OF_COLUMNS,
-				Constants.CONNECT_4_CHECKERS_IN_A_ROW
-		);
+		this(Constants.CONNECT_4_NUM_OF_ROWS, Constants.CONNECT_4_NUM_OF_COLUMNS, Constants.CONNECT_4_CHECKERS_IN_A_ROW);
 	}
 
 	public Board(int numOfRows, int numOfColumns, int checkersInARow) {
 		this.numOfRows = numOfRows;
 		this.numOfColumns = numOfColumns;
+
 		this.checkersInARow = checkersInARow;
 
 		this.lastMove = new Move();
 		this.lastPlayer = Constants.P2;
 		this.winner = Constants.EMPTY;
-		this.gameBoard = new int[numOfRows][numOfColumns];
 		this.overflow = false;
 		this.gameOver = false;
-		this.turn = 0;
+		this.turn = 1;
+
+		this.gameBoard = new int[numOfRows][numOfColumns];
 		for (int i = 0; i < numOfRows; i++) {
 			for (int j = 0; j < numOfColumns; j++) {
 				gameBoard[i][j] = Constants.EMPTY;

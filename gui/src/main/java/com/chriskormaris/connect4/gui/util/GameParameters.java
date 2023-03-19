@@ -32,7 +32,7 @@ public class GameParameters {
 
 	/* Default values */
 	public GameParameters() {
-		guiStyle = GuiStyle.SYSTEM_STYLE;
+		guiStyle = GuiStyle.CROSS_PLATFORM_STYLE;
 		gameMode = GameMode.HUMAN_VS_AI;
 
 		ai1Type = AiType.MINIMAX_AI;
