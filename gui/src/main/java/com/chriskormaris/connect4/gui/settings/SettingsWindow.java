@@ -205,35 +205,45 @@ public class SettingsWindow extends JFrame {
 		add(player2ColorDropDown);
 		add(checkersInARowDropDown);
 
-		guiStyleLabel.setBounds(25, 25, 200, 25);
-		gameModeLabel.setBounds(25, 60, 200, 25);
-		ai1TypeLabel.setBounds(25, 95, 200, 25);
-		ai2TypeLabel.setBounds(25, 130, 200, 25);
-		ai1MaxDepthLabel.setBounds(25, 165, 200, 25);
-		ai2MaxDepthLabel.setBounds(25, 200, 200, 25);
-		player1ColorLabel.setBounds(25, 235, 200, 25);
-		player2ColorLabel.setBounds(25, 270, 200, 25);
-		checkersInARowLabel.setBounds(25, 305, 200, 25);
+		int x = 25;
+		int y = 25;
+		int distance = 35;
+		int w = 200;
+		int h = 25;
+		guiStyleLabel.setBounds(x, y, w, h);
+		gameModeLabel.setBounds(x, y = y + distance, w, h);
+		ai1TypeLabel.setBounds(x, y = y + distance, w, h);
+		ai2TypeLabel.setBounds(x, y = y + distance, w, h);
+		ai1MaxDepthLabel.setBounds(x, y = y + distance, w, h);
+		ai2MaxDepthLabel.setBounds(x, y = y + distance, w, h);
+		player1ColorLabel.setBounds(x, y = y + distance, w, h);
+		player2ColorLabel.setBounds(x, y = y + distance, w, h);
+		checkersInARowLabel.setBounds(x, y + distance, w, h);
 
-		guiStyleDropDown.setBounds(195, 25, 200, 25);
-		gameModeDropDown.setBounds(195, 60, 200, 25);
-		ai1TypeDropDown.setBounds(195, 95, 200, 25);
-		ai2TypeDropDown.setBounds(195, 130, 200, 25);
-		ai1MaxDepthDropDown.setBounds(195, 165, 200, 25);
-		ai2MaxDepthDropDown.setBounds(195, 200, 200, 25);
-		player1ColorDropDown.setBounds(195, 235, 200, 25);
-		player2ColorDropDown.setBounds(195, 270, 200, 25);
-		checkersInARowDropDown.setBounds(195, 305, 200, 25);
+		x = 195;
+		y = 25;
+		guiStyleDropDown.setBounds(x, y, w, h);
+		gameModeDropDown.setBounds(x, y = y + distance, w, h);
+		ai1TypeDropDown.setBounds(x, y = y + distance, w, h);
+		ai2TypeDropDown.setBounds(x, y = y + distance, w, h);
+		ai1MaxDepthDropDown.setBounds(x, y = y + distance, w, h);
+		ai2MaxDepthDropDown.setBounds(x, y = y + distance, w, h);
+		player1ColorDropDown.setBounds(x, y = y + distance, w, h);
+		player2ColorDropDown.setBounds(x, y = y + distance, w, h);
+		checkersInARowDropDown.setBounds(x, y + distance, w, h);
 
 		apply = new JButton("Apply");
 		cancel = new JButton("Cancel");
 		add(apply);
 		add(cancel);
 
-		int distance = 10;
-		apply.setBounds((width / 2) - 110 - (distance / 2), 355, 100, 30);
+		distance = 10;
+		y = 355;
+		w = 100;
+		h = 30;
+		apply.setBounds((width / 2) - 110 - (distance / 2), y, w, h);
 		apply.addActionListener(handler);
-		cancel.setBounds((width / 2) - 10 + (distance / 2), 355, 100, 30);
+		cancel.setBounds((width / 2) - 10 + (distance / 2), y, w, h);
 		cancel.addActionListener(handler);
 	}
 
