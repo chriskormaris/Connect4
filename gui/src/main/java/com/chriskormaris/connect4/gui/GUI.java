@@ -148,6 +148,8 @@ public class GUI extends JFrame {
 			buttons[i].setFocusable(false);
 		}
 
+		configureGuiStyle();
+
 		centerWindow(DEFAULT_CONNECT_4_WIDTH, DEFAULT_CONNECT_4_HEIGHT);
 
 		Component compMainWindowContents = createContentComponents();
@@ -161,15 +163,13 @@ public class GUI extends JFrame {
 
 		super.setFocusable(true);
 
-		// show window
-		super.pack();
-
 		super.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-
-		configureGuiStyle();
 
 		// Makes the board visible before adding menus.
 		// super.setVisible(true);
+
+		// show window
+		super.pack();
 
 		undoButton = new JButton("<<");
 		pauseButton = new JButton("Pause");
@@ -794,9 +794,9 @@ public class GUI extends JFrame {
 
 	// It centers the window on screen.
 	public void centerWindow(int width, int height) {
-		Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize();
-		int x = (int) (dimension.getWidth() - super.getWidth() - width) / 2;
-		int y = (int) (dimension.getHeight() - super.getHeight() - height) / 2;
+		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+		int x = (int) (screenSize.getWidth() - super.getWidth() - width) / 2;
+		int y = (int) (screenSize.getHeight() - super.getHeight() - height) / 2;
 		super.setLocation(x, y);
 	}
 
