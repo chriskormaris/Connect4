@@ -148,9 +148,6 @@ public class GUI extends JFrame {
 			buttons[i].setFocusable(false);
 		}
 
-		configureGuiStyle();
-
-		super.dispose();
 		centerWindow(DEFAULT_CONNECT_4_WIDTH, DEFAULT_CONNECT_4_HEIGHT);
 
 		Component compMainWindowContents = createContentComponents();
@@ -166,6 +163,11 @@ public class GUI extends JFrame {
 
 		// show window
 		super.pack();
+
+		super.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+
+		configureGuiStyle();
+
 		// Makes the board visible before adding menus.
 		// super.setVisible(true);
 
@@ -912,8 +914,6 @@ public class GUI extends JFrame {
 	}
 
 	private void buttonClick(int column) {
-		System.out.println("adding to column: " + column);
-
 		undoBoards.push(new Board(board));
 		makeMove(column);
 

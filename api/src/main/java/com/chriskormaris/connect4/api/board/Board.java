@@ -306,14 +306,18 @@ public class Board {
 		return times;
 	}
 
-	@Override
-	public String toString() {
+	private String getGameBoardAsString() {
 		StringBuilder output = new StringBuilder();
 		output.append("|");
 		for (int j = 1; j <= numOfColumns; j++) {
 			output.append(" ").append(j).append(" |");
 		}
-		output.append("\n\n");
+		output.append("\n");
+		if (numOfColumns == Constants.CONNECT_4_NUM_OF_COLUMNS) {
+			output.append(" ---------------------------\n");
+		} else if (numOfColumns == Constants.CONNECT_5_NUM_OF_COLUMNS) {
+			output.append(" -------------------------------\n");
+		}
 		for (int i = 0; i < numOfRows; i++) {
 			for (int j = 0; j < numOfColumns; j++) {
 				char symbol = '-';
@@ -329,11 +333,19 @@ public class Board {
 			}
 		}
 		if (numOfColumns == Constants.CONNECT_4_NUM_OF_COLUMNS) {
-			output.append("\n*****************************\n");
+			output.append(" ---------------------------\n");
+			output.append("*****************************\n");
 		} else if (numOfColumns == Constants.CONNECT_5_NUM_OF_COLUMNS) {
-			output.append("\n*********************************\n");
+			output.append(" -------------------------------\n");
+			output.append("*********************************\n");
 		}
 		return output.toString();
+	}
+
+
+	@Override
+	public String toString() {
+		return getGameBoardAsString();
 	}
 
 }

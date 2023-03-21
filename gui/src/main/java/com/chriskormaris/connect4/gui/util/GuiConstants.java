@@ -10,7 +10,7 @@ public class GuiConstants {
 	public static final String CONNECT_4_TITLE = "Connect-4";
 	public static final String CONNECT_5_TITLE = "Connect-5";
 
-	public static final String VERSION = "2.8.3";
+	public static final String VERSION = "2.8.4";
 
 	public static final String CONNECT_4_BOARD_IMG_PATH = "images/Board4.png";
 	public static final String CONNECT_5_BOARD_IMG_PATH = "images/Board5.png";
