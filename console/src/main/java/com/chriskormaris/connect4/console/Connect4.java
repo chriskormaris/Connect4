@@ -2,7 +2,7 @@ package com.chriskormaris.connect4.console;
 
 
 import com.chriskormaris.connect4.api.ai.AI;
-import com.chriskormaris.connect4.api.ai.MinimaxAlphaBetaPruningAI;
+import com.chriskormaris.connect4.api.ai.MinimaxAI;
 import com.chriskormaris.connect4.api.board.Board;
 import com.chriskormaris.connect4.api.board.Move;
 import com.chriskormaris.connect4.api.util.Constants;
@@ -33,7 +33,7 @@ public class Connect4 {
 		// Feel free to change the values.
 		// The bigger the value of "maxDepth" is, the more difficult the game is.
 		int XColumnPosition;
-		AI ai = new MinimaxAlphaBetaPruningAI(5, Constants.P2);
+		AI ai = new MinimaxAI(5, Constants.P2);
 		Board connect4Board = new Board();
 
 		System.out.println("Minimax Connect-" + checkersInARow + "!\n");

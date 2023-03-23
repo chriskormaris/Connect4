@@ -2,7 +2,7 @@ package com.chriskormaris.connect4.gui;
 
 
 import com.chriskormaris.connect4.api.ai.AI;
-import com.chriskormaris.connect4.api.ai.MinimaxAlphaBetaPruningAI;
+import com.chriskormaris.connect4.api.ai.MinimaxAI;
 import com.chriskormaris.connect4.api.ai.RandomChoiceAI;
 import com.chriskormaris.connect4.api.board.Board;
 import com.chriskormaris.connect4.api.board.Move;
@@ -380,7 +380,7 @@ public class GUI extends JFrame {
 
 	private void initializeAi() {
 		if (gameParameters.getAi1Type() == AiType.MINIMAX_AI) {
-			ai = new MinimaxAlphaBetaPruningAI(gameParameters.getAi1MaxDepth(), Constants.P2);
+			ai = new MinimaxAI(gameParameters.getAi1MaxDepth(), Constants.P2);
 		} else if (gameParameters.getAi1Type() == AiType.RANDOM_AI) {
 			ai = new RandomChoiceAI(Constants.P2, gameParameters.getNumOfColumns());
 		}
@@ -591,45 +591,24 @@ public class GUI extends JFrame {
 
 	private void undo() {
 		if (!undoBoards.isEmpty()) {
-			// This is the "undo" implementation for "Human Vs Human" mode.
-			if (gameParameters.getGameMode() == GameMode.HUMAN_VS_HUMAN) {
-				try {
-					board.setGameOver(false);
+			try {
+				board.setGameOver(false);
 
-					setAllButtonsEnabled(true);
-
-					redoBoards.push(new Board(board));
-
-					board = undoBoards.pop();
-
-					updateLayeredBoard();
-
-					turnMessage.setText("Turn: " + board.getTurn());
-					super.paint(super.getGraphics());
-				} catch (ArrayIndexOutOfBoundsException ex) {
-					System.err.println("No move has been made yet!");
-					System.err.flush();
+				if (gameParameters.getGameMode() != GameMode.AI_VS_AI) {
+                    setAllButtonsEnabled(true);
 				}
-			}
 
-			// This is the "undo" implementation for "Human Vs AI" mode.
-			else if (gameParameters.getGameMode() == GameMode.HUMAN_VS_AI) {
-				try {
-					board.setGameOver(false);
-					setAllButtonsEnabled(true);
+				redoBoards.push(new Board(board));
 
-					redoBoards.push(new Board(board));
+				board = undoBoards.pop();
 
-					board = undoBoards.pop();
+				updateLayeredBoard();
 
-					updateLayeredBoard();
-
-					turnMessage.setText("Turn: " + board.getTurn());
-					super.paint(super.getGraphics());
-				} catch (NullPointerException | ArrayIndexOutOfBoundsException ex) {
-					System.err.println("No move has been made yet!");
-					System.err.flush();
-				}
+				turnMessage.setText("Turn: " + board.getTurn());
+				super.paint(super.getGraphics());
+			} catch (ArrayIndexOutOfBoundsException ex) {
+				System.err.println("No move has been made yet!");
+				System.err.flush();
 			}
 
 			if (undoBoards.isEmpty()) {
@@ -654,54 +633,29 @@ public class GUI extends JFrame {
 	private void redo() {
 		if (!redoBoards.isEmpty()) {
 			// This is the "redo" implementation for "Human Vs Human" mode.
-			if (gameParameters.getGameMode() == GameMode.HUMAN_VS_HUMAN) {
-				try {
-					board.setGameOver(false);
+			try {
+				board.setGameOver(false);
 
+				if (gameParameters.getGameMode() != GameMode.AI_VS_AI) {
 					setAllButtonsEnabled(true);
-
-					undoBoards.push(new Board(board));
-
-					board = new Board(redoBoards.pop());
-
-					updateLayeredBoard();
-
-					turnMessage.setText("Turn: " + board.getTurn());
-					super.paint(super.getGraphics());
-
-					boolean isGameOver = board.checkForGameOver();
-					if (isGameOver) {
-						gameOver();
-					}
-				} catch (ArrayIndexOutOfBoundsException ex) {
-					System.err.println("There is no move to redo!");
-					System.err.flush();
 				}
-			}
 
-			// This is the "redo" implementation for "Human Vs AI" mode.
-			else if (gameParameters.getGameMode() == GameMode.HUMAN_VS_AI) {
-				try {
-					board.setGameOver(false);
-					setAllButtonsEnabled(true);
+				undoBoards.push(new Board(board));
 
-					undoBoards.push(new Board(board));
+				board = new Board(redoBoards.pop());
 
-					board = new Board(redoBoards.pop());
+				updateLayeredBoard();
 
-					updateLayeredBoard();
+				turnMessage.setText("Turn: " + board.getTurn());
+				super.paint(super.getGraphics());
 
-					turnMessage.setText("Turn: " + board.getTurn());
-					super.paint(super.getGraphics());
-
-					boolean isGameOver = board.checkForGameOver();
-					if (isGameOver) {
-						gameOver();
-					}
-				} catch (NullPointerException | ArrayIndexOutOfBoundsException ex) {
-					System.err.println("There is no move to redo!");
-					System.err.flush();
+				boolean isGameOver = board.checkForGameOver();
+				if (isGameOver) {
+					gameOver();
 				}
+			} catch (ArrayIndexOutOfBoundsException ex) {
+				System.err.println("There is no move to redo!");
+				System.err.flush();
 			}
 
 			if (redoBoards.isEmpty()) {
@@ -745,14 +699,14 @@ public class GUI extends JFrame {
 	public void playAiVsAi() {
 		AI ai1;
 		if (gameParameters.getAi1Type() == AiType.MINIMAX_AI) {
-			ai1 = new MinimaxAlphaBetaPruningAI(gameParameters.getAi1MaxDepth(), Constants.P1);
+			ai1 = new MinimaxAI(gameParameters.getAi1MaxDepth(), Constants.P1);
 		} else {
 			ai1 = new RandomChoiceAI(Constants.P1, gameParameters.getNumOfColumns());
 		}
 
 		AI ai2;
 		if (gameParameters.getAi2Type() == AiType.MINIMAX_AI) {
-			ai2 = new MinimaxAlphaBetaPruningAI(gameParameters.getAi2MaxDepth(), Constants.P2);
+			ai2 = new MinimaxAI(gameParameters.getAi2MaxDepth(), Constants.P2);
 		} else {
 			ai2 = new RandomChoiceAI(Constants.P2, gameParameters.getNumOfColumns());
 		}
@@ -761,6 +715,16 @@ public class GUI extends JFrame {
 			aiMove(ai1);
 
 			if (!board.isGameOver()) {
+
+				try {
+					if (gameParameters.getGameMode() == GameMode.AI_VS_AI) {
+						Thread.sleep(Constants.AI_MOVE_MILLISECONDS);
+						super.paint(super.getGraphics());
+					}
+				} catch (Exception ex) {
+					ex.printStackTrace();
+				}
+
 				aiMove(ai2);
 			}
 		}
@@ -802,6 +766,8 @@ public class GUI extends JFrame {
 
 	// It finds which player plays next and makes a move on the board.
 	public void makeMove(int col) {
+		undoBoards.push(new Board(board));
+
 		board.setOverflow(false);
 
 		int previousRow = board.getLastMove().getRow();
@@ -821,7 +787,6 @@ public class GUI extends JFrame {
 
 			undoBoards.pop();
 		}
-
 	}
 
 	// It places a checker on the board.
@@ -834,15 +799,6 @@ public class GUI extends JFrame {
 		JLabel checkerLabel = new JLabel(checkerIcon);
 		checkerLabel.setBounds(27 + xOffset, 27 + yOffset, checkerIcon.getIconWidth(), checkerIcon.getIconHeight());
 		layeredGameBoard.add(checkerLabel, 0, 0);
-
-		try {
-			if (gameParameters.getGameMode() == GameMode.AI_VS_AI) {
-				Thread.sleep(Constants.AI_MOVE_MILLISECONDS);
-				super.paint(super.getGraphics());
-			}
-		} catch (Exception ex) {
-			ex.printStackTrace();
-		}
 	}
 
 	// Gets called after makeMove(int, col) is called.
@@ -890,7 +846,7 @@ public class GUI extends JFrame {
 	// Gets called after the human player makes a move. It makes a Minimax or Random AI move.
 	public void aiMove(AI ai) {
 		Move aiMove = ai.getNextMove(board);
-		board.makeMove(aiMove.getColumn(), ai.getAiPlayer());
+		makeMove(aiMove.getColumn());
 		game();
 	}
 
@@ -914,7 +870,6 @@ public class GUI extends JFrame {
 	}
 
 	private void buttonClick(int column) {
-		undoBoards.push(new Board(board));
 		makeMove(column);
 
 		if (!board.isOverflow()) {

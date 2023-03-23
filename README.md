@@ -8,7 +8,7 @@ Video for this project:
 Programming Language: `Java`
 
 The game known as `Connect-4`, `Score-4`, `4-in-a-line` or `4-in-a-row`.
-The AI uses the `Minimax` algorithm, with `alpha-beta pruning`.
+The AI uses the `Minimax` algorithm, optionally with `alpha-beta pruning`.
 A graphical interface is included.
 The user can click on the buttons or press the keys 1-7 to place a checker.
 To go back a move click on `Undo` option or press `Ctrl+Z`.
