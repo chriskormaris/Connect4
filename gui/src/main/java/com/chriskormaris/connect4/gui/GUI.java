@@ -715,7 +715,6 @@ public class GUI extends JFrame {
 			aiMove(ai1);
 
 			if (!board.isGameOver()) {
-
 				try {
 					if (gameParameters.getGameMode() == GameMode.AI_VS_AI) {
 						Thread.sleep(Constants.AI_MOVE_MILLISECONDS);
@@ -726,6 +725,17 @@ public class GUI extends JFrame {
 				}
 
 				aiMove(ai2);
+			}
+
+			if (!board.isGameOver()) {
+				try {
+					if (gameParameters.getGameMode() == GameMode.AI_VS_AI) {
+						Thread.sleep(Constants.AI_MOVE_MILLISECONDS);
+						super.paint(super.getGraphics());
+					}
+				} catch (Exception ex) {
+					ex.printStackTrace();
+				}
 			}
 		}
 	}
