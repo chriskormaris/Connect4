@@ -632,7 +632,7 @@ public class GUI extends JFrame {
 
 	private void redo() {
 		if (!redoBoards.isEmpty()) {
-			// This is the "redo" implementation for "Human Vs Human" mode.
+			// This is the "redo" implementation for "Human vs Human" mode.
 			try {
 				board.setGameOver(false);
 
