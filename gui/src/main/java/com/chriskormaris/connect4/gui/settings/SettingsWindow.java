@@ -61,9 +61,9 @@ public class SettingsWindow extends JFrame {
 		JLabel guiStyleLabel = new JLabel("GUI style");
 		JLabel gameModeLabel = new JLabel("Game mode");
 		JLabel ai1TypeLabel = new JLabel("AI 1 type");
-		JLabel ai2TypeLabel = new JLabel("AI 2 type (AiVsAi)");
+		JLabel ai2TypeLabel = new JLabel("AI 2 type (AI vs AI)");
 		JLabel ai1MaxDepthLabel = new JLabel("AI 1 depth");
-		JLabel ai2MaxDepthLabel = new JLabel("AI 2 depth (AiVsAi)");
+		JLabel ai2MaxDepthLabel = new JLabel("AI 2 depth (AI vs AI)");
 		JLabel player1ColorLabel = new JLabel("Player 1 color");
 		JLabel player2ColorLabel = new JLabel("Player 2 color");
 		JLabel checkersInARowLabel = new JLabel("Checkers in a Row");
@@ -92,9 +92,9 @@ public class SettingsWindow extends JFrame {
 		}
 
 		gameModeDropDown = new JComboBox<>();
-		gameModeDropDown.addItem("Human Vs AI");
-		gameModeDropDown.addItem("Human Vs Human");
-		gameModeDropDown.addItem("AI Vs AI");
+		gameModeDropDown.addItem("Human vs AI");
+		gameModeDropDown.addItem("Human vs Human");
+		gameModeDropDown.addItem("AI vs AI");
 
 		if (selectedMode == GameMode.HUMAN_VS_AI) {
 			gameModeDropDown.setSelectedIndex(0);
