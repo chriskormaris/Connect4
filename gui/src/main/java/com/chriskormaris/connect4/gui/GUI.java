@@ -434,7 +434,7 @@ public class GUI extends JFrame {
 		exportToGifItem.addActionListener(e -> exportToGif());
 
 		settingsItem.addActionListener(e -> {
-			SettingsWindow settings = new SettingsWindow(this, gameParameters, newGameParameters);
+			SettingsWindow settings = new SettingsWindow(this, newGameParameters);
 			settings.setVisible(true);
 		});
 

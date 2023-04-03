@@ -31,7 +31,7 @@ public class SettingsWindow extends JFrame {
 	private final Component parentComponent;
 	private final GameParameters newGameParameters;
 
-	public SettingsWindow(Component parentComponent, GameParameters gameParameters, GameParameters newGameParameters) {
+	public SettingsWindow(Component parentComponent, GameParameters newGameParameters) {
 		super("Settings");
 
 		this.parentComponent = parentComponent;
@@ -48,15 +48,15 @@ public class SettingsWindow extends JFrame {
 
 		EventHandler handler = new EventHandler();
 
-		GuiStyle selectedGuiStyle = gameParameters.getGuiStyle();
-		GameMode selectedMode = gameParameters.getGameMode();
-		AiType selectedAi1Type = gameParameters.getAi1Type();
-		AiType selectedAi2Type = gameParameters.getAi2Type();
-		int ai1MaxDepth = gameParameters.getAi1MaxDepth() - 1;
-		int ai2MaxDepth = gameParameters.getAi2MaxDepth() - 1;
-		Color selectedPlayer1Color = gameParameters.getPlayer1Color();
-		Color selectedPlayer2Color = gameParameters.getPlayer2Color();
-		int checkersInARow = gameParameters.getCheckersInARow();
+		GuiStyle selectedGuiStyle = newGameParameters.getGuiStyle();
+		GameMode selectedMode = newGameParameters.getGameMode();
+		AiType selectedAi1Type = newGameParameters.getAi1Type();
+		AiType selectedAi2Type = newGameParameters.getAi2Type();
+		int ai1MaxDepth = newGameParameters.getAi1MaxDepth() - 1;
+		int ai2MaxDepth = newGameParameters.getAi2MaxDepth() - 1;
+		Color selectedPlayer1Color = newGameParameters.getPlayer1Color();
+		Color selectedPlayer2Color = newGameParameters.getPlayer2Color();
+		int checkersInARow = newGameParameters.getCheckersInARow();
 
 		JLabel guiStyleLabel = new JLabel("GUI style");
 		JLabel gameModeLabel = new JLabel("Game mode");
