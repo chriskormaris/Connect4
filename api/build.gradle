@@ -3,6 +3,13 @@ plugins {
     id 'io.freefair.lombok' version "$lombokPluginVersion"
 }
 
+group 'com.chriskormaris.connect4'
+
+java {
+    sourceCompatibility JavaVersion.VERSION_1_8
+    targetCompatibility JavaVersion.VERSION_1_8
+}
+
 repositories {
     mavenCentral()
 }
