@@ -2,7 +2,7 @@ plugins {
     id 'java'
 }
 
-group 'com.chriskormaris.connect4'
+group groupId
 
 java {
     sourceCompatibility JavaVersion.VERSION_1_8

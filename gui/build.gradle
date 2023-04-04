@@ -3,7 +3,7 @@ plugins {
     id 'io.freefair.lombok' version "$lombokPluginVersion"
 }
 
-group 'com.chriskormaris.connect4'
+group groupId
 
 java {
     sourceCompatibility JavaVersion.VERSION_1_8
