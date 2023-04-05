@@ -1,14 +1,16 @@
-# Connect-4
-A Project made for educational purposes while studying in Athens University of Economics & Business.
-The Minimax AI algorithm was based on code from the labs of the university.
+# Connect-4 #
+
+© Created by: Christos Kormaris, Athens 2016
+
+Programming Language: `Java`
 
 Video for this project:
 - https://www.youtube.com/watch?v=SxstLdf9LkE
 
-Programming Language: `Java`
-
-The game known as `Connect-4`, `Score-4`, `4-in-a-line` or `4-in-a-row`.
-The AI uses the `Minimax` algorithm, optionally with `alpha-beta pruning`.
+This is the game known as `Connect-4`, `Score-4`, `4-in-a-line` or `4-in-a-row`.
+This project was made for educational purposes while studying in Athens University of Economics & Business.
+The AI was based on code from the labs of the university.
+It uses the `Minimax` algorithm, optionally with `alpha-beta pruning`.
 A graphical interface is included.
 The user can click on the buttons or press the keys 1-7 to place a checker.
 To go back a move click on `Undo` option or press `Ctrl+Z`.
