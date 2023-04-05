@@ -11,6 +11,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class SettingsWindow extends JFrame {
@@ -40,13 +42,11 @@ public class SettingsWindow extends JFrame {
 		int width = 450;
 		int height = 450;
 
-		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setLayout(null);
-		setSize(width, height);
-		setLocationRelativeTo(parentComponent);
-		setResizable(false);
-
-		EventHandler handler = new EventHandler();
+		super.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		super.setLayout(null);
+		super.setSize(width, height);
+		super.setLocationRelativeTo(parentComponent);
+		super.setResizable(false);
 
 		GuiStyle selectedGuiStyle = newGameParameters.getGuiStyle();
 		GameMode selectedMode = newGameParameters.getGameMode();
@@ -58,6 +58,9 @@ public class SettingsWindow extends JFrame {
 		Color selectedPlayer2Color = newGameParameters.getPlayer2Color();
 		int checkersInARow = newGameParameters.getCheckersInARow();
 
+		List<JLabel> labels = new ArrayList<>();
+		List<JComponent> components = new ArrayList<>();
+
 		JLabel guiStyleLabel = new JLabel("GUI style");
 		JLabel gameModeLabel = new JLabel("Game mode");
 		JLabel ai1TypeLabel = new JLabel("AI 1 type");
@@ -68,15 +71,15 @@ public class SettingsWindow extends JFrame {
 		JLabel player2ColorLabel = new JLabel("Player 2 color");
 		JLabel checkersInARowLabel = new JLabel("Checkers in a Row");
 
-		add(guiStyleLabel);
-		add(gameModeLabel);
-		add(ai1TypeLabel);
-		add(ai2TypeLabel);
-		add(ai1MaxDepthLabel);
-		add(ai2MaxDepthLabel);
-		add(player1ColorLabel);
-		add(player2ColorLabel);
-		add(checkersInARowLabel);
+		labels.add(guiStyleLabel);
+		labels.add(gameModeLabel);
+		labels.add(ai1TypeLabel);
+		labels.add(ai2TypeLabel);
+		labels.add(ai1MaxDepthLabel);
+		labels.add(ai2MaxDepthLabel);
+		labels.add(player1ColorLabel);
+		labels.add(player2ColorLabel);
+		labels.add(checkersInARowLabel);
 
 		guiStyleDropDown = new JComboBox<>();
 		guiStyleDropDown.addItem("Cross-platform style");
@@ -195,66 +198,60 @@ public class SettingsWindow extends JFrame {
 
 		checkersInARowDropDown.setSelectedIndex(checkersInARow - 4);
 
-		add(guiStyleDropDown);
-		add(gameModeDropDown);
-		add(ai1TypeDropDown);
-		add(ai2TypeDropDown);
-		add(ai1MaxDepthDropDown);
-		add(ai2MaxDepthDropDown);
-		add(player1ColorDropDown);
-		add(player2ColorDropDown);
-		add(checkersInARowDropDown);
+		components.add(guiStyleDropDown);
+		components.add(gameModeDropDown);
+		components.add(ai1TypeDropDown);
+		components.add(ai2TypeDropDown);
+		components.add(ai1MaxDepthDropDown);
+		components.add(ai2MaxDepthDropDown);
+		components.add(player1ColorDropDown);
+		components.add(player2ColorDropDown);
+		components.add(checkersInARowDropDown);
 
 		int x = 25;
 		int y = 25;
 		int distance = 35;
 		int w = 200;
 		int h = 25;
-		guiStyleLabel.setBounds(x, y, w, h);
-		gameModeLabel.setBounds(x, y = y + distance, w, h);
-		ai1TypeLabel.setBounds(x, y = y + distance, w, h);
-		ai2TypeLabel.setBounds(x, y = y + distance, w, h);
-		ai1MaxDepthLabel.setBounds(x, y = y + distance, w, h);
-		ai2MaxDepthLabel.setBounds(x, y = y + distance, w, h);
-		player1ColorLabel.setBounds(x, y = y + distance, w, h);
-		player2ColorLabel.setBounds(x, y = y + distance, w, h);
-		checkersInARowLabel.setBounds(x, y + distance, w, h);
+		for (JLabel label : labels) {
+			label.setBounds(x, y, w, h);
+			y = y + distance;
+			super.add(label);
+		}
 
 		x = 195;
 		y = 25;
-		guiStyleDropDown.setBounds(x, y, w, h);
-		gameModeDropDown.setBounds(x, y = y + distance, w, h);
-		ai1TypeDropDown.setBounds(x, y = y + distance, w, h);
-		ai2TypeDropDown.setBounds(x, y = y + distance, w, h);
-		ai1MaxDepthDropDown.setBounds(x, y = y + distance, w, h);
-		ai2MaxDepthDropDown.setBounds(x, y = y + distance, w, h);
-		player1ColorDropDown.setBounds(x, y = y + distance, w, h);
-		player2ColorDropDown.setBounds(x, y = y + distance, w, h);
-		checkersInARowDropDown.setBounds(x, y + distance, w, h);
+		for (JComponent component : components) {
+			component.setBounds(x, y, w, h);
+			y = y + distance;
+			super.add(component);
+		}
 
 		apply = new JButton("Apply");
 		cancel = new JButton("Cancel");
-		add(apply);
-		add(cancel);
 
 		distance = 10;
 		y = 355;
 		w = 100;
 		h = 30;
+		EventHandler handler = new EventHandler();
 		apply.setBounds((width / 2) - 110 - (distance / 2), y, w, h);
 		apply.addActionListener(handler);
 		cancel.setBounds((width / 2) - 10 + (distance / 2), y, w, h);
 		cancel.addActionListener(handler);
+
+		super.add(apply);
+		super.add(cancel);
 	}
 
 
 	private class EventHandler implements ActionListener {
 
 		@Override
-		public void actionPerformed(ActionEvent ev) {
-			if (ev.getSource() == cancel) {
+		public void actionPerformed(ActionEvent event) {
+			if (event.getSource() == cancel) {
 				dispose();
-			} else if (ev.getSource() == apply) {
+			} else if (event.getSource() == apply) {
 				try {
 					GuiStyle guiStyle = GuiStyle.valueOf(guiStyleDropDown.getSelectedItem().toString().toUpperCase()
 							.replace("-", "_").replace(" ", "_"));
@@ -316,6 +313,5 @@ public class SettingsWindow extends JFrame {
 		}  // action performed.
 
 	}  // inner class.
-
 
 }  // class end.
