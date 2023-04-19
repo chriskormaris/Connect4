@@ -38,8 +38,8 @@ public class GameParameters {
 		ai1Type = AiType.MINIMAX_AI;
 		ai2Type = AiType.MINIMAX_AI;
 
-		ai1MaxDepth = 5;
-		ai2MaxDepth = 5;
+		ai1MaxDepth = Constants.DEFAULT_MAX_DEPTH;
+		ai2MaxDepth = Constants.DEFAULT_MAX_DEPTH;
 
 		player1Color = Color.RED;
 		player2Color = Color.YELLOW;

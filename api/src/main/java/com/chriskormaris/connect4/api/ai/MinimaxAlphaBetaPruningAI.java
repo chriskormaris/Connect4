@@ -12,7 +12,7 @@ import java.util.Random;
 public class MinimaxAlphaBetaPruningAI extends MinimaxAI {
 
 	public MinimaxAlphaBetaPruningAI() {
-		super(2, Constants.P2);
+		super(Constants.DEFAULT_MAX_DEPTH, Constants.P2);
 	}
 
 	public MinimaxAlphaBetaPruningAI(int maxDepth, int aiPlayer) {

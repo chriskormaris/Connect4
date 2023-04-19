@@ -20,7 +20,7 @@ public class MinimaxAI extends AI {
 
 	public MinimaxAI() {
 		super(Constants.P2);
-		maxDepth = 2;
+		maxDepth = Constants.DEFAULT_MAX_DEPTH;
 	}
 
 	public MinimaxAI(int maxDepth, int aiPlayer) {

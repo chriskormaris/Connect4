@@ -451,8 +451,8 @@ public class GUI extends JFrame {
 
 		aboutItem.addActionListener(e -> {
 			JLabel label = new JLabel(
-					"<html><center>© Created by: Christos Kormaris<br>"
-							+ "Version " + GuiConstants.VERSION + "</center></html>"
+					"<html>&copy; Created by: Christos Kormaris, Athens 2016<br>"
+							+ "Version " + GuiConstants.VERSION + "</html>"
 			);
 			JOptionPane.showMessageDialog(this, label, "About", JOptionPane.INFORMATION_MESSAGE);
 		});
