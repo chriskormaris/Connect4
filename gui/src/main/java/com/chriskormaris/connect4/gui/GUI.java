@@ -776,15 +776,17 @@ public class GUI extends JFrame {
 
 	// It finds which player plays next and makes a move on the board.
 	public void makeMove(int col) {
-		undoBoards.push(new Board(board));
+		int previousRow = board.getLastMove().getRow();
+		int previousCol = board.getLastMove().getColumn();
+		int previousPlayer = board.getLastPlayer();
+
+		if (!(gameParameters.getGameMode() == GameMode.HUMAN_VS_AI && previousPlayer == Constants.P1)) {
+			undoBoards.push(new Board(board));
+		}
 
 		board.setOverflow(false);
 
-		int previousRow = board.getLastMove().getRow();
-		int previousCol = board.getLastMove().getColumn();
-		int previousLetter = board.getLastPlayer();
-
-		if (board.getLastPlayer() == Constants.P2) {
+		if (previousPlayer == Constants.P2) {
 			board.makeMove(col, Constants.P1);
 		} else {
 			board.makeMove(col, Constants.P2);
@@ -793,7 +795,7 @@ public class GUI extends JFrame {
 		if (board.isOverflow()) {
 			board.getLastMove().setRow(previousRow);
 			board.getLastMove().setColumn(previousCol);
-			board.setLastPlayer(previousLetter);
+			board.setLastPlayer(previousPlayer);
 
 			undoBoards.pop();
 		}
@@ -995,7 +997,7 @@ public class GUI extends JFrame {
 
 		// Here, you can change the game parameters, before running the application.
 		// You can also change them later, from the Settings window.
-		/*
+        /*
 		gui.newGameParameters = new GameParameters();
 		gui.newGameParameters.setGuiStyle(GuiStyle.SYSTEM_STYLE);
 		gui.newGameParameters.setGameMode(GameMode.HUMAN_VS_AI);

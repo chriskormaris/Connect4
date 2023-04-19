@@ -88,9 +88,10 @@ public class Board {
 		try {
 			// The variable "lastMove" must be changed before the variable
 			// "gameBoard[][]" because of the function "getRowPosition(col)".
-			this.lastMove = new Move(getEmptyRowPosition(col), col);
+			int row = getEmptyRowPosition(col);
+			this.lastMove = new Move(row, col);
 			this.lastPlayer = player;
-			this.gameBoard[getEmptyRowPosition(col)][col] = player;
+			this.gameBoard[row][col] = player;
 			this.turn++;
 		} catch (ArrayIndexOutOfBoundsException ex) {
 			System.err.println("Column " + (col + 1) + " is full!");
@@ -119,15 +120,14 @@ public class Board {
 		return rowPosition;
 	}
 
-	/* Generates the children of the state.
-	 * The max number of the children is "numOfColumns".
-	 */
-	public ArrayList<Board> getChildren(int letter) {
+	// Generates the children of the state.
+	// The max number of the children is "numOfColumns".
+	public ArrayList<Board> getChildren(int player) {
 		ArrayList<Board> children = new ArrayList<>();
 		for (int col = 0; col < numOfColumns; col++) {
 			if (!checkFullColumn(col)) {
 				Board child = new Board(this);
-				child.makeMove(col, letter);
+				child.makeMove(col, player);
 				children.add(child);
 			}
 		}
@@ -136,7 +136,7 @@ public class Board {
 
 	/* +1 for each 2 pieces in a row by Player 1, -1 for each 2 pieces in a row by Player 2.
 	 * +10 for each 3 pieces in a row by Player 1, -10 for each 3 pieces in a row by Player 2.
-	 * ..
+	 * ...
 	 * +10^i for each (i+2) pieces in a row by Player 1, -10^i for each (i+2) pieces in a row by Player 2.
 	 * +10^(checkersInARow-2) if "checkersInARow" pieces in a row by Player 1 exist,
 	 * -10^(checkersInARow-2) if "checkersInARow" pieces in a row by Player 2 exist. */
