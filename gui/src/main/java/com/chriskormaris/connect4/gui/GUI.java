@@ -180,7 +180,7 @@ public class GUI extends JFrame {
 		undoButton.setEnabled(false);
 		redoButton.setEnabled(false);
 
-		if (gameParameters.getGuiStyle() == GuiStyle.SYSTEM_STYLE) {
+		if (gameParameters.getGuiStyle() == GuiStyle.SYSTEM) {
 			undoButton.setVisible(false);
 			redoButton.setVisible(false);
 		}
@@ -202,7 +202,7 @@ public class GUI extends JFrame {
 				redoButton.setEnabled(false);
 				resetButton.setEnabled(false);
 
-				if (gameParameters.getGuiStyle() == GuiStyle.SYSTEM_STYLE) {
+				if (gameParameters.getGuiStyle() == GuiStyle.SYSTEM) {
 					undoButton.setVisible(false);
 					pauseButton.setVisible(false);
 					startButton.setVisible(true);
@@ -227,30 +227,30 @@ public class GUI extends JFrame {
 				pause = false;
 				if (undoBoards.isEmpty()) {
 					undoButton.setEnabled(false);
-					if (gameParameters.getGuiStyle() == GuiStyle.SYSTEM_STYLE) {
+					if (gameParameters.getGuiStyle() == GuiStyle.SYSTEM) {
 						undoButton.setVisible(false);
 					}
 				} else {
 					undoButton.setEnabled(true);
-					if (gameParameters.getGuiStyle() == GuiStyle.SYSTEM_STYLE) {
+					if (gameParameters.getGuiStyle() == GuiStyle.SYSTEM) {
 						undoButton.setVisible(true);
 					}
 				}
 				if (redoBoards.isEmpty()) {
 					redoButton.setEnabled(false);
-					if (gameParameters.getGuiStyle() == GuiStyle.SYSTEM_STYLE) {
+					if (gameParameters.getGuiStyle() == GuiStyle.SYSTEM) {
 						redoButton.setVisible(false);
 					}
 				} else {
 					redoButton.setEnabled(true);
-					if (gameParameters.getGuiStyle() == GuiStyle.SYSTEM_STYLE) {
+					if (gameParameters.getGuiStyle() == GuiStyle.SYSTEM) {
 						redoButton.setVisible(true);
 					}
 				}
 				pauseButton.setEnabled(true);
 				startButton.setEnabled(false);
 				resetButton.setEnabled(true);
-				if (gameParameters.getGuiStyle() == GuiStyle.SYSTEM_STYLE) {
+				if (gameParameters.getGuiStyle() == GuiStyle.SYSTEM) {
 					pauseButton.setVisible(true);
 					startButton.setVisible(false);
 					resetButton.setVisible(true);
@@ -264,12 +264,12 @@ public class GUI extends JFrame {
 				super.removeKeyListener(gameKeyListener);
 				pause = false;
 				undoButton.setEnabled(false);
-				if (gameParameters.getGuiStyle() == GuiStyle.SYSTEM_STYLE) {
+				if (gameParameters.getGuiStyle() == GuiStyle.SYSTEM) {
 					undoButton.setVisible(false);
 				}
 				pauseButton.setEnabled(true);
 				redoButton.setEnabled(false);
-				if (gameParameters.getGuiStyle() == GuiStyle.SYSTEM_STYLE) {
+				if (gameParameters.getGuiStyle() == GuiStyle.SYSTEM) {
 					redoButton.setVisible(false);
 				}
 				startButton.setEnabled(false);
@@ -366,7 +366,7 @@ public class GUI extends JFrame {
 		redoBoards.clear();
 
 		pauseButton.setVisible(true);
-		if (gameParameters.getGuiStyle() != GuiStyle.SYSTEM_STYLE) {
+		if (gameParameters.getGuiStyle() != GuiStyle.SYSTEM) {
 			undoButton.setVisible(true);
 			startButton.setVisible(true);
 			redoButton.setVisible(true);
@@ -614,14 +614,14 @@ public class GUI extends JFrame {
 			if (undoBoards.isEmpty()) {
 				undoItem.setEnabled(false);
 				undoButton.setEnabled(false);
-				if (gameParameters.getGuiStyle() == GuiStyle.SYSTEM_STYLE) {
+				if (gameParameters.getGuiStyle() == GuiStyle.SYSTEM) {
 					undoButton.setVisible(false);
 				}
 			}
 
 			redoItem.setEnabled(true);
 			redoButton.setEnabled(true);
-			if (gameParameters.getGuiStyle() == GuiStyle.SYSTEM_STYLE) {
+			if (gameParameters.getGuiStyle() == GuiStyle.SYSTEM) {
 				redoButton.setVisible(true);
 			}
 
@@ -661,14 +661,14 @@ public class GUI extends JFrame {
 			if (redoBoards.isEmpty()) {
 				redoItem.setEnabled(false);
 				redoButton.setEnabled(false);
-				if (gameParameters.getGuiStyle() == GuiStyle.SYSTEM_STYLE) {
+				if (gameParameters.getGuiStyle() == GuiStyle.SYSTEM) {
 					redoButton.setVisible(false);
 				}
 			}
 
 			undoItem.setEnabled(true);
 			undoButton.setEnabled(true);
-			if (gameParameters.getGuiStyle() == GuiStyle.SYSTEM_STYLE) {
+			if (gameParameters.getGuiStyle() == GuiStyle.SYSTEM) {
 				undoButton.setVisible(true);
 			}
 
@@ -742,13 +742,13 @@ public class GUI extends JFrame {
 
 	private void configureGuiStyle() {
 		try {
-			if (gameParameters.getGuiStyle() == GuiStyle.CROSS_PLATFORM_STYLE) {
+			if (gameParameters.getGuiStyle() == GuiStyle.CROSS_PLATFORM) {
 				// Option 1
 				UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName());
-			} else if (gameParameters.getGuiStyle() == GuiStyle.SYSTEM_STYLE) {
+			} else if (gameParameters.getGuiStyle() == GuiStyle.SYSTEM) {
 				// Option 2
 				UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-			} else if (gameParameters.getGuiStyle() == GuiStyle.NIMBUS_STYLE) {
+			} else if (gameParameters.getGuiStyle() == GuiStyle.NIMBUS) {
 				// Option 3
 				for (LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
 					if ("Nimbus".equals(info.getName())) {
@@ -837,7 +837,7 @@ public class GUI extends JFrame {
 			gameOver();
 		} else {
 			undoButton.setEnabled(true);
-			if (gameParameters.getGuiStyle() == GuiStyle.SYSTEM_STYLE) {
+			if (gameParameters.getGuiStyle() == GuiStyle.SYSTEM) {
 				undoButton.setVisible(true);
 			}
 			undoItem.setEnabled(true);
@@ -845,7 +845,7 @@ public class GUI extends JFrame {
 
 		redoBoards.clear();
 		redoButton.setEnabled(false);
-		if (gameParameters.getGuiStyle() == GuiStyle.SYSTEM_STYLE) {
+		if (gameParameters.getGuiStyle() == GuiStyle.SYSTEM) {
 			redoButton.setVisible(false);
 		}
 		redoItem.setEnabled(false);

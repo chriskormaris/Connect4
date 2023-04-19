@@ -49,14 +49,9 @@ public class MinimaxAlphaBetaPruningAI extends MinimaxAI {
 			Move move = minAlphaBeta(child, depth + 1, a, b);
 			// The child-move with the greatest value is selected and returned by max.
 			if (move.getValue() >= maxMove.getValue()) {
-				if ((move.getValue() == maxMove.getValue())) {
-					// If the heuristic has the same value, then we randomly choose one of the two moves.
-					if (r.nextInt(2) == 0 || move.getValue() == Integer.MIN_VALUE) {
-						maxMove.setRow(child.getLastMove().getRow());
-						maxMove.setColumn(child.getLastMove().getColumn());
-						maxMove.setValue(move.getValue());
-					}
-				} else {
+				if (move.getValue() > maxMove.getValue()
+						// If the heuristic has the same value then we randomly choose one of the two moves
+						|| r.nextInt(2) == 0 || move.getValue() == Integer.MIN_VALUE) {
 					maxMove.setRow(child.getLastMove().getRow());
 					maxMove.setColumn(child.getLastMove().getColumn());
 					maxMove.setValue(move.getValue());
@@ -86,13 +81,8 @@ public class MinimaxAlphaBetaPruningAI extends MinimaxAI {
 		for (Board child : children) {
 			Move move = maxAlphaBeta(child, depth + 1, a, b);
 			if (move.getValue() <= minMove.getValue()) {
-				if ((move.getValue() == minMove.getValue())) {
-					if (r.nextInt(2) == 0 || move.getValue() == Integer.MAX_VALUE) {
-						minMove.setRow(child.getLastMove().getRow());
-						minMove.setColumn(child.getLastMove().getColumn());
-						minMove.setValue(move.getValue());
-					}
-				} else {
+				if (move.getValue() < minMove.getValue()
+						|| r.nextInt(2) == 0 || move.getValue() == Integer.MAX_VALUE) {
 					minMove.setRow(child.getLastMove().getRow());
 					minMove.setColumn(child.getLastMove().getColumn());
 					minMove.setValue(move.getValue());

@@ -82,15 +82,15 @@ public class SettingsWindow extends JFrame {
 		labels.add(checkersInARowLabel);
 
 		guiStyleDropDown = new JComboBox<>();
-		guiStyleDropDown.addItem("Cross-platform style");
-		guiStyleDropDown.addItem("System style");
-		guiStyleDropDown.addItem("Nimbus style");
+		guiStyleDropDown.addItem("Cross-platform");
+		guiStyleDropDown.addItem("System");
+		guiStyleDropDown.addItem("Nimbus");
 
-		if (selectedGuiStyle == GuiStyle.CROSS_PLATFORM_STYLE) {
+		if (selectedGuiStyle == GuiStyle.CROSS_PLATFORM) {
 			guiStyleDropDown.setSelectedIndex(0);
-		} else if (selectedGuiStyle == GuiStyle.SYSTEM_STYLE) {
+		} else if (selectedGuiStyle == GuiStyle.SYSTEM) {
 			guiStyleDropDown.setSelectedIndex(1);
-		} else if (selectedGuiStyle == GuiStyle.NIMBUS_STYLE) {
+		} else if (selectedGuiStyle == GuiStyle.NIMBUS) {
 			guiStyleDropDown.setSelectedIndex(2);
 		}
 
@@ -254,7 +254,7 @@ public class SettingsWindow extends JFrame {
 			} else if (event.getSource() == apply) {
 				try {
 					GuiStyle guiStyle = GuiStyle.valueOf(guiStyleDropDown.getSelectedItem().toString().toUpperCase()
-							.replace("-", "_").replace(" ", "_"));
+							.replace("-", "_"));
 					GameMode gameMode = GameMode.valueOf(gameModeDropDown.getSelectedItem().toString().toUpperCase()
 							.replace(" ", "_"));
 					AiType ai1Type = AiType.valueOf(ai1TypeDropDown.getSelectedItem().toString().toUpperCase()
