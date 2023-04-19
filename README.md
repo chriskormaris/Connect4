@@ -29,10 +29,10 @@ Java 8 and above is required to run. Have fun!!
 ### Screenshots
 
 #### Connect-4
-![screenshot](/screenshots/connect-4_system-style.png)
+![connect-4](/screenshots/connect-4_cross-platform-style.png)
 
 #### Connect-5
-![screenshot](/screenshots/connect-5_system-style.png)
+![connect-5](/screenshots/connect-5_cross-platform-style.png)
 
 ### References
 The GUI of the Java Swing application was inspired from this GitHub repository:
