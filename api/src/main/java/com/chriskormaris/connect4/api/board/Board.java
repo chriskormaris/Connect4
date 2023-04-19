@@ -134,27 +134,30 @@ public class Board {
 		return children;
 	}
 
-	/* +1 for each 2 pieces in a row by Player 1, -1 for each 2 pieces in a row by Player 2.
-	 * +10 for each 3 pieces in a row by Player 1, -10 for each 3 pieces in a row by Player 2.
+	/* +1 for each 2 checkers in a row by Player 1,
+	 * -1 for each 2 checkers in a row by Player 2.
+	 * +10 for each 3 checkers in a row by Player 1,
+	 * -10 for each 3 checkers in a row by Player 2.
 	 * ...
-	 * +10^i for each (i+2) pieces in a row by Player 1, -10^i for each (i+2) pieces in a row by Player 2.
-	 * +10^(checkersInARow-2) if "checkersInARow" pieces in a row by Player 1 exist,
-	 * -10^(checkersInARow-2) if "checkersInARow" pieces in a row by Player 2 exist. */
+	 * +10^i for each (i+2) checkers in a row by Player 1,
+	 * -10^i for each (i+2) checkers in a row by Player 2.
+	 * +10^(checkersInARow - 2) if "checkersInARow" pieces in a row by Player 1 exist,
+	 * -10^(checkersInARow - 2) if "checkersInARow" pieces in a row by Player 2 exist. */
 	public int evaluate() {
 		int player1Score = 0;
 		int player2Score = 0;
 
 		if (checkWinState()) {
 			if (winner == Constants.P1) {
-				player1Score = (int) Math.pow(10, (checkersInARow - 2));
+				return Integer.MAX_VALUE;
 			} else if (winner == Constants.P2) {
-				player2Score = (int) Math.pow(10, (checkersInARow - 2));
+                return Integer.MIN_VALUE;
 			}
 		}
 
-		for (int i = 0; i < checkersInARow - 2; i++) {
-			player1Score += countNInARow(i + 2, Constants.P1) * Math.pow(10, i);
-			player2Score += countNInARow(i + 2, Constants.P2) * Math.pow(10, i);
+		for (int i = 2; i < checkersInARow; i++) {
+			player1Score += countNInARow(i, Constants.P1) * Math.pow(10, i - 2);
+			player2Score += countNInARow(i, Constants.P2) * Math.pow(10, i - 2);
 		}
 
 		// If the result is 0, then it's a draw.
@@ -166,14 +169,14 @@ public class Board {
 	 * It checks whether somebody has won the game.
 	 */
 	public boolean checkWinState() {
-		int times4InARowPlayer1 = countNInARow(checkersInARow, Constants.P1);
-		if (times4InARowPlayer1 > 0) {
+		int counter = countNInARow(checkersInARow, Constants.P1);
+		if (counter > 0) {
 			setWinner(Constants.P1);
 			return true;
 		}
 
-		int times4InARowPlayer2 = countNInARow(checkersInARow, Constants.P2);
-		if (times4InARowPlayer2 > 0) {
+		counter = countNInARow(checkersInARow, Constants.P2);
+		if (counter > 0) {
 			setWinner(Constants.P2);
 			return true;
 		}

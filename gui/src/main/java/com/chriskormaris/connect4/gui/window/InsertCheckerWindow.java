@@ -1,7 +1,8 @@
-package com.chriskormaris.connect4.gui;
+package com.chriskormaris.connect4.gui.window;
 
 
 import com.chriskormaris.connect4.api.util.Constants;
+import com.chriskormaris.connect4.gui.GUI;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;

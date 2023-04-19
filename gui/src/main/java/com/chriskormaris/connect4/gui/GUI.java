@@ -11,10 +11,11 @@ import com.chriskormaris.connect4.api.enumeration.GameMode;
 import com.chriskormaris.connect4.api.util.Constants;
 import com.chriskormaris.connect4.gui.enumeration.Color;
 import com.chriskormaris.connect4.gui.enumeration.GuiStyle;
-import com.chriskormaris.connect4.gui.settings.SettingsWindow;
 import com.chriskormaris.connect4.gui.util.GameParameters;
 import com.chriskormaris.connect4.gui.util.GuiConstants;
 import com.chriskormaris.connect4.gui.util.ResourceLoader;
+import com.chriskormaris.connect4.gui.window.InsertCheckerWindow;
+import com.chriskormaris.connect4.gui.window.SettingsWindow;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -48,11 +49,11 @@ import static com.chriskormaris.connect4.gui.util.GuiConstants.DEFAULT_CONNECT_5
 
 public class GUI extends JFrame {
 
-	GameParameters gameParameters;
+	public GameParameters gameParameters;
 	GameParameters newGameParameters;
 
 
-	Board board;
+	public Board board;
 
 
 	JPanel panelMain;
@@ -61,7 +62,7 @@ public class GUI extends JFrame {
 
 	JButton[] buttons;
 
-	JLabel turnMessage;
+	public JLabel turnMessage;
 
 	AI ai;
 

@@ -1,4 +1,4 @@
-package com.chriskormaris.connect4.gui.settings;
+package com.chriskormaris.connect4.gui.window;
 
 
 import com.chriskormaris.connect4.api.enumeration.AiType;
