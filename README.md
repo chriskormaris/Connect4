@@ -7,6 +7,9 @@ Programming Language: `Java`
 Video for this project:
 - https://www.youtube.com/watch?v=SxstLdf9LkE
 
+Download `.jar` executable:
+- https://drive.google.com/file/d/1mxqJUTVwxZt7ebqhO-xqkqOZr1mRtKTW
+
 This is the game known as `Connect-4`, `Score-4`, `4-in-a-line` or `4-in-a-row`.
 This project was made for educational purposes while studying in Athens University of Economics & Business.
 The AI was based on code from the labs of the university.
