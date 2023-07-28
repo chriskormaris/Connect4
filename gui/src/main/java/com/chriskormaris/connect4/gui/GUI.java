@@ -11,11 +11,11 @@ import com.chriskormaris.connect4.api.enumeration.GameMode;
 import com.chriskormaris.connect4.api.util.Constants;
 import com.chriskormaris.connect4.gui.enumeration.Color;
 import com.chriskormaris.connect4.gui.enumeration.GuiStyle;
+import com.chriskormaris.connect4.gui.frame.InsertCheckerFrame;
+import com.chriskormaris.connect4.gui.frame.SettingsFrame;
 import com.chriskormaris.connect4.gui.util.GameParameters;
 import com.chriskormaris.connect4.gui.util.GuiConstants;
 import com.chriskormaris.connect4.gui.util.ResourceLoader;
-import com.chriskormaris.connect4.gui.window.InsertCheckerWindow;
-import com.chriskormaris.connect4.gui.window.SettingsWindow;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -428,14 +428,14 @@ public class GUI extends JFrame {
 		});
 
 		insertCheckerItem.addActionListener(e -> {
-			InsertCheckerWindow insertCheckerWindow = new InsertCheckerWindow(this);
-			insertCheckerWindow.setVisible(true);
+			InsertCheckerFrame insertCheckerFrame = new InsertCheckerFrame(this);
+			insertCheckerFrame.setVisible(true);
 		});
 
 		exportToGifItem.addActionListener(e -> exportToGif());
 
 		settingsItem.addActionListener(e -> {
-			SettingsWindow settings = new SettingsWindow(this, newGameParameters);
+			SettingsFrame settings = new SettingsFrame(this, newGameParameters);
 			settings.setVisible(true);
 		});
 

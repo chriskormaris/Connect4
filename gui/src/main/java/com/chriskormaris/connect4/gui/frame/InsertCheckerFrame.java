@@ -1,4 +1,4 @@
-package com.chriskormaris.connect4.gui.window;
+package com.chriskormaris.connect4.gui.frame;
 
 
 import com.chriskormaris.connect4.api.util.Constants;
@@ -9,7 +9,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 
-public class InsertCheckerWindow extends JFrame {
+public class InsertCheckerFrame extends JFrame {
 
 	public int row;
 	public int column;
@@ -24,7 +24,7 @@ public class InsertCheckerWindow extends JFrame {
 
 	private final GUI gui;
 
-	public InsertCheckerWindow(GUI gui) {
+	public InsertCheckerFrame(GUI gui) {
 		super("Insert Checker");
 
 		this.gui = gui;

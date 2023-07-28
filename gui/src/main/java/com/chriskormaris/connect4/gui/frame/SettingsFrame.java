@@ -1,4 +1,4 @@
-package com.chriskormaris.connect4.gui.window;
+package com.chriskormaris.connect4.gui.frame;
 
 
 import com.chriskormaris.connect4.api.enumeration.AiType;
@@ -15,7 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class SettingsWindow extends JFrame {
+public class SettingsFrame extends JFrame {
 
 	private final JComboBox<String> guiStyleDropDown;
 	private final JComboBox<String> gameModeDropDown;
@@ -33,7 +33,7 @@ public class SettingsWindow extends JFrame {
 	private final Component parentComponent;
 	private final GameParameters newGameParameters;
 
-	public SettingsWindow(Component parentComponent, GameParameters newGameParameters) {
+	public SettingsFrame(Component parentComponent, GameParameters newGameParameters) {
 		super("Settings");
 
 		this.parentComponent = parentComponent;
