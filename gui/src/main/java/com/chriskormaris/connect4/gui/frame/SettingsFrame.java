@@ -39,7 +39,7 @@ public class SettingsFrame extends JFrame {
 		this.parentComponent = parentComponent;
 		this.newGameParameters = newGameParameters;
 
-		int width = 450;
+		int width = 475;
 		int height = 450;
 
 		super.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -109,22 +109,28 @@ public class SettingsFrame extends JFrame {
 
 		ai1TypeDropDown = new JComboBox<>();
 		ai1TypeDropDown.addItem("Minimax AI");
+		ai1TypeDropDown.addItem("Minimax Alpha-Beta Pruning AI");
 		ai1TypeDropDown.addItem("Random AI");
 
 		if (selectedAi1Type == AiType.MINIMAX_AI) {
 			ai1TypeDropDown.setSelectedIndex(0);
-		} else if (selectedAi1Type == AiType.RANDOM_AI) {
+		} else if (selectedAi1Type == AiType.MINIMAX_ALPHA_BETA_PRUNING_AI) {
 			ai1TypeDropDown.setSelectedIndex(1);
+		} else if (selectedAi1Type == AiType.RANDOM_AI) {
+			ai1TypeDropDown.setSelectedIndex(2);
 		}
 
 		ai2TypeDropDown = new JComboBox<>();
 		ai2TypeDropDown.addItem("Minimax AI");
+		ai2TypeDropDown.addItem("Minimax Alpha-Beta Pruning AI");
 		ai2TypeDropDown.addItem("Random AI");
 
 		if (selectedAi2Type == AiType.MINIMAX_AI) {
 			ai2TypeDropDown.setSelectedIndex(0);
-		} else if (selectedAi2Type == AiType.RANDOM_AI) {
+		} else if (selectedAi2Type == AiType.MINIMAX_ALPHA_BETA_PRUNING_AI) {
 			ai2TypeDropDown.setSelectedIndex(1);
+		} else if (selectedAi2Type == AiType.RANDOM_AI) {
+			ai2TypeDropDown.setSelectedIndex(2);
 		}
 
 		ai1MaxDepthDropDown = new JComboBox<>();
@@ -219,8 +225,9 @@ public class SettingsFrame extends JFrame {
 			super.add(label);
 		}
 
-		x = 195;
+		x = 200;
 		y = 25;
+		w = 220;
 		for (JComponent component : components) {
 			component.setBounds(x, y, w, h);
 			y = y + distance;
@@ -258,9 +265,9 @@ public class SettingsFrame extends JFrame {
 					GameMode gameMode = GameMode.valueOf(gameModeDropDown.getSelectedItem().toString().toUpperCase()
 							.replace(" ", "_"));
 					AiType ai1Type = AiType.valueOf(ai1TypeDropDown.getSelectedItem().toString().toUpperCase()
-							.replace(" ", "_"));
+							.replace(" ", "_").replace("-", "_"));
 					AiType ai2Type = AiType.valueOf(ai2TypeDropDown.getSelectedItem().toString().toUpperCase()
-							.replace(" ", "_"));
+							.replace(" ", "_").replace("-", "_"));
 					int ai1MaxDepth = (int) ai1MaxDepthDropDown.getSelectedItem();
 					int ai2MaxDepth = (int) ai2MaxDepthDropDown.getSelectedItem();
 					Color player1Color = Color.valueOf(

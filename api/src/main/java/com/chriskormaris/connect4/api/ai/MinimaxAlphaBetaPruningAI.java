@@ -23,7 +23,7 @@ public class MinimaxAlphaBetaPruningAI extends MinimaxAI {
 	public Move getNextMove(Board board) {
 		// If P1 plays then it wants to MAXimize the heuristics value.
 		if (getAiPlayer() == Constants.P1) {
-			return maxAlphaBeta(new Board(board), 0, Integer.MAX_VALUE, Integer.MIN_VALUE);
+			return maxAlphaBeta(new Board(board), 0, Integer.MIN_VALUE, Integer.MAX_VALUE);
 		}
 		// If P2 plays then it wants to MINimize the heuristics value.
 		else {
@@ -58,13 +58,13 @@ public class MinimaxAlphaBetaPruningAI extends MinimaxAI {
 				}
 			}
 
+			// Update the "a" of the current max node.
+			a = (a > maxMove.getValue()) ? a : maxMove.getValue();
+
 			// Beta pruning.
-			if (maxMove.getValue() >= b) {
+			if (a >= b) {
 				return maxMove;
 			}
-
-			// Update the a of the current max node.
-			a = (a > maxMove.getValue()) ? a : maxMove.getValue();
 		}
 		return maxMove;
 	}
@@ -89,13 +89,13 @@ public class MinimaxAlphaBetaPruningAI extends MinimaxAI {
 				}
 			}
 
+			// Update the "b" of the current min node.
+			b = (b < minMove.getValue()) ? b : minMove.getValue();
+
 			// Alpha pruning
-			if (minMove.getValue() <= a) {
+			if (b <= a) {
 				return minMove;
 			}
-
-			// Update the b of the current min node.
-			b = (b < minMove.getValue()) ? b : minMove.getValue();
 		}
 		return minMove;
 	}
