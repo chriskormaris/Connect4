@@ -496,15 +496,15 @@ public class GUI extends JFrame {
 				}
 			}
 		} catch (IOException ex) {
-			ex.printStackTrace();
+			throw new RuntimeException(ex);
 		} finally {
 			try {
 				if (bw != null) {
 					bw.flush();
 					bw.close();
 				}
-			} catch (IOException | NullPointerException ex) {
-				ex.printStackTrace();
+			} catch (IOException ex) {
+				throw new RuntimeException(ex);
 			}
 		}
 	}
@@ -533,18 +533,17 @@ public class GUI extends JFrame {
 			System.out.println(board);
 			turnMessage.setText("Turn: " + board.getTurn());
 		} catch (IOException ex) {
-			ex.printStackTrace();
+			throw new RuntimeException(ex);
 		} finally {
 			try {
 				if (br != null) {
 					br.close();
 				}
-			} catch (IOException | NullPointerException ex) {
-				ex.printStackTrace();
+			} catch (IOException ex) {
+				throw new RuntimeException(ex);
 			}
 		}
 	}
-
 
 	public void exportToGif() {
 		String gifName = JOptionPane.showInputDialog(
@@ -729,7 +728,7 @@ public class GUI extends JFrame {
 						super.paint(super.getGraphics());
 					}
 				} catch (Exception ex) {
-					ex.printStackTrace();
+					throw new RuntimeException(ex);
 				}
 
 				aiMove(ai2);
@@ -742,7 +741,7 @@ public class GUI extends JFrame {
 						super.paint(super.getGraphics());
 					}
 				} catch (Exception ex) {
-					ex.printStackTrace();
+					throw new RuntimeException(ex);
 				}
 			}
 		}
@@ -769,7 +768,7 @@ public class GUI extends JFrame {
 			try {
 				UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 			} catch (Exception ex2) {
-				ex2.printStackTrace();
+				throw new RuntimeException(ex2);
 			}
 		}
 	}
