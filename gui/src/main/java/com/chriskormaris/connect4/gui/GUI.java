@@ -307,6 +307,12 @@ public class GUI extends JFrame {
 		tools.add(resetButton);
 
 		addMenus();
+
+		// Make the board visible after adding the menus.
+		super.setVisible(true);
+
+		super.addKeyListener(gameKeyListener);
+		super.addKeyListener(undoRedoKeyListener);
 	}
 
 	// To be called when the game starts for the first time, or a new game starts.
@@ -477,11 +483,6 @@ public class GUI extends JFrame {
 		menuBar.add(helpMenu);
 
 		super.setJMenuBar(menuBar);
-		// Make the board visible after adding the menus.
-		super.setVisible(true);
-
-		super.addKeyListener(gameKeyListener);
-		super.addKeyListener(undoRedoKeyListener);
 	}
 
 	public void saveGame() {
