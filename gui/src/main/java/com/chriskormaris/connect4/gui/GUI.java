@@ -486,9 +486,7 @@ public class GUI extends JFrame {
 	}
 
 	public void saveGame() {
-		BufferedWriter bw = null;
-		try {
-			bw = new BufferedWriter(new FileWriter("grid.txt"));
+		try (BufferedWriter bw = new BufferedWriter(new FileWriter("grid.txt"));) {
 			for (int i = 0; i < board.getNumOfRows(); i++) {
 				for (int j = 0; j < board.getNumOfColumns(); j++) {
 					if (board.getGameBoard()[i][j] != Constants.EMPTY) {
@@ -498,23 +496,11 @@ public class GUI extends JFrame {
 			}
 		} catch (IOException ex) {
 			throw new RuntimeException(ex);
-		} finally {
-			try {
-				if (bw != null) {
-					bw.flush();
-					bw.close();
-				}
-			} catch (IOException ex) {
-				throw new RuntimeException(ex);
-			}
 		}
 	}
 
-
 	public void restoreSavedGame() {
-		BufferedReader br = null;
-		try {
-			br = new BufferedReader(new FileReader("grid.txt"));
+		try (BufferedReader br = new BufferedReader(new FileReader("grid.txt"));) {
 			String line;
 
 			startNewGame();
@@ -535,14 +521,6 @@ public class GUI extends JFrame {
 			turnMessage.setText("Turn: " + board.getTurn());
 		} catch (IOException ex) {
 			throw new RuntimeException(ex);
-		} finally {
-			try {
-				if (br != null) {
-					br.close();
-				}
-			} catch (IOException ex) {
-				throw new RuntimeException(ex);
-			}
 		}
 	}
 
@@ -599,7 +577,7 @@ public class GUI extends JFrame {
 				board.setGameOver(false);
 
 				if (gameParameters.getGameMode() != GameMode.AI_VS_AI) {
-                    setAllButtonsEnabled(true);
+					setAllButtonsEnabled(true);
 				}
 
 				redoBoards.push(new Board(board));
