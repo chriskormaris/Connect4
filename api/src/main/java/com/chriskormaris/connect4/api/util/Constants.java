@@ -14,8 +14,6 @@ public class Constants {
 
 	public static final int DEFAULT_MAX_DEPTH = 5;
 
-	public static final int AI_MOVE_MILLISECONDS = 250;
-
 	public static final int CONNECT_4_NUM_OF_ROWS = 6;
 	public static final int CONNECT_4_NUM_OF_COLUMNS = 7;
 	public static final int CONNECT_4_CHECKERS_IN_A_ROW = 4;
