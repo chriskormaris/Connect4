@@ -63,7 +63,7 @@ public class GUI extends JFrame {
 
 	JButton[] buttons;
 
-	public JLabel turnMessage;
+	public JLabel turnLabel;
 
 	AI ai;
 
@@ -291,10 +291,10 @@ public class GUI extends JFrame {
 		tools.setFloatable(false);
 		super.add(tools, BorderLayout.PAGE_END);
 
-		turnMessage = new JLabel("Turn: " + board.getTurn());
+		turnLabel = new JLabel("Turn: " + board.getTurn());
 
 		tools.setLayout(new FlowLayout(FlowLayout.CENTER));
-		tools.add(turnMessage);
+		tools.add(turnLabel);
 		tools.add(new JLabel(" "));
 		tools.add(undoButton);
 		tools.add(new JLabel(" "));
@@ -335,7 +335,7 @@ public class GUI extends JFrame {
 		super.getContentPane().add(compMainWindowContents, BorderLayout.CENTER);
 
 		super.add(tools, BorderLayout.PAGE_END);
-		turnMessage.setText("Turn: " + board.getTurn());
+		turnLabel.setText("Turn: " + board.getTurn());
 
 		super.getContentPane().revalidate();
 		super.getContentPane().repaint();
@@ -518,7 +518,7 @@ public class GUI extends JFrame {
 				board.setTurn(board.getTurn() + 1);
 			}
 			System.out.println(board);
-			turnMessage.setText("Turn: " + board.getTurn());
+			turnLabel.setText("Turn: " + board.getTurn());
 		} catch (IOException ex) {
 			throw new RuntimeException(ex);
 		}
@@ -586,7 +586,7 @@ public class GUI extends JFrame {
 
 				updateLayeredBoard();
 
-				turnMessage.setText("Turn: " + board.getTurn());
+				turnLabel.setText("Turn: " + board.getTurn());
 				super.paint(super.getGraphics());
 			} catch (ArrayIndexOutOfBoundsException ex) {
 				System.err.println("No move has been made yet!");
@@ -628,7 +628,7 @@ public class GUI extends JFrame {
 
 				updateLayeredBoard();
 
-				turnMessage.setText("Turn: " + board.getTurn());
+				turnLabel.setText("Turn: " + board.getTurn());
 				super.paint(super.getGraphics());
 
 				boolean isGameOver = board.checkForGameOver();
@@ -801,7 +801,7 @@ public class GUI extends JFrame {
 
 	// Gets called after makeMove(int, col) is called.
 	public boolean game() {
-		turnMessage.setText("Turn: " + board.getTurn());
+		turnLabel.setText("Turn: " + board.getTurn());
 
 		int row = board.getLastMove().getRow();
 		int col = board.getLastMove().getColumn();

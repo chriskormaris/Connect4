@@ -113,7 +113,7 @@ public class InsertCheckerFrame extends JFrame {
 
 					if (gui.board.getGameBoard()[row][column] == Constants.EMPTY) {
 						gui.board.setTurn(gui.board.getTurn() + 1);
-						gui.turnMessage.setText("Turn: " + gui.board.getTurn());
+						gui.turnLabel.setText("Turn: " + gui.board.getTurn());
 					}
 
 					gui.board.getGameBoard()[row][column] = player;
