@@ -143,9 +143,9 @@ public class Board {
 	 * -10^i for each (i+2) checkers in a row by Player 2.
 	 * +10^(checkersInARow - 2) if "checkersInARow" pieces in a row by Player 1 exist,
 	 * -10^(checkersInARow - 2) if "checkersInARow" pieces in a row by Player 2 exist. */
-	public int evaluate() {
-		int player1Score = 0;
-		int player2Score = 0;
+	public double evaluate() {
+		double player1Score = 0;
+		double player2Score = 0;
 
 		if (checkWinState()) {
 			if (winner == Constants.P1) {
@@ -156,8 +156,8 @@ public class Board {
 		}
 
 		for (int i = 2; i < checkersInARow; i++) {
-			player1Score += countNInARow(i, Constants.P1) * Math.pow(10, i - 2);
-			player2Score += countNInARow(i, Constants.P2) * Math.pow(10, i - 2);
+			player1Score += countNInARow(i, Constants.P1) * Math.pow(10, (double) i - 2);
+			player2Score += countNInARow(i, Constants.P2) * Math.pow(10, (double) i - 2);
 		}
 
 		// If the result is 0, then it's a draw.
@@ -249,7 +249,7 @@ public class Board {
 						k++;
 					}
 					// Check for "checkersInARow - N" consecutive checkers of the same player or empty tiles in a row, vertically.
-					if (k == checkersInARow) {
+					if (k == N) {
 						while (k < checkersInARow
 								&& (gameBoard[i - k][j] == player || gameBoard[i - k][j] == Constants.EMPTY)) {
 							k++;
@@ -272,7 +272,7 @@ public class Board {
 					}
 					// Check for "checkersInARow - N" consecutive checkers of the same player
 					// or empty tiles in a row, in descending diagonal.
-					if (k == checkersInARow) {
+					if (k == N) {
 						while (k < checkersInARow
 								&& (gameBoard[i + k][j + k] == player || gameBoard[i + k][j + k] == Constants.EMPTY)) {
 							k++;
@@ -295,7 +295,7 @@ public class Board {
 					}
 					// Check for "checkersInARow - N" consecutive checkers of the same player
 					// or empty tiles in a row, in ascending diagonal.
-					if (k == checkersInARow) {
+					if (k == N) {
 						while (k < checkersInARow
 								&& (gameBoard[i - k][j + k] == player || gameBoard[i - k][j + k] == Constants.EMPTY)) {
 							k++;

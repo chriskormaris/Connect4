@@ -53,9 +53,7 @@ public class GUI extends JFrame {
 	public GameParameters gameParameters;
 	GameParameters newGameParameters;
 
-
 	public Board board;
-
 
 	JPanel panelMain;
 

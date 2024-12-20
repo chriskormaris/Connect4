@@ -12,7 +12,7 @@ public class Move {
 
 	private int row;
 	private int column;
-	private int value;
+	private double value;
 
 	public Move(int row, int col) {
 		this.row = row;
@@ -23,7 +23,7 @@ public class Move {
 		this.value = value;
 	}
 
-	public Move(int row, int col, int value) {
+	public Move(int row, int col, double value) {
 		this.row = row;
 		this.column = col;
 		this.value = value;
