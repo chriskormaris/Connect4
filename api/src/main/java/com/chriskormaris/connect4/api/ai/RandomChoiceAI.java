@@ -8,6 +8,8 @@ import java.util.Random;
 
 public class RandomChoiceAI extends AI {
 
+	private static final Random RANDOM = new Random();
+
 	private final int numOfColumns;
 
 	public RandomChoiceAI() {
@@ -23,11 +25,9 @@ public class RandomChoiceAI extends AI {
 	// Initiates the random move.
 	@Override
 	public Move getNextMove(Board board) {
-		Random r = new Random();
-
 		int col;
 		do {
-			col = r.nextInt(this.numOfColumns);
+			col = RANDOM.nextInt(this.numOfColumns);
 		} while (board.checkFullColumn(col));
 
 		int row = board.getEmptyRowPosition(col);
