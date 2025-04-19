@@ -12,7 +12,7 @@ public class GuiConstants {
 
 	public static final String VERSION = "2.9.5";
 
-	public static final long AI_MOVE_MILLISECONDS = 100L;
+	public static final long AI_MOVE_DELAY_MILLISECONDS = 100L;
 
 	public static final String CONNECT_4_BOARD_IMG_PATH = "images/Board4.png";
 	public static final String CONNECT_5_BOARD_IMG_PATH = "images/Board5.png";
